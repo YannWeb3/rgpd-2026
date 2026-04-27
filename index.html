@@ -1,91 +1,207 @@
-# 🗂️ Index — Asso UNAPEI92
-> GitHub Pages + Google Sheets | 15 formulaires HTML | **v2.0 — Onglets par établissement**
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNAPEI92 - Formulaires</title>
+  <style>
+    :root {
+      --primary: #0055A4;
+      --primary-dark: #003d7a;
+      --secondary: #E60028;
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+    }
 
-## Fichiers
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-| Fichier | Rôle |
-|---------|------|
-| `context.md` | Profil client, mission, historique |
-| `active.md` | Tâches en cours et focus |
-| `README.md` | Instructions de déploiement |
-| `APPS_SCRIPT_DOC.md` | Documentation complète du script Apps Script |
-| `google-apps-script.js` | Script serveur Google (**v2.0** — onglets par établissement) |
-| `index.html` | Page d'accueil avec liens vers les formulaires |
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
 
-## Formulaires (15)
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
-| Formulaire | Type | Fichier |
-|------------|------|---------|
-| IME | Institut Médico-Éducatif | `formulaires/ime.html` |
-| SAVS | Service d'Accompagnement à la Vie Sociale | `formulaires/savs.html` |
-| SESSAD | Service d'Éducation Spéciale et de Soins à Domicile | `formulaires/sessad.html` |
-| ESAT | Établissement et Service d'Aide par le Travail | `formulaires/esat.html` |
-| EAM | Établissement d'Accueil Médicalisé | `formulaires/eam.html` |
-| EANM | Établissement d'Accueil Non Médicalisé | `formulaires/eanm.html` |
-| CMPP | Centre Médico-Psycho-Pédagogique | `formulaires/cmpp.html` |
-| SI-IT | Service Informatique & IT | `formulaires/si-it.html` |
-| Direction | Direction générale | `formulaires/direction.html` |
-| Qualité | Service Qualité | `formulaires/qualite.html` |
-| Donateurs-Adhérents | Gestion des donateurs et adhérents | `formulaires/donateurs.html` |
-| DAF | Direction Administrative et Financière | `formulaires/daf.html` |
-| RH | Ressources Humaines | `formulaires/rh.html` |
-| Paie | Service Paie | `formulaires/paie.html` |
-| Communication | Service Communication | `formulaires/communication.html` |
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
 
-## Structure
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
 
-```
-Asso UNAPEI92/
-├── context.md
-├── active.md
-├── index.md
-├── README.md
-├── google-apps-script.js        (v1.1 PROD — seul script à déployer)
-├── index.html
-└── formulaires/
-    ├── ime.html (type: IME_RGPD)
-    ├── savs.html (type: SAVS_RGPD)
-    ├── sessad.html (type: SESSAD_RGPD)
-    ├── esat.html (type: ESAT_RGPD)
-    ├── eam.html (type: EAM_RGPD)
-    ├── eanm.html (type: EANM_RGPD)
-    ├── cmpp.html (type: CMPP_RGPD)
-    ├── si-it.html (type: SIIT_RGPD)
-    ├── direction.html (type: Direction_RGPD)
-    ├── qualite.html (type: Qualite_RGPD)
-    ├── donateurs.html (type: Donateurs_RGPD)
-    ├── daf.html (type: DAF_RGPD)
-    ├── rh.html (type: RH_RGPD)
-    ├── paie.html (type: Paie_RGPD)
-    └── communication.html (type: Communication_RGPD)
-```
+    header p {
+      opacity: 0.9;
+      font-size: 1.1rem;
+    }
 
-## Notes v2.0
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
 
-- **Format d'envoi** : Array `[{id, question, answer}]` pour tous les formulaires
-- **Création d'onglets** : Automatique, un onglet par valeur de `nom_etablissement`
-- **Colonnes** : `Date soumission | Type formulaire | Établissement | [questions...]`
-- **Gestion dynamique** : Nouvelles colonnes ajoutées automatiquement si nouvelles questions
-- Tous les formulaires utilisent le suffixe `_RGPD` pour le type
-- Le script Apps Script accepte à la fois les types `XXX` et `XXX_RGPD`
-- `formulaire-simple.html` supprimé (template de développement)
-- Scripts obsolètes supprimés : `google-apps-script-reception.js`, `google-script-simple.js`
-- Docs obsolètes supprimées : `README-SIMPLE.md`, `README-MISE-EN-PLACE.md`
+    .card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      border-left: 4px solid var(--primary);
+    }
 
-## Fonctionnalités des formulaires
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
 
-- ✅ Navigation par blocs nommés (sans numérotation visible)
-- ✅ Design responsive avec charte UNAPEI (bleu #0055A4)
-- ✅ Champs texte, email, date, nombre, textarea
-- ✅ Listes déroulantes, boutons radio, cases à cocher
-- ✅ Envoi des données vers Google Sheets via Apps Script
-- ✅ Messages de confirmation/erreur
-- ✅ Date par défaut = aujourd'hui
+    .card h3 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
 
-## Déploiement
+    .card span {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
 
-Voir `README.md` pour les instructions complètes de :
-1. Configuration Google Apps Script
-2. Déploiement GitHub Pages
-3. Personnalisation des formulaires
+    .card.etablissement {
+      border-left-color: var(--primary);
+    }
 
+    .card.service {
+      border-left-color: var(--secondary);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>UNAPEI92</h1>
+      <p>Formulaires de collecte de données — 15 établissements et services</p>
+    </header>
+
+    <main class="grid">
+      <a href="ime.html" class="card etablissement">
+        <h3>IME</h3>
+        <span>Institut Médico-Éducatif</span>
+      </a>
+
+      <a href="savs.html" class="card etablissement">
+        <h3>SAVS</h3>
+        <span>Service d'Accompagnement à la Vie Sociale</span>
+      </a>
+
+      <a href="sessad.html" class="card etablissement">
+        <h3>SESSAD</h3>
+        <span>Service d'Éducation Spéciale et de Soins à Domicile</span>
+      </a>
+
+      <a href="esat.html" class="card etablissement">
+        <h3>ESAT</h3>
+        <span>Établissement et Service d'Aide par le Travail</span>
+      </a>
+
+      <a href="eam.html" class="card etablissement">
+        <h3>EAM</h3>
+        <span>Établissement d'Accueil Médicalisé</span>
+      </a>
+
+      <a href="eanm.html" class="card etablissement">
+        <h3>EANM</h3>
+        <span>Établissement d'Accueil Non Médicalisé</span>
+      </a>
+
+      <a href="cmpp.html" class="card etablissement">
+        <h3>CMPP</h3>
+        <span>Centre Médico-Psycho-Pédagogique</span>
+      </a>
+
+      <a href="si-it.html" class="card service">
+        <h3>SI-IT</h3>
+        <span>Service Informatique & IT</span>
+      </a>
+
+      <a href="direction.html" class="card service">
+        <h3>Direction</h3>
+        <span>Direction générale</span>
+      </a>
+
+      <a href="qualite.html" class="card service">
+        <h3>Qualité</h3>
+        <span>Service Qualité</span>
+      </a>
+
+      <a href="donateurs.html" class="card service">
+        <h3>Donateurs & Adhérents</h3>
+        <span>Gestion des donateurs et adhérents</span>
+      </a>
+
+      <a href="daf.html" class="card service">
+        <h3>DAF</h3>
+        <span>Direction Administrative et Financière</span>
+      </a>
+
+      <a href="rh.html" class="card service">
+        <h3>RH</h3>
+        <span>Ressources Humaines</span>
+      </a>
+
+      <a href="paie.html" class="card service">
+        <h3>Paie</h3>
+        <span>Service Paie</span>
+      </a>
+
+      <a href="communication.html" class="card service">
+        <h3>Communication</h3>
+        <span>Service Communication</span>
+      </a>
+    </main>
+
+    <footer>
+      <p>UNAPEI92 — Formulaires de collecte de données internes</p>
+    </footer>
+  </div>
+</body>
+</html>
