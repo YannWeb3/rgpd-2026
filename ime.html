@@ -252,7 +252,7 @@
 </head>
 <body>
   <div class="container">
-    <a href="../rgpd-2026/index.html" class="back-link">← Retour à l'accueil</a>
+    <a href="../index.html" class="back-link">← Retour à l'accueil</a>
 
     <header>
       <h1>Questionnaire RGPD — IME</h1>
@@ -938,13 +938,14 @@ function applyConditions() {
 }
 document.addEventListener('change', applyConditions);
 
-// Validation par bloc
-let currentBloc = 0;
+// Validation du formulaire complet
 function validateForm() {
-  const bloc = document.getElementById(`bloc-${idx}`);
-  const banner = document.getElementById(`banner-${idx}`);
+  const form = document.getElementById('formulaire');
   let valid = true;
-  bloc.querySelectorAll('input[required]:not(.hidden), textarea[required]:not(.hidden)').forEach(field => {
+  let firstError = null;
+  
+  // Validation des champs texte/textarea requis (non cachés)
+  form.querySelectorAll('input[required]:not(.hidden), textarea[required]:not(.hidden)').forEach(field => {
     const qEl = field.closest('.question');
     if (qEl && qEl.classList.contains('hidden')) return;
     if (field.type === 'radio' || field.type === 'checkbox') return;
@@ -952,27 +953,33 @@ function validateForm() {
       valid = false;
       field.classList.add('error');
       field.addEventListener('input', () => field.classList.remove('error'), { once: true });
+      if (!firstError) firstError = field;
     }
   });
+  
+  // Validation des groupes radio requis
   const radioGroups = new Set();
-  bloc.querySelectorAll('input[type="radio"][required]').forEach(r => radioGroups.add(r.name));
+  form.querySelectorAll('input[type="radio"][required]').forEach(r => radioGroups.add(r.name));
   radioGroups.forEach(name => {
-    const qEl = bloc.querySelector(`[name="${name}"]`)?.closest('.question');
+    const qEl = form.querySelector(`[name="${name}"]`)?.closest('.question');
     if (qEl && qEl.classList.contains('hidden')) return;
-    const checked = bloc.querySelectorAll(`[name="${name}"]:checked`);
+    const checked = form.querySelectorAll(`[name="${name}"]:checked`);
     if (checked.length === 0) {
       valid = false;
-      const choices = bloc.querySelector(`[name="${name}"]`)?.closest('.choices');
+      const choices = form.querySelector(`[name="${name}"]`)?.closest('.choices');
       if (choices) {
-        choices.style.outline = '2px solid var(--red)';
+        choices.style.outline = '2px solid var(--error)';
         choices.style.borderRadius = '7px';
         const reset = () => { choices.style.outline = ''; document.removeEventListener('change', reset); };
         document.addEventListener('change', reset);
+        if (!firstError) firstError = choices;
       }
     }
   });
-  if (banner) banner.style.display = valid ? 'none' : 'block';
-  if (!valid) window.scrollTo({ top: 0, behavior: 'smooth' });
+  
+  if (!valid && firstError) {
+    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
   return valid;
 }
 
@@ -1013,7 +1020,7 @@ function collectResponses() {
 // Soumission
 document.getElementById('formulaire').addEventListener('submit', async function(e) {
   e.preventDefault();
-  if (!validateBloc(currentBloc)) return;
+  if (!validateForm()) return;
   const btn = document.getElementById('btn-submit');
   btn.disabled = true;
   btn.textContent = 'Envoi en cours...';
