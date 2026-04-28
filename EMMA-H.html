@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EWA — EMMA-H Dashboard</title>
+  <title>UNAPEI92 — EMMA-H (Questionnaire RGPD)</title>
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --secondary: #ec4899;
-      --accent: #06b6d4;
-      --bg: #f8fafc;
+      --primary: #0055A4;
+      --primary-dark: #003d7a;
+      --secondary: #E60028;
+      --bg: #f5f7fa;
       --card: #fff;
-      --text: #1e293b;
-      --text-light: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --error: #ef4444;
-      --info: #3b82f6;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --success: #28a745;
+      --error: #dc3545;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -30,7 +27,7 @@
       line-height: 1.6;
     }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
 
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -41,45 +38,20 @@
       text-align: center;
     }
 
-    header h1 { font-size: 2rem; margin-bottom: 5px; }
-    header p { opacity: 0.9; font-size: 1rem; }
+    header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+    header p { opacity: 0.9; font-size: 0.95rem; }
 
-    .status-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 25px;
-      padding: 15px;
-      background: var(--card);
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .status-item {
-      display: flex;
+    .back-link {
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: var(--bg);
-      border-radius: 8px;
-      font-size: 0.9rem;
+      gap: 5px;
+      color: var(--primary);
+      text-decoration: none;
+      margin-bottom: 15px;
+      font-weight: 500;
     }
 
-    .status-indicator {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--success);
-      animation: pulse 2s infinite;
-    }
-
-    .status-indicator.warning { background: var(--warning); animation: none; }
-    .status-indicator.error { background: var(--error); animation: none; }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
+    .back-link:hover { text-decoration: underline; }
 
     .nav-blocks {
       display: flex;
@@ -96,7 +68,7 @@
     }
 
     .nav-block {
-      padding: 10px 18px;
+      padding: 8px 16px;
       background: var(--bg);
       border: 2px solid transparent;
       border-radius: 20px;
@@ -105,16 +77,12 @@
       transition: all 0.2s;
       text-decoration: none;
       color: var(--text);
-      font-weight: 500;
     }
 
     .nav-block:hover, .nav-block.active {
       background: var(--primary);
       color: white;
     }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 
     .section {
       background: var(--card);
@@ -131,164 +99,38 @@
       margin-bottom: 20px;
       padding-bottom: 10px;
       border-bottom: 2px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
-    .metric-card {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
+    .question {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
     }
 
-    .metric-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin: 10px 0;
+    .question:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
     }
 
-    .metric-label {
-      font-size: 0.9rem;
-      opacity: 0.9;
-    }
-
-    .metric-card.success { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); }
-    .metric-card.warning { background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); }
-    .metric-card.info { background: linear-gradient(135deg, var(--info) 0%, #2563eb 100%); }
-    .metric-card.accent { background: linear-gradient(135deg, var(--accent) 0%, #0891b2 100%); }
-
-    .workflow-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px;
-      background: var(--bg);
-      border-radius: 8px;
+    .question-label {
+      font-weight: 600;
       margin-bottom: 10px;
-      transition: all 0.2s;
-    }
-
-    .workflow-item:hover {
-      background: #e2e8f0;
-      transform: translateX(5px);
-    }
-
-    .workflow-info h4 {
-      font-size: 0.95rem;
-      margin-bottom: 4px;
-    }
-
-    .workflow-info span {
-      font-size: 0.8rem;
-      color: var(--text-light);
-    }
-
-    .workflow-status {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-
-    .status-active { background: #d1fae5; color: #065f46; }
-    .status-paused { background: #fef3c7; color: #92400e; }
-    .status-error { background: #fee2e2; color: #991b1b; }
-
-    .client-row {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .client-row:last-child { border-bottom: none; }
-
-    .client-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    .client-info { flex: 1; }
-    .client-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
-    .client-info span { font-size: 0.8rem; color: var(--text-light); }
-
-    .client-status {
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-
-    .badge-nouveau { background: #dbeafe; color: #1e40af; }
-    .badge-actif { background: #d1fae5; color: #065f46; }
-    .badge-validation { background: #fef3c7; color: #92400e; }
-    .badge-facturation { background: #fce7f3; color: #9d174d; }
-
-    .alert-box {
-      background: #fef3c7;
-      border-left: 4px solid var(--warning);
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 0 8px 8px 0;
-    }
-
-    .alert-box.error {
-      background: #fee2e2;
-      border-left-color: var(--error);
-    }
-
-    .alert-box.success {
-      background: #d1fae5;
-      border-left-color: var(--success);
-    }
-
-    .btn {
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-primary:hover { background: var(--primary-dark); }
-
-    .btn-secondary {
-      background: var(--bg);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover { background: var(--border); }
-
-    .form-group { margin-bottom: 20px; }
-
-    .form-group label {
       display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .question-id {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-weight: normal;
+      margin-left: 5px;
+    }
+
+    .required::after {
+      content: ' *';
+      color: var(--secondary);
     }
 
     input, select, textarea {
@@ -306,408 +148,750 @@
       border-color: var(--primary);
     }
 
-    textarea { min-height: 100px; resize: vertical; }
-
-    .log-entry {
-      font-family: 'Consolas', monospace;
-      font-size: 0.8rem;
-      padding: 8px 12px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-light);
+    textarea {
+      min-height: 80px;
+      resize: vertical;
     }
 
-    .log-entry:last-child { border-bottom: none; }
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-    .log-time { color: var(--accent); }
-    .log-success { color: var(--success); }
-    .log-error { color: var(--error); }
-    .log-info { color: var(--info); }
+    .radio-group label, .checkbox-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
 
-    .module-grid {
+    .radio-group label:hover, .checkbox-group label:hover {
+      background: var(--bg);
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      padding: 14px 40px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.show { display: block; }
+
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+
+    .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 15px;
     }
 
-    .module-card {
-      background: var(--bg);
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      transition: all 0.2s;
-      cursor: pointer;
-    }
-
-    .module-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .module-icon {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    .module-card h4 { font-size: 0.95rem; margin-bottom: 5px; }
-    .module-card span { font-size: 0.8rem; color: var(--text-light); }
-
-    @media (max-width: 768px) {
-      header h1 { font-size: 1.5rem; }
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
       .nav-blocks { justify-content: center; }
-      .metric-value { font-size: 2rem; }
+      .nav-block { font-size: 0.8rem; padding: 6px 12px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <a href="../index.html" class="back-link">← Retour à l'accueil</a>
+
     <header>
-      <h1>EMMA-H — EWA Management Hub</h1>
-      <p>Dashboard de monitoring et gestion — Cabinet de production vidéo</p>
+      <h1>Questionnaire RGPD — EMMA-H</h1>
+      <p>Équipe Mobile de Maintien à Domicile — Personnes handicapées +45 ans</p>
     </header>
 
-    <div class="status-bar">
-      <div class="status-item">
-        <span class="status-indicator"></span>
-        <span>Système opérationnel</span>
-      </div>
-      <div class="status-item">
-        <strong>n8n:</strong> 18 workflows actifs
-      </div>
-      <div class="status-item">
-        <strong>Waha:</strong> Connecté
-      </div>
-      <div class="status-item">
-        <strong>Airtable:</strong> 250 clients
-      </div>
-      <div class="status-item">
-        <strong>Alex:</strong> En ligne
-      </div>
-    </div>
-
     <nav class="nav-blocks">
-      <a href="#vue-ensemble" class="nav-block active">Vue d'ensemble</a>
-      <a href="#workflows" class="nav-block">Workflows</a>
-      <a href="#clients" class="nav-block">Clients</a>
-      <a href="#projets" class="nav-block">Projets actifs</a>
-      <a href="#finance" class="nav-block">Finance</a>
-      <a href="#logs" class="nav-block">Logs</a>
-      <a href="#config" class="nav-block">Configuration</a>
+      <a href="#identification" class="nav-block">Identification</a>
+      <a href="#beneficiaire" class="nav-block">Bénéficiaire</a>
+      <a href="#situation" class="nav-block">Situation actuelle</a>
+      <a href="#besoins" class="nav-block">Besoins</a>
+      <a href="#medical" class="nav-block">Infos médicales</a>
+      <a href="#famille" class="nav-block">Situation familiale</a>
+      <a href="#admin" class="nav-block">Cadre administratif</a>
+      <a href="#rgpd" class="nav-block">Consentement</a>
     </nav>
 
-    <!-- Vue d'ensemble -->
-    <section class="section" id="vue-ensemble">
-      <h2 class="section-title">📊 Vue d'ensemble</h2>
-      <div class="grid-4 grid-2">
-        <div class="metric-card">
-          <div class="metric-label">Clients actifs</div>
-          <div class="metric-value">247</div>
-          <div class="metric-label">+12 ce mois</div>
-        </div>
-        <div class="metric-card success">
-          <div class="metric-label">Projets en cours</div>
-          <div class="metric-value">18</div>
-          <div class="metric-label">3 en validation</div>
-        </div>
-        <div class="metric-card info">
-          <div class="metric-label">Messages WhatsApp</div>
-          <div class="metric-value">1.2k</div>
-          <div class="metric-label">7j derniers</div>
-        </div>
-        <div class="metric-card accent">
-          <div class="metric-label">CA ce mois</div>
-          <div class="metric-value">8.4k€</div>
-          <div class="metric-label">Objectif: 12k€</div>
-        </div>
-      </div>
-    </section>
+    <div class="info-box">
+      <strong>Instructions :</strong> Ce questionnaire concerne une demande d'accompagnement par l'équipe EMMA-H pour une personne handicapée de plus de 45 ans en maintien à domicile. Les champs marqués d'une étoile (*) sont obligatoires.
+    </div>
 
-    <!-- Modules -->
-    <section class="section">
-      <h2 class="section-title">🧩 Modules n8n</h2>
-      <div class="module-grid">
-        <div class="module-card">
-          <div class="module-icon">🎯</div>
-          <h4>Qualification</h4>
-          <span>5 workflows — Agent Alex</span>
-        </div>
-        <div class="module-card">
-          <div class="module-icon">📁</div>
-          <h4>Pilotage Projets</h4>
-          <span>4 workflows — Checklists</span>
-        </div>
-        <div class="module-card">
-          <div class="module-icon">💰</div>
-          <h4>Finance</h4>
-          <span>3 workflows — Facturation</span>
-        </div>
-        <div class="module-card">
-          <div class="module-icon">⚙️</div>
-          <h4>Ops & Résilience</h4>
-          <span>3 workflows — Monitoring</span>
-        </div>
-        <div class="module-card">
-          <div class="module-icon">🛡️</div>
-          <h4>Error Handling</h4>
-          <span>1 workflow — Retry</span>
-        </div>
-        <div class="module-card">
-          <div class="module-icon">💬</div>
-          <h4>WhatsApp</h4>
-          <span>Waha VPS — 2 profils</span>
-        </div>
-      </div>
-    </section>
+    <div id="message" class="message"></div>
 
-    <!-- Workflows -->
-    <section class="section" id="workflows">
-      <h2 class="section-title">⚡ Workflows actifs</h2>
-      <div class="alert-box success">
-        <strong>Tous les workflows sont opérationnels</strong> — Dernière vérification: il y a 5 minutes
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF1-Trigger — Messages entrants</h4>
-          <span>Déduplication & routage — Webhook Waha</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF2-Qualification — Agent Alex</h4>
-          <span>Claude 4.5 + LangChain Tools — Scoring prospects</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF3-Création-Groupe — WhatsApp</h4>
-          <span>Création dynamique groupes clients</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF-Facturation — Pennylane</h4>
-          <span>Livrable Approuvé → Facture auto</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF-Relances — Impayés</h4>
-          <span>J-3, J+0, J+7, J+14, J+21</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-      <div class="workflow-item">
-        <div class="workflow-info">
-          <h4>WF6-Monitoring — Health Check</h4>
-          <span>Cron 5min + Alertes WhatsApp admin</span>
-        </div>
-        <span class="workflow-status status-active">● Actif</span>
-      </div>
-    </section>
+    <form id="formulaire" action="https://script.google.com/macros/s/AKfycbx[YOUR_SCRIPT_ID]/exec" method="POST">
+      <!-- Bloc 0 : Identification du demandeur -->
+      <section class="section" id="identification">
+        <h2 class="section-title">Identification du demandeur</h2>
 
-    <!-- Clients récents -->
-    <section class="section" id="clients">
-      <h2 class="section-title">👥 Clients récents</h2>
-      <div class="client-row">
-        <div class="client-avatar">ML</div>
-        <div class="client-info">
-          <h4>Marie L.</h4>
-          <span>Entreprise Tech — Pack Reel (30€)</span>
-        </div>
-        <span class="client-status badge-nouveau">NOUVEAU</span>
-      </div>
-      <div class="client-row">
-        <div class="client-avatar">JD</div>
-        <div class="client-info">
-          <h4>Jean D.</h4>
-          <span>Coach — Projet VSL (150€)</span>
-        </div>
-        <span class="client-status badge-actif">ACTIF</span>
-      </div>
-      <div class="client-row">
-        <div class="client-avatar">SB</div>
-        <div class="client-info">
-          <h4>Sophie B.</h4>
-          <span>E-commerce — En validation</span>
-        </div>
-        <span class="client-status badge-validation">VALIDATION</span>
-      </div>
-      <div class="client-row">
-        <div class="client-avatar">PC</div>
-        <div class="client-info">
-          <h4>Pierre C.</h4>
-          <span>Restaurant — Attente facturation</span>
-        </div>
-        <span class="client-status badge-facturation">FACTURATION</span>
-      </div>
-      <div style="text-align: center; margin-top: 20px;">
-        <button class="btn btn-secondary">Voir tous les clients</button>
-      </div>
-    </section>
-
-    <!-- Projets -->
-    <section class="section" id="projets">
-      <h2 class="section-title">🎬 Projets en cours</h2>
-      <div class="grid-2">
-        <div class="section" style="margin: 0;">
-          <h4 style="margin-bottom: 15px; color: var(--primary);">En production</h4>
-          <div class="workflow-item">
-            <div class="workflow-info">
-              <h4>VSL — Coach Michel</h4>
-              <span>Tournage prévu le 30/04</span>
-            </div>
-            <span class="client-status badge-actif">PRODUCTION</span>
-          </div>
-          <div class="workflow-item">
-            <div class="workflow-info">
-              <h4>Reels — Startup FinTech</h4>
-              <span>3 reels × 30€ — Script en cours</span>
-            </div>
-            <span class="client-status badge-actif">PRODUCTION</span>
+        <div class="question">
+          <label class="question-label required">Vous êtes <span class="question-id">Q0.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_1_qualite" value="beneficiaire" required> La personne concernée (bénéficiaire)</label>
+            <label><input type="radio" name="q0_1_qualite" value="famille"> Un membre de la famille</label>
+            <label><input type="radio" name="q0_1_qualite" value="aidant"> Un aidant proche</label>
+            <label><input type="radio" name="q0_1_qualite" value="tuteur"> Tuteur/curateur/mandataire</label>
+            <label><input type="radio" name="q0_1_qualite" value="medecin"> Médecin / professionnel de santé</label>
+            <label><input type="radio" name="q0_1_qualite" value="travailleur"> Travailleur social / MDPH</label>
+            <label><input type="radio" name="q0_1_qualite" value="autre"> Autre</label>
           </div>
         </div>
-        <div class="section" style="margin: 0;">
-          <h4 style="margin-bottom: 15px; color: var(--warning);">En attente validation</h4>
-          <div class="workflow-item">
-            <div class="workflow-info">
-              <h4>Interview — Expert RH</h4>
-              <span>150€ — Livré le 26/04</span>
-            </div>
-            <span class="client-status badge-validation">EN ATTENTE</span>
-          </div>
-          <div class="workflow-item">
-            <div class="workflow-info">
-              <h4>Clipping — Podcast Tech</h4>
-              <span>10 clips × 10€ — Relecture</span>
-            </div>
-            <span class="client-status badge-validation">EN ATTENTE</span>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Finance -->
-    <section class="section" id="finance">
-      <h2 class="section-title">💰 Finance — Avril 2026</h2>
-      <div class="grid-3">
-        <div class="metric-card success">
-          <div class="metric-label">Encaissé</div>
-          <div class="metric-value">6.2k€</div>
+        <div class="question">
+          <label class="question-label required">Nom et prénom du demandeur <span class="question-id">Q0.2</span></label>
+          <input type="text" name="q0_2_nom_demandeur" required>
         </div>
-        <div class="metric-card warning">
-          <div class="metric-label">En attente</div>
-          <div class="metric-value">2.2k€</div>
-        </div>
-        <div class="metric-card info">
-          <div class="metric-label">Factures émises</div>
-          <div class="metric-value">12</div>
-        </div>
-      </div>
-      <div class="alert-box" style="margin-top: 20px;">
-        <strong>Relances à effectuer:</strong> 2 factures en retard (J+7 et J+14)
-      </div>
-    </section>
 
-    <!-- Logs -->
-    <section class="section" id="logs">
-      <h2 class="section-title">📝 Logs récents</h2>
-      <div style="background: var(--bg); border-radius: 8px; padding: 10px; max-height: 300px; overflow-y: auto;">
-        <div class="log-entry">
-          <span class="log-time">[15:42:03]</span>
-          <span class="log-success">✓</span> WF2-Qualification — Prospect "Marie L." qualifié (Score: 85/100)
+        <div class="question">
+          <label class="question-label required">Téléphone <span class="question-id">Q0.3</span></label>
+          <input type="tel" name="q0_3_telephone" required>
         </div>
-        <div class="log-entry">
-          <span class="log-time">[15:38:17]</span>
-          <span class="log-info">ℹ</span> WF3-Création-Groupe — Groupe "Projet-VSL-Michel" créé
+
+        <div class="question">
+          <label class="question-label">Email <span class="question-id">Q0.4</span></label>
+          <input type="email" name="q0_4_email">
         </div>
-        <div class="log-entry">
-          <span class="log-time">[15:35:22]</span>
-          <span class="log-success">✓</span> WF-Facturation — Facture #EWA-2026-042 envoyée (450€)
+
+        <div class="question">
+          <label class="question-label required">Adresse postale <span class="question-id">Q0.5</span></label>
+          <textarea name="q0_5_adresse" required></textarea>
         </div>
-        <div class="log-entry">
-          <span class="log-time">[15:22:01]</span>
-          <span class="log-info">ℹ</span> WF6-Monitoring — Health check OK — Latence: 245ms
+
+        <div class="question">
+          <label class="question-label required">Commune <span class="question-id">Q0.6</span></label>
+          <input type="text" name="q0_6_commune" required>
         </div>
-        <div class="log-entry">
-          <span class="log-time">[14:55:44]</span>
-          <span class="log-success">✓</span> WF-Detection-Validation — Livrable "Interview-RH" approuvé
+
+        <div class="question">
+          <label class="question-label required">Code postal <span class="question-id">Q0.7</span></label>
+          <input type="text" name="q0_7_code_postal" pattern="[0-9]{5}" required>
         </div>
-        <div class="log-entry">
-          <span class="log-time">[14:30:12]</span>
-          <span class="log-error">✗</span> WF-Relances — Échec envoi email (retry dans 5min)
+      </section>
+
+      <!-- Bloc 1 : Bénéficiaire -->
+      <section class="section" id="beneficiaire">
+        <h2 class="section-title">Informations sur le bénéficiaire</h2>
+
+        <div class="question">
+          <label class="question-label required">Nom et prénom du bénéficiaire <span class="question-id">Q1.1</span></label>
+          <input type="text" name="q1_1_nom_beneficiaire" required>
         </div>
+
+        <div class="question">
+          <label class="question-label required">Date de naissance <span class="question-id">Q1.2</span></label>
+          <input type="date" name="q1_2_date_naissance" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Âge actuel <span class="question-id">Q1.3</span></label>
+          <input type="number" name="q1_3_age" min="45" max="120" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Genre <span class="question-id">Q1.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_4_genre" value="femme" required> Femme</label>
+            <label><input type="radio" name="q1_4_genre" value="homme"> Homme</label>
+            <label><input type="radio" name="q1_4_genre" value="non_precise"> Ne souhaite pas préciser</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Adresse du bénéficiaire <span class="question-id">Q1.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_5_adresse" value="identique" required> Identique au demandeur</label>
+            <label><input type="radio" name="q1_5_adresse" value="differente"> Différente (préciser ci-dessous)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si différente, précisez l'adresse complète <span class="question-id">Q1.6</span></label>
+          <textarea name="q1_6_adresse_detail"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Téléphone du bénéficiaire <span class="question-id">Q1.7</span></label>
+          <input type="tel" name="q1_7_tel_beneficiaire">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le bénéficiaire est-il sous mesure de protection juridique ? <span class="question-id">Q1.8</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_8_protection" value="tutelle" required> Tutelle</label>
+            <label><input type="radio" name="q1_8_protection" value="curatelle_simple"> Curatelle simple</label>
+            <label><input type="radio" name="q1_8_protection" value="curatelle_renforcee"> Curatelle renforcée</label>
+            <label><input type="radio" name="q1_8_protection" value="mandat"> Mandat de protection future</label>
+            <label><input type="radio" name="q1_8_protection" value="aucune"> Aucune mesure</label>
+            <label><input type="radio" name="q1_8_protection" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si mesure de protection, nom du tuteur/curateur/mandataire <span class="question-id">Q1.9</span></label>
+          <input type="text" name="q1_9_nom_tuteur">
+        </div>
+      </section>
+
+      <!-- Bloc 2 : Situation actuelle -->
+      <section class="section" id="situation">
+        <h2 class="section-title">Situation actuelle du maintien à domicile</h2>
+
+        <div class="question">
+          <label class="question-label required">Le bénéficiaire vit-il actuellement à son domicile ? <span class="question-id">Q2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_1_domicile" value="oui_permanent" required> Oui, de façon permanente</label>
+            <label><input type="radio" name="q2_1_domicile" value="oui_partiel"> Oui, mais hébergement temporaire ponctuel</label>
+            <label><input type="radio" name="q2_1_domicile" value="non_institution"> Non, en institution (EHPAD, MAS, FAM...)</label>
+            <label><input type="radio" name="q2_1_domicile" value="non_famille"> Non, chez un proche</label>
+            <label><input type="radio" name="q2_1_domicile" value="sortie"> En projet de sortie d'institution</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Type de logement <span class="question-id">Q2.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_2_logement" value="maison" required> Maison individuelle</label>
+            <label><input type="radio" name="q2_2_logement" value="appartement"> Appartement</label>
+            <label><input type="radio" name="q2_2_logement" value="residence"> Résidence services / senior</label>
+            <label><input type="radio" name="q2_2_logement" value="logement_adapte"> Logement adapté / adapté handicap</label>
+            <label><input type="radio" name="q2_2_logement" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le logement est-il adapté aux besoins du bénéficiaire ? <span class="question-id">Q2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_3_adaptation" value="totalement" required> Totalement adapté</label>
+            <label><input type="radio" name="q2_3_adaptation" value="partiellement"> Partiellement adapté</label>
+            <label><input type="radio" name="q2_3_adaptation" value="non"> Non adapté</label>
+            <label><input type="radio" name="q2_3_adaptation" value="en_projet"> Travaux d'adaptation en projet</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si adaptation partielle ou travaux, précisez <span class="question-id">Q2.4</span></label>
+          <textarea name="q2_4_adaptation_detail" placeholder="Ex: rampe d'accès, salle de bain adaptée, barres d'appui..."></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Aides humaines actuelles <span class="question-id">Q2.5</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q2_5_aides" value="aidant_familial"> Aidant familial principal</label>
+            <label><input type="checkbox" name="q2_5_aides" value="aidant_pro"> Aidant professionnel (ADOM, SAD...)</label>
+            <label><input type="checkbox" name="q2_5_aides" value="auxiliaire_vie"> Auxiliaire de vie</label>
+            <label><input type="checkbox" name="q2_5_aides" value="aide_menagere"> Aide ménagère</label>
+            <label><input type="checkbox" name="q2_5_aides" value="infirmier"> Infirmier à domicile</label>
+            <label><input type="checkbox" name="q2_5_aides" value="kine"> Kinésithérapeute</label>
+            <label><input type="checkbox" name="q2_5_aides" value="ergo"> Ergothérapeute</label>
+            <label><input type="checkbox" name="q2_5_aides" value="psychologue"> Psychologue</label>
+            <label><input type="checkbox" name="q2_5_aides" value="pas_aide"> Aucune aide actuellement</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Fréquence actuelle des interventions à domicile <span class="question-id">Q2.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_6_frequence" value="quotidien" required> Quotidien</label>
+            <label><input type="radio" name="q2_6_frequence" value="plusieurs_fois"> Plusieurs fois par semaine</label>
+            <label><input type="radio" name="q2_6_frequence" value="hebdo"> Hebdomadaire</label>
+            <label><input type="radio" name="q2_6_frequence" value="ponctuel"> Ponctuel</label>
+            <label><input type="radio" name="q2_6_frequence" value="aucune"> Aucune intervention</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Structures ou services déjà en lien <span class="question-id">Q2.7</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q2_7_structures" value="medecin_traitant"> Médecin traitant</label>
+            <label><input type="checkbox" name="q2_7_structures" value="hospitalisation"> Hospitalisation à domicile (HAD)</label>
+            <label><input type="checkbox" name="q2_7_structures" value="csp"> Centre socio-psychologique (CSP)</label>
+            <label><input type="checkbox" name="q2_7_structures" value="cmpp"> CMPP / CMP</label>
+            <label><input type="checkbox" name="q2_7_structures" value="mas"> MAS / FAM / Foyer d'accueil</label>
+            <label><input type="checkbox" name="q2_7_structures" value="ehpad"> EHPAD</label>
+            <label><input type="checkbox" name="q2_7_structures" value="services_sociaux"> Services sociaux / CCAS</label>
+            <label><input type="checkbox" name="q2_7_structures" value="portage_repas"> Portage de repas</label>
+            <label><input type="checkbox" name="q2_7_structures" value="transport"> Service transport adapté</label>
+            <label><input type="checkbox" name="q2_7_structures" value="teleassistance"> Téléassistance / Télésurveillance</label>
+            <label><input type="checkbox" name="q2_7_structures" value="aucun"> Aucun lien actuel</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 3 : Besoins -->
+      <section class="section" id="besoins">
+        <h2 class="section-title">Besoins et attentes</h2>
+
+        <div class="question">
+          <label class="question-label required">Motif principal de la demande <span class="question-id">Q3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_motif" value="premiere_demande" required> Première demande d'aide</label>
+            <label><input type="radio" name="q3_1_motif" value="renforcement"> Renforcement d'une aide existante</label>
+            <label><input type="radio" name="q3_1_motif" value="remplacement"> Remplacement d'un aidant (congés, épuisement...)</label>
+            <label><input type="radio" name="q3_1_motif" value="urgence"> Situation d'urgence / crise</label>
+            <label><input type="radio" name="q3_1_motif" value="sortie_institution"> Sortie d'institution / Retour à domicile</label>
+            <label><input type="radio" name="q3_1_motif" value="evolution"> Évolution de la situation médicale</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Type d'aide attendue <span class="question-id">Q3.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_2_aide" value="aide_toilette"> Aide à la toilette / hygiène</label>
+            <label><input type="checkbox" name="q3_2_aide" value="aide_habillement"> Aide à l'habillement</label>
+            <label><input type="checkbox" name="q3_2_aide" value="aide_repas"> Aide aux repas / prise alimentaire</label>
+            <label><input type="checkbox" name="q3_2_aide" value="aide_mobilite"> Aide à la mobilité / transferts</label>
+            <label><input type="checkbox" name="q3_2_aide" value="aide_courses"> Courses et gestion du quotidien</label>
+            <label><input type="checkbox" name="q3_2_aide" value="menage"> Entretien du logement</label>
+            <label><input type="checkbox" name="q3_2_aide" value="accompagnement_ext"> Accompagnement extérieur (rdv médicaux, courses...)</label>
+            <label><input type="checkbox" name="q3_2_aide" value="stimulation"> Stimulation / activités / lien social</label>
+            <label><input type="checkbox" name="q3_2_aide" value="surveillance"> Surveillance de nuit / garde</label>
+            <label><input type="checkbox" name="q3_2_aide" value="soutien_famille"> Soutien à la famille / aidants</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Fréquence souhaitée <span class="question-id">Q3.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="quotidien" required> Quotidien (7j/7)</label>
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="semaine"> En semaine uniquement</label>
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="weekend"> Week-end uniquement</label>
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="ponctuel"> Ponctuel (à définir)</label>
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="nuit"> Nuit uniquement</label>
+            <label><input type="radio" name="q3_3_frequence_souhaitee" value="a_definir"> À définir avec l'équipe</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Plages horaires privilégiées <span class="question-id">Q3.4</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_4_horaires" value="matin"> Matin (6h-12h)</label>
+            <label><input type="checkbox" name="q3_4_horaires" value="midi"> Midi (12h-14h)</label>
+            <label><input type="checkbox" name="q3_4_horaires" value="apres_midi"> Après-midi (14h-18h)</label>
+            <label><input type="checkbox" name="q3_4_horaires" value="soir"> Soir (18h-22h)</label>
+            <label><input type="checkbox" name="q3_4_horaires" value="nuit"> Nuit (22h-6h)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Urgence de la demande <span class="question-id">Q3.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_urgence" value="tres_urgente"> Très urgente (moins d'une semaine)</label>
+            <label><input type="radio" name="q3_5_urgence" value="urgente"> Urgente (1 à 2 semaines)</label>
+            <label><input type="radio" name="q3_5_urgence" value="souhaite"> Souhaitée dans le mois</label>
+            <label><input type="radio" name="q3_5_urgence" value="projet"> Projet à moyen terme</label>
+            <label><input type="radio" name="q3_5_urgence" value="inconnue"> Inconnue</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Précisions sur les besoins et attentes <span class="question-id">Q3.6</span></label>
+          <textarea name="q3_6_precisions" placeholder="Décrivez la situation, les difficultés rencontrées, les attentes spécifiques..."></textarea>
+        </div>
+      </section>
+
+      <!-- Bloc 4 : Informations médicales -->
+      <section class="section" id="medical">
+        <h2 class="section-title">Informations médicales et autonomie</h2>
+
+        <div class="question">
+          <label class="question-label required">Type(s) de handicap <span class="question-id">Q4.1</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q4_1_handicap" value="moteur"> Handicap moteur / physique</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="intellectuel"> Handicap intellectuel / cognitif</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="psychique"> Troubles psychiques</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="sensoriel_visuel"> Handicap visuel</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="sensoriel_auditif"> Handicap auditif</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="neuro"> Troubles neurologiques (Parkinson, AVC...)</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="degeneratif"> Maladie neurodégénérative (Alzheimer...)</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="polyhandicap"> Polyhandicap</label>
+            <label><input type="checkbox" name="q4_1_handicap" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Pathologies principales (si connu) <span class="question-id">Q4.2</span></label>
+          <textarea name="q4_2_pathologies" placeholder="Ex: Alzheimer depuis 3 ans, séquelles d'AVC, sclérose en plaques..."></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Niveau d'autonomie dans les actes essentiels de la vie quotidienne <span class="question-id">Q4.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_3_autonomie" value="autonome" required> Totalement autonome</label>
+            <label><input type="radio" name="q4_3_autonomie" value="partielle"> Autonomie partielle (nécessite une aide)</label>
+            <label><input type="radio" name="q4_3_autonomie" value="dependant"> Dépendant pour la plupart des actes</label>
+            <label><input type="radio" name="q4_3_autonomie" value="totalement_dependant"> Totalement dépendant</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Détail des aides nécessaires <span class="question-id">Q4.4</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="lever_coucher"> Lever / coucher</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="toilette"> Toilette / bain / douche</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="habillage"> Habillage / déshabillage</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="alimentation"> Alimentation</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="elimination"> Élimination (toilette, change...)</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="transferts"> Transferts / déplacements intérieurs</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="communication"> Communication</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="prise_medicaments"> Prise des médicaments</label>
+            <label><input type="checkbox" name="q4_4_aides_necessaires" value="aucune"> Aucune aide nécessaire</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Utilisation d'aides techniques <span class="question-id">Q4.5</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q4_5_aides_tech" value="fauteuil_roulant"> Fauteuil roulant</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="deambulateur"> Déambulateur / canne</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="lit_medicalise"> Lit médicalisé</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="souleve_malade"> Soulève-malade</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="oxygen"> Oxygène / matériel respiratoire</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="sonde"> Sonde / sac urinaire</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="pansement"> Pansements spécifiques</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="alarme"> Alarme / téléassistance</label>
+            <label><input type="checkbox" name="q4_5_aides_tech" value="aucune"> Aucune aide technique</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Risques particuliers à connaître <span class="question-id">Q4.6</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q4_6_risques" value="chutes"> Risque de chutes</label>
+            <label><input type="checkbox" name="q4_6_risques" value="fugues"> Risque de fugues / errances</label>
+            <label><input type="checkbox" name="q4_6_risques" value="agitation"> Agitation / comportements à risque</label>
+            <label><input type="checkbox" name="q4_6_risques" value="depression"> Risque suicidaire / dépression</label>
+            <label><input type="checkbox" name="q4_6_risques" value="escarres"> Risque d'escarres</label>
+            <label><input type="checkbox" name="q4_6_risques" value="denutrition"> Risque de dénutrition</label>
+            <label><input type="checkbox" name="q4_6_risques" value="aspiration"> Risque d'aspiration</label>
+            <label><input type="checkbox" name="q4_6_risques" value="aucun"> Aucun risque particulier identifié</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">GIR (si connu) <span class="question-id">Q4.7</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_7_gir" value="1"> GIR 1 (personnes confinées au lit ou au fauteuil)</label>
+            <label><input type="radio" name="q4_7_gir" value="2"> GIR 2 (dépendantes pour les transferts)</label>
+            <label><input type="radio" name="q4_7_gir" value="3"> GIR 3 (dépendantes pour la plupart des actes)</label>
+            <label><input type="radio" name="q4_7_gir" value="4"> GIR 4 (dépendantes pour certains actes)</label>
+            <label><input type="radio" name="q4_7_gir" value="5"> GIR 5 (autonomie partielle)</label>
+            <label><input type="radio" name="q4_7_gir" value="6"> GIR 6 (autonomie conservée)</label>
+            <label><input type="radio" name="q4_7_gir" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Traitements médicaux en cours <span class="question-id">Q4.8</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_8_traitements" value="aucun"> Aucun</label>
+            <label><input type="radio" name="q4_8_traitements" value="per_os"> Traitements per os (à avaler)</label>
+            <label><input type="radio" name="q4_8_traitements" value="injections"> Injections</label>
+            <label><input type="radio" name="q4_8_traitements" value="pansements"> Pansements réguliers</label>
+            <label><input type="radio" name="q4_8_traitements" value="kiné"> Séances kiné / rééducation</label>
+            <label><input type="radio" name="q4_8_traitements" value="autre"> Autre</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 5 : Situation familiale -->
+      <section class="section" id="famille">
+        <h2 class="section-title">Situation familiale et entourage</h2>
+
+        <div class="question">
+          <label class="question-label required">Situation familiale <span class="question-id">Q5.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_1_situation" value="seul" required> Vit seul(e)</label>
+            <label><input type="radio" name="q5_1_situation" value="couple"> Vit en couple</label>
+            <label><input type="radio" name="q5_1_situation" value="famille"> Vit avec la famille</label>
+            <label><input type="radio" name="q5_1_situation" value="coloc"> Colocation / habitat partagé</label>
+            <label><input type="radio" name="q5_1_situation" value="animaux"> Vit avec animal(s) de compagnie</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Présence d'aidants familiaux <span class="question-id">Q5.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_2_aidants" value="oui_principal" required> Oui, aidant principal dédié</label>
+            <label><input type="radio" name="q5_2_aidants" value="oui_partage"> Oui, aidage partagé entre plusieurs proches</label>
+            <label><input type="radio" name="q5_2_aidants" value="occasionnel"> Intervention occasionnelle uniquement</label>
+            <label><input type="radio" name="q5_2_aidants" value="non"> Non, aucun aidant familial</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si aidants présents, précisez le lien <span class="question-id">Q5.3</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q5_3_lien" value="conjoint"> Conjoint / partenaire</label>
+            <label><input type="checkbox" name="q5_3_lien" value="enfant"> Enfant(s)</label>
+            <label><input type="checkbox" name="q5_3_lien" value="petit_enfant"> Petit(s)-enfant(s)</label>
+            <label><input type="checkbox" name="q5_3_lien" value="frere_soeur"> Frère / Sœur</label>
+            <label><input type="checkbox" name="q5_3_lien" value="parent"> Parent(s)</label>
+            <label><input type="checkbox" name="q5_3_lien" value="autre_famille"> Autre membre de la famille</label>
+            <label><input type="checkbox" name="q5_3_lien" value="voisin"> Voisin / ami proche</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">État des aidants <span class="question-id">Q5.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_4_etat_aidants" value="soutien"> Soutien disponible et épanoui</label>
+            <label><input type="radio" name="q5_4_etat_aidants" value="besoin_repit"> Besoin de répit / soulagement</label>
+            <label><input type="radio" name="q5_4_etat_aidants" value="epuisement"> Signes d'épuisement</label>
+            <label><input type="radio" name="q5_4_etat_aidants" value="sans_objet"> Sans objet (pas d'aidants)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Autres personnes vivant au domicile <span class="question-id">Q5.5</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q5_5_personnes" value="personne"> Personne (vit seul)</label>
+            <label><input type="checkbox" name="q5_5_personnes" value="conjoint"> Conjoint / partenaire</label>
+            <label><input type="checkbox" name="q5_5_personnes" value="enfants"> Enfant(s) mineur(s)</label>
+            <label><input type="checkbox" name="q5_5_personnes" value="adultes"> Enfant(s) adulte(s)</label>
+            <label><input type="checkbox" name="q5_5_personnes" value="parents"> Parent(s) âgé(s)</label>
+            <label><input type="checkbox" name="q5_5_personnes" value="autres"> Autre(s) adulte(s)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Accès au domicile <span class="question-id">Q5.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_6_acces" value="present"> Bénéficiaire ou aidant présent</label>
+            <label><input type="radio" name="q5_6_acces" value="boite"> Boîte à clés sécurisée</label>
+            <label><input type="radio" name="q5_6_acces" value="voisin"> Remise clé chez voisin</label>
+            <label><input type="radio" name="q5_6_acces" value="proche"> Remise clé chez proche</label>
+            <label><input type="radio" name="q5_6_acces" value="a_prevoir"> À définir / prévoir</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 6 : Cadre administratif -->
+      <section class="section" id="admin">
+        <h2 class="section-title">Cadre administratif et financement</h2>
+
+        <div class="question">
+          <label class="question-label required">Dossier MDPH <span class="question-id">Q6.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_1_mdph" value="oui_recu" required> Oui, notification reçue</label>
+            <label><input type="radio" name="q6_1_mdph" value="oui_en_cours"> Dossier en cours d'instruction</label>
+            <label><input type="radio" name="q6_1_mdph" value="non_jamais"> Non, jamais déposé</label>
+            <label><input type="radio" name="q6_1_mdph" value="non_perime"> Non, droits périmés</label>
+            <label><input type="radio" name="q6_1_mdph" value="refus"> Refus de reconnaissance</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si notification reçue, orientation <span class="question-id">Q6.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q6_2_orientation" value="sap"> SAP (Schéma d'Accueil Personnalisé)</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="savs"> SAVS / SAMSAH</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="mas"> MAS</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="fjt"> FJT / FAM</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="ehpad"> EHPAD</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="hdom"> Maintien à domicile</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q6_2_orientation" value="na"> N/A</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Aides financières perçues <span class="question-id">Q6.3</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q6_3_aides" value="apa"> APA (Allocation Personnalisée d'Autonomie)</label>
+            <label><input type="checkbox" name="q6_3_aides" value="pch"> PCH (Prestation de Compensation du Handicap)</label>
+            <label><input type="checkbox" name="q6_3_aides" value="aah"> AAH / AEEH</label>
+            <label><input type="checkbox" name="q6_3_aides" value="pension"> Pension d'invalidité</label>
+            <label><input type="checkbox" name="q6_3_aides" value="retraite"> Retraite</label>
+            <label><input type="checkbox" name="q6_3_aides" value="aspa"> ASPA (minimum vieillesse)</label>
+            <label><input type="checkbox" name="q6_3_aides" value="aide_logement"> Aide au logement</label>
+            <label><input type="checkbox" name="q6_3_aides" value="cmu"> CMU-C / ACS</label>
+            <label><input type="checkbox" name="q6_3_aides" value="aucune"> Aucune</label>
+            <label><input type="checkbox" name="q6_3_aides" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Couverture santé <span class="question-id">Q6.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_4_couverture" value="securite_sociale" required> Sécurité sociale uniquement</label>
+            <label><input type="radio" name="q6_4_couverture" value="mutuelle"> Sécurité sociale + mutuelle</label>
+            <label><input type="radio" name="q6_4_couverture" value="cmu"> CMU-C</label>
+            <label><input type="radio" name="q6_4_couverture" value="ame"> AME</label>
+            <label><input type="radio" name="q6_4_couverture" value="inconnue"> Inconnue</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Mode de financement souhaité pour l'accompagnement <span class="question-id">Q6.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_5_financement" value="apa"> APA (si éligible)</label>
+            <label><input type="radio" name="q6_5_financement" value="pch"> PCH</label>
+            <label><input type="radio" name="q6_5_financement" value="participation"> Participation financière du bénéficiaire</label>
+            <label><input type="radio" name="q6_5_financement" value="mixte"> Mixte (aides + participation)</label>
+            <label><input type="radio" name="q6_5_financement" value="a_definir"> À définir avec le service</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Organisme prescripteur ou orienteur (si applicable) <span class="question-id">Q6.6</span></label>
+          <input type="text" name="q6_6_prescripteur" placeholder="Ex: MDPH, médecin traitant, travailleur social, hôpital...">
+        </div>
+      </section>
+
+      <!-- Bloc 7 : Consentement RGPD -->
+      <section class="section" id="rgpd">
+        <h2 class="section-title">Consentement et informations RGPD</h2>
+
+        <div class="info-box">
+          <strong>Informations sur le traitement des données :</strong> Les informations collectées sont destinées à l'équipe EMMA-H de l'UNAPEI 92 pour l'étude et le suivi de votre demande d'accompagnement. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données.
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Je déclare avoir l'autorité pour fournir ces informations <span class="question-id">Q7.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7_1_autorite" value="moi_meme" required> Je suis le bénéficiaire</label>
+            <label><input type="radio" name="q7_1_autorite" value="mandat"> J'agis avec l'accord du bénéficiaire</label>
+            <label><input type="radio" name="q7_1_autorite" value="tuteur"> Je suis tuteur/curateur/mandataire</label>
+            <label><input type="radio" name="q7_1_autorite" value="professionnel"> Je suis un professionnel habilité</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le bénéficiaire a-t-il été informé de cette demande ? <span class="question-id">Q7.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7_2_information" value="oui_consentement" required> Oui, il/elle consent à la démarche</label>
+            <label><input type="radio" name="q7_2_information" value="oui_incapable"> Oui, mais incapable de consentir (mesure de protection)</label>
+            <label><input type="radio" name="q7_2_information" value="non_urgence"> Non, situation d'urgence</label>
+            <label><input type="radio" name="q7_2_information" value="na"> N/A (je suis le bénéficiaire)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Je consens à ce que mes données soient utilisées pour le traitement de cette demande <span class="question-id">Q7.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7_3_consentement" value="oui" required> Oui, je consens</label>
+            <label><input type="radio" name="q7_3_consentement" value="non"> Non, je refuse</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Je souhaite recevoir des informations sur les services de l'UNAPEI 92 <span class="question-id">Q7.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7_4_info_services" value="oui"> Oui</label>
+            <label><input type="radio" name="q7_4_info_services" value="non"> Non</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Mode de contact préféré pour le suivi <span class="question-id">Q7.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7_5_contact_pref" value="telephone"> Téléphone</label>
+            <label><input type="radio" name="q7_5_contact_pref" value="email"> Email</label>
+            <label><input type="radio" name="q7_5_contact_pref" value="courrier"> Courrier postal</label>
+            <label><input type="radio" name="q7_5_contact_pref" value="sms"> SMS</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Date de la demande <span class="question-id">Q7.6</span></label>
+          <input type="date" name="q7_6_date_demande" id="date-demande" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Remarques complémentaires <span class="question-id">Q7.7</span></label>
+          <textarea name="q7_7_remarques" placeholder="Toute information utile pour le traitement de la demande..."></textarea>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
       </div>
-    </section>
-
-    <!-- Configuration -->
-    <section class="section" id="config">
-      <h2 class="section-title">⚙️ Configuration EMMA-H</h2>
-      <form id="config-form">
-        <div class="grid-2">
-          <div class="form-group">
-            <label>Profil WhatsApp Principal</label>
-            <select name="waha_principal">
-              <option value="ewa-prod" selected>EWA-Production (Actif)</option>
-              <option value="ewa-test">EWA-Test</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Profil WhatsApp Backup</label>
-            <select name="waha_backup">
-              <option value="ewa-backup" selected>EWA-Backup (Standby)</option>
-              <option value="none">Aucun</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Mode Agent Alex</label>
-            <select name="agent_mode">
-              <option value="auto" selected>Automatique (Qualification)</option>
-              <option value="assisté">Assisté (Validation manuelle)</option>
-              <option value="pause">En pause</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Seuil de scoring (%)</label>
-            <input type="number" name="scoring_threshold" value="70" min="0" max="100">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Instructions système (Prompt Alex)</label>
-          <textarea name="system_prompt">Tu es Alex, l'assistant IA d'EWA, cabinet de production vidéo. Tu qualifies les prospects et les orientes vers les packs adaptés: Reel (30€), Ads (30€/15€), VSL (25€/min), Interview (150€), Clipping (15€/10€). Tu dois être transparent: "Je suis l'assistant EWA, une IA..."</textarea>
-        </div>
-        <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 20px;">
-          <button type="button" class="btn btn-secondary">Annuler</button>
-          <button type="submit" class="btn btn-primary">💾 Sauvegarder</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Footer -->
-    <footer style="text-align: center; padding: 30px; color: var(--text-light); font-size: 0.85rem;">
-      <p>EMMA-H v1.0 — EWA Management Hub</p>
-      <p>Propulsé par n8n + Claude 4.5 + Airtable</p>
-    </footer>
+    </form>
   </div>
 
   <script>
-    // Navigation active state
+    // Date par défaut = aujourd'hui
+    document.getElementById('date-demande').valueAsDate = new Date();
+
+    // Navigation active
     document.querySelectorAll('.nav-block').forEach(link => {
-      link.addEventListener('click', function(e) {
+      link.addEventListener('click', function() {
         document.querySelectorAll('.nav-block').forEach(l => l.classList.remove('active'));
         this.classList.add('active');
       });
     });
 
-    // Form submission
-    document.getElementById('config-form').addEventListener('submit', function(e) {
+    // Soumission du formulaire
+    document.getElementById('formulaire').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('Configuration sauvegardée avec succès !');
+      const message = document.getElementById('message');
+      message.className = 'message success show';
+      message.textContent = 'Votre demande a été envoyée avec succès. L\'équipe EMMA-H vous contactera dans les 48h.';
+      message.scrollIntoView({ behavior: 'smooth' });
     });
   </script>
 </body>
 </html>
-
