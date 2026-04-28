@@ -243,12 +243,6 @@
       font-size: 0.9rem;
     }
 
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-    }
-
     @media (max-width: 600px) {
       header h1 { font-size: 1.4rem; }
       .nav-blocks { justify-content: center; }
@@ -258,627 +252,636 @@
 </head>
 <body>
   <div class="container">
-    <a href="../rgpd-2026/index.html" class="back-link">← Retour à l'accueil</a>
+    <a href="../index.html" class="back-link">← Retour à l'accueil</a>
 
     <header>
       <h1>Questionnaire RGPD — EMMA-H</h1>
-      <p>Équipe Mobile de Maintien à Domicile — Personnes handicapées +45 ans</p>
+      <p>Équipe Mobile de Maintien à Domicile — Protection des données des bénéficiaires +45 ans</p>
     </header>
 
     <nav class="nav-blocks">
       <a href="#identification" class="nav-block">Identification</a>
-      <a href="#beneficiaire" class="nav-block">Bénéficiaire</a>
-      <a href="#situation" class="nav-block">Situation actuelle</a>
-      <a href="#besoins" class="nav-block">Besoins</a>
-      <a href="#medical" class="nav-block">Infos médicales</a>
-      <a href="#famille" class="nav-block">Situation familiale</a>
-      <a href="#admin" class="nav-block">Cadre administratif</a>
-      <a href="#rgpd" class="nav-block">Consentement</a>
+      <a href="#gouvernance" class="nav-block">Gouvernance</a>
+      <a href="#registre" class="nav-block">Registre & PIA</a>
+      <a href="#securite" class="nav-block">Sécurité terrain</a>
+      <a href="#droits" class="nav-block">Droits bénéficiaires</a>
+      <a href="#sous-traitants" class="nav-block">Sous-traitants</a>
+      <a href="#incidents" class="nav-block">Incidents</a>
+      <a href="#specifiques" class="nav-block">Spécificités EMMA-H</a>
+      <a href="#synthese" class="nav-block">Synthèse</a>
     </nav>
 
     <div class="info-box">
-      <strong>Instructions :</strong> Ce questionnaire concerne une demande d'accompagnement par l'équipe EMMA-H pour une personne handicapée de plus de 45 ans en maintien à domicile. Les champs marqués d'une étoile (*) sont obligatoires.
+      <strong>Instructions :</strong> Ce questionnaire porte sur la conformité RGPD de votre équipe EMMA-H. Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
     </div>
 
     <div id="message" class="message"></div>
 
-    <form id="formulaire" action="https://script.google.com/macros/s/AKfycbx[YOUR_SCRIPT_ID]/exec" method="POST">
-      <!-- Bloc 0 : Identification du demandeur -->
+    <form id="formulaire">
+      <!-- Bloc 0 : Identification -->
       <section class="section" id="identification">
-        <h2 class="section-title">Identification du demandeur</h2>
+        <h2 class="section-title">Identification de l'équipe</h2>
 
         <div class="question">
-          <label class="question-label required">Vous êtes <span class="question-id">Q0.1</span></label>
+          <label class="question-label required">Nom de l'établissement / équipe EMMA-H <span class="question-id">Q0.1</span></label>
+          <input type="text" name="q0_1_nom_etablissement" required>
+          <input type="hidden" id="nom_etablissement" name="nom_etablissement">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Personne répondant au questionnaire (Nom Prénom) <span class="question-id">Q0.2</span></label>
+          <input type="text" name="q0_2_nom_prenom_repondant" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Fonction du répondant <span class="question-id">Q0.3</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q0_1_qualite" value="beneficiaire" required> La personne concernée (bénéficiaire)</label>
-            <label><input type="radio" name="q0_1_qualite" value="famille"> Un membre de la famille</label>
-            <label><input type="radio" name="q0_1_qualite" value="aidant"> Un aidant proche</label>
-            <label><input type="radio" name="q0_1_qualite" value="tuteur"> Tuteur/curateur/mandataire</label>
-            <label><input type="radio" name="q0_1_qualite" value="medecin"> Médecin / professionnel de santé</label>
-            <label><input type="radio" name="q0_1_qualite" value="travailleur"> Travailleur social / MDPH</label>
-            <label><input type="radio" name="q0_1_qualite" value="autre"> Autre</label>
+            <label><input type="radio" name="q0_3_fonction" value="coordonnateur" required> Coordonnateur/trice EMMA-H</label>
+            <label><input type="radio" name="q0_3_fonction" value="cadre_sante"> Cadre de santé</label>
+            <label><input type="radio" name="q0_3_fonction" value="educateur"> Éducateur spécialisé / Moniteur éducateur</label>
+            <label><input type="radio" name="q0_3_fonction" value="aide_soignant"> Aide-soignant / Auxiliaire de vie</label>
+            <label><input type="radio" name="q0_3_fonction" value="resp_admin"> Responsable administratif</label>
+            <label><input type="radio" name="q0_3_fonction" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Nom et prénom du demandeur <span class="question-id">Q0.2</span></label>
-          <input type="text" name="q0_2_nom_demandeur" required>
+          <label class="question-label required">Date de remplissage <span class="question-id">Q0.4</span></label>
+          <input type="date" name="q0_4_date_remplissage" required>
         </div>
 
         <div class="question">
-          <label class="question-label required">Téléphone <span class="question-id">Q0.3</span></label>
-          <input type="tel" name="q0_3_telephone" required>
+          <label class="question-label required">Nombre de bénéficiaires accompagnés par l'équipe EMMA-H <span class="question-id">Q0.5</span></label>
+          <input type="number" name="q0_5_nb_beneficiaires" min="0" required>
         </div>
 
         <div class="question">
-          <label class="question-label">Email <span class="question-id">Q0.4</span></label>
-          <input type="email" name="q0_4_email">
+          <label class="question-label required">Nombre de professionnels dans l'équipe <span class="question-id">Q0.6</span></label>
+          <input type="number" name="q0_6_nb_professionnels" min="0" required>
         </div>
 
         <div class="question">
-          <label class="question-label required">Adresse postale <span class="question-id">Q0.5</span></label>
-          <textarea name="q0_5_adresse" required></textarea>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Commune <span class="question-id">Q0.6</span></label>
-          <input type="text" name="q0_6_commune" required>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Code postal <span class="question-id">Q0.7</span></label>
-          <input type="text" name="q0_7_code_postal" pattern="[0-9]{5}" required>
-        </div>
-      </section>
-
-      <!-- Bloc 1 : Bénéficiaire -->
-      <section class="section" id="beneficiaire">
-        <h2 class="section-title">Informations sur le bénéficiaire</h2>
-
-        <div class="question">
-          <label class="question-label required">Nom et prénom du bénéficiaire <span class="question-id">Q1.1</span></label>
-          <input type="text" name="q1_1_nom_beneficiaire" required>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Date de naissance <span class="question-id">Q1.2</span></label>
-          <input type="date" name="q1_2_date_naissance" required>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Âge actuel <span class="question-id">Q1.3</span></label>
-          <input type="number" name="q1_3_age" min="45" max="120" required>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Genre <span class="question-id">Q1.4</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q1_4_genre" value="femme" required> Femme</label>
-            <label><input type="radio" name="q1_4_genre" value="homme"> Homme</label>
-            <label><input type="radio" name="q1_4_genre" value="non_precise"> Ne souhaite pas préciser</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Adresse du bénéficiaire <span class="question-id">Q1.5</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q1_5_adresse" value="identique" required> Identique au demandeur</label>
-            <label><input type="radio" name="q1_5_adresse" value="differente"> Différente (préciser ci-dessous)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Si différente, précisez l'adresse complète <span class="question-id">Q1.6</span></label>
-          <textarea name="q1_6_adresse_detail"></textarea>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Téléphone du bénéficiaire <span class="question-id">Q1.7</span></label>
-          <input type="tel" name="q1_7_tel_beneficiaire">
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Le bénéficiaire est-il sous mesure de protection juridique ? <span class="question-id">Q1.8</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q1_8_protection" value="tutelle" required> Tutelle</label>
-            <label><input type="radio" name="q1_8_protection" value="curatelle_simple"> Curatelle simple</label>
-            <label><input type="radio" name="q1_8_protection" value="curatelle_renforcee"> Curatelle renforcée</label>
-            <label><input type="radio" name="q1_8_protection" value="mandat"> Mandat de protection future</label>
-            <label><input type="radio" name="q1_8_protection" value="aucune"> Aucune mesure</label>
-            <label><input type="radio" name="q1_8_protection" value="inconnu"> Inconnu</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Si mesure de protection, nom du tuteur/curateur/mandataire <span class="question-id">Q1.9</span></label>
-          <input type="text" name="q1_9_nom_tuteur">
-        </div>
-      </section>
-
-      <!-- Bloc 2 : Situation actuelle -->
-      <section class="section" id="situation">
-        <h2 class="section-title">Situation actuelle du maintien à domicile</h2>
-
-        <div class="question">
-          <label class="question-label required">Le bénéficiaire vit-il actuellement à son domicile ? <span class="question-id">Q2.1</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q2_1_domicile" value="oui_permanent" required> Oui, de façon permanente</label>
-            <label><input type="radio" name="q2_1_domicile" value="oui_partiel"> Oui, mais hébergement temporaire ponctuel</label>
-            <label><input type="radio" name="q2_1_domicile" value="non_institution"> Non, en institution (EHPAD, MAS, FAM...)</label>
-            <label><input type="radio" name="q2_1_domicile" value="non_famille"> Non, chez un proche</label>
-            <label><input type="radio" name="q2_1_domicile" value="sortie"> En projet de sortie d'institution</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Type de logement <span class="question-id">Q2.2</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q2_2_logement" value="maison" required> Maison individuelle</label>
-            <label><input type="radio" name="q2_2_logement" value="appartement"> Appartement</label>
-            <label><input type="radio" name="q2_2_logement" value="residence"> Résidence services / senior</label>
-            <label><input type="radio" name="q2_2_logement" value="logement_adapte"> Logement adapté / adapté handicap</label>
-            <label><input type="radio" name="q2_2_logement" value="autre"> Autre</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Le logement est-il adapté aux besoins du bénéficiaire ? <span class="question-id">Q2.3</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q2_3_adaptation" value="totalement" required> Totalement adapté</label>
-            <label><input type="radio" name="q2_3_adaptation" value="partiellement"> Partiellement adapté</label>
-            <label><input type="radio" name="q2_3_adaptation" value="non"> Non adapté</label>
-            <label><input type="radio" name="q2_3_adaptation" value="en_projet"> Travaux d'adaptation en projet</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Si adaptation partielle ou travaux, précisez <span class="question-id">Q2.4</span></label>
-          <textarea name="q2_4_adaptation_detail" placeholder="Ex: rampe d'accès, salle de bain adaptée, barres d'appui..."></textarea>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Aides humaines actuelles <span class="question-id">Q2.5</span></label>
+          <label class="question-label required">Zone géographique d'intervention <span class="question-id">Q0.7</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q2_5_aides" value="aidant_familial"> Aidant familial principal</label>
-            <label><input type="checkbox" name="q2_5_aides" value="aidant_pro"> Aidant professionnel (ADOM, SAD...)</label>
-            <label><input type="checkbox" name="q2_5_aides" value="auxiliaire_vie"> Auxiliaire de vie</label>
-            <label><input type="checkbox" name="q2_5_aides" value="aide_menagere"> Aide ménagère</label>
-            <label><input type="checkbox" name="q2_5_aides" value="infirmier"> Infirmier à domicile</label>
-            <label><input type="checkbox" name="q2_5_aides" value="kine"> Kinésithérapeute</label>
-            <label><input type="checkbox" name="q2_5_aides" value="ergo"> Ergothérapeute</label>
-            <label><input type="checkbox" name="q2_5_aides" value="psychologue"> Psychologue</label>
-            <label><input type="checkbox" name="q2_5_aides" value="pas_aide"> Aucune aide actuellement</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Fréquence actuelle des interventions à domicile <span class="question-id">Q2.6</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q2_6_frequence" value="quotidien" required> Quotidien</label>
-            <label><input type="radio" name="q2_6_frequence" value="plusieurs_fois"> Plusieurs fois par semaine</label>
-            <label><input type="radio" name="q2_6_frequence" value="hebdo"> Hebdomadaire</label>
-            <label><input type="radio" name="q2_6_frequence" value="ponctuel"> Ponctuel</label>
-            <label><input type="radio" name="q2_6_frequence" value="aucune"> Aucune intervention</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Structures ou services déjà en lien <span class="question-id">Q2.7</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q2_7_structures" value="medecin_traitant"> Médecin traitant</label>
-            <label><input type="checkbox" name="q2_7_structures" value="hospitalisation"> Hospitalisation à domicile (HAD)</label>
-            <label><input type="checkbox" name="q2_7_structures" value="csp"> Centre socio-psychologique (CSP)</label>
-            <label><input type="checkbox" name="q2_7_structures" value="cmpp"> CMPP / CMP</label>
-            <label><input type="checkbox" name="q2_7_structures" value="mas"> MAS / FAM / Foyer d'accueil</label>
-            <label><input type="checkbox" name="q2_7_structures" value="ehpad"> EHPAD</label>
-            <label><input type="checkbox" name="q2_7_structures" value="services_sociaux"> Services sociaux / CCAS</label>
-            <label><input type="checkbox" name="q2_7_structures" value="portage_repas"> Portage de repas</label>
-            <label><input type="checkbox" name="q2_7_structures" value="transport"> Service transport adapté</label>
-            <label><input type="checkbox" name="q2_7_structures" value="teleassistance"> Téléassistance / Télésurveillance</label>
-            <label><input type="checkbox" name="q2_7_structures" value="aucun"> Aucun lien actuel</label>
+            <label><input type="checkbox" name="q0_7_zone" value="paris"> Paris</label>
+            <label><input type="checkbox" name="q0_7_zone" value="hauts_seine"> Hauts-de-Seine (92)</label>
+            <label><input type="checkbox" name="q0_7_zone" value="seine_saint_denis"> Seine-Saint-Denis (93)</label>
+            <label><input type="checkbox" name="q0_7_zone" value="val_marne"> Val-de-Marne (94)</label>
+            <label><input type="checkbox" name="q0_7_zone" value="autre"> Autre (préciser)</label>
           </div>
         </div>
       </section>
 
-      <!-- Bloc 3 : Besoins -->
-      <section class="section" id="besoins">
-        <h2 class="section-title">Besoins et attentes</h2>
+      <!-- Bloc 1 : Gouvernance locale -->
+      <section class="section" id="gouvernance">
+        <h2 class="section-title">Gouvernance locale RGPD</h2>
 
         <div class="question">
-          <label class="question-label required">Motif principal de la demande <span class="question-id">Q3.1</span></label>
+          <label class="question-label required">Un référent RGPD est-il identifié dans votre équipe EMMA-H ? <span class="question-id">Q1.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_1_motif" value="premiere_demande" required> Première demande d'aide</label>
-            <label><input type="radio" name="q3_1_motif" value="renforcement"> Renforcement d'une aide existante</label>
-            <label><input type="radio" name="q3_1_motif" value="remplacement"> Remplacement d'un aidant (congés, épuisement...)</label>
-            <label><input type="radio" name="q3_1_motif" value="urgence"> Situation d'urgence / crise</label>
-            <label><input type="radio" name="q3_1_motif" value="sortie_institution"> Sortie d'institution / Retour à domicile</label>
-            <label><input type="radio" name="q3_1_motif" value="evolution"> Évolution de la situation médicale</label>
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_connu" required> Oui identifié et connu des équipes</label>
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_informel"> Oui identifié mais informel</label>
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="non_identifie"> Non personne n'est identifiée</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Type d'aide attendue <span class="question-id">Q3.2</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q3_2_aide" value="aide_toilette"> Aide à la toilette / hygiène</label>
-            <label><input type="checkbox" name="q3_2_aide" value="aide_habillement"> Aide à l'habillement</label>
-            <label><input type="checkbox" name="q3_2_aide" value="aide_repas"> Aide aux repas / prise alimentaire</label>
-            <label><input type="checkbox" name="q3_2_aide" value="aide_mobilite"> Aide à la mobilité / transferts</label>
-            <label><input type="checkbox" name="q3_2_aide" value="aide_courses"> Courses et gestion du quotidien</label>
-            <label><input type="checkbox" name="q3_2_aide" value="menage"> Entretien du logement</label>
-            <label><input type="checkbox" name="q3_2_aide" value="accompagnement_ext"> Accompagnement extérieur (rdv médicaux, courses...)</label>
-            <label><input type="checkbox" name="q3_2_aide" value="stimulation"> Stimulation / activités / lien social</label>
-            <label><input type="checkbox" name="q3_2_aide" value="surveillance"> Surveillance de nuit / garde</label>
-            <label><input type="checkbox" name="q3_2_aide" value="soutien_famille"> Soutien à la famille / aidants</label>
-          </div>
+          <label class="question-label">Nom et fonction du référent RGPD local <span class="question-id">Q1.1.2</span></label>
+          <input type="text" name="q1_1_2_nom_fonction_referent">
         </div>
 
         <div class="question">
-          <label class="question-label required">Fréquence souhaitée <span class="question-id">Q3.3</span></label>
+          <label class="question-label required">Le référent RGPD local sait-il contacter le DPO externe ? <span class="question-id">Q1.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="quotidien" required> Quotidien (7j/7)</label>
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="semaine"> En semaine uniquement</label>
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="weekend"> Week-end uniquement</label>
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="ponctuel"> Ponctuel (à définir)</label>
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="nuit"> Nuit uniquement</label>
-            <label><input type="radio" name="q3_3_frequence_souhaitee" value="a_definir"> À définir avec l'équipe</label>
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="connu_contacte" required> Oui coordonnées connues et DPO déjà contacté</label>
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="connu_jamais"> Oui coordonnées connues mais jamais contacté</label>
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="non_connu"> Non ne connaît pas le DPO</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Plages horaires privilégiées <span class="question-id">Q3.4</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q3_4_horaires" value="matin"> Matin (6h-12h)</label>
-            <label><input type="checkbox" name="q3_4_horaires" value="midi"> Midi (12h-14h)</label>
-            <label><input type="checkbox" name="q3_4_horaires" value="apres_midi"> Après-midi (14h-18h)</label>
-            <label><input type="checkbox" name="q3_4_horaires" value="soir"> Soir (18h-22h)</label>
-            <label><input type="checkbox" name="q3_4_horaires" value="nuit"> Nuit (22h-6h)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Urgence de la demande <span class="question-id">Q3.5</span></label>
+          <label class="question-label required">Les professionnels de l'équipe EMMA-H ont-ils reçu une sensibilisation ou formation RGPD ? <span class="question-id">Q1.3.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_5_urgence" value="tres_urgente"> Très urgente (moins d'une semaine)</label>
-            <label><input type="radio" name="q3_5_urgence" value="urgente"> Urgente (1 à 2 semaines)</label>
-            <label><input type="radio" name="q3_5_urgence" value="souhaite"> Souhaitée dans le mois</label>
-            <label><input type="radio" name="q3_5_urgence" value="projet"> Projet à moyen terme</label>
-            <label><input type="radio" name="q3_5_urgence" value="inconnue"> Inconnue</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="recente" required> Oui formation/sensibilisation récente (&lt;2 ans)</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="ancienne"> Oui ancienne (&gt;2 ans)</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="rapide"> Sensibilisation rapide uniquement</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="jamais"> Non jamais</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Précisions sur les besoins et attentes <span class="question-id">Q3.6</span></label>
-          <textarea name="q3_6_precisions" placeholder="Décrivez la situation, les difficultés rencontrées, les attentes spécifiques..."></textarea>
-        </div>
-      </section>
-
-      <!-- Bloc 4 : Informations médicales -->
-      <section class="section" id="medical">
-        <h2 class="section-title">Informations médicales et autonomie</h2>
-
-        <div class="question">
-          <label class="question-label required">Type(s) de handicap <span class="question-id">Q4.1</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q4_1_handicap" value="moteur"> Handicap moteur / physique</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="intellectuel"> Handicap intellectuel / cognitif</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="psychique"> Troubles psychiques</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="sensoriel_visuel"> Handicap visuel</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="sensoriel_auditif"> Handicap auditif</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="neuro"> Troubles neurologiques (Parkinson, AVC...)</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="degeneratif"> Maladie neurodégénérative (Alzheimer...)</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="polyhandicap"> Polyhandicap</label>
-            <label><input type="checkbox" name="q4_1_handicap" value="autre"> Autre</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Pathologies principales (si connu) <span class="question-id">Q4.2</span></label>
-          <textarea name="q4_2_pathologies" placeholder="Ex: Alzheimer depuis 3 ans, séquelles d'AVC, sclérose en plaques..."></textarea>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Niveau d'autonomie dans les actes essentiels de la vie quotidienne <span class="question-id">Q4.3</span></label>
+          <label class="question-label required">L'équipe connaît-elle les procédures RGPD du siège (gestion demandes, incidents) ? <span class="question-id">Q1.4.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q4_3_autonomie" value="autonome" required> Totalement autonome</label>
-            <label><input type="radio" name="q4_3_autonomie" value="partielle"> Autonomie partielle (nécessite une aide)</label>
-            <label><input type="radio" name="q4_3_autonomie" value="dependant"> Dépendant pour la plupart des actes</label>
-            <label><input type="radio" name="q4_3_autonomie" value="totalement_dependant"> Totalement dépendant</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_appliquees" required> Oui procédures connues et appliquées</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_non_appliquees"> Oui connues mais non appliquées</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="existent_non_connues"> Procédures existent mais non connues</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="pas_de_procedures"> Pas de procédures siège</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Détail des aides nécessaires <span class="question-id">Q4.4</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="lever_coucher"> Lever / coucher</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="toilette"> Toilette / bain / douche</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="habillage"> Habillage / déshabillage</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="alimentation"> Alimentation</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="elimination"> Élimination (toilette, change...)</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="transferts"> Transferts / déplacements intérieurs</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="communication"> Communication</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="prise_medicaments"> Prise des médicaments</label>
-            <label><input type="checkbox" name="q4_4_aides_necessaires" value="aucune"> Aucune aide nécessaire</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Utilisation d'aides techniques <span class="question-id">Q4.5</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q4_5_aides_tech" value="fauteuil_roulant"> Fauteuil roulant</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="deambulateur"> Déambulateur / canne</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="lit_medicalise"> Lit médicalisé</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="souleve_malade"> Soulève-malade</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="oxygen"> Oxygène / matériel respiratoire</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="sonde"> Sonde / sac urinaire</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="pansement"> Pansements spécifiques</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="alarme"> Alarme / téléassistance</label>
-            <label><input type="checkbox" name="q4_5_aides_tech" value="aucune"> Aucune aide technique</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Risques particuliers à connaître <span class="question-id">Q4.6</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q4_6_risques" value="chutes"> Risque de chutes</label>
-            <label><input type="checkbox" name="q4_6_risques" value="fugues"> Risque de fugues / errances</label>
-            <label><input type="checkbox" name="q4_6_risques" value="agitation"> Agitation / comportements à risque</label>
-            <label><input type="checkbox" name="q4_6_risques" value="depression"> Risque suicidaire / dépression</label>
-            <label><input type="checkbox" name="q4_6_risques" value="escarres"> Risque d'escarres</label>
-            <label><input type="checkbox" name="q4_6_risques" value="denutrition"> Risque de dénutrition</label>
-            <label><input type="checkbox" name="q4_6_risques" value="aspiration"> Risque d'aspiration</label>
-            <label><input type="checkbox" name="q4_6_risques" value="aucun"> Aucun risque particulier identifié</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">GIR (si connu) <span class="question-id">Q4.7</span></label>
+          <label class="question-label required">L'équipe remonte-t-elle les incidents/questions RGPD au siège ? <span class="question-id">Q1.5.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q4_7_gir" value="1"> GIR 1 (personnes confinées au lit ou au fauteuil)</label>
-            <label><input type="radio" name="q4_7_gir" value="2"> GIR 2 (dépendantes pour les transferts)</label>
-            <label><input type="radio" name="q4_7_gir" value="3"> GIR 3 (dépendantes pour la plupart des actes)</label>
-            <label><input type="radio" name="q4_7_gir" value="4"> GIR 4 (dépendantes pour certains actes)</label>
-            <label><input type="radio" name="q4_7_gir" value="5"> GIR 5 (autonomie partielle)</label>
-            <label><input type="radio" name="q4_7_gir" value="6"> GIR 6 (autonomie conservée)</label>
-            <label><input type="radio" name="q4_7_gir" value="inconnu"> Inconnu</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Traitements médicaux en cours <span class="question-id">Q4.8</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q4_8_traitements" value="aucun"> Aucun</label>
-            <label><input type="radio" name="q4_8_traitements" value="per_os"> Traitements per os (à avaler)</label>
-            <label><input type="radio" name="q4_8_traitements" value="injections"> Injections</label>
-            <label><input type="radio" name="q4_8_traitements" value="pansements"> Pansements réguliers</label>
-            <label><input type="radio" name="q4_8_traitements" value="kiné"> Séances kiné / rééducation</label>
-            <label><input type="radio" name="q4_8_traitements" value="autre"> Autre</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="systematiques" required> Oui remontées systématiques</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="occasionnelles"> Remontées occasionnelles</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="jamais"> Non jamais de remontée</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="na"> N/A (jamais incident)</label>
           </div>
         </div>
       </section>
 
-      <!-- Bloc 5 : Situation familiale -->
-      <section class="section" id="famille">
-        <h2 class="section-title">Situation familiale et entourage</h2>
+      <!-- Bloc 2 : Registre local -->
+      <section class="section" id="registre">
+        <h2 class="section-title">Registre des traitements & Bases légales & PIA</h2>
 
         <div class="question">
-          <label class="question-label required">Situation familiale <span class="question-id">Q5.1</span></label>
+          <label class="question-label required">Connaissez-vous les traitements de données recensés pour EMMA-H dans le registre ? <span class="question-id">Q2.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q5_1_situation" value="seul" required> Vit seul(e)</label>
-            <label><input type="radio" name="q5_1_situation" value="couple"> Vit en couple</label>
-            <label><input type="radio" name="q5_1_situation" value="famille"> Vit avec la famille</label>
-            <label><input type="radio" name="q5_1_situation" value="coloc"> Colocation / habitat partagé</label>
-            <label><input type="radio" name="q5_1_situation" value="animaux"> Vit avec animal(s) de compagnie</label>
+            <label><input type="radio" name="q2_1_1_registre" value="connu" required> Oui je connais les traitements EMMA-H du registre</label>
+            <label><input type="radio" name="q2_1_1_registre" value="vaguement"> Vaguement</label>
+            <label><input type="radio" name="q2_1_1_registre" value="non_connu"> Non je ne connais pas le registre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Présence d'aidants familiaux <span class="question-id">Q5.2</span></label>
+          <label class="question-label required">Utilisez-vous des fichiers ou outils locaux non fournis par le siège ? <span class="question-id">Q2.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q5_2_aidants" value="oui_principal" required> Oui, aidant principal dédié</label>
-            <label><input type="radio" name="q5_2_aidants" value="oui_partage"> Oui, aidage partagé entre plusieurs proches</label>
-            <label><input type="radio" name="q5_2_aidants" value="occasionnel"> Intervention occasionnelle uniquement</label>
-            <label><input type="radio" name="q5_2_aidants" value="non"> Non, aucun aidant familial</label>
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, tableaux planning)</label>
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="non"> Non uniquement outils siège</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Si aidants présents, précisez le lien <span class="question-id">Q5.3</span></label>
+          <label class="question-label">Si OUI précisez quels fichiers/outils locaux vous utilisez <span class="question-id">Q2.2.2</span></label>
+          <textarea name="q2_2_2_precisions_outils"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Sur quelle base légale repose le traitement des dossiers des bénéficiaires EMMA-H ? <span class="question-id">Q2B.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2b_1_base_legale" value="interet_public" required> Mission d'intérêt public / autorité publique (Art. 6.1.e)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="obligation_legale"> Obligation légale CASF (Art. 6.1.c)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="contrat"> Contrat d'accompagnement / convention</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Avez-vous identifié des traitements à risque élevé nécessitant une PIA ? <span class="question-id">Q2T.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2t_1_pia" value="realisees" required> Oui PIA réalisées</label>
+            <label><input type="radio" name="q2t_1_pia" value="identifiees_non_realisees"> Oui traitements identifiés mais PIA non réalisées</label>
+            <label><input type="radio" name="q2t_1_pia" value="aucun"> Non aucun traitement à risque identifié</label>
+            <label><input type="radio" name="q2t_1_pia" value="inconnu"> Inconnu (ne sait pas ce qu'est une PIA)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Parmi ces traitements lesquels sont présents dans EMMA-H ? <span class="question-id">Q2T.2</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q5_3_lien" value="conjoint"> Conjoint / partenaire</label>
-            <label><input type="checkbox" name="q5_3_lien" value="enfant"> Enfant(s)</label>
-            <label><input type="checkbox" name="q5_3_lien" value="petit_enfant"> Petit(s)-enfant(s)</label>
-            <label><input type="checkbox" name="q5_3_lien" value="frere_soeur"> Frère / Sœur</label>
-            <label><input type="checkbox" name="q5_3_lien" value="parent"> Parent(s)</label>
-            <label><input type="checkbox" name="q5_3_lien" value="autre_famille"> Autre membre de la famille</label>
-            <label><input type="checkbox" name="q5_3_lien" value="voisin"> Voisin / ami proche</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="geolocalisation"> Géolocalisation des professionnels (tournées)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="teleassistance"> Téléassistance des bénéficiaires</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="video_protection"> Vidéo-protection chez les bénéficiaires</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="dossier_partage"> Dossier partagé multi-professionnels</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="télémédecine"> Télémédecine / télésuivi</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="biometrie"> Badgeuse biométrique (pour professionnels)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="aucun"> Aucun de ces traitements</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">État des aidants <span class="question-id">Q5.4</span></label>
+          <label class="question-label required">Si géolocalisation, les professionnels ont-ils été informés ? <span class="question-id">Q2T.3</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q5_4_etat_aidants" value="soutien"> Soutien disponible et épanoui</label>
-            <label><input type="radio" name="q5_4_etat_aidants" value="besoin_repit"> Besoin de répit / soulagement</label>
-            <label><input type="radio" name="q5_4_etat_aidants" value="epuisement"> Signes d'épuisement</label>
-            <label><input type="radio" name="q5_4_etat_aidants" value="sans_objet"> Sans objet (pas d'aidants)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Autres personnes vivant au domicile <span class="question-id">Q5.5</span></label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" name="q5_5_personnes" value="personne"> Personne (vit seul)</label>
-            <label><input type="checkbox" name="q5_5_personnes" value="conjoint"> Conjoint / partenaire</label>
-            <label><input type="checkbox" name="q5_5_personnes" value="enfants"> Enfant(s) mineur(s)</label>
-            <label><input type="checkbox" name="q5_5_personnes" value="adultes"> Enfant(s) adulte(s)</label>
-            <label><input type="checkbox" name="q5_5_personnes" value="parents"> Parent(s) âgé(s)</label>
-            <label><input type="checkbox" name="q5_5_personnes" value="autres"> Autre(s) adulte(s)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Accès au domicile <span class="question-id">Q5.6</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q5_6_acces" value="present"> Bénéficiaire ou aidant présent</label>
-            <label><input type="radio" name="q5_6_acces" value="boite"> Boîte à clés sécurisée</label>
-            <label><input type="radio" name="q5_6_acces" value="voisin"> Remise clé chez voisin</label>
-            <label><input type="radio" name="q5_6_acces" value="proche"> Remise clé chez proche</label>
-            <label><input type="radio" name="q5_6_acces" value="a_prevoir"> À définir / prévoir</label>
+            <label><input type="radio" name="q2t_3_info_geo" value="info_ecrite" required> Oui information écrite + consentement</label>
+            <label><input type="radio" name="q2t_3_info_geo" value="info_orale"> Information orale uniquement</label>
+            <label><input type="radio" name="q2t_3_info_geo" value="non"> Non pas d'information</label>
+            <label><input type="radio" name="q2t_3_info_geo" value="na"> N/A (pas de géolocalisation)</label>
           </div>
         </div>
       </section>
 
-      <!-- Bloc 6 : Cadre administratif -->
-      <section class="section" id="admin">
-        <h2 class="section-title">Cadre administratif et financement</h2>
+      <!-- Bloc 3 : Sécurité terrain -->
+      <section class="section" id="securite">
+        <h2 class="section-title">Sécurité terrain</h2>
 
         <div class="question">
-          <label class="question-label required">Dossier MDPH <span class="question-id">Q6.1</span></label>
+          <label class="question-label required">Où sont stockés les dossiers papier des bénéficiaires ? <span class="question-id">Q3.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q6_1_mdph" value="oui_recu" required> Oui, notification reçue</label>
-            <label><input type="radio" name="q6_1_mdph" value="oui_en_cours"> Dossier en cours d'instruction</label>
-            <label><input type="radio" name="q6_1_mdph" value="non_jamais"> Non, jamais déposé</label>
-            <label><input type="radio" name="q6_1_mdph" value="non_perime"> Non, droits périmés</label>
-            <label><input type="radio" name="q6_1_mdph" value="refus"> Refus de reconnaissance</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="locaux_unapei" required> Locaux UNAPEI (armoires fermées)</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="vehicules"> Véhicules des professionnels (sacoche verrouillée)</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="domicile_pro"> Domicile des professionnels</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="mixte"> Mixte (préciser)</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Si notification reçue, orientation <span class="question-id">Q6.2</span></label>
+          <label class="question-label required">Les professionnels transportent-ils des documents papier avec données bénéficiaires ? <span class="question-id">Q3.1.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_2_transport_papier" value="jamais" required> Non jamais</label>
+            <label><input type="radio" name="q3_1_2_transport_papier" value="sacoche"> Oui dans sacoche/valise fermée à clé</label>
+            <label><input type="radio" name="q3_1_2_transport_papier" value="vehicule"> Oui laissés dans véhicule</label>
+            <label><input type="radio" name="q3_1_2_transport_papier" value="non_securise"> Oui sans sécurisation particulière</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les documents papier sont-ils détruits de manière sécurisée ? <span class="question-id">Q3.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_3_destruction" value="dechiqueteuse" required> Oui déchiqueteuse sur site</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="prestataire"> Oui prestataire spécialisé avec certificat</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="poubelle"> Poubelle classique</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="jamais"> Jamais détruits (retour au siège)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Où sont stockés les dossiers informatiques des bénéficiaires ? <span class="question-id">Q3.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_1_stockage_info" value="serveur_siege" required> Serveur centralisé siège (accès sécurisé)</label>
+            <label><input type="radio" name="q3_2_1_stockage_info" value="ordinateurs_locaux"> Ordinateurs portables équipe</label>
+            <label><input type="radio" name="q3_2_1_stockage_info" value="logiciel_metier"> Logiciel métier dédié (SIG, SIS, Malogly...)</label>
+            <label><input type="radio" name="q3_2_1_stockage_info" value="excel_locaux"> Fichiers Excel locaux</label>
+            <label><input type="radio" name="q3_2_1_stockage_info" value="cloud_non_securise"> Cloud non sécurisé</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Quel logiciel métier utilisez-vous pour la gestion des bénéficiaires ? <span class="question-id">Q3.2.2</span></label>
+          <input type="text" name="q3_2_2_logiciel_metier" placeholder="Ex: SIS, Malogly, Domus, API'Support...">
+        </div>
+
+        <div class="question">
+          <label class="question-label">Qui a accès aux dossiers informatiques complets des bénéficiaires ? <span class="question-id">Q3.2.3</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q6_2_orientation" value="sap"> SAP (Schéma d'Accueil Personnalisé)</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="savs"> SAVS / SAMSAH</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="mas"> MAS</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="fjt"> FJT / FAM</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="ehpad"> EHPAD</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="hdom"> Maintien à domicile</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="autre"> Autre</label>
-            <label><input type="checkbox" name="q6_2_orientation" value="na"> N/A</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="coordonnateur"> Coordonnateur/trice</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="cadre_sante"> Cadre de santé</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="educateurs"> Éducateurs spécialisés</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="referent"> Référent bénéficiaire uniquement</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="tous_pros"> Tous les professionnels</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="administratif"> Personnel administratif</label>
+            <label><input type="checkbox" name="q3_2_3_acces" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Aides financières perçues <span class="question-id">Q6.3</span></label>
+          <label class="question-label required">Les ordinateurs portables des professionnels ont-ils un verrouillage automatique ? <span class="question-id">Q3.2.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_4_verrouillage" value="moins_5min" required> Oui verrouillage auto &lt;5 minutes</label>
+            <label><input type="radio" name="q3_2_4_verrouillage" value="plus_10min"> Oui mais &gt;10 minutes</label>
+            <label><input type="radio" name="q3_2_4_verrouillage" value="manuel"> Verrouillage manuel uniquement</label>
+            <label><input type="radio" name="q3_2_4_verrouillage" value="non"> Pas de verrouillage</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les smartphones professionnels sont-ils sécurisés ? <span class="question-id">Q3.2.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_5_smartphone" value="code_pin_chiffre" required> Oui code PIN + chiffrement</label>
+            <label><input type="radio" name="q3_2_5_smartphone" value="code_pin"> Code PIN uniquement</label>
+            <label><input type="radio" name="q3_2_5_smartphone" value="non_securise"> Non sécurisé</label>
+            <label><input type="radio" name="q3_2_5_smartphone" value="pas_smartphone"> Pas de smartphone pro</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Comment transmettez-vous des informations sur les bénéficiaires à l'extérieur ? <span class="question-id">Q3.3.1</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q6_3_aides" value="apa"> APA (Allocation Personnalisée d'Autonomie)</label>
-            <label><input type="checkbox" name="q6_3_aides" value="pch"> PCH (Prestation de Compensation du Handicap)</label>
-            <label><input type="checkbox" name="q6_3_aides" value="aah"> AAH / AEEH</label>
-            <label><input type="checkbox" name="q6_3_aides" value="pension"> Pension d'invalidité</label>
-            <label><input type="checkbox" name="q6_3_aides" value="retraite"> Retraite</label>
-            <label><input type="checkbox" name="q6_3_aides" value="aspa"> ASPA (minimum vieillesse)</label>
-            <label><input type="checkbox" name="q6_3_aides" value="aide_logement"> Aide au logement</label>
-            <label><input type="checkbox" name="q6_3_aides" value="cmu"> CMU-C / ACS</label>
-            <label><input type="checkbox" name="q6_3_aides" value="aucune"> Aucune</label>
-            <label><input type="checkbox" name="q6_3_aides" value="inconnu"> Inconnu</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="email_classique"> Email classique non sécurisé</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="email_securise"> Email crypté/sécurisé</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="plateforme_sante"> Plateforme santé sécurisée (MSS)</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="courrier"> Courrier postal</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="remise_main"> Remise main propre</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Couverture santé <span class="question-id">Q6.4</span></label>
+          <label class="question-label">À qui transmettez-vous régulièrement des données sur les bénéficiaires ? <span class="question-id">Q3.3.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="mdph"> MDPH</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="medecin"> Médecin traitant / spécialiste</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="hospitalisation"> Hospitalisation / Urgentiste</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="csapa"> CSAPA / Addictologie</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="cmpp"> CMPP / CMP / CATTP</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="services_sociaux"> Services sociaux / CDAS</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="tuteur"> Tuteur/curateur/mandataire</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="famille"> Famille (avec accord)</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les professionnels discutent-ils des informations bénéficiaires dans des espaces publics ? <span class="question-id">Q3.4.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q6_4_couverture" value="securite_sociale" required> Sécurité sociale uniquement</label>
-            <label><input type="radio" name="q6_4_couverture" value="mutuelle"> Sécurité sociale + mutuelle</label>
-            <label><input type="radio" name="q6_4_couverture" value="cmu"> CMU-C</label>
-            <label><input type="radio" name="q6_4_couverture" value="ame"> AME</label>
-            <label><input type="radio" name="q6_4_couverture" value="inconnue"> Inconnue</label>
+            <label><input type="radio" name="q3_4_1_discussion" value="jamais" required> Non jamais</label>
+            <label><input type="radio" name="q3_4_1_discussion" value="parfois"> Parfois (à éviter)</label>
+            <label><input type="radio" name="q3_4_1_discussion" value="frequencemment"> Oui fréquemment</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Mode de financement souhaité pour l'accompagnement <span class="question-id">Q6.5</span></label>
+          <label class="question-label required">Les professionnels utilisent-ils des supports papier chez les bénéficiaires ? <span class="question-id">Q3.5.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q6_5_financement" value="apa"> APA (si éligible)</label>
-            <label><input type="radio" name="q6_5_financement" value="pch"> PCH</label>
-            <label><input type="radio" name="q6_5_financement" value="participation"> Participation financière du bénéficiaire</label>
-            <label><input type="radio" name="q6_5_financement" value="mixte"> Mixte (aides + participation)</label>
-            <label><input type="radio" name="q6_5_financement" value="a_definir"> À définir avec le service</label>
+            <label><input type="radio" name="q3_5_1_papier_dom" value="jamais" required> Non jamais (uniquement informatique)</label>
+            <label><input type="radio" name="q3_5_1_papier_dom" value="carnet"> Oui carnet de liaison sécurisé</label>
+            <label><input type="radio" name="q3_5_1_papier_dom" value="documents"> Oui documents laissés chez le bénéficiaire</label>
+            <label><input type="radio" name="q3_5_1_papier_dom" value="notes"> Notes non sécurisées</label>
           </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Organisme prescripteur ou orienteur (si applicable) <span class="question-id">Q6.6</span></label>
-          <input type="text" name="q6_6_prescripteur" placeholder="Ex: MDPH, médecin traitant, travailleur social, hôpital...">
         </div>
       </section>
 
-      <!-- Bloc 7 : Consentement RGPD -->
-      <section class="section" id="rgpd">
-        <h2 class="section-title">Consentement et informations RGPD</h2>
-
-        <div class="info-box">
-          <strong>Informations sur le traitement des données :</strong> Les informations collectées sont destinées à l'équipe EMMA-H de l'UNAPEI 92 pour l'étude et le suivi de votre demande d'accompagnement. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement et de portabilité de vos données.
-        </div>
+      <!-- Bloc 4 : Droits bénéficiaires -->
+      <section class="section" id="droits">
+        <h2 class="section-title">Droits des bénéficiaires</h2>
 
         <div class="question">
-          <label class="question-label required">Je déclare avoir l'autorité pour fournir ces informations <span class="question-id">Q7.1</span></label>
+          <label class="question-label required">Les bénéficiaires reçoivent-ils une information RGPD claire à l'admission ? <span class="question-id">Q4.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7_1_autorite" value="moi_meme" required> Je suis le bénéficiaire</label>
-            <label><input type="radio" name="q7_1_autorite" value="mandat"> J'agis avec l'accord du bénéficiaire</label>
-            <label><input type="radio" name="q7_1_autorite" value="tuteur"> Je suis tuteur/curateur/mandataire</label>
-            <label><input type="radio" name="q7_1_autorite" value="professionnel"> Je suis un professionnel habilité</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="document_falc" required> Oui document dédié notice RGPD adapté (FALC si besoin)</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="document_standard"> Oui document standard</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="orale"> Information orale uniquement</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="non"> Non pas d'information</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Le bénéficiaire a-t-il été informé de cette demande ? <span class="question-id">Q7.2</span></label>
+          <label class="question-label required">Avez-vous déjà reçu des demandes de bénéficiaires pour consulter leur dossier ? <span class="question-id">Q4.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7_2_information" value="oui_consentement" required> Oui, il/elle consent à la démarche</label>
-            <label><input type="radio" name="q7_2_information" value="oui_incapable"> Oui, mais incapable de consentir (mesure de protection)</label>
-            <label><input type="radio" name="q7_2_information" value="non_urgence"> Non, situation d'urgence</label>
-            <label><input type="radio" name="q7_2_information" value="na"> N/A (je suis le bénéficiaire)</label>
+            <label><input type="radio" name="q4_2_1_demandes_acces" value="oui" required> Oui (nombre sur 12 derniers mois)</label>
+            <label><input type="radio" name="q4_2_1_demandes_acces" value="non"> Non jamais</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Je consens à ce que mes données soient utilisées pour le traitement de cette demande <span class="question-id">Q7.3</span></label>
+          <label class="question-label required">Si OUI quel délai pour répondre aux demandes d'accès au dossier ? <span class="question-id">Q4.2.2</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7_3_consentement" value="oui" required> Oui, je consens</label>
-            <label><input type="radio" name="q7_3_consentement" value="non"> Non, je refuse</label>
+            <label><input type="radio" name="q4_2_2_delai_acces" value="moins_1mois" required> Moins de 1 mois systématiquement</label>
+            <label><input type="radio" name="q4_2_2_delai_acces" value="1_2mois"> Entre 1 et 2 mois</label>
+            <label><input type="radio" name="q4_2_2_delai_acces" value="plus_2mois"> Plus de 2 mois</label>
+            <label><input type="radio" name="q4_2_2_delai_acces" value="na"> N/A (pas de demande)</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Je souhaite recevoir des informations sur les services de l'UNAPEI 92 <span class="question-id">Q7.4</span></label>
+          <label class="question-label required">Savez-vous comment traiter une demande d'exercice de droits des bénéficiaires ? <span class="question-id">Q4.3.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7_4_info_services" value="oui"> Oui</label>
-            <label><input type="radio" name="q7_4_info_services" value="non"> Non</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="procedure_claire" required> Oui procédure claire connue</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="vaguement"> Vaguement je contacterais le siège</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="non"> Non je ne sais pas</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Mode de contact préféré pour le suivi <span class="question-id">Q7.5</span></label>
+          <label class="question-label required">Les bénéficiaires sous protection juridique (tutelle, curatelle) peuvent-ils exercer leurs droits RGPD ? <span class="question-id">Q4.4.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7_5_contact_pref" value="telephone"> Téléphone</label>
-            <label><input type="radio" name="q7_5_contact_pref" value="email"> Email</label>
-            <label><input type="radio" name="q7_5_contact_pref" value="courrier"> Courrier postal</label>
-            <label><input type="radio" name="q7_5_contact_pref" value="sms"> SMS</label>
+            <label><input type="radio" name="q4_4_1_protection_juridique" value="avec_assistance" required> Oui avec assistance tuteur/curateur selon mesure</label>
+            <label><input type="radio" name="q4_4_1_protection_juridique" value="tuteur_seul"> Toujours via tuteur/curateur uniquement</label>
+            <label><input type="radio" name="q4_4_1_protection_juridique" value="non"> Non pas prévu</label>
+            <label><input type="radio" name="q4_4_1_protection_juridique" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 5 : Sous-traitants locaux -->
+      <section class="section" id="sous-traitants">
+        <h2 class="section-title">Sous-traitants locaux</h2>
+
+        <div class="question">
+          <label class="question-label">Quels sous-traitants locaux utilisez-vous ayant accès aux données des bénéficiaires ? <span class="question-id">Q5.1.1</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="logiciel_metier"> Logiciel métier (SIS, Malogly, Domus...)</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="teleassistance"> Prestataire téléassistance</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="transport"> Transporteur accompagné</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="repas"> Livraison repas à domicile</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="menage"> Service ménage à domicile</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="garde_nuit"> Service garde de nuit</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="infirmier"> Infirmier libéral</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="kine"> Kinésithérapeute</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="aucun"> Aucun</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Date de la demande <span class="question-id">Q7.6</span></label>
-          <input type="date" name="q7_6_date_demande" id="date-demande" required>
+          <label class="question-label required">Ces sous-traitants locaux ont-ils signé une clause de confidentialité ou contrat RGPD ? <span class="question-id">Q5.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_2_1_clauses" value="tous" required> Oui tous ont clauses</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="certains"> Certains seulement</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="non"> Non aucun</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="inconnu"> Inconnu (géré par siège)</label>
+          </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Remarques complémentaires <span class="question-id">Q7.7</span></label>
-          <textarea name="q7_7_remarques" placeholder="Toute information utile pour le traitement de la demande..."></textarea>
+          <label class="question-label required">Le logiciel métier EMMA-H a-t-il un contrat avec clauses RGPD (Art. 28) ? <span class="question-id">Q5.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_3_1_contrat_art28" value="oui" required> Oui contrat Art. 28 signé</label>
+            <label><input type="radio" name="q5_3_1_contrat_art28" value="non"> Non pas de contrat</label>
+            <label><input type="radio" name="q5_3_1_contrat_art28" value="inconnu"> Inconnu (géré par siège)</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 6 : Incidents locaux -->
+      <section class="section" id="incidents">
+        <h2 class="section-title">Incidents locaux</h2>
+
+        <div class="question">
+          <label class="question-label required">Des incidents de données ont-ils eu lieu dans votre équipe EMMA-H sur 24 derniers mois ? <span class="question-id">Q6.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_1_1_incidents" value="oui" required> Oui</label>
+            <label><input type="radio" name="q6_1_1_incidents" value="non"> Non</label>
+            <label><input type="radio" name="q6_1_1_incidents" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si OUI type(s) d'incident(s) <span class="question-id">Q6.1.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_vol_papier"> Perte/vol dossiers bénéficiaires papier</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="email_erreur"> Email avec données à mauvais destinataire</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_materiel"> Perte/vol ordinateur, téléphone ou clé USB</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="divulgation"> Divulgation accidentelle devant tiers</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="intrusion"> Intrusion dans domicile bénéficiaire</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="na"> N/A (pas incident)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Avez-vous immédiatement informé le siège/DPO (dans les 72h) ? <span class="question-id">Q6.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_1_3_info_siege" value="oui_72h" required> Oui tous incidents remontés &lt;72h</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="certains"> Certains seulement</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="non"> Non jamais informé</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="na"> N/A (pas incident)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Savez-vous reconnaître une violation de données concernant les bénéficiaires ? <span class="question-id">Q6.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="oui" required> Oui formé à reconnaître violations</label>
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="incertain"> Incertain</label>
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="non"> Non</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 7 : Spécificités EMMA-H -->
+      <section class="section" id="specifiques">
+        <h2 class="section-title">Spécificités EMMA-H (Maintien à domicile +45 ans)</h2>
+
+        <div class="question">
+          <label class="question-label required">Quelle est la nature juridique de l'accompagnement EMMA-H ? <span class="question-id">Q7E.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_1_nature" value="sap" required> SAP (Schéma d'Accueil Personnalisé)</label>
+            <label><input type="radio" name="q7e_1_nature" value="prestation_service"> Prestation de service (convention)</label>
+            <label><input type="radio" name="q7e_1_nature" value="autre"> Autre</label>
+            <label><input type="radio" name="q7e_1_nature" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Comment gérez-vous les données de santé des bénéficiaires ? <span class="question-id">Q7E.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q7e_2_sante" value="dossier_medical"> Dossier médical partagé (DMP)</label>
+            <label><input type="checkbox" name="q7e_2_sante" value="carnet_sante"> Carnet de santé / carnet de soins</label>
+            <label><input type="checkbox" name="q7e_2_sante" value="logiciel_sante"> Logiciel santé sécurisé</label>
+            <label><input type="checkbox" name="q7e_2_sante" value="notes_pro"> Notes professionnelles uniquement</label>
+            <label><input type="checkbox" name="q7e_2_sante" value="pas_sante"> Pas de données de santé collectées</label>
+            <label><input type="checkbox" name="q7e_2_sante" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les interventions à domicile font-elles l'objet d'un compte-rendu ? <span class="question-id">Q7E.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_3_compte_rendu" value="systematique" required> Oui systématique à chaque intervention</label>
+            <label><input type="radio" name="q7e_3_compte_rendu" value="hebdo"> Compte-rendu hebdomadaire</label>
+            <label><input type="radio" name="q7e_3_compte_rendu" value="evenement"> Uniquement en cas d'événement</label>
+            <label><input type="radio" name="q7e_3_compte_rendu" value="non"> Non pas de compte-rendu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Qui a accès aux comptes-rendus d'intervention ? <span class="question-id">Q7E.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_4_acces_cr" value="equipe_seule" required> Équipe EMMA-H uniquement</label>
+            <label><input type="radio" name="q7e_4_acces_cr" value="famille_avec_accord"> Famille (avec accord bénéficiaire)</label>
+            <label><input type="radio" name="q7e_4_acces_cr" value="tuteur"> Tuteur/curateur</label>
+            <label><input type="radio" name="q7e_4_acces_cr" value="medecin"> Médecin traitant</label>
+            <label><input type="radio" name="q7e_4_acces_cr" value="multi"> Multi-partenaires (préciser)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Comment gérez-vous les données des bénéficiaires décédés ? <span class="question-id">Q7E.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_5_deces" value="archive_siege" required> Retour archive siège selon procédure</label>
+            <label><input type="radio" name="q7e_5_deces" value="detruits"> Détruits sécurisés après délai</label>
+            <label><input type="radio" name="q7e_5_deces" value="conserves_locaux"> Conservés en local</label>
+            <label><input type="radio" name="q7e_5_deces" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les bénéficiaires sont-ils informés de leurs droits RGPD lors des interventions ? <span class="question-id">Q7E.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_6_info_droits" value="document" required> Oui via document remis</label>
+            <label><input type="radio" name="q7e_6_info_droits" value="affiche"> Affichage chez le bénéficiaire</label>
+            <label><input type="radio" name="q7e_6_info_droits" value="orale"> Information orale</label>
+            <label><input type="radio" name="q7e_6_info_droits" value="non"> Non pas d'information spécifique</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les professionnels portent-ils un badge nominatif ? <span class="question-id">Q7E.7</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_7_badge" value="oui_nom" required> Oui badge avec nom et structure</label>
+            <label><input type="radio" name="q7e_7_badge" value="oui_anonyme"> Oui badge sans nom (anonyme)</label>
+            <label><input type="radio" name="q7e_7_badge" value="non"> Non pas de badge</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les professionnels utilisent-ils leur téléphone personnel pour communiquer avec les bénéficiaires ? <span class="question-id">Q7E.8</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_8_tel_perso" value="jamais" required> Non jamais (téléphone pro uniquement)</label>
+            <label><input type="radio" name="q7e_8_tel_perso" value="parfois"> Parfois (cas exceptionnels)</label>
+            <label><input type="radio" name="q7e_8_tel_perso" value="frequent"> Oui fréquemment</label>
+            <label><input type="radio" name="q7e_8_tel_perso" value="demande_beneficiaire"> À la demande du bénéficiaire</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Quelle durée de conservation appliquez-vous aux dossiers après fin d'accompagnement ? <span class="question-id">Q7E.9</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_9_conservation" value="5_ans" required> 5 ans après fin (durée légale)</label>
+            <label><input type="radio" name="q7e_9_conservation" value="autre"> Autre durée (préciser)</label>
+            <label><input type="radio" name="q7e_9_conservation" value="indefinie"> Conservation indéfinie</label>
+            <label><input type="radio" name="q7e_9_conservation" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des photos des bénéficiaires sont-elles prises dans le cadre de l'accompagnement ? <span class="question-id">Q7E.10</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q7e_10_photos" value="jamais" required> Non jamais</label>
+            <label><input type="radio" name="q7e_10_photos" value="avec_consentement"> Oui avec consentement écrit</label>
+            <label><input type="radio" name="q7e_10_photos" value="sans_consentement"> Oui sans formalisation</label>
+            <label><input type="radio" name="q7e_10_photos" value="autorisation_tuteur"> Avec autorisation tuteur/curateur</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 8 : Synthèse -->
+      <section class="section" id="synthese">
+        <h2 class="section-title">Synthèse et remarques</h2>
+
+        <div class="question">
+          <label class="question-label">Points forts identifiés en matière de RGPD <span class="question-id">Q8.1</span></label>
+          <textarea name="q8_1_points_forts" placeholder="Décrivez les pratiques conformes ou exemplaires..."></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Points de vigilance ou axes d'amélioration <span class="question-id">Q8.2</span></label>
+          <textarea name="q8_2_points_vigilance" placeholder="Décrivez les risques identifiés ou les besoins d'accompagnement..."></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Besoins en formation ou accompagnement RGPD <span class="question-id">Q8.3</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q8_3_besoins" value="formation_equipe"> Formation équipe complète</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="formation_referent"> Formation référent RGPD</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="doc_info"> Documents d'information bénéficiaires</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="procedure_droits"> Procédure exercice des droits</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="securite_info"> Sécurité informatique</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="autre"> Autre (préciser)</label>
+            <label><input type="checkbox" name="q8_3_besoins" value="aucun"> Aucun besoin identifié</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Remarques complémentaires <span class="question-id">Q8.4</span></label>
+          <textarea name="q8_4_remarques" placeholder="Toute information utile..."></textarea>
         </div>
       </section>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+        <button type="submit" class="btn btn-primary">Envoyer le questionnaire</button>
       </div>
     </form>
   </div>
 
   <script>
     // Date par défaut = aujourd'hui
-    document.getElementById('date-demande').valueAsDate = new Date();
+    document.querySelector('input[name="q0_4_date_remplissage"]').valueAsDate = new Date();
 
     // Navigation active
     document.querySelectorAll('.nav-block').forEach(link => {
-      link.addEventListener('click', function() {
+      link.addEventListener('click', function(e) {
         document.querySelectorAll('.nav-block').forEach(l => l.classList.remove('active'));
         this.classList.add('active');
       });
@@ -889,7 +892,7 @@
       e.preventDefault();
       const message = document.getElementById('message');
       message.className = 'message success show';
-      message.textContent = 'Votre demande a été envoyée avec succès. L\'équipe EMMA-H vous contactera dans les 48h.';
+      message.textContent = 'Le questionnaire RGPD EMMA-H a été envoyé avec succès. Merci pour votre collaboration.';
       message.scrollIntoView({ behavior: 'smooth' });
     });
   </script>
