@@ -252,7 +252,7 @@
 </head>
 <body>
   <div class="container">
-    <a href="../rgpd-2026/index.html" class="back-link">← Retour à l'accueil</a>
+    <a href="../index.html" class="back-link">← Retour à l'accueil</a>
 
     <header>
       <h1>Questionnaire RGPD — EMMA-H</h1>
@@ -876,25 +876,102 @@
   </div>
 
   <script>
-    // Date par défaut = aujourd'hui
-    document.querySelector('input[name="q0_4_date_remplissage"]').valueAsDate = new Date();
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQBhjBdwuEBtj5Ef63L_5ej3eyXB15DLmpnDBxqM5u0EdVRgoLK6NR1Hkn682obuvN7Q/exec';
+const FORM_TYPE = 'EMMAH_RGPD';
 
-    // Navigation active
-    document.querySelectorAll('.nav-block').forEach(link => {
-      link.addEventListener('click', function(e) {
-        document.querySelectorAll('.nav-block').forEach(l => l.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
+// Date par défaut = aujourd'hui
+document.querySelector('input[name="q0_4_date_remplissage"]').valueAsDate = new Date();
 
-    // Soumission du formulaire
-    document.getElementById('formulaire').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const message = document.getElementById('message');
+// Navigation active
+document.querySelectorAll('.nav-block').forEach(link => {
+  link.addEventListener('click', function(e) {
+    document.querySelectorAll('.nav-block').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Collecte des réponses (format array v2.0)
+function collectResponses() {
+  const responses = [];
+  const seen = new Set();
+  document.querySelectorAll('.question').forEach(qEl => {
+    const labelEl = qEl.querySelector('.question-label');
+    if (!labelEl) return;
+    const questionText = labelEl.innerText.replace(/\s*\*\s*/, '').replace(/\s*Q[\d._SYNTH]+\s*$/, '').trim();
+    const questionIdMatch = labelEl.innerHTML.match(/(Q[\d._SYNTH]+)/);
+    const questionId = questionIdMatch ? questionIdMatch[1] : '';
+
+    const inputs = qEl.querySelectorAll('input:not([type="hidden"]), textarea, select');
+    if (inputs.length === 0) return;
+
+    const firstInput = inputs[0];
+    const fieldId = firstInput.name || firstInput.id || '';
+    if (seen.has(fieldId)) return;
+    seen.add(fieldId);
+
+    let answer = '';
+    const type = firstInput.type;
+
+    if (type === 'radio') {
+      const checked = qEl.querySelector('input[type="radio"]:checked');
+      answer = checked ? checked.value : '';
+    } else if (type === 'checkbox') {
+      const checkeds = qEl.querySelectorAll('input[type="checkbox"]:checked');
+      answer = Array.from(checkeds).map(c => c.value).join(' | ');
+    } else {
+      answer = firstInput.value.trim();
+    }
+
+    responses.push({ id: questionId, question: questionText, answer });
+  });
+
+  // Add nom_etablissement
+  const nomEtabEl = document.getElementById('nom_etablissement');
+  if (nomEtabEl) {
+    const nomAssoc = document.querySelector('[name="q0_1_nom_association"]');
+    if (nomAssoc) {
+      nomEtabEl.value = nomAssoc.value;
+    }
+    responses.push({ id: 'nom_etablissement', question: "Nom de l'établissement", answer: nomEtabEl.value || '' });
+  }
+
+  return responses;
+}
+
+// Soumission
+document.getElementById('formulaire').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!this.checkValidity()) {
+    this.reportValidity();
+    return;
+  }
+  const btn = this.querySelector('button[type="submit"]');
+  const message = document.getElementById('message');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+
+  const payload = { type: FORM_TYPE, responses: collectResponses() };
+
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload), headers: { 'Content-Type': 'text/plain' } });
+    const result = await res.json();
+    if (result.status === 'success') {
       message.className = 'message success show';
       message.textContent = 'Le questionnaire RGPD EMMA-H a été envoyé avec succès. Merci pour votre collaboration.';
-      message.scrollIntoView({ behavior: 'smooth' });
-    });
+      this.reset();
+      const dateField = document.querySelector('[name="q0_4_date_remplissage"]');
+      if (dateField && dateField.type === 'date') dateField.valueAsDate = new Date();
+    } else {
+      throw new Error(result.message || 'Erreur inconnue');
+    }
+  } catch (err) {
+    message.className = 'message error show';
+    message.textContent = 'Erreur lors de l\'envoi : ' + err.message + '. Vos réponses n\'ont pas été sauvegardées. Veuillez réessayer ou contacter le DPO.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer le questionnaire';
+  }
+});
   </script>
 </body>
 </html>
