@@ -166,3 +166,15 @@ Une liste de 20 questions simples (oui/non) pour faire un autodiagnostic par ét
 
 *Document de brainstorming — UNAPEI92 — Juin 2025*
 *À faire valider par le DPO avant mise en œuvre*
+
+---
+
+## 🔗 Accès rapide
+
+- [🏠 Retour à la boîte à outils](index.html)
+- [📋 Kit RGPD — Tableau de bord](Kit%20UNAPEI92.html)
+- [🎓 Kit de formation (diaporama)](Kit_de_formations.html)
+- [👨‍🏫 Kit formateur (avec notes)](formation_RGPD.html)
+- [🚨 Journal des incidents](journal_incidents.html)
+- [📊 Dashboard général](dashboard_premium.html)
+
