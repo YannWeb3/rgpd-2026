@@ -4,56 +4,108 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Journal des Incidents RGPD — UNAPEI92</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
+:root {
+  --bg: #0b0f19;
+  --card: #161b26;
+  --card-hover: #1f2638;
+  --line: rgba(255,255,255,0.08);
+  --ink: #f3f4f6;
+  --ink-soft: #9ca3af;
+  --primary: #3b82f6;
+  --primary-bg: rgba(59,130,246,0.1);
+  --red: #f43f5e;
+  --red-bg: rgba(244,63,94,0.12);
+  --orange: #f59e0b;
+  --orange-bg: rgba(245,158,11,0.12);
+  --green: #10b981;
+  --green-bg: rgba(16,185,129,0.12);
+  --blue: #3b82f6;
+  --blue-bg: rgba(59,130,246,0.12);
+  --font-sans: 'Inter', sans-serif;
+  --border-radius-md: 10px;
+  --border-radius-lg: 14px;
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-text-success: #34d399;
+  --color-text-warning: #fbbf24;
+  --color-text-danger: #f87171;
+  --color-border-primary: rgba(255,255,255,0.08);
+  --color-border-secondary: rgba(255,255,255,0.12);
+  --color-border-tertiary: rgba(255,255,255,0.05);
+  --color-border-success: rgba(16,185,129,0.3);
+  --color-border-danger: rgba(244,63,94,0.3);
+  --color-background-secondary: rgba(255,255,255,0.03);
+  --color-background-success: rgba(16,185,129,0.06);
+  --color-background-warning: rgba(245,158,11,0.06);
+  --color-background-danger: rgba(244,63,94,0.08);
+  --color-background-info: rgba(59,130,246,0.08);
+  --color-text-tertiary: #64748b;
+  --color-text-info: #60a5fa;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans)}
-.form-wrap{padding:1.5rem 0}
-.banner{background:#1A4F8A;border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
-.banner-icon{background:rgba(255,255,255,0.15);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.banner-title{color:#fff;font-size:17px;font-weight:500;margin-bottom:2px}
-.banner-sub{color:#BDD7EE;font-size:13px}
-.alert-72{background:var(--color-background-danger);border:1px solid var(--color-border-danger);border-radius:var(--border-radius-md);padding:.85rem 1.1rem;margin-bottom:1.5rem;display:flex;gap:.75rem;align-items:flex-start}
-.alert-72 i{color:var(--color-text-danger);font-size:18px;margin-top:1px;flex-shrink:0}
-.alert-72 strong{color:var(--color-text-danger);font-size:13px}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-sans);line-height:1.6;font-size:15px;
+  background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%);
+  background-attachment:fixed}
+.wrap{max-width:720px;margin:0 auto;padding:40px 20px 80px}
+.form-wrap{padding:0}
+.banner{background:linear-gradient(135deg,#1e1b4b 0%,#0f172a 100%);border:1px solid rgba(99,102,241,0.2);border-radius:var(--border-radius-lg);padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.banner-icon{background:rgba(99,102,241,0.15);border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:22px}
+.banner-title{color:#fff;font-size:17px;font-weight:700;margin-bottom:2px}
+.banner-sub{color:#94a3b8;font-size:13px}
+.alert-72{background:var(--red-bg);border:1px solid var(--color-border-danger);border-radius:var(--border-radius-md);padding:.85rem 1.1rem;margin-bottom:1.5rem;display:flex;gap:.75rem;align-items:flex-start}
+.alert-72 strong{color:var(--red);font-size:13px;display:block;margin-bottom:4px}
 .alert-72 span{color:var(--color-text-danger);font-size:13px}
-.section-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;margin-top:1.25rem}
+.section-card{background:var(--card);border:1px solid var(--line);border-radius:var(--border-radius-lg);padding:1.5rem;margin-bottom:1.25rem}
+.section-label{font-size:11px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:.75rem}
 .field-row.full{grid-template-columns:1fr}
 .field-group{display:flex;flex-direction:column;gap:.35rem}
-label{font-size:13px;color:var(--color-text-secondary);display:flex;align-items:center;gap:.35rem}
-label .req{color:var(--color-text-danger);font-size:13px}
-input,select,textarea{width:100%;font-family:var(--font-sans);font-size:14px}
+label{font-size:13px;color:var(--ink-soft);display:flex;align-items:center;gap:.35rem}
+label .req{color:var(--red);font-size:13px}
+input,select,textarea{width:100%;font-family:var(--font-sans);font-size:14px;background:rgba(255,255,255,0.04);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:var(--ink);outline:none;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
 textarea{resize:vertical;min-height:80px}
 .gravity-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:.75rem}
-.gravity-card{border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.85rem .9rem;cursor:pointer;transition:border-color .15s;position:relative}
-.gravity-card:hover{border-color:var(--color-border-secondary)}
-.gravity-card.selected-low{border-color:#1D9E75;background:var(--color-background-success)}
-.gravity-card.selected-med{border-color:#BA7517;background:var(--color-background-warning)}
-.gravity-card.selected-high{border-color:#A32D2D;background:var(--color-background-danger)}
+.gravity-card{border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:.85rem .9rem;cursor:pointer;transition:all .15s;position:relative;background:rgba(255,255,255,0.02)}
+.gravity-card:hover{border-color:var(--color-border-secondary);background:rgba(255,255,255,0.04)}
+.gravity-card.selected-low{border-color:var(--green);background:var(--green-bg)}
+.gravity-card.selected-med{border-color:var(--orange);background:var(--orange-bg)}
+.gravity-card.selected-high{border-color:var(--red);background:var(--red-bg)}
 .gravity-card input[type=radio]{position:absolute;opacity:0;pointer-events:none}
-.gravity-label{font-size:13px;font-weight:500}
-.gravity-sub{font-size:11px;color:var(--color-text-secondary);margin-top:3px}
-.glow-low .gravity-label{color:var(--color-text-success)}
-.glow-med .gravity-label{color:var(--color-text-warning)}
-.glow-high .gravity-label{color:var(--color-text-danger)}
-.cnil-box{background:var(--color-background-danger);border:1px solid var(--color-border-danger);border-radius:var(--border-radius-md);padding:.9rem 1.1rem;margin:.75rem 0;display:none;align-items:flex-start;gap:.7rem}
+.gravity-label{font-size:13px;font-weight:600}
+.gravity-sub{font-size:11px;color:var(--ink-soft);margin-top:3px}
+.glow-low .gravity-label{color:var(--green)}
+.glow-med .gravity-label{color:var(--orange)}
+.glow-high .gravity-label{color:var(--red)}
+.cnil-box{background:var(--red-bg);border:1px solid var(--color-border-danger);border-radius:var(--border-radius-md);padding:.9rem 1.1rem;margin:.75rem 0;display:none;align-items:flex-start;gap:.7rem}
 .cnil-box.visible{display:flex}
-.cnil-box i{color:var(--color-text-danger);font-size:20px;flex-shrink:0;margin-top:1px}
 .cnil-box p{font-size:13px;color:var(--color-text-danger);line-height:1.5}
-.cnil-box strong{font-weight:500}
+.cnil-box strong{font-weight:600}
 .checklist{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem}
 .check-item{display:flex;align-items:flex-start;gap:.7rem;padding:.7rem .85rem;background:var(--color-background-secondary);border-radius:var(--border-radius-md);cursor:pointer;border:1.5px solid transparent;transition:border-color .15s}
 .check-item:hover{border-color:var(--color-border-secondary)}
-.check-item.checked{border-color:var(--color-border-success);background:var(--color-background-success)}
-.check-item input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;cursor:pointer;accent-color:#1D9E75}
+.check-item.checked{border-color:var(--color-border-success);background:var(--green-bg)}
+.check-item input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;cursor:pointer;accent-color:var(--green)}
 .check-item span{font-size:13px;color:var(--color-text-primary);line-height:1.5}
-.check-item.checked span{color:var(--color-text-success)}
-.divider{border:none;border-top:.5px solid var(--color-border-tertiary);margin:1.25rem 0}
+.check-item.checked span{color:var(--green)}
+.submit-btn{width:100%;background:var(--primary);color:#fff;border:none;border-radius:var(--border-radius-md);padding:14px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-sans);transition:background .15s}
+.submit-btn:hover{background:#2563eb}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed}
+.footer-links{text-align:center;padding:20px;border-top:1px solid var(--line);margin-top:40px}
+.footer-links a{color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;margin:0 10px}
+.footer-links a:hover{color:#60a5fa}
+@media(max-width:640px){.field-row{grid-template-columns:1fr}.gravity-row{grid-template-columns:1fr}}
+</style>
+.divider{border:none;border-top:1px solid var(--line);margin:1.25rem 0}
 .btn-row{display:flex;gap:.75rem;align-items:center;margin-top:1.5rem;flex-wrap:wrap}
-.btn-submit{background:#1A4F8A;color:#fff;border:none;border-radius:var(--border-radius-md);padding:.7rem 1.5rem;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:opacity .15s}
-.btn-submit:hover{opacity:.88}
-.btn-reset{background:transparent;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:.7rem 1.1rem;font-size:13px;color:var(--color-text-secondary);cursor:pointer}
-.btn-reset:hover{background:var(--color-background-secondary)}
+.btn-submit{background:var(--primary);color:#fff;border:none;border-radius:var(--border-radius-md);padding:.85rem 1.5rem;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.5rem;transition:background .15s;font-family:var(--font-sans)}
+.btn-submit:hover{background:#2563eb}
+.btn-reset{background:transparent;border:1px solid var(--line);border-radius:var(--border-radius-md);padding:.85rem 1.1rem;font-size:13px;color:var(--ink-soft);cursor:pointer;font-family:var(--font-sans);transition:all .15s}
+.btn-reset:hover{background:rgba(255,255,255,0.04);color:var(--ink)}
 .ref-note{font-size:12px;color:var(--color-text-tertiary);display:flex;align-items:center;gap:.35rem;margin-left:auto}
 .success-panel{display:none;text-align:center;padding:2rem 1rem}
 .success-panel.visible{display:block}
@@ -75,7 +127,7 @@ textarea{resize:vertical;min-height:80px}
 
   <div id="form-view">
     <div class="banner">
-      <div class="banner-icon"><i class="ti ti-file-alert" style="color:#fff;font-size:24px" aria-hidden="true"></i></div>
+      <div class="banner-icon">🚨</div>
       <div>
         <div class="banner-title">Journal des incidents — Cahier de bord des tempêtes</div>
         <div class="banner-sub">UNAPEI92 &nbsp;·&nbsp; Toute violation ou anomalie liée aux données personnelles</div>
@@ -83,9 +135,8 @@ textarea{resize:vertical;min-height:80px}
     </div>
 
     <div class="alert-72">
-      <i class="ti ti-clock-exclamation" aria-hidden="true"></i>
       <div>
-        <strong>Délai légal CNIL : 72 heures</strong><br>
+        <strong>⏰ Délai légal CNIL : 72 heures</strong>
         <span>Tout incident grave doit être signalé à la CNIL sous 72h à compter de sa découverte. Remplissez ce formulaire immédiatement — votre vigie RGPD et le DPO sont notifiés en temps réel.</span>
       </div>
     </div>
@@ -181,23 +232,23 @@ textarea{resize:vertical;min-height:80px}
     <div class="gravity-row">
       <div class="gravity-card" id="g-low" onclick="selectGravity('low')">
         <input type="radio" name="gravity" value="low" id="r-low">
-        <div class="gravity-label glow-low"><i class="ti ti-circle" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Faible</div>
+        <div class="gravity-label glow-low">•Faible</div>
         <div class="gravity-sub">Risque limité pour les personnes. Pas de diffusion externe.</div>
       </div>
       <div class="gravity-card" id="g-med" onclick="selectGravity('med')">
         <input type="radio" name="gravity" value="med" id="r-med">
-        <div class="gravity-label glow-med"><i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Modéré</div>
+        <div class="gravity-label glow-med">•Modéré</div>
         <div class="gravity-sub">Données sensibles ou un nombre significatif de personnes.</div>
       </div>
       <div class="gravity-card" id="g-high" onclick="selectGravity('high')">
         <input type="radio" name="gravity" value="high" id="r-high">
-        <div class="gravity-label glow-high"><i class="ti ti-flame" aria-hidden="true" style="font-size:13px;margin-right:4px"></i>Élevé</div>
+        <div class="gravity-label glow-high">•Élevé</div>
         <div class="gravity-sub">Violation massive, données de santé, risque de préjudice réel.</div>
       </div>
     </div>
 
     <div class="cnil-box" id="cnil-alert">
-      <i class="ti ti-clock-exclamation" aria-hidden="true"></i>
+      •
       <p><strong>Signalement CNIL requis dans les 72h.</strong> Compte tenu de la gravité, le DPO sera notifié immédiatement. Ne prenez aucune mesure corrective sans le consulter. Conservez toutes les preuves (emails, logs, captures d'écran).</p>
     </div>
 
@@ -260,27 +311,27 @@ textarea{resize:vertical;min-height:80px}
 
     <div class="btn-row">
       <button class="btn-submit" onclick="submitForm()">
-        <i class="ti ti-send" aria-hidden="true"></i>
+        •
         Envoyer au DPO &amp; à ma vigie RGPD
       </button>
       <button class="btn-reset" onclick="resetForm()">
-        <i class="ti ti-refresh" aria-hidden="true" style="font-size:14px;margin-right:4px"></i>Réinitialiser
+        •Réinitialiser
       </button>
-      <span class="ref-note"><i class="ti ti-lock" aria-hidden="true" style="font-size:13px"></i>Données transmises au DPO uniquement</span>
+      <span class="ref-note">•Données transmises au DPO uniquement</span>
     </div>
   </div>
 
   <div class="success-panel" id="success-view">
-    <div class="success-icon"><i class="ti ti-check" aria-hidden="true"></i></div>
+    <div class="success-icon">✓</div>
     <div class="success-title">Incident enregistré</div>
     <div class="success-sub">Votre signalement a bien été transmis. Votre vigie RGPD et le DPO ont reçu une notification immédiate.</div>
     <div class="success-ref" id="success-ref">Référence : INC-2025-001</div>
     <div class="success-alert" id="success-cnil" style="display:none">
-      <i class="ti ti-clock-exclamation" aria-hidden="true"></i>
+      •
       <p><strong>Incident de gravité élevée.</strong> Le DPO a été alerté en priorité. Ne touchez à rien et restez disponible. Le délai de 72h pour la CNIL court à partir de la découverte de l'incident.</p>
     </div>
     <button class="btn-submit" style="margin:1.25rem auto 0;justify-content:center" onclick="resetAll()">
-      <i class="ti ti-plus" aria-hidden="true"></i>
+      •
       Signaler un autre incident
     </button>
   </div>

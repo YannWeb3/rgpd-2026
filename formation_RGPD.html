@@ -505,6 +505,15 @@
             display: block;
             margin-bottom: 4px;
         }
+        .notes-hidden .slide-notes { display: none; }
+        .toggle-notes-btn {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+            background: var(--primary); color: #fff; border: none;
+            padding: 10px 18px; border-radius: 8px; font-size: 13px;
+            font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .toggle-notes-btn:hover { background: #2563eb; }
 
         @media (max-width: 850px) {
             .slide { aspect-ratio: auto; }
@@ -514,7 +523,7 @@
 </head>
 <body>
 
-<div class="presentation-container">
+<div class="presentation-container" id="presentation">
 
     <div class="slide slide-title-page">
         <div>
@@ -999,9 +1008,24 @@
 </div>
 
 
+<button class="toggle-notes-btn" onclick="toggleNotes()">👨‍🏫 Masquer les notes</button>
+
 <div style="text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:40px">
 <a href="index.html" style="color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;margin:0 10px">← Retour à la boîte à outils</a>
-<a href="Kit_de_formations.html" style="color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;margin:0 10px">📄 Kit de formations →</a>
+<a href="journal_incidents.html" style="color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;margin:0 10px">🚨 Journal des incidents →</a>
 </div>
+
+<script>
+function toggleNotes() {
+  var el = document.getElementById('presentation');
+  el.classList.toggle('notes-hidden');
+  var btn = document.querySelector('.toggle-notes-btn');
+  if (el.classList.contains('notes-hidden')) {
+    btn.textContent = '👨‍🏫 Afficher les notes';
+  } else {
+    btn.textContent = '👨‍🏫 Masquer les notes';
+  }
+}
+</script>
 </body>
 </html>

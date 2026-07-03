@@ -173,7 +173,7 @@ Une liste de 20 questions simples (oui/non) pour faire un autodiagnostic par ét
 
 - [🏠 Retour à la boîte à outils](index.html)
 - [📋 Kit RGPD — Tableau de bord](Kit%20UNAPEI92.html)
-- [🎓 Kit de formation (diaporama)](Kit_de_formations.html)
+- [🎓 Kit de formation (diaporama)](formation_RGPD.html)
 - [👨‍🏫 Kit formateur (avec notes)](formation_RGPD.html)
 - [🚨 Journal des incidents](journal_incidents.html)
 - [📊 Dashboard général](dashboard_premium.html)
