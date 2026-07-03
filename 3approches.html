@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3 Approches RGPD — UNAPEI92</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;line-height:1.6;font-size:15px;
+    background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%);
+    background-attachment:fixed}
+  .wrap{max-width:860px;margin:0 auto;padding:60px 24px 100px}
+
+  .cover{background:linear-gradient(135deg,#1e1b4b 0%,#0f172a 100%);border:1px solid rgba(99,102,241,0.2);border-radius:20px;padding:40px;margin-bottom:40px;position:relative;overflow:hidden}
+  .cover::before{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.2) 0%,transparent 70%);filter:blur(30px);pointer-events:none}
+  .cover-eyebrow{font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#818cf8;margin-bottom:14px;display:inline-block;background:rgba(99,102,241,0.15);padding:4px 12px;border-radius:100px}
+  .cover h1{font-size:clamp(24px,3.5vw,36px);font-weight:800;margin:0 0 12px;line-height:1.2;letter-spacing:-0.02em;background:linear-gradient(to right,#fff,#cbd5e1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .cover .sub{font-size:15px;color:#94a3b8;max-width:600px;line-height:1.6}
+  .cover .quote{font-size:14px;color:#818cf8;font-style:italic;margin-top:20px;padding:16px 20px;background:rgba(99,102,241,0.08);border-radius:12px;border-left:3px solid #818cf8;max-width:600px}
+  .cover .quote strong{color:#c7d2fe}
+
+  .section{margin-bottom:48px}
+  .section-title{font-size:13px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
+  .section-sub{font-size:13.5px;color:#94a3b8;margin-bottom:20px}
+
+  .approach-card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;margin-bottom:24px}
+  .approach-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+  .approach-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .icon-blue{background:rgba(59,130,246,0.12)}
+  .icon-green{background:rgba(16,185,129,0.12)}
+  .icon-yellow{background:rgba(245,158,11,0.12)}
+  .approach-header h2{font-size:18px;font-weight:700;margin:0;color:#fff}
+  .approach-tagline{font-size:13px;color:#94a3b8;font-style:italic;margin-bottom:20px;padding:10px 14px;background:rgba(255,255,255,0.03);border-radius:8px}
+
+  .tool-box{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:18px;margin-bottom:16px}
+  .tool-box h3{font-size:15px;font-weight:700;margin:0 0 8px;color:#e2e8f0}
+  .tool-box p{font-size:13px;color:#94a3b8;margin:0 0 10px;line-height:1.5}
+  .tool-box ul{margin:0;padding:0;list-style:none}
+  .tool-box ul li{font-size:13px;color:#cbd5e1;padding:4px 0;padding-left:18px;position:relative}
+  .tool-box ul li::before{content:'→';position:absolute;left:0;color:#64748b}
+
+  .action-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  .action-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#64748b;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)}
+  .action-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.05);color:#cbd5e1;vertical-align:top}
+  .action-table tr:last-child td{border-bottom:none}
+
+  .alert-box{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+  .alert-box h4{font-size:13px;font-weight:700;color:#34d399;margin:0 0 6px}
+  .alert-box p{font-size:13px;color:#94a3b8;margin:0;line-height:1.5}
+  .alert-box ul{margin:8px 0 0;padding:0;list-style:none}
+  .alert-box ul li{font-size:13px;color:#cbd5e1;padding:3px 0;padding-left:18px;position:relative}
+  .alert-box ul li::before{content:'•';position:absolute;left:4px;color:#34d399}
+
+  .compare-table{width:100%;border-collapse:collapse;font-size:13px;background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden}
+  .compare-table th{text-align:left;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#64748b;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.02)}
+  .compare-table td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,0.05);color:#cbd5e1;vertical-align:top}
+  .compare-table tr:last-child td{border-bottom:none}
+  .compare-table tr:hover td{background:rgba(255,255,255,0.02)}
+
+  .reco-box{background:linear-gradient(135deg,rgba(99,102,241,0.1) 0%,rgba(168,85,247,0.1) 100%);border:1px solid rgba(99,102,241,0.2);border-radius:16px;padding:24px;margin-bottom:40px}
+  .reco-box h3{font-size:16px;font-weight:700;margin:0 0 10px;color:#a5b4fc}
+  .reco-box p{font-size:14px;color:#cbd5e1;line-height:1.6;margin:0}
+
+  .footer-links{text-align:center;padding:20px;border-top:1px solid rgba(255,255,255,0.08);margin-top:40px}
+  .footer-links a{color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;margin:0 10px}
+  .footer-links a:hover{color:#93bbfd}
+
+  @media(max-width:640px){.cover{padding:24px 20px}.approach-card{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cover">
+    <div class="cover-eyebrow">Document stratégique</div>
+    <h1>🛡️ 3 approches pour déployer le RGPD</h1>
+    <p class="sub">Former le personnel et mettre en place des processus — vocabulaire volontairement simple et imagé.</p>
+    <div class="quote">
+      <strong>Le RGPD, c'est comme une clé de maison :</strong> tout le monde doit savoir qui a les clés, où elles sont rangées, et qui peut ouvrir quelle porte.
+    </div>
+  </div>
+
+  <!-- APPROCHE 1 -->
+  <div class="approach-card">
+    <div class="approach-header">
+      <div class="approach-icon icon-blue">🔵</div>
+      <h2>Approche 1 — Le Tableau de Bord du Capitaine</h2>
+    </div>
+    <div class="approach-tagline">Tout centraliser dans 2 outils simples, pilotés par un référent unique par établissement</div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 1 — Le Registre des Traitements (= le carnet de bord)</h3>
+      <p>C'est <strong>la liste de tout ce qu'on fait avec les données des personnes</strong> (résidents, familles, salariés).</p>
+      <ul>
+        <li><strong>Format recommandé :</strong> Tableur partagé (Excel en ligne / Google Sheets) avec accès limité</li>
+        <li><strong>Comment y accéder :</strong> Lien fixe dans un dossier partagé nommé <code>📁 RGPD - NE PAS EFFACER</code></li>
+        <li><strong>Qui le remplit :</strong> Le responsable de service, assisté par le DPO ou référent RGPD</li>
+        <li><strong>Quand le mettre à jour :</strong> À chaque nouveau logiciel, nouveau formulaire, nouveau partenaire</li>
+      </ul>
+    </div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 2 — Le Tableau de Suivi des Actions (= le tableau des alarmes)</h3>
+      <p>C'est <strong>un tableau visuel</strong> (type Trello, Notion ou même Excel) avec des feux rouges/orange/verts.</p>
+      <ul>
+        <li><strong>Format recommandé :</strong> Trello gratuit avec 5 colonnes = 5 actions RGPD à surveiller</li>
+        <li><strong>Comment y accéder :</strong> Via un lien dans la signature mail du référent RGPD, ou QR code affiché en salle de réunion</li>
+        <li><strong>Qui le consulte :</strong> Chefs de service, 1 fois par mois minimum</li>
+      </ul>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin:0 0 10px">🔍 Les 5 Actions à Surveiller</h4>
+    <table class="action-table">
+      <tr><th>#</th><th>Action</th><th>Image pour la retenir</th><th>Fréquence</th></tr>
+      <tr><td>1</td><td><strong>Droits des personnes</strong> (accès, rectification, effacement)</td><td>🔑 <em>"Chaque personne a le droit de récupérer ses clés"</em></td><td>À chaque demande + audit annuel</td></tr>
+      <tr><td>2</td><td><strong>Consentements</strong> (formulaires, photos, communications)</td><td>✋ <em>"On ne rentre pas sans frapper"</em></td><td>À chaque nouveau document</td></tr>
+      <tr><td>3</td><td><strong>Durées de conservation</strong> (on ne garde pas tout pour toujours)</td><td>🗑️ <em>"Le frigo se vide, on jette ce qui est périmé"</em></td><td>Tous les 6 mois</td></tr>
+      <tr><td>4</td><td><strong>Sécurité des accès</strong> (mots de passe, logiciels à jour)</td><td>🔒 <em>"La porte de la cave doit être fermée à clé"</em></td><td>Tous les 3 mois</td></tr>
+      <tr><td>5</td><td><strong>Sous-traitants et prestataires</strong> (contrats DPA signés)</td><td>📝 <em>"Même le plombier a besoin d'un badge"</em></td><td>À chaque nouveau contrat</td></tr>
+    </table>
+
+    <div class="alert-box">
+      <h4>🔄 Comment le Faire Vivre</h4>
+      <p>Réunion flash mensuelle de 15 min avec les chefs de service : "Notre tableau est-il vert ?"<br>
+      Nouveau salarié → 30 min de formation intégrée au parcours d'accueil<br>
+      Mise à jour annuelle en janvier (bilan + objectifs)</p>
+    </div>
+
+    <div class="alert-box" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2)">
+      <h4 style="color:#fbbf24">💾 Sauvegarde & Alertes</h4>
+      <p><strong>Backup :</strong> Le tableur partagé est sauvegardé automatiquement sur le cloud. Une copie PDF est faite chaque trimestre et archivée.</p>
+      <ul>
+        <li>🔴 1er janvier : révision annuelle complète</li>
+        <li>🟡 1er avril / 1er octobre : vérification durées de conservation + sous-traitants</li>
+        <li>🟢 1er de chaque mois : coup d'œil au tableau de bord (5 min)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- APPROCHE 2 -->
+  <div class="approach-card">
+    <div class="approach-header">
+      <div class="approach-icon icon-green">🟢</div>
+      <h2>Approche 2 — Le Réseau des Vigies</h2>
+    </div>
+    <div class="approach-tagline">Nommer un référent RGPD par établissement/service, former un réseau humain avant tout</div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 1 — La Fiche Réflexe par Service (= la recette de cuisine)</h3>
+      <p>Chaque service a <strong>une seule page A4</strong> qui dit : quelles données je collecte, pourquoi, combien de temps je les garde, qui y a accès.</p>
+      <ul>
+        <li><strong>Format :</strong> Fiche Word ou PDF, plastifiée, affichée dans le bureau du chef de service</li>
+        <li><strong>Comment y accéder :</strong> Version numérique dans un dossier <code>📁 Mon Service > RGPD</code></li>
+        <li><strong>Qui la crée :</strong> Le référent vigie avec l'aide du DPO lors d'un atelier de 2h</li>
+      </ul>
+    </div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 2 — Le Journal des Incidents (= le cahier de bord des tempêtes)</h3>
+      <p>Un document simple où on note <strong>tout problème lié aux données</strong> : email envoyé à la mauvaise personne, dossier perdu, accès non autorisé…</p>
+      <ul>
+        <li><strong>Format :</strong> <a href="journal_incidents.html" style="color:#60a5fa;text-decoration:none;font-weight:600">Formulaire en ligne →</a></li>
+        <li><strong>Comment y accéder :</strong> Lien QR code dans chaque bureau + lien dans l'intranet</li>
+        <li><strong>Délai légal :</strong> Tout incident grave doit être signalé à la CNIL <strong>sous 72h</strong> → la vigie prévient le DPO immédiatement</li>
+      </ul>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin:0 0 10px">🔍 Les 5 Actions à Surveiller</h4>
+    <table class="action-table">
+      <tr><th>#</th><th>Action</th><th>La vigie vérifie…</th></tr>
+      <tr><td>1</td><td><strong>Droits des personnes</strong></td><td>Y a-t-il des demandes non traitées depuis plus de 30 jours ?</td></tr>
+      <tr><td>2</td><td><strong>Consentements</strong></td><td>Les formulaires papier/numérique mentionnent-ils bien la finalité ?</td></tr>
+      <tr><td>3</td><td><strong>Durées de conservation</strong></td><td>Y a-t-il des dossiers "fantômes" de personnes parties depuis longtemps ?</td></tr>
+      <tr><td>4</td><td><strong>Sécurité des accès</strong></td><td>Les anciens salariés ont-ils encore leurs accès logiciels ?</td></tr>
+      <tr><td>5</td><td><strong>Sous-traitants</strong></td><td>Le dernier contrat signé inclut-il une clause de confidentialité des données ?</td></tr>
+    </table>
+
+    <div class="alert-box">
+      <h4>🔄 Comment le Faire Vivre</h4>
+      <p><strong>Réseau des vigies :</strong> Réunion trimestrielle de tous les référents RGPD des établissements<br>
+      <strong>Parrainage :</strong> Chaque nouvelle vigie est accompagnée 3 mois par une vigie expérimentée<br>
+      <strong>Boîte mail dédiée :</strong> <code>rgpd@unapei92.fr</code> — point d'entrée unique pour toutes les questions</p>
+    </div>
+
+    <div class="alert-box" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2)">
+      <h4 style="color:#fbbf24">💾 Sauvegarde & Alertes</h4>
+      <p><strong>Backup :</strong> Chaque fiche réflexe est versionnée (v1, v2…) dans un dossier cloud protégé<br>
+      <strong>Plan B humain :</strong> Si la vigie est absente, son N+1 prend le relais — c'est écrit dans la fiche de poste</p>
+      <ul>
+        <li>📧 Email automatique à la vigie le <strong>1er lundi de chaque mois</strong></li>
+        <li>📅 Rappel calendrier <strong>72h avant</strong> toute échéance réglementaire</li>
+        <li>🚨 Alerte immédiate au DPO si un incident est signalé</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- APPROCHE 3 -->
+  <div class="approach-card">
+    <div class="approach-header">
+      <div class="approach-icon icon-yellow">🟡</div>
+      <h2>Approche 3 — Le Parcours Fléché</h2>
+    </div>
+    <div class="approach-tagline">Former d'abord, outiller ensuite — une démarche progressive par vagues de 3 mois</div>
+
+    <div class="alert-box" style="background:rgba(99,102,241,0.08);border-color:rgba(99,102,241,0.2)">
+      <h4 style="color:#818cf8">🎯 Philosophie</h4>
+      <p>Plutôt que de tout déployer d'un coup (ce qui noie les équipes), on avance <strong>par paliers</strong>, comme un escalier.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#60a5fa;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Mois 1-3</div>
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">On forme</div>
+        <div style="font-size:12px;color:#94a3b8">Tout le monde comprend le "pourquoi"</div>
+      </div>
+      <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#34d399;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Mois 4-6</div>
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">On cartographie</div>
+        <div style="font-size:12px;color:#94a3b8">On remplit le registre ensemble</div>
+      </div>
+      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#fbbf24;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Mois 7-9</div>
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">On sécurise</div>
+        <div style="font-size:12px;color:#94a3b8">On corrige les failles identifiées</div>
+      </div>
+      <div style="background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.2);border-radius:10px;padding:14px;text-align:center">
+        <div style="font-size:11px;font-weight:700;color:#f87171;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Mois 10-12</div>
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">On audite</div>
+        <div style="font-size:12px;color:#94a3b8">On simule un contrôle CNIL</div>
+      </div>
+    </div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 1 — Le Kit de Formation Interne (= la boîte à outils du formateur)</h3>
+      <p>Un ensemble de supports prêts-à-l'emploi pour former sans être expert :</p>
+      <ul>
+        <li><a href="formation_RGPD.html" style="color:#60a5fa;text-decoration:none;font-weight:600">Diaporama de 20 min →</a> (niveau débutant, avec des exemples concrets de l'UNAPEI92)</li>
+        <li>Quiz de 10 questions (corrigé inclus)</li>
+        <li>Affiche format A3 "Les 5 réflexes RGPD" pour les salles de pause</li>
+        <li><strong>Qui anime :</strong> Le chef de service, aidé du support — pas besoin d'être juriste</li>
+      </ul>
+    </div>
+
+    <div class="tool-box">
+      <h3>🧰 Outil 2 — La Checklist d'Audit Interne (= la check-list du pilote avant décollage)</h3>
+      <p>Une liste de 20 questions simples (oui/non) pour faire un autodiagnostic par établissement.</p>
+      <ul>
+        <li><strong>Format :</strong> PDF interactif ou formulaire en ligne</li>
+        <li><strong>Quand l'utiliser :</strong> 1 fois par an minimum, et avant tout contrôle externe annoncé</li>
+      </ul>
+    </div>
+
+    <h4 style="font-size:13px;font-weight:700;color:#94a3b8;margin:0 0 10px">🔍 Les 5 Actions à Surveiller (avec leur saison)</h4>
+    <table class="action-table">
+      <tr><th>#</th><th>Action</th><th>Quand agir</th><th>Signal d'alarme</th></tr>
+      <tr><td>1</td><td><strong>Droits des personnes</strong></td><td>Toute l'année</td><td>🚨 Une demande sans réponse après 1 mois</td></tr>
+      <tr><td>2</td><td><strong>Consentements</strong></td><td>Avant chaque campagne de com / photos</td><td>🚨 Pas de case à cocher</td></tr>
+      <tr><td>3</td><td><strong>Durées de conservation</strong></td><td>Octobre (nettoyage d'automne 🍂)</td><td>🚨 Dossier de +5 ans sans justification</td></tr>
+      <tr><td>4</td><td><strong>Sécurité des accès</strong></td><td>Janvier + Juin</td><td>🚨 Mot de passe partagé entre collègues</td></tr>
+      <tr><td>5</td><td><strong>Sous-traitants</strong></td><td>Lors de chaque nouveau contrat</td><td>🚨 Contrat sans clause RGPD</td></tr>
+    </table>
+
+    <div class="alert-box">
+      <h4>🔄 Comment le Faire Vivre</h4>
+      <p><strong>"Le mois du RGPD" :</strong> Chaque octobre, une action de sensibilisation (affiche, quiz, mini-formation)<br>
+      <strong>Intégration RH :</strong> La formation RGPD est ajoutée au plan de formation annuel</p>
+      <p style="margin-top:8px;font-size:13px;color:#cbd5e1"><strong>3 indicateurs à suivre chaque trimestre :</strong><br>
+      • Nombre de demandes de droits reçues et traitées<br>
+      • Nombre d'incidents déclarés<br>
+      • Nombre de services à jour sur leur registre</p>
+    </div>
+
+    <div class="alert-box" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.2)">
+      <h4 style="color:#fbbf24">💾 Sauvegarde & Alertes</h4>
+      <p><strong>Backup physique + numérique :</strong> Tous les documents RGPD existent en 2 exemplaires (cloud + classeur papier).<br>
+      <strong>Règle d'or :</strong> Si le cloud tombe, le papier prend le relais. Si le papier brûle, le cloud suffit.</p>
+      <ul>
+        <li>🟢 <strong>Routine :</strong> Rappel mensuel automatique dans le calendrier de chaque chef de service</li>
+        <li>🟡 <strong>Vigilance :</strong> Email trimestriel du DPO avec le récapitulatif des points à vérifier</li>
+        <li>🔴 <strong>Urgence :</strong> Numéro de téléphone direct du DPO, connu de tous les chefs de service</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COMPARATIF -->
+  <div class="section-title">📊 Comparatif des 3 Approches</div>
+  <table class="compare-table">
+    <tr><th>Critère</th><th>🔵 Tableau de Bord</th><th>🟢 Réseau des Vigies</th><th>🟡 Parcours Fléché</th></tr>
+    <tr><td><strong>Vitesse de déploiement</strong></td><td>Rapide (1-2 mois)</td><td>Moyenne (3-4 mois)</td><td>Progressive (12 mois)</td></tr>
+    <tr><td><strong>Niveau d'expertise requis</strong></td><td>Moyen</td><td>Faible</td><td>Faible</td></tr>
+    <tr><td><strong>Implication des équipes</strong></td><td>Modérée</td><td>Forte</td><td>Forte</td></tr>
+    <tr><td><strong>Idéale si…</strong></td><td>DPO disponible et actif</td><td>Réseau d'établissements large</td><td>Équipes peu sensibilisées</td></tr>
+    <tr><td><strong>Risque principal</strong></td><td>Tout repose sur 1 outil</td><td>Dépend des personnes-vigies</td><td>Lent à démarrer</td></tr>
+  </table>
+
+  <!-- RECOMMANDATION -->
+  <div class="reco-box">
+    <h3>✅ Recommandation pour l'UNAPEI92</h3>
+    <p><strong>Combiner les approches 2 + 3 :</strong> Nommer des vigies (humain d'abord) ET avancer par paliers (formation → cartographie → sécurisation → audit). L'approche 1 vient en soutien comme tableau de bord centralisé pour le DPO.</p>
+  </div>
+
+  <div style="text-align:center;padding:16px;background:rgba(255,255,255,0.02);border-radius:12px;margin-bottom:40px">
+    <p style="font-size:13px;color:#64748b;margin:0">Document de brainstorming — UNAPEI92 — Juin 2025<br>À faire valider par le DPO avant mise en œuvre</p>
+  </div>
+
+  <div class="footer-links">
+    <a href="index.html">← Retour à la boîte à outils</a>
+    <a href="Kit UNAPEI92.html">📋 Kit RGPD</a>
+    <a href="formation_RGPD.html">🎓 Formation</a>
+    <a href="journal_incidents.html">🚨 Incidents</a>
+    <a href="dashboard_premium.html">📊 Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>
