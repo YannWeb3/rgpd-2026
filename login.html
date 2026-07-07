@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit RGPD — Connexion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1>🛡️ Kit RGPD — UNAPEI92</h1>
+        <p class="subtitle">Boîte à outils du référent RGPD par établissement</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="login-box card">
+      <div class="logo">🔐</div>
+      <h2>Accès référent RGPD</h2>
+      <p>Saisissez le code de votre établissement (4 chiffres).<br>Code admin : 0000.</p>
+      <label for="code">Code établissement *</label>
+      <input type="text" id="code" maxlength="4" inputmode="numeric" placeholder="Ex : 1001" autocomplete="off">
+      <button id="btn-login">Se connecter</button>
+      <div class="error" id="msg"></div>
+    </div>
+
+    <div class="footer">
+      Version prototype • Données de démonstration uniquement
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script>
+    const session = JSON.parse(sessionStorage.getItem('rgpd_session') || 'null');
+    if (session && session.role) {
+      location.href = session.role === 'admin' ? 'admin.html' : 'dashboard.html';
+    }
+
+    document.getElementById('btn-login').addEventListener('click', async () => {
+      const code = document.getElementById('code').value.trim();
+      if (!/^\d{4}$/.test(code)) {
+        document.getElementById('msg').textContent = 'Code à 4 chiffres requis.';
+        return;
+      }
+      const res = await api('login', code);
+      if (res.success) {
+        sessionStorage.setItem('rgpd_session', JSON.stringify(res));
+        location.href = res.role === 'admin' ? 'admin.html' : 'dashboard.html';
+      } else {
+        document.getElementById('msg').textContent = res.error || 'Erreur de connexion.';
+      }
+    });
+
+    document.getElementById('code').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') document.getElementById('btn-login').click();
+    });
+  </script>
+</body>
+</html>

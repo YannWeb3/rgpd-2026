@@ -68,13 +68,13 @@
   <script src="config.js"></script>
   <script>
     const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
-    if (!session.success || session.role !== 'admin') location.href = 'index.html';
+    if (!session.success || session.role !== 'admin') location.href = 'login.html';
 
     let data = {};
 
     document.getElementById('btn-logout').addEventListener('click', () => {
       sessionStorage.removeItem('rgpd_session');
-      location.href = 'index.html';
+      location.href = 'login.html';
     });
 
     document.getElementById('btn-export').addEventListener('click', async () => {

@@ -157,7 +157,7 @@
   <script src="config.js"></script>
   <script>
     const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
-    if (!session.success) location.href = 'index.html';
+    if (!session.success) location.href = 'login.html';
 
     const CODE = session.code;
     let currentTab = 'actions';
@@ -442,7 +442,7 @@
 
     document.getElementById('btn-logout').addEventListener('click', () => {
       sessionStorage.removeItem('rgpd_session');
-      location.href = 'index.html';
+      location.href = 'login.html';
     });
 
     function formatDateFR(d) {

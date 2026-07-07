@@ -1,64 +1,169 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kit RGPD — Connexion</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boîte à outils RGPD — UNAPEI92</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;line-height:1.6;font-size:15px;
+    background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%),
+    radial-gradient(circle at 90% 80%,rgba(168,85,247,0.04) 0%,transparent 40%);background-attachment:fixed}
+  .wrap{max-width:960px;margin:0 auto;padding:60px 24px 100px}
+  h1{font-size:clamp(28px,4vw,38px);font-weight:800;margin:0 0 8px;letter-spacing:-0.02em;
+    background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#94a3b8;font-size:15px;margin-bottom:40px;max-width:600px}
+  .section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin-bottom:16px;margin-top:36px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:8px}
+  .card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;
+    transition:transform .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,0.3)}
+  .card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;margin-bottom:14px}
+  .icon-blue{background:rgba(59,130,246,0.12)}
+  .icon-green{background:rgba(16,185,129,0.12)}
+  .icon-purple{background:rgba(168,85,247,0.12)}
+  .icon-orange{background:rgba(245,158,11,0.12)}
+  .icon-red{background:rgba(239,68,68,0.12)}
+  .card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
+  .card p{font-size:13px;color:#94a3b8;margin:0 0 14px;line-height:1.5}
+  .card .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;
+    background:rgba(255,255,255,0.06);color:#94a3b8}
+  .card a{color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .card a:hover{color:#93bbfd}
+  .footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
+  .footer a{color:#60a5fa;text-decoration:none}
+</style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <h1>🛡️ Kit RGPD — UNAPEI92</h1>
-        <p class="subtitle">Boîte à outils du référent RGPD par établissement</p>
-      </div>
+<div class="wrap">
+
+  <h1>🛡️ Boîte à outils RGPD</h1>
+  <p class="sub">Tous les outils, formations et procédures pour la mise en conformité RGPD du réseau UNAPEI92.</p>
+
+  <div class="section-title">Dashboards</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon icon-blue">📊</div>
+      <h2>Dashboard v1</h2>
+      <p>Tableau de bord du référent : 5 voyants, registre, plan d'actions, suivi mensuel.</p>
+      <span class="tag">Référents</span>
+      <div style="margin-top:12px"><a href="dashboard.html">Ouvrir →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-blue">🚀</div>
+      <h2>Dashboard v2</h2>
+      <p>Nouvelle version enrichie : mémo numéroté, formation, incident, rapport direction, rappels.</p>
+      <span class="tag">Nouveau</span>
+      <div style="margin-top:12px"><a href="dashboard-v2.html">Ouvrir →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-purple">📈</div>
+      <h2>Dashboard Premium</h2>
+      <p>Vue d'ensemble consolidée pour la direction.</p>
+      <span class="tag">Direction</span>
+      <div style="margin-top:12px"><a href="dashboard_premium.html">Ouvrir →</a></div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="login-box card">
-      <div class="logo">🔐</div>
-      <h2>Accès référent RGPD</h2>
-      <p>Saisissez le code de votre établissement (4 chiffres).<br>Code admin : 0000.</p>
-      <label for="code">Code établissement *</label>
-      <input type="text" id="code" maxlength="4" inputmode="numeric" placeholder="Ex : 1001" autocomplete="off">
-      <button id="btn-login">Se connecter</button>
-      <div class="error" id="msg"></div>
+  <div class="section-title">Kits & Guides</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon icon-blue">📘</div>
+      <h2>Kit UNAPEI92 complet</h2>
+      <p>Guide pédagogique complet : explications, visuels, procédures pas à pas.</p>
+      <span class="tag">Tous</span>
+      <div style="margin-top:12px"><a href="Kit%20UNAPEI92.html">Accéder →</a></div>
     </div>
-
-    <div class="footer">
-      Version prototype • Données de démonstration uniquement. <a href="index-landing.html" style="color:#60a5fa;text-decoration:none;">Accueil UNAPEI92 →</a> de démonstration uniquement
+    <div class="card">
+      <div class="card-icon icon-green">🎓</div>
+      <h2>Formation RGPD</h2>
+      <p>Diaporama 12 slides à projeter en réunion d'équipe. Quiz inclus.</p>
+      <span class="tag">Tous les salariés</span>
+      <div style="margin-top:12px"><a href="formation_RGPD.html">Voir →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-green">📚</div>
+      <h2>Kit formations</h2>
+      <p>Programme complet de formation RGPD pour l'ensemble du réseau.</p>
+      <span class="tag">Formation</span>
+      <div style="margin-top:12px"><a href="kit_formations.html">Accéder →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-green">📖</div>
+      <h2>Kit UNAPEI92 (alt.)</h2>
+      <p>Version alternative du kit pédagogique.</p>
+      <span class="tag">Référents</span>
+      <div style="margin-top:12px"><a href="kit_unapei92.html">Accéder →</a></div>
     </div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div class="section-title">Incidents & Actions</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon icon-red">🚨</div>
+      <h2>Journal des incidents</h2>
+      <p>Formulaire de signalement d'incident RGPD. Alerte si délai CNIL 72h dépassé.</p>
+      <span class="tag">Tout le personnel</span>
+      <div style="margin-top:12px"><a href="journal_incidents.html">Signaler →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-red">📋</div>
+      <h2>Journal incidents (alt.)</h2>
+      <p>Version alternative du journal des incidents RGPD.</p>
+      <span class="tag">Référents</span>
+      <div style="margin-top:12px"><a href="journal_incidents_rgpd.html">Ouvrir →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-orange">📝</div>
+      <h2>Plan d'action</h2>
+      <p>Plan d'action RGPD avec suivi des échéances et responsables.</p>
+      <span class="tag">Direction</span>
+      <div style="margin-top:12px"><a href="plan_action_rgpd.html">Voir →</a></div>
+    </div>
+  </div>
 
-  <script src="config.js"></script>
-  <script>
-    const session = JSON.parse(sessionStorage.getItem('rgpd_session') || 'null');
-    if (session && session.role) {
-      location.href = session.role === 'admin' ? 'admin.html' : 'dashboard.html';
-    }
+  <div class="section-title">Rapports & Stratégie</div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon icon-purple">📄</div>
+      <h2>Rapport de synthèse</h2>
+      <p>Rapport d'audit RGPD complet avec synthèse par établissement.</p>
+      <span class="tag">Direction</span>
+      <div style="margin-top:12px"><a href="rapport_audit.html">Lire →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-purple">📐</div>
+      <h2>3 approches de déploiement</h2>
+      <p>Analyse comparative : Tableau de bord, Réseau des Vigies, Parcours Fléché.</p>
+      <span class="tag">Stratégie</span>
+      <div style="margin-top:12px"><a href="3approches.html">Lire →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-purple">📊</div>
+      <h2>Avancement mission</h2>
+      <p>Suivi de l'avancement de la mission RGPD UNAPEI92.</p>
+      <span class="tag">Direction</span>
+      <div style="margin-top:12px"><a href="avancement_UNAPEI92.html">Voir →</a></div>
+    </div>
+    <div class="card">
+      <div class="card-icon icon-orange">📋</div>
+      <h2>Bilan mission Alten</h2>
+      <p>Bilan de la mission du responsable Alten.</p>
+      <span class="tag">Interne</span>
+      <div style="margin-top:12px"><a href="bilan-mission-alten.html">Lire →</a></div>
+    </div>
+  </div>
 
-    document.getElementById('btn-login').addEventListener('click', async () => {
-      const code = document.getElementById('code').value.trim();
-      if (!/^\d{4}$/.test(code)) {
-        document.getElementById('msg').textContent = 'Code à 4 chiffres requis.';
-        return;
-      }
-      const res = await api('login', code);
-      if (res.success) {
-        sessionStorage.setItem('rgpd_session', JSON.stringify(res));
-        location.href = res.role === 'admin' ? 'admin.html' : 'dashboard.html';
-      } else {
-        document.getElementById('msg').textContent = res.error || 'Erreur de connexion.';
-      }
-    });
+  <div class="footer">
+    <a href="login.html">🔐 Accès référent (connexion)</a> · 
+    <a href="admin.html">⚙️ Admin</a><br>
+    UNAPEI92 — Audit RGPD 2026
+  </div>
 
-    document.getElementById('code').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') document.getElementById('btn-login').click();
-    });
-  </script>
+</div>
 </body>
 </html>
