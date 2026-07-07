@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit RGPD — Vue DPO / Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1>🛡️ Kit RGPD — UNAPEI92</h1>
+        <p class="subtitle">Vue coordinateur / DPO — Tous les établissements</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="secondary" id="btn-logout" type="button">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h2>Tableau de bord consolidé</h2>
+    </div>
+
+    <!-- Métriques -->
+    <div class="card">
+      <div class="admin-grid" id="metrics"></div>
+    </div>
+
+    <!-- Scores -->
+    <div class="card">
+      <div class="header">
+        <h2>Scores par établissement</h2>
+        <button class="success" id="btn-export" type="button">📥 Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <table id="table-scores"></table>
+      </div>
+    </div>
+
+    <!-- Alertes -->
+    <div class="card">
+      <h2>🚨 Alertes</h2>
+      <div class="list" id="list-alertes"></div>
+    </div>
+
+    <!-- Actions en retard -->
+    <div class="card">
+      <h2>⏰ Actions en retard</h2>
+      <div class="list" id="list-retard"></div>
+    </div>
+
+    <!-- CNIL -->
+    <div class="card">
+      <h2>📢 Incidents graves à déclarer CNIL</h2>
+      <div class="list" id="list-cnil"></div>
+    </div>
+
+    <div class="footer">
+      Version prototype • Données de démonstration uniquement
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script>
+    const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
+    if (!session.success || session.role !== 'admin') location.href = 'index.html';
+
+    let data = {};
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      sessionStorage.removeItem('rgpd_session');
+      location.href = 'index.html';
+    });
+
+    document.getElementById('btn-export').addEventListener('click', async () => {
+      let csv = '';
+      if (MOCK) {
+        csv = 'Sheet;ID;' + Object.keys(data.referents[0]).join(';') + '\n';
+        ['referents', 'registre', 'actions', 'incidents', 'suivi'].forEach(name => {
+          data[name].forEach(r => {
+            csv += name + ';' + (r.id || '') + ';' + Object.values(r).map(v => `"${String(v).replace(/"/g, '""')}"`).join(';') + '\n';
+          });
+        });
+      } else {
+        csv = await api('export', 'all');
+      }
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'export_kit_rgpd.csv';
+      a.click();
+      showToast('Export CSV généré', 'success');
+    });
+
+    async function loadData() {
+      const res = await api('admin');
+      if (!res.success) return showToast(res.error, 'error');
+      data = res;
+      renderMetrics();
+      renderScores();
+      renderAlertes();
+      renderRetard();
+      renderCnil();
+    }
+
+    function lastScore(code) {
+      const rows = data.suivi.filter(s => s.code_etab === code).sort((a, b) => b.mois.localeCompare(a.mois));
+      return rows[0] || null;
+    }
+
+    function renderMetrics() {
+      const nbEtabs = data.referents.filter(r => r.actif === 'OUI').length;
+      const totalActions = data.actions.length;
+      const actionsLate = data.actions.filter(a => a.statut !== 'FAIT' && a.echeance && new Date(a.echeance) < new Date()).length;
+      const openIncidents = data.incidents.filter(i => i.statut !== 'CLOTURE').length;
+      const criticalOpen = data.incidents.filter(i => i.gravite === 'CRITIQUE' && i.statut !== 'CLOTURE').length;
+      const cnilToDo = data.incidents.filter(i => (i.gravite === 'ELEVEE' || i.gravite === 'CRITIQUE') && i.cnil_declare === 'NON' && i.statut !== 'CLOTURE').length;
+
+      document.getElementById('metrics').innerHTML = `
+        <div class="voyant ok"><span class="emoji">🏢</span><span class="label">Établissements actifs</span><span class="value">${nbEtabs}</span></div>
+        <div class="voyant ${actionsLate ? 'warn' : 'ok'}"><span class="emoji">⏰</span><span class="label">Actions en retard</span><span class="value">${actionsLate}</span></div>
+        <div class="voyant ${criticalOpen ? 'danger' : 'ok'}"><span class="emoji">🆘</span><span class="label">Incidents critiques</span><span class="value">${criticalOpen}</span></div>
+        <div class="voyant ${cnilToDo ? 'danger' : 'ok'}"><span class="emoji">📢</span><span class="label">Déclarations CNIL à faire</span><span class="value">${cnilToDo}</span></div>
+      `;
+    }
+
+    function renderScores() {
+      const rows = data.referents.filter(r => r.actif === 'OUI').map(r => {
+        const s = lastScore(r.code);
+        const scoreColor = s ? (s.score >= 80 ? 'var(--success)' : s.score >= 50 ? 'var(--warning)' : 'var(--danger)') : 'var(--text-muted)';
+        return `
+          <tr>
+            <td>${r.code}</td>
+            <td>${r.etablissement}</td>
+            <td>${r.referent}</td>
+            <td>${s ? s.mois : '—'}</td>
+            <td style="color:${scoreColor}; font-weight:700;">${s ? s.score + '%' : '—'}</td>
+            <td>${s ? s.nb_actions_faites + '/' + s.nb_actions_total : '—'}</td>
+            <td>${s ? s.nb_incidents : '—'}</td>
+          </tr>`;
+      }).join('');
+      document.getElementById('table-scores').innerHTML = `
+        <thead><tr><th>Code</th><th>Établissement</th><th>Référent</th><th>Mois</th><th>Score</th><th>Actions</th><th>Incidents</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="7" style="text-align:center; color:var(--text-muted)">Aucun établissement</td></tr>'}</tbody>`;
+    }
+
+    function renderAlertes() {
+      const alertes = [];
+      data.actions.filter(a => a.statut !== 'FAIT' && a.echeance && new Date(a.echeance) < new Date()).forEach(a => {
+        alertes.push({ type: 'action-retard', text: `Action en retard : ${a.titre} (${a.code_etab})`, priorite: a.priorite });
+      });
+      data.incidents.filter(i => i.gravite === 'CRITIQUE' && i.statut !== 'CLOTURE').forEach(i => {
+        alertes.push({ type: 'incident-critique', text: `Incident critique : ${i.type} à ${i.code_etab}`, priorite: 'HAUTE' });
+      });
+      data.incidents.filter(i => (i.gravite === 'ELEVEE' || i.gravite === 'CRITIQUE') && i.cnil_declare === 'NON' && i.statut !== 'CLOTURE').forEach(i => {
+        alertes.push({ type: 'cnil', text: `Déclaration CNIL requise : ${i.type} à ${i.code_etab}`, priorite: 'HAUTE' });
+      });
+
+      const container = document.getElementById('list-alertes');
+      if (alertes.length === 0) {
+        container.innerHTML = '<p style="color:var(--success); text-align:center;">Aucune alerte. ✅</p>';
+        return;
+      }
+      container.innerHTML = alertes.map(a => `
+        <div class="alert ${a.priorite === 'HAUTE' ? '' : 'warn'}">${a.text}</div>`).join('');
+    }
+
+    function renderRetard() {
+      const rows = data.actions.filter(a => a.statut !== 'FAIT' && a.echeance && new Date(a.echeance) < new Date());
+      const container = document.getElementById('list-retard');
+      if (rows.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucune action en retard.</p>';
+        return;
+      }
+      container.innerHTML = rows.map(a => `
+        <div class="list-item">
+          <div class="title">
+            <span>${a.titre}</span>
+            <span class="badge ${a.priorite === 'HAUTE' ? 'danger' : a.priorite === 'MOYENNE' ? 'warn' : 'ok'}">${a.priorite}</span>
+          </div>
+          <div class="meta">Échéance : ${formatDateFR(a.echeance)} · Établissement : ${a.code_etab} · Statut : ${a.statut}</div>
+        </div>`).join('');
+    }
+
+    function renderCnil() {
+      const rows = data.incidents.filter(i => (i.gravite === 'ELEVEE' || i.gravite === 'CRITIQUE') && i.cnil_declare === 'NON' && i.statut !== 'CLOTURE');
+      const container = document.getElementById('list-cnil');
+      if (rows.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucune déclaration CNIL en attente.</p>';
+        return;
+      }
+      container.innerHTML = rows.map(i => `
+        <div class="list-item" style="border-left:4px solid var(--danger)">
+          <div class="title">
+            <span>${i.type}</span>
+            <span class="badge danger">${i.gravite}</span>
+          </div>
+          <div class="meta">${i.code_etab} · ${i.nb_personnes} personnes · ${formatDateFR(i.date_incident)}</div>
+          <div class="meta">${i.description}</div>
+        </div>`).join('');
+    }
+
+    function formatDateFR(d) {
+      if (!d) return '—';
+      if (d.includes('/')) return d;
+      const [a, m, j] = d.split('-');
+      return `${j}/${m}/${a}`;
+    }
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast show ' + type;
+      setTimeout(() => toast.className = 'toast', 2500);
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

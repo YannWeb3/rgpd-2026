@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit RGPD — Dashboard Référent</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1>🛡️ Kit RGPD — UNAPEI92</h1>
+        <p class="subtitle" id="subtitle"></p>
+      </div>
+      <div class="topbar-actions">
+        <button class="secondary" id="btn-logout" type="button">Déconnexion</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h2 id="title">Mon tableau de bord</h2>
+    </div>
+
+    <!-- 5 voyants RGPD -->
+    <div class="card">
+      <h3>Les 5 voyants RGPD</h3>
+      <p>Comme le tableau de bord d'une voiture : un coup d'œil suffit pour savoir où on en est.</p>
+      <div class="voyants" id="voyants"></div>
+    </div>
+
+    <!-- Score mensuel -->
+    <div class="card">
+      <div class="score-display">
+        <div class="label">Score mensuel — <span id="mois-courant"></span></div>
+        <div class="value" id="score">—</div>
+      </div>
+      <button id="btn-recalc-score" type="button">🔄 Recalculer le score</button>
+    </div>
+
+    <!-- Onglets -->
+    <div class="tabs">
+      <div class="tab active" data-tab="actions">🎯 Actions</div>
+      <div class="tab" data-tab="registre">📋 Registre</div>
+      <div class="tab" data-tab="incidents">🚨 Incidents</div>
+      <div class="tab" data-tab="suivi">📈 Suivi</div>
+    </div>
+
+    <div id="section-actions" class="section active">
+      <details class="help-card warn">
+        <summary>💡 Comprendre le plan d'actions</summary>
+        <div class="help-body">
+          <p>Le <strong>plan d'actions</strong> liste tout ce qu'il reste à faire pour être conforme. Chaque action a une <strong>priorité</strong> et une <strong>échéance</strong>.</p>
+          <ul>
+            <li>Ajoutez une action dès qu'un point à régulariser est identifié.</li>
+            <li>Mettez le statut à <strong>FAIT</strong> quand c'est terminé.</li>
+            <li>Les actions <strong>HAUTE</strong> et en retard apparaissent en rouge dans les alertes DPO.</li>
+          </ul>
+          <div class="help-tip">👉 Exemple : "Signer le DPA avec le prestataire vidéosurveillance" — échéance 15/08/2026.</div>
+        </div>
+      </details>
+      <div class="card">
+        <div class="header">
+          <h2>Plan d'actions</h2>
+          <button class="success" id="btn-add-action" type="button" onclick="openForm('actions')">+ Ajouter</button>
+        </div>
+        <div class="list" id="list-actions"></div>
+      </div>
+    </div>
+
+    <div id="section-registre" class="section">
+      <details class="help-card info">
+        <summary>💡 Comprendre le registre des traitements</summary>
+        <div class="help-body">
+          <p>Le <strong>registre des traitements</strong> est la liste de tout ce qu'on fait avec les données. C'est le carnet de bord obligatoire.</p>
+          <ul>
+            <li><strong>Quand le mettre à jour ?</strong> Nouveau logiciel · Nouveau formulaire · Nouveau prestataire · Changement de durée de conservation · Départ d'un partenaire.</li>
+            <li>Validation par le DPO externe : <strong>1 fois par an</strong>.</li>
+            <li>Notez le <strong>sous-traitant</strong> et vérifiez que le DPA (contrat RGPD) est signé.</li>
+          </ul>
+          <div class="help-tip">👉 Exemple : Dossier résident — Ogirys — données de santé — conservation : durée de prise en charge + 10 ans.</div>
+        </div>
+      </details>
+      <div class="card">
+        <div class="header">
+          <h2>Registre des traitements</h2>
+          <button class="success" id="btn-add-registre" type="button" onclick="openForm('registre')">+ Ajouter</button>
+        </div>
+        <div class="list" id="list-registre"></div>
+      </div>
+    </div>
+
+    <div id="section-incidents" class="section">
+      <details class="help-card danger">
+        <summary>🚨 Que faire en cas d'incident ?</summary>
+        <div class="help-body">
+          <p>Un incident RGPD, c'est comme un dégât des eaux : <strong>on coupe l'eau d'abord, on appelle le plombier (le DPO), et on documente les dégâts</strong>.</p>
+          <ul>
+            <li><strong>Dans l'heure :</strong> stopper la fuite et appeler le DPO par téléphone.</li>
+            <li><strong>Dans les 24h :</strong> documenter : quoi, combien de personnes, quelles données, fuite stoppée ?</li>
+            <li><strong>Avant 72h :</strong> le DPO décide si la CNIL doit être notifiée.</li>
+          </ul>
+          <div class="help-tip">⚠️ Email envoyé à la mauvaise personne, dossier perdu, accès non autorisé, piratage : tous sont des incidents.</div>
+        </div>
+      </details>
+      <div class="card">
+        <div class="header">
+          <h2>Incidents</h2>
+          <button class="success" id="btn-add-incident" type="button" onclick="openForm('incidents')">+ Déclarer</button>
+        </div>
+        <div class="list" id="list-incidents"></div>
+      </div>
+    </div>
+
+    <div id="section-suivi" class="section">
+      <details class="help-card ok">
+        <summary>📈 Comprendre le suivi mensuel</summary>
+        <div class="help-body">
+          <p>Le <strong>suivi mensuel</strong> donne une vue synthétique de la conformité de votre établissement. Il sert à :</p>
+          <ul>
+            <li>Communiquer avec la direction et le DPO externe.</li>
+            <li>Repérer les tendances (actions en retard, incidents récurrents).</li>
+            <li>Justifier les progrès lors des audits.</li>
+          </ul>
+          <div class="help-tip">👉 Cliquez sur "Recalculer le score" en haut de page pour mettre à jour le score du mois en cours.</div>
+        </div>
+      </details>
+      <div class="card">
+        <h2>Historique mensuel</h2>
+        <div class="list" id="list-suivi"></div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Version prototype • Données de démonstration uniquement
+    </div>
+  </div>
+
+  <!-- Modal formulaire -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Formulaire</h3>
+      <form id="modal-form">
+        <div id="modal-fields"></div>
+        <div class="modal-actions">
+          <button class="secondary" type="button" id="btn-cancel">Annuler</button>
+          <button type="submit" id="btn-save">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script>
+    const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
+    if (!session.success) location.href = 'index.html';
+
+    const CODE = session.code;
+    let currentTab = 'actions';
+    let data = {};
+
+    const SHEETS = {
+      actions: { title: 'Action', fields: [
+        { name: 'titre', label: 'Titre', type: 'text', required: true },
+        { name: 'priorite', label: 'Priorité', type: 'select', options: ['HAUTE', 'MOYENNE', 'BASSE'], required: true },
+        { name: 'echeance', label: 'Échéance (jj/mm/aaaa)', type: 'text', required: true },
+        { name: 'statut', label: 'Statut', type: 'select', options: ['A_FAIRE', 'EN_COURS', 'FAIT', 'BLOQUE'], required: true },
+        { name: 'responsable', label: 'Responsable', type: 'text' },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]},
+      registre: { title: 'Traitement', fields: [
+        { name: 'categorie', label: 'Catégorie', type: 'text', required: true },
+        { name: 'traitement', label: 'Nom du traitement', type: 'text', required: true },
+        { name: 'finalite', label: 'Finalité', type: 'text', required: true },
+        { name: 'responsable', label: 'Responsable', type: 'text' },
+        { name: 'base_legale', label: 'Base légale', type: 'text' },
+        { name: 'duree_conservation', label: 'Durée de conservation', type: 'text' },
+        { name: 'donnees_concernees', label: 'Données concernées', type: 'textarea' },
+        { name: 'destinataires', label: 'Destinataires', type: 'text' },
+        { name: 'mesures_securite', label: 'Mesures de sécurité', type: 'textarea' },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]},
+      incidents: { title: 'Incident', fields: [
+        { name: 'date_incident', label: 'Date incident (jj/mm/aaaa)', type: 'text', required: true },
+        { name: 'type', label: 'Type', type: 'text', required: true },
+        { name: 'gravite', label: 'Gravité', type: 'select', options: ['FAIBLE', 'MOYENNE', 'ELEVEE', 'CRITIQUE'], required: true },
+        { name: 'description', label: 'Description', type: 'textarea', required: true },
+        { name: 'nb_personnes', label: 'Nb personnes concernées', type: 'text' },
+        { name: 'cnil_declare', label: 'Déclaration CNIL', type: 'select', options: ['NON', 'OUI'] },
+        { name: 'statut', label: 'Statut', type: 'select', options: ['OUVERT', 'EN_COURS', 'CLOTURE'], required: true },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]}
+    };
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast show ' + type;
+      setTimeout(() => toast.className = 'toast', 2500);
+    }
+
+    async function loadData() {
+      const res = await api('dashboard', CODE);
+      if (!res.success) {
+        showToast(res.error, 'error');
+        return;
+      }
+      data = res;
+      document.getElementById('title').textContent = session.etablissement || 'Mon tableau de bord';
+      document.getElementById('subtitle').textContent = `Référent : ${session.referent || ''} · Code : ${CODE}`;
+      document.getElementById('mois-courant').textContent = new Date().toISOString().slice(0, 7);
+      renderVoyants();
+      renderScore();
+      renderList('actions');
+      renderList('registre');
+      renderList('incidents');
+      renderSuivi();
+    }
+
+    function renderVoyants() {
+      const actions = data.actions || [];
+      const incidents = data.incidents || [];
+      const registre = data.registre || [];
+
+      const totalActions = actions.length;
+      const faites = actions.filter(a => a.statut === 'FAIT').length;
+      const retards = actions.filter(a => a.echeance < new Date().toISOString().split('T')[0] && a.statut !== 'FAIT').length;
+      const incidentsOuverts = incidents.filter(i => i.statut !== 'CLOTURE').length;
+      const incidentsCritiques = incidents.filter(i => i.gravite === 'CRITIQUE').length;
+
+      const score = totalActions === 0 ? 0 : Math.round((faites / totalActions) * 100);
+      const scoreClass = score >= 80 ? 'ok' : score >= 50 ? 'warn' : 'danger';
+
+      document.getElementById('voyants').innerHTML = `
+        <div class="voyant ok" onclick="switchTab('actions')">
+          <span class="emoji">🗂️</span>
+          <span class="label">Registre</span>
+          <span class="value">${registre.length}</span>
+        </div>
+        <div class="voyant ${scoreClass}" onclick="switchTab('actions')">
+          <span class="emoji">✅</span>
+          <span class="label">Actions faites</span>
+          <span class="value">${faites}/${totalActions}</span>
+        </div>
+        <div class="voyant ${incidentsOuverts ? 'warn' : 'ok'}" onclick="switchTab('incidents')">
+          <span class="emoji">🚨</span>
+          <span class="label">Incidents</span>
+          <span class="value">${incidentsOuverts}</span>
+        </div>
+        <div class="voyant ${retards ? 'danger' : 'ok'}" onclick="switchTab('actions')">
+          <span class="emoji">⏰</span>
+          <span class="label">En retard</span>
+          <span class="value">${retards}</span>
+        </div>
+        <div class="voyant ${incidentsCritiques ? 'danger' : 'ok'}" onclick="switchTab('incidents')">
+          <span class="emoji">🆘</span>
+          <span class="label">Urgence</span>
+          <span class="value">${incidentsCritiques}</span>
+        </div>
+      `;
+    }
+
+    function renderScore() {
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      const row = data.suivi.find(s => s.mois === currentMonth) || data.suivi.sort((a, b) => b.mois.localeCompare(a.mois))[0];
+      const score = row ? row.score : 0;
+      document.getElementById('score').textContent = score + '%';
+      document.getElementById('score').style.color = score >= 80 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
+    }
+
+    function renderList(type) {
+      const container = document.getElementById('list-' + type);
+      const items = data[type] || [];
+      if (!items.length) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucune entrée.</p>';
+        return;
+      }
+      container.innerHTML = items.map(item => {
+        let title = item.titre || item.traitement || item.type || '#' + item.id;
+        let meta = [];
+        if (type === 'actions') {
+          meta.push(`Échéance : ${formatDateFR(item.echeance)}`);
+          meta.push(`Statut : ${item.statut}`);
+        } else if (type === 'registre') {
+          meta.push(`Catégorie : ${item.categorie}`);
+          meta.push(`Responsable : ${item.responsable || '—'}`);
+        } else if (type === 'incidents') {
+          meta.push(`Date : ${formatDateFR(item.date_incident)}`);
+          meta.push(`Gravité : ${item.gravite}`);
+        }
+        const badgeClass = getBadgeClass(type, item);
+        return `
+          <div class="list-item">
+            <div class="title">
+              <span>${title}</span>
+              <span class="badge ${badgeClass}">${getBadgeLabel(type, item)}</span>
+            </div>
+            <div class="meta">${meta.join(' · ')}</div>
+            <div class="actions">
+              <button class="secondary" type="button" onclick="openForm('${type}', '${item.id}')">✏️ Modifier</button>
+              <button class="danger" type="button" onclick="deleteRow('${type}', '${item.id}')">🗑️ Supprimer</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getBadgeClass(type, item) {
+      if (type === 'actions') {
+        return item.statut === 'FAIT' ? 'ok' : item.priorite === 'HAUTE' ? 'danger' : item.priorite === 'MOYENNE' ? 'warn' : 'info';
+      }
+      if (type === 'incidents') {
+        return item.gravite === 'CRITIQUE' ? 'danger' : item.gravite === 'ELEVEE' ? 'warn' : item.gravite === 'MOYENNE' ? 'warn' : 'ok';
+      }
+      return 'ok';
+    }
+
+    function getBadgeLabel(type, item) {
+      if (type === 'actions') return item.statut;
+      if (type === 'incidents') return item.gravite;
+      return item.categorie;
+    }
+
+    function renderSuivi() {
+      const container = document.getElementById('list-suivi');
+      const rows = data.suivi ? [...data.suivi].sort((a, b) => b.mois.localeCompare(a.mois)) : [];
+      if (!rows.length) {
+        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucun suivi mensuel.</p>';
+        return;
+      }
+      container.innerHTML = rows.map(s => {
+        const color = s.score >= 80 ? 'var(--success)' : s.score >= 50 ? 'var(--warning)' : 'var(--danger)';
+        return `
+          <div class="list-item">
+            <div class="title">
+              <span>${s.mois}</span>
+              <span style="color:${color}; font-weight:700;">${s.score}%</span>
+            </div>
+            <div class="meta">
+              Actions : ${s.nb_actions_faites}/${s.nb_actions_total} · Incidents : ${s.nb_incidents} · Critiques : ${s.nb_incidents_critiques}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.switchTab = function(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+      document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === 'section-' + tab));
+      currentTab = tab;
+    };
+
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => switchTab(t.dataset.tab));
+    });
+
+    window.openForm = function(type, id = null) {
+      const sheet = SHEETS[type];
+      const item = id ? data[type].find(r => r.id === id) : {};
+      document.getElementById('modal-title').textContent = (id ? 'Modifier ' : 'Ajouter ') + sheet.title.toLowerCase();
+      document.getElementById('modal-fields').innerHTML = sheet.fields.map(f => {
+        const val = (item[f.name] || '');
+        if (f.type === 'select') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <select id="f-${f.name}" name="${f.name}" ${f.required ? 'required' : ''}>
+              ${f.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+            </select>`;
+        }
+        if (f.type === 'textarea') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <textarea id="f-${f.name}" name="${f.name}" rows="3" ${f.required ? 'required' : ''}>${val}</textarea>`;
+        }
+        return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+          <input type="${f.type}" id="f-${f.name}" name="${f.name}" value="${val}" ${f.required ? 'required' : ''}>`;
+      }).join('') + `<input type="hidden" id="form-type" value="${type}"><input type="hidden" id="form-id" value="${id || ''}">`;
+      document.getElementById('modal').classList.add('active');
+    };
+
+    document.getElementById('btn-cancel').addEventListener('click', () => document.getElementById('modal').classList.remove('active'));
+
+    document.getElementById('modal-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const type = document.getElementById('form-type').value;
+      const id = document.getElementById('form-id').value;
+      const row = { code_etab: CODE };
+      let hasError = false;
+      SHEETS[type].fields.forEach(f => {
+        const val = document.getElementById('f-' + f.name).value.trim();
+        if (f.required && !val) {
+          showToast(`Champ obligatoire : ${f.label}`, 'error');
+          hasError = true;
+        }
+        row[f.name] = val;
+      });
+      if (hasError) return;
+
+      if (row.echeance && row.echeance.includes('/')) {
+        const [j, m, a] = row.echeance.split('/');
+        row.echeance = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+      }
+      if (row.date_incident && row.date_incident.includes('/')) {
+        const [j, m, a] = row.date_incident.split('/');
+        row.date_incident = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+      }
+
+      const action = id ? 'update' : 'create';
+      const res = await api(null, null, 'POST', { action, sheet: type.toUpperCase(), id, row });
+      if (res.success) {
+        showToast(id ? 'Modifié' : 'Ajouté', 'success');
+        document.getElementById('modal').classList.remove('active');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    });
+
+    window.deleteRow = async function(type, id) {
+      if (!confirm('Supprimer cette entrée ?')) return;
+      const res = await api(null, null, 'POST', { action: 'delete', sheet: type.toUpperCase(), id });
+      if (res.success) {
+        showToast('Supprimé', 'success');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    };
+
+    document.getElementById('btn-recalc-score').addEventListener('click', async () => {
+      const mois = new Date().toISOString().slice(0, 7);
+      const res = await api(null, null, 'POST', { action: 'score', code_etab: CODE, mois });
+      if (res.success) {
+        showToast('Score recalculé : ' + res.score + '%', 'success');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      sessionStorage.removeItem('rgpd_session');
+      location.href = 'index.html';
+    });
+
+    function formatDateFR(d) {
+      if (!d) return '—';
+      if (d.includes('/')) return d;
+      const [a, m, j] = d.split('-');
+      return `${j}/${m}/${a}`;
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
