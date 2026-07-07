@@ -3,77 +3,109 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carnet RGPD — UNAPEI92</title>
+<title>Kit RGPD — UNAPEI92</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #0b0f19;
+    --card: #161b26;
+    --card-hover: #1f2638;
+    --line: rgba(255,255,255,0.08);
+    --ink: #f3f4f6;
+    --ink-soft: #9ca3af;
+    --primary: #6366f1;
+    --primary-bg: rgba(99,102,241,0.1);
+    --red: #f43f5e;
+    --red-bg: rgba(244,63,94,0.12);
+    --orange: #f59e0b;
+    --orange-bg: rgba(245,158,11,0.12);
+    --green: #10b981;
+    --green-bg: rgba(16,185,129,0.12);
+    --blue: #3b82f6;
+    --blue-bg: rgba(59,130,246,0.12);
+    --purple: #a855f7;
+    --purple-bg: rgba(168,85,247,0.12);
+  }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'Atkinson Hyperlegible',sans-serif;background:#F5F0E8;color:#2D2A24;line-height:1.7;font-size:16px}
-  .page{max-width:780px;margin:0 auto;padding:48px 32px 80px}
-  h1{font-family:'DM Serif Display',serif;font-size:clamp(28px,4vw,36px);font-weight:400;color:#3D3529;margin-bottom:4px;letter-spacing:-0.01em}
-  .sub{font-size:14px;color:#7D7568;margin-bottom:40px;border-left:3px solid #C4A882;padding-left:16px}
-  .stamp{display:inline-block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
-    color:#8B7D6B;border:1px solid #D4C9B8;padding:3px 10px;border-radius:2px;margin-bottom:24px}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.6;font-size:15px;
+    background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%),
+    radial-gradient(circle at 90% 80%,rgba(168,85,247,0.04) 0%,transparent 40%);background-attachment:fixed}
+  .wrap{max-width:960px;margin:0 auto;padding:60px 24px 100px}
+  .cover{background:linear-gradient(135deg,#1e1b4b 0%,#0f172a 100%);color:#fff;border-radius:24px;padding:48px;margin-bottom:44px;
+    border:1px solid rgba(99,102,241,0.2);position:relative}
+  .cover::before{content:'';position:absolute;top:-40px;right:40px;width:200px;height:200px;
+    background:radial-gradient(circle,rgba(168,85,247,0.2) 0%,transparent 70%);filter:blur(30px);pointer-events:none}
+  .cover-eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+    color:#818cf8;margin-bottom:18px;display:inline-block;background:rgba(99,102,241,0.15);padding:4px 12px;border-radius:100px}
+  .cover h1{font-family:'Plus Jakarta Sans',sans-serif;font-size:clamp(28px,4vw,36px);font-weight:800;margin:0 0 12px;letter-spacing:-0.02em}
+  .cover p{color:#c7d2fe;font-size:15px;max-width:600px;line-height:1.6}
   .section{margin-bottom:48px}
-  .section-title{font-family:'DM Serif Display',serif;font-size:22px;font-weight:400;color:#3D3529;
-    border-bottom:2px solid #D4C9B8;padding-bottom:8px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-  .section-title .num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;
-    border-radius:50%;background:#3D3529;color:#F5F0E8;font-size:14px;font-weight:700;font-family:'Atkinson Hyperlegible',sans-serif}
-  .card{background:#FFFCF5;border:1px solid #E4DCCE;border-radius:4px;padding:24px;margin-bottom:16px}
-  .card h3{font-size:17px;font-weight:700;color:#3D3529;margin-bottom:8px}
-  .card p{color:#5D5548;font-size:15px;margin-bottom:8px}
+  .section-title{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+    color:#64748b;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+  .section-title .num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+    border-radius:8px;background:var(--primary-bg);color:var(--primary);font-size:12px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:16px;transition:border-color .15s}
+  .card:hover{border-color:rgba(99,102,241,0.2)}
+  .card h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:8px}
+  .card p{color:var(--ink-soft);font-size:14px;margin-bottom:8px;line-height:1.6}
   .card p:last-child{margin-bottom:0}
-  .card ul{padding-left:20px;color:#5D5548;font-size:15px;margin:8px 0}
+  .card ul{padding-left:20px;color:var(--ink-soft);font-size:14px;margin:8px 0}
   .card li{margin-bottom:4px}
-  .tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:2px;margin-right:6px;margin-bottom:6px}
-  .tag-ok{background:#E4EDE4;color:#3A6B4F}
-  .tag-warn{background:#F5EDD6;color:#8B6F3A}
-  .tag-urgent{background:#F0DEDE;color:#8B3A3A}
-  .tag-info{background:#DEE6ED;color:#3A5F7A}
-  .voyants{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
-  .voyant{background:#FFFCF5;border:1px solid #E4DCCE;border-radius:4px;padding:16px;text-align:center}
-  .voyant .dot{width:40px;height:40px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-size:18px}
-  .voyant h4{font-size:14px;font-weight:700;color:#3D3529;margin-bottom:4px}
-  .voyant p{font-size:13px;color:#7D7568}
-  .dot-green{background:#E4EDE4;color:#3A6B4F}
-  .dot-yellow{background:#F5EDD6;color:#8B6F3A}
-  .dot-red{background:#F0DEDE;color:#8B3A3A}
-  .memo-item{background:#FFFCF5;border:1px solid #E4DCCE;border-radius:4px;padding:20px;margin-bottom:12px}
+  .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:4px;margin-right:6px;margin-bottom:6px}
+  .tag-green{background:var(--green-bg);color:var(--green)}
+  .tag-yellow{background:var(--orange-bg);color:var(--orange)}
+  .tag-red{background:var(--red-bg);color:var(--red)}
+  .tag-blue{background:var(--blue-bg);color:var(--blue)}
+  .voyants{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:20px}
+  .voyant{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 16px;text-align:center;transition:border-color .15s}
+  .voyant:hover{border-color:rgba(99,102,241,0.2)}
+  .voyant .dot{width:36px;height:36px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .voyant h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+  .voyant p{font-size:12px;color:var(--ink-soft)}
+  .dot-green{background:var(--green-bg);color:var(--green)}
+  .dot-yellow{background:var(--orange-bg);color:var(--orange)}
+  .dot-red{background:var(--red-bg);color:var(--red)}
+  .memo-item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:12px;transition:border-color .15s}
+  .memo-item:hover{border-color:rgba(99,102,241,0.2)}
   .memo-item .memo-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
-    border-radius:50%;background:#3D3529;color:#F5F0E8;font-size:13px;font-weight:700;margin-right:10px;float:left}
-  .memo-item h4{font-size:16px;font-weight:700;color:#3D3529;margin-bottom:6px;margin-left:38px}
-  .memo-item p{color:#5D5548;font-size:14px;margin-left:38px}
-  .memo-item .freq{display:inline-block;font-size:11px;font-weight:700;color:#7D7568;background:#EDE8DE;padding:2px 8px;border-radius:2px;margin-top:6px;margin-left:38px}
-  .alert-box{border-left:4px solid #8B3A3A;background:#FFF5F5;padding:16px 20px;border-radius:0 4px 4px 0;margin-bottom:16px}
-  .alert-box h4{color:#8B3A3A;font-size:15px;font-weight:700;margin-bottom:4px}
-  .alert-box p{color:#6B4A4A;font-size:14px}
-  .info-box{border-left:4px solid #C4A882;background:#FFFCF5;padding:16px 20px;border-radius:0 4px 4px 0;margin-bottom:16px}
-  .info-box h4{color:#3D3529;font-size:15px;font-weight:700;margin-bottom:4px}
-  .info-box p{color:#5D5548;font-size:14px}
+    border-radius:8px;background:var(--primary-bg);color:var(--primary);font-size:12px;font-weight:700;margin-right:12px;float:left}
+  .memo-item h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;margin-left:40px}
+  .memo-item p{color:var(--ink-soft);font-size:14px;margin-left:40px}
+  .memo-item .freq{display:inline-block;font-size:11px;font-weight:600;color:var(--ink-soft);background:rgba(255,255,255,0.06);padding:2px 8px;border-radius:4px;margin-top:6px;margin-left:40px}
+  .alert-box{border-left:3px solid var(--red);background:var(--red-bg);padding:16px 20px;border-radius:12px;margin-bottom:16px}
+  .alert-box h4{color:var(--red);font-size:15px;font-weight:700;margin-bottom:4px}
+  .alert-box p{color:#fecaca;font-size:14px}
+  .info-box{border-left:3px solid var(--primary);background:var(--primary-bg);padding:16px 20px;border-radius:12px;margin-bottom:16px}
+  .info-box h4{color:#818cf8;font-size:15px;font-weight:700;margin-bottom:4px}
+  .info-box p{color:#c7d2fe;font-size:14px}
   .timeline{position:relative;padding-left:28px;margin:12px 0}
-  .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:#D4C9B8}
+  .timeline::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:var(--line)}
   .timeline-item{position:relative;margin-bottom:16px}
-  .timeline-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:#C4A882;border:2px solid #F5F0E8}
-  .timeline-item .step{font-size:12px;font-weight:700;color:#7D7568;text-transform:uppercase;letter-spacing:0.05em}
-  .timeline-item p{color:#5D5548;font-size:14px;margin-top:2px}
-  .footer-note{margin-top:48px;padding-top:24px;border-top:1px solid #D4C9B8;text-align:center;font-size:13px;color:#7D7568}
-  .footer-note a{color:#5D5548;text-decoration:underline;text-underline-offset:2px}
-  .footer-note a:hover{color:#3D3529}
-  @media print{body{background:#fff}.page{padding:0}.card,.memo-item,.voyant{break-inside:avoid}}
+  .timeline-item::before{content:'';position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--primary);border:2px solid var(--bg)}
+  .timeline-item .step{font-size:11px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:0.05em}
+  .timeline-item p{color:var(--ink-soft);font-size:14px;margin-top:2px}
+  .footer-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--line);text-align:center;font-size:13px;color:var(--ink-soft)}
+  .footer-note a{color:#818cf8;text-decoration:none}
+  .footer-note a:hover{color:var(--primary)}
+  @media print{body{background:#fff;color:#000;--card:#f5f5f5;--line:#ddd;--ink:#333;--ink-soft:#666}.wrap{padding:0}.card,.memo-item,.voyant{break-inside:avoid}}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="wrap">
 
-  <div class="stamp">📖 Carnet du référent</div>
-  <h1>Kit RGPD — UNAPEI92</h1>
-  <p class="sub">Version carnet de poche — imprimable, lisible, essentiel.</p>
+  <div class="cover">
+    <div class="cover-eyebrow">📖 Carnet du référent</div>
+    <h1>Kit RGPD — UNAPEI92</h1>
+    <p>Version carnet de poche — imprimable, lisible, essentiel. Même contenu que la version interactive, dans un format épuré.</p>
+  </div>
 
   <!-- 1. LES 5 VOYANTS -->
   <div class="section">
     <div class="section-title"><span class="num">1</span> Les 5 voyants RGPD</div>
-    <p style="color:#5D5548;font-size:15px;margin-bottom:16px">Comme le tableau de bord d'une voiture : un coup d'œil suffit pour savoir où on en est.</p>
+    <p style="color:var(--ink-soft);font-size:14px;margin-bottom:16px">Comme le tableau de bord d'une voiture : un coup d'œil suffit pour savoir où on en est.</p>
     <div class="voyants">
       <div class="voyant"><div class="dot dot-green">✓</div><h4>Droits des personnes</h4><p>OK — Aucune demande en retard</p></div>
       <div class="voyant"><div class="dot dot-green">✓</div><h4>Consentements</h4><p>OK — À jour</p></div>
@@ -112,7 +144,7 @@
   <!-- 3. MÉMO DU RÉFÉRENT -->
   <div class="section">
     <div class="section-title"><span class="num">3</span> Mémo du référent</div>
-    <p style="color:#5D5548;font-size:15px;margin-bottom:16px">Votre guide de survie RGPD. Quoi faire, quand, comment. Gardez-le sous la main — imprimé ou en favoris.</p>
+    <p style="color:var(--ink-soft);font-size:14px;margin-bottom:16px">Votre guide de survie RGPD. Quoi faire, quand, comment. Gardez-le sous la main — imprimé ou en favoris.</p>
 
     <div class="info-box">
       <h4>📞 Contacts utiles</h4>
