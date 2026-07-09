@@ -14,6 +14,7 @@
         <p class="subtitle" id="subtitle"></p>
       </div>
       <div class="topbar-actions">
+        <a href="cartographie.html" class="topbar-btn">🗺️ Cartographie</a>
         <button class="secondary" id="btn-logout" type="button">Déconnexion</button>
       </div>
     </div>
@@ -22,6 +23,14 @@
   <div class="container">
     <div class="header">
       <h2 id="title">Mon tableau de bord</h2>
+    </div>
+
+    <!-- Filtre par mois -->
+    <div class="filter-bar">
+      <label for="month-filter">📅 Filtrer par mois :</label>
+      <select id="month-filter">
+        <option value="">Tous</option>
+      </select>
     </div>
 
     <!-- 5 voyants RGPD -->
@@ -138,6 +147,34 @@
     </div>
   </div>
 
+  <!-- Assistant IA -->
+  <div class="assistant-fab" id="assistant-fab" onclick="toggleAssistant()">
+    💬
+  </div>
+  <div class="assistant-overlay" id="assistant-overlay" onclick="toggleAssistant()"></div>
+  <div class="assistant-drawer" id="assistant-drawer">
+    <div class="assistant-drawer-header">
+      <h3>💬 Assistant RGPD</h3>
+      <button class="secondary" onclick="toggleAssistant()">✕</button>
+    </div>
+    <div class="assistant-chat" id="assistant-chat">
+      <div class="assistant-msg">
+        <strong>🤖 Assistant RGPD</strong>
+        <p>Bonjour ! Je peux vous aider à analyser votre tableau de bord. Posez-moi une question :</p>
+        <ul>
+          <li><a href="#" onclick="return askAssistant('resume')">📋 Résume ma situation RGPD</a></li>
+          <li><a href="#" onclick="return askAssistant('retards')">⏰ Liste mes actions en retard</a></li>
+          <li><a href="#" onclick="return askAssistant('ameliorer')">📈 Comment améliorer mon score ?</a></li>
+          <li><a href="#" onclick="return askAssistant('incidents')">🚨 Incidents non clôturés</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="assistant-input">
+      <input type="text" id="assistant-input" placeholder="Posez votre question..." onkeypress="if(event.key==='Enter') sendAssistantQuestion()">
+      <button onclick="sendAssistantQuestion()">Envoyer</button>
+    </div>
+  </div>
+
   <!-- Modal formulaire -->
   <div class="modal" id="modal">
     <div class="modal-content">
@@ -162,6 +199,7 @@
     const CODE = session.code;
     let currentTab = 'actions';
     let data = {};
+    let monthFilter = null; // null = pas de filtre
 
     const SHEETS = {
       actions: { title: 'Action', fields: [
@@ -210,9 +248,59 @@
         return;
       }
       data = res;
+      normalizeDates(data);
       document.getElementById('title').textContent = session.etablissement || 'Mon tableau de bord';
       document.getElementById('subtitle').textContent = `Référent : ${session.referent || ''} · Code : ${CODE}`;
       document.getElementById('mois-courant').textContent = new Date().toISOString().slice(0, 7);
+      populateMonthFilter(data);
+      applyFilter();
+    }
+
+    function normalizeDates(data) {
+      // Convertit tous les champs de date en ISO (aaaa-mm-jj) pour garantir le filtrage
+      ['actions', 'registre', 'incidents'].forEach(type => {
+        (data[type] || []).forEach(item => {
+          if (item.echeance && item.echeance.includes('/')) {
+            const [j, m, a] = item.echeance.split('/');
+            item.echeance = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+          if (item.date_ajout && item.date_ajout.includes('/')) {
+            const [j, m, a] = item.date_ajout.split('/');
+            item.date_ajout = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+          if (item.date_incident && item.date_incident.includes('/')) {
+            const [j, m, a] = item.date_incident.split('/');
+            item.date_incident = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+        });
+      });
+    }
+
+    function populateMonthFilter(data) {
+      const months = new Set();
+      // Agréger tous les champs de date de tous les onglets
+      (data.actions || []).forEach(a => {
+        if (a.echeance) months.add(a.echeance.slice(0, 7));
+        if (a.date_ajout) months.add(a.date_ajout.slice(0, 7));
+      });
+      (data.registre || []).forEach(r => {
+        if (r.date_ajout) months.add(r.date_ajout.slice(0, 7));
+      });
+      (data.incidents || []).forEach(i => {
+        if (i.date_incident) months.add(i.date_incident.slice(0, 7));
+      });
+      (data.suivi || []).forEach(s => {
+        if (s.mois) months.add(s.mois);
+      });
+      const sorted = [...months].sort();
+      const select = document.getElementById('month-filter');
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Tous</option>' +
+        sorted.map(m => `<option value="${m}" ${m === currentValue ? 'selected' : ''}>${m}</option>`).join('');
+      select.disabled = false;
+    }
+
+    function applyFilter() {
       renderVoyants();
       renderScore();
       renderList('actions');
@@ -221,7 +309,16 @@
       renderSuivi();
     }
 
+    function getFilteredItems(items, dateField) {
+      if (!monthFilter) return items; // null = pas de filtre
+      return items.filter(item => {
+        const val = item[dateField];
+        return val && val.startsWith(monthFilter);
+      });
+    }
+
     function renderVoyants() {
+      // Les voyants sont GLOBAUX (non filtrés par mois)
       const actions = data.actions || [];
       const incidents = data.incidents || [];
       const registre = data.registre || [];
@@ -274,9 +371,28 @@
 
     function renderList(type) {
       const container = document.getElementById('list-' + type);
-      const items = data[type] || [];
+      const allItems = data[type] || [];
+      // Appliquer le filtre mois si actif
+      let items = allItems;
+      if (monthFilter) {
+        if (type === 'actions') {
+          items = allItems.filter(item =>
+            (item.echeance && item.echeance.startsWith(monthFilter)) ||
+            (item.date_ajout && item.date_ajout.startsWith(monthFilter))
+          );
+        } else if (type === 'incidents') {
+          items = allItems.filter(item =>
+            item.date_incident && item.date_incident.startsWith(monthFilter)
+          );
+        } else if (type === 'registre') {
+          items = allItems.filter(item =>
+            item.date_ajout && item.date_ajout.startsWith(monthFilter)
+          );
+        }
+      }
       if (!items.length) {
-        container.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Aucune entrée.</p>';
+        const msg = monthFilter ? 'Aucune donnée pour cette période.' : 'Aucune entrée.';
+        container.innerHTML = `<p style="text-align:center; color:var(--text-muted);">${msg}</p>`;
         return;
       }
       container.innerHTML = items.map(item => {
@@ -334,10 +450,11 @@
       }
       container.innerHTML = rows.map(s => {
         const color = s.score >= 80 ? 'var(--success)' : s.score >= 50 ? 'var(--warning)' : 'var(--danger)';
+        const highlight = monthFilter && s.mois === monthFilter ? ' style="border-left:4px solid var(--accent); background:var(--surface);"' : '';
         return `
-          <div class="list-item">
+          <div class="list-item"${highlight}>
             <div class="title">
-              <span>${s.mois}</span>
+              <span>${s.mois}${monthFilter && s.mois === monthFilter ? ' ←' : ''}</span>
               <span style="color:${color}; font-weight:700;">${s.score}%</span>
             </div>
             <div class="meta">
@@ -356,6 +473,12 @@
 
     document.querySelectorAll('.tab').forEach(t => {
       t.addEventListener('click', () => switchTab(t.dataset.tab));
+    });
+
+    // Event listener du filtre mois
+    document.getElementById('month-filter').addEventListener('change', function() {
+      monthFilter = this.value || null;
+      applyFilter();
     });
 
     window.openForm = function(type, id = null) {
@@ -451,6 +574,128 @@
       const [a, m, j] = d.split('-');
       return `${j}/${m}/${a}`;
     }
+
+    // === Assistant IA — OpenRouter (Nemotron) ===
+    window.toggleAssistant = function() {
+      const drawer = document.getElementById('assistant-drawer');
+      const overlay = document.getElementById('assistant-overlay');
+      const isOpen = drawer.classList.contains('active');
+      if (isOpen) {
+        drawer.classList.remove('active');
+        overlay.classList.remove('active');
+      } else {
+        drawer.classList.add('active');
+        overlay.classList.add('active');
+      }
+    };
+
+    function addAssistantMsg(text, isUser = false) {
+      const chat = document.getElementById('assistant-chat');
+      const div = document.createElement('div');
+      div.className = isUser ? 'user-msg' : 'assistant-msg';
+      if (isUser) {
+        div.innerHTML = `<strong>👤 Vous</strong><p>${text}</p>`;
+      } else {
+        div.innerHTML = `<strong>🤖 Assistant RGPD</strong><p>${text}</p>`;
+      }
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function buildContext() {
+      const actions = data.actions || [];
+      const incidents = data.incidents || [];
+      const registre = data.registre || [];
+      const suivi = data.suivi || [];
+      const now = new Date().toISOString().split('T')[0];
+      const retards = actions.filter(a => a.echeance < now && a.statut !== 'FAIT');
+      const ouverts = incidents.filter(i => i.statut !== 'CLOTURE');
+      const critiques = incidents.filter(i => i.gravite === 'CRITIQUE' && i.statut !== 'CLOTURE');
+      const cnil = incidents.filter(i => (i.gravite === 'ELEVEE' || i.gravite === 'CRITIQUE') && i.cnil_declare === 'NON' && i.statut !== 'CLOTURE');
+      const lastScore = suivi.sort((a, b) => b.mois.localeCompare(a.mois))[0];
+
+      return `Établissement : ${session.etablissement || 'N/C'}
+Référent : ${session.referent || 'N/C'}
+Code : ${session.code}
+
+REGISTRE (${registre.length} traitements) :
+${registre.map(r => `- ${r.traitement} (${r.categorie}) — resp: ${r.responsable || 'N/C'}`).join('\n') || '(vide)'}
+
+ACTIONS (${actions.length} total, ${actions.filter(a => a.statut === 'FAIT').length} faites) :
+${actions.map(a => `- ${a.titre} [${a.priorite}] échéance ${a.echeance || 'N/C'} — ${a.statut}`).join('\n') || '(vide)'}
+Actions en retard : ${retards.length}
+${retards.map(a => `  → ${a.titre} (échéance ${a.echeance})`).join('\n') || ''}
+
+INCIDENTS (${incidents.length} total, ${ouverts.length} ouverts) :
+${incidents.map(i => `- ${i.type} [${i.gravite}] ${i.date_incident || ''} — ${i.statut}${i.cnil_declare === 'NON' && (i.gravite === 'ELEVEE' || i.gravite === 'CRITIQUE') ? ' ⚠️ CNIL à déclarer' : ''}`).join('\n') || '(vide)'}
+Incidents critiques non clôturés : ${critiques.length}
+Déclarations CNIL en attente : ${cnil.length}
+
+SCORE : ${lastScore ? lastScore.score + '% (' + lastScore.mois + ')' : 'pas encore calculé'}`;
+    }
+
+    async function askOpenRouter(question) {
+      const context = buildContext();
+      const systemPrompt = `Tu es un assistant RGPD expert pour le réseau UNAPEI92. Tu aides les référents d'établissement à comprendre et améliorer leur conformité.
+
+Voici les données du tableau de bord du référent :
+---
+${context}
+---
+
+Réponds de façon claire, concise et bienveillante en français. Utilise des emojis. Donne des conseils concrets et actionnables. Si la question n'a pas de rapport avec le RGPD ou le tableau de bord, réponds poliment que tu ne peux aider que sur les sujets RGPD.`;
+
+      try {
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + CONFIG.OPENROUTER_API_KEY,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'Kit RGPD UNAPEI92'
+          },
+          body: JSON.stringify({
+            model: CONFIG.OPENROUTER_MODEL,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: question }
+            ],
+            max_tokens: 800,
+            temperature: 0.7
+          })
+        });
+        const data = await res.json();
+        if (data.choices && data.choices[0] && data.choices[0].message) {
+          return data.choices[0].message.content;
+        }
+        if (data.error) return '❌ Erreur API : ' + data.error.message;
+        return '❌ Erreur : réponse inattendue.';
+      } catch (err) {
+        return '❌ Erreur de connexion : ' + err.message;
+      }
+    }
+
+    window.askAssistant = async function(topic) {
+      addAssistantMsg('💭 Réflexion en cours...');
+      const response = await askOpenRouter(topic);
+      const chat = document.getElementById('assistant-chat');
+      chat.removeChild(chat.lastChild);
+      addAssistantMsg(response);
+      return false;
+    };
+
+    window.sendAssistantQuestion = async function() {
+      const input = document.getElementById('assistant-input');
+      const q = input.value.trim();
+      if (!q) return;
+      addAssistantMsg(q, true);
+      input.value = '';
+      addAssistantMsg('💭 Réflexion en cours...');
+      const response = await askOpenRouter(q);
+      const chat = document.getElementById('assistant-chat');
+      chat.removeChild(chat.lastChild);
+      addAssistantMsg(response);
+    };
 
     loadData();
   </script>

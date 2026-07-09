@@ -1,10 +1,12 @@
 // Configuration locale — à remplacer par l'URL de la Web App Apps Script au déploiement
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/TON_ID_APPS_SCRIPT/exec'
+  API_URL: 'https://script.google.com/macros/s/AKfycbyW1Mkvz0cZZ6kQ6jdWdeQzezJZ_amUXf_RUmWPbbcNiMqR6eKyCoS0aCFmWRZ2IXgSkQ/exec',
+  OPENROUTER_API_KEY: 'CHANGER_DANS_CONFIG_LOCAL', // Mettre la clé dans config.local.js
+  OPENROUTER_MODEL: 'nvidia/nemotron-3-ultra-550b-a55b:free'
 };
 
 // Pour les tests locaux sans Apps Script, basculer sur MOCK = true
-const MOCK = true;
+const MOCK = false;
 
 // Données de démo
 const MOCK_DATA = {
@@ -15,7 +17,16 @@ const MOCK_DATA = {
   ],
   registre: [
     { id: 'r1', code_etab: '1001', date_ajout: '2026-01-10', categorie: 'RH', traitement: 'Gestion du personnel', finalite: 'Paie et contrats', responsable: 'Marie Dupont', base_legale: 'Contrat de travail', duree_conservation: '5 ans', donnees_concernees: 'Identité, coordonnées bancaires', destinataires: 'Comptable', mesures_securite: 'Accès restreint', commentaire: '' },
-    { id: 'r2', code_etab: '1001', date_ajout: '2026-02-05', categorie: 'Santé', traitement: 'Dossiers médicaux', finalite: 'Suivi médical', responsable: 'Infirmier référent', base_legale: 'Obligation légale', duree_conservation: '20 ans', donnees_concernees: 'Données de santé', destinataires: 'Médecin', mesures_securite: 'Cabinet verrouillé', commentaire: '' }
+    { id: 'r2', code_etab: '1001', date_ajout: '2026-02-05', categorie: 'Santé', traitement: 'Dossiers médicaux', finalite: 'Suivi médical', responsable: 'Infirmier référent', base_legale: 'Obligation légale', duree_conservation: '20 ans', donnees_concernees: 'Données de santé', destinataires: 'Médecin', mesures_securite: 'Cabinet verrouillé', commentaire: '' },
+    { id: 'r3', code_etab: '1001', date_ajout: '2026-03-15', categorie: 'Prestataire', traitement: 'Vidéosurveillance', finalite: 'Sécurité des locaux', responsable: 'Directeur', base_legale: 'Intérêt légitime', duree_conservation: '30 jours', donnees_concernees: 'Images', destinataires: 'Société de sécurité (sous-traitant)', mesures_securite: 'Accès restreint', commentaire: '' },
+    { id: 'r4', code_etab: '1001', date_ajout: '2026-04-01', categorie: 'Administratif', traitement: 'Gestion des inscriptions', finalite: 'Admission des usagers', responsable: 'Secrétariat', base_legale: 'Contrat', duree_conservation: 'Durée prise en charge + 5 ans', donnees_concernees: 'Identité, coordonnées, situation familiale', destinataires: 'ARS', mesures_securite: 'Armoire fermée', commentaire: '' },
+    { id: 'r5', code_etab: '1001', date_ajout: '2026-04-15', categorie: 'Santé', traitement: 'Suivi psychologique', finalite: 'Accompagnement psychologique', responsable: 'Psychologue', base_legale: 'Consentement', duree_conservation: '20 ans', donnees_concernees: 'Données de santé mentale', destinataires: 'Aucun', mesures_securite: 'Cabinet insonorisé, dossier verrouillé', commentaire: 'Données particulièrement sensibles' },
+    { id: 'r6', code_etab: '1002', date_ajout: '2026-01-20', categorie: 'RH', traitement: 'Gestion des plannings', finalite: 'Organisation des équipes', responsable: 'Luc Martin', base_legale: 'Contrat de travail', duree_conservation: '3 ans', donnees_concernees: 'Identité, disponibilités', destinataires: 'Chef de service', mesures_securite: 'Logiciel protégé', commentaire: '' },
+    { id: 'r7', code_etab: '1002', date_ajout: '2026-02-10', categorie: 'Santé', traitement: 'Suivi médical résidents', finalite: 'Soins et traitements', responsable: 'Médecin coordinateur', base_legale: 'Obligation légale', duree_conservation: '20 ans', donnees_concernees: 'Données de santé complètes', destinataires: 'Médecins traitants', mesures_securite: 'Dossier médical partagé', commentaire: '' },
+    { id: 'r8', code_etab: '1002', date_ajout: '2026-03-01', categorie: 'Administratif', traitement: 'Gestion des admissions', finalite: 'Accueil des résidents', responsable: 'Secrétariat', base_legale: 'Contrat de séjour', duree_conservation: 'Durée séjour + 10 ans', donnees_concernees: 'Identité, situation administrative', destinataires: 'Conseil départemental', mesures_securite: 'Armoire fermée', commentaire: '' },
+    { id: 'r9', code_etab: '1003', date_ajout: '2026-01-15', categorie: 'RH', traitement: 'Gestion des contrats', finalite: 'Paie et administration', responsable: 'Sophie Bernard', base_legale: 'Contrat de travail', duree_conservation: '5 ans', donnees_concernees: 'Identité, coordonnées bancaires', destinataires: 'Comptable', mesures_securite: 'Accès restreint', commentaire: '' },
+    { id: 'r10', code_etab: '1003', date_ajout: '2026-02-20', categorie: 'Santé', traitement: 'Dossiers de soins', finalite: 'Suivi médical personnalisé', responsable: 'Infirmier coordinateur', base_legale: 'Obligation légale', duree_conservation: '20 ans', donnees_concernees: 'Données de santé', destinataires: 'Médecins', mesures_securite: 'Dossier papier verrouillé', commentaire: '' },
+    { id: 'r11', code_etab: '1003', date_ajout: '2026-03-10', categorie: 'Prestataire', traitement: 'Transport médicalisé', finalite: 'Déplacements des résidents', responsable: 'Chef de service', base_legale: 'Contrat', duree_conservation: 'Durée contrat + 3 ans', donnees_concernees: 'Identité, besoins médicaux', destinataires: 'Société de transport (sous-traitant)', mesures_securite: 'Transmission sécurisée', commentaire: '' }
   ],
   actions: [
     { id: 'a1', code_etab: '1001', date_ajout: '2026-03-01', titre: 'Mettre à jour les fiches de paie', priorite: 'HAUTE', echeance: '2026-04-15', statut: 'EN_COURS', responsable: 'Marie Dupont', commentaire: '' },
