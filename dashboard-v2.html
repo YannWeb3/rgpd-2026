@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kit RGPD — Dashboard Référent UNAPEI92</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <!-- Header UNAPEI92 -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1>🛡️ Kit RGPD — UNAPEI92</h1>
+        <p class="subtitle">Boîte à outils du référent RGPD par service et établissement</p>
+      </div>
+      <div class="header-contact">
+        <div class="contact-item">
+          <span class="contact-icon">✍️</span>
+          <div>
+            <div class="contact-label">Contact DPO externe</div>
+            <a href="mailto:rgpd@unapei92.fr" class="contact-link">rgpd@unapei92.fr</a>
+          </div>
+        </div>
+        <div class="contact-item alert">
+          <span class="contact-icon">🚨</span>
+          <div>
+            <div class="contact-label">Incident = appel immédiat</div>
+            <div class="contact-link">72h max</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation 7 modules -->
+  <nav class="module-nav">
+    <div class="module-nav-inner">
+      <button class="module-btn active" data-module="voyants" onclick="switchModule('voyants')">🚦 Les 5 voyants</button>
+      <button class="module-btn" data-module="registre" onclick="switchModule('registre')">📋 Registre</button>
+      <button class="module-btn" data-module="actions" onclick="switchModule('actions')">🗓️ Mémo du référent</button>
+      <button class="module-btn" data-module="formation" onclick="switchModule('formation')">🎓 Formation</button>
+      <button class="module-btn" data-module="incidents" onclick="switchModule('incidents')">🚨 Incident</button>
+      <button class="module-btn" data-module="rapport" onclick="switchModule('rapport')">📊 Rapport direction</button>
+      <button class="module-btn" data-module="rappels" onclick="switchModule('rappels')">🔔 Rappels & alertes</button>
+    </div>
+  </nav>
+
+  <main class="container">
+    <!-- Bandeau identité -->
+    <div class="identity-bar">
+      <h2 id="title">Mon tableau de bord</h2>
+      <button class="btn-logout" id="btn-logout" type="button">Déconnexion</button>
+    </div>
+
+    <!-- MODULE : 5 voyants -->
+    <section id="module-voyants" class="module active">
+      <div class="intro-card">
+        <h2>Les 5 voyants RGPD</h2>
+        <p>Comme le tableau de bord d'une voiture : un coup d'œil suffit pour savoir où on en est. Cliquez sur un voyant pour voir quoi faire.</p>
+      </div>
+
+      <div class="voyants" id="voyants">
+        <!-- généré par JS -->
+      </div>
+
+      <div class="score-card">
+        <div class="score-month">Score mensuel — <span id="mois-courant"></span></div>
+        <div class="score-value" id="score">—</div>
+        <button class="btn-recalc" id="btn-recalc-score" type="button">🔄 Recalculer le score</button>
+      </div>
+
+      <!-- Cartes pédagogiques -->
+      <div class="memory-card">
+        <h3>📖 L'image pour retenir les 5 voyants</h3>
+        <div class="memory-grid">
+          <div class="memory-item">
+            <div class="memory-emoji">🔑</div>
+            <div class="memory-title">Droits</div>
+            <p>Chaque personne peut demander ses clés à tout moment.</p>
+          </div>
+          <div class="memory-item">
+            <div class="memory-emoji">✋</div>
+            <div class="memory-title">Consentements</div>
+            <p>On ne rentre pas sans frapper. Toujours.</p>
+          </div>
+          <div class="memory-item">
+            <div class="memory-emoji">🗑️</div>
+            <div class="memory-title">Durées</div>
+            <p>Le frigo se vide. On jette ce qui est périmé.</p>
+          </div>
+          <div class="memory-item">
+            <div class="memory-emoji">🔒</div>
+            <div class="memory-title">Accès</div>
+            <p>Mon mot de passe = ma clé perso. Je ne la prête pas.</p>
+          </div>
+          <div class="memory-item">
+            <div class="memory-emoji">📝</div>
+            <div class="memory-title">Prestataires</div>
+            <p>Même le plombier a besoin d'un badge signé.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE : Registre -->
+    <section id="module-registre" class="module">
+      <details class="help-card info">
+        <summary>💡 Comprendre le registre des traitements</summary>
+        <div class="help-body">
+          <p>Le <strong>registre des traitements</strong> est la liste de tout ce qu'on fait avec les données. C'est le carnet de bord obligatoire.</p>
+          <ul>
+            <li><strong>Quand le mettre à jour ?</strong> Nouveau logiciel · Nouveau formulaire · Nouveau prestataire · Changement de durée de conservation · Départ d'un partenaire.</li>
+            <li>Validation par le DPO externe : <strong>1 fois par an</strong>.</li>
+            <li>Notez le <strong>sous-traitant</strong> et vérifiez que le DPA (contrat RGPD) est signé.</li>
+          </ul>
+          <div class="help-tip">👉 Exemple : Dossier résident — Ogirys — données de santé — conservation : durée de prise en charge + 10 ans.</div>
+        </div>
+      </details>
+      <div class="panel">
+        <div class="panel-header">
+          <h2>📋 Registre des traitements</h2>
+          <button class="btn-add" id="btn-add-registre" type="button" onclick="openForm('registre')">+ Ajouter</button>
+        </div>
+        <div class="list" id="list-registre"></div>
+      </div>
+    </section>
+
+    <!-- MODULE : Mémo du référent (Actions) --><section id="module-actions" class="module">
+      <div class="intro-card">
+        <h2>🗓️ Mémo du référent</h2>
+        <p>Votre guide de survie RGPD. Quoi faire, quand, comment. Gardez-le sous la main — imprimé ou en favoris.</p>
+      </div>
+
+      <div class="alert-strip">
+        <span>✉️ DPO externe : <a href="mailto:rgpd@unapei92.fr">rgpd@unapei92.fr</a></span>
+        <span>🚨 Incident urgent : appelez le DPO directement</span>
+        <span>⏱️ Délai légal violation de données : <strong>72h max</strong> pour notifier la CNIL</span>
+      </div>
+
+      <div class="memo-section">
+        <div class="memo-tag">🔑 Droits des personnes</div>
+        <div class="memo-row">
+          <div class="memo-num">1</div>
+          <div class="memo-body">
+            <h4>Répondre à une demande de droit (accès, effacement, rectification)</h4>
+            <div class="memo-date">📅 Dès réception — max 30 jours</div>
+            <ul class="memo-list">
+              <li>Accusez réception par écrit (email ou courrier) dès réception</li>
+              <li>Vérifiez l'identité du demandeur (pièce d'identité si nécessaire)</li>
+              <li>Rassemblez toutes les données concernant cette personne</li>
+              <li>Répondez dans les 30 jours — si besoin d'aide, contactez le DPO</li>
+              <li>Consignez la demande dans votre fichier de suivi (date, type, réponse)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="memo-row">
+          <div class="memo-num">2</div>
+          <div class="memo-body">
+            <h4>Vérifier qu'aucune demande ne traîne depuis + de 30 jours</h4>
+            <div class="memo-date">🗓️ 1er lundi de chaque mois — 5 minutes</div>
+            <ul class="memo-list">
+              <li>Ouvrir la boîte <a href="mailto:rgpd@unapei92.fr">rgpd@unapei92.fr</a></li>
+              <li>Vérifier le fichier de suivi des demandes</li>
+              <li>Si une demande est en attente depuis + 30 jours → relancer immédiatement et alerter le DPO</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-section">
+        <div class="memo-tag">✋ Consentements</div>
+        <div class="memo-row">
+          <div class="memo-num">3</div>
+          <div class="memo-body">
+            <h4>Vérifier chaque nouveau formulaire avant diffusion</h4>
+            <div class="memo-date">📝 À chaque nouveau document créé</div>
+            <ul class="memo-list check">
+              <li>☐ Il y a une case à cocher — <em>non pré-cochée</em></li>
+              <li>☐ On explique clairement pourquoi on collecte ces données</li>
+              <li>☐ On indique combien de temps on les garde</li>
+              <li>☐ On dit comment se désinscrire ou retirer son consentement</li>
+              <li>Si doute → envoyer le formulaire au DPO avant diffusion</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="memo-row">
+          <div class="memo-num">4</div>
+          <div class="memo-body">
+            <h4>Renouveler les consentements photos/vidéos résidents</h4>
+            <div class="memo-date">🔄 Tous les 3 ans — ou à chaque changement de tuteur</div>
+            <ul class="memo-list">
+              <li>Préparer le formulaire de renouvellement (modèle disponible sur le dossier partagé)</li>
+              <li>Envoyer aux familles / tuteurs légaux</li>
+              <li>Classer les formulaires signés dans le dossier résident papier ET numérique</li>
+              <li>Si refus ou pas de réponse → supprimer les photos de la personne de tous les supports</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-section">
+        <div class="memo-tag">🗑️ Durées de conservation</div>
+        <div class="memo-row">
+          <div class="memo-num">5</div>
+          <div class="memo-body">
+            <h4>Le grand nettoyage de l'automne 🍂</h4>
+            <div class="memo-date">🗓️ Chaque octobre — 1 matinée</div>
+            <ul class="memo-list">
+              <li>Lister les résidents et salariés dont le dossier a + de 5 ans après leur départ</li>
+              <li>Vérifier la durée légale de conservation applicable (le DPO a un tableau récapitulatif)</li>
+              <li>Archiver (si conservation légale encore en cours) OU supprimer définitivement</li>
+              <li>⚠️ Supprimer = garder une trace de la suppression (date + qui a supprimé)</li>
+              <li>Signaler au DPO si doute sur une durée avant suppression</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-section">
+        <div class="memo-tag">🔒 Sécurité des accès</div>
+        <div class="memo-row">
+          <div class="memo-num">6</div>
+          <div class="memo-body">
+            <h4>Bloquer les accès d'un salarié qui part</h4>
+            <div class="memo-date">⚡ Le jour du départ — pas d'exception</div>
+            <ul class="memo-list check">
+              <li>☐ Bloquer l'accès email professionnel (J du départ, max J+1)</li>
+              <li>☐ Bloquer l'accès logiciel métier Ogirys et autres (J du départ)</li>
+              <li>☐ Récupérer badge, clés, ordinateur portable</li>
+              <li>☐ Changer les mots de passe partagés si le salarié les connaissait</li>
+              <li>Consigner dans le registre des accès : nom, date de départ, date de blocage</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="memo-row">
+          <div class="memo-num">7</div>
+          <div class="memo-body">
+            <h4>Rappel "pas de partage de mot de passe"</h4>
+            <div class="memo-date">📢 2 fois par an — janvier et juin</div>
+            <ul class="memo-list">
+              <li>Envoyer un email de rappel à l'équipe : <em>"Mon mot de passe = ma clé perso. Je ne la prête à personne."</em></li>
+              <li>Vérifier que chaque salarié a son propre compte nominatif</li>
+              <li>Signaler tout compte générique (ex : "admin" partagé) au responsable informatique</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-section">
+        <div class="memo-tag">🤝 Sous-traitants & prestataires</div>
+        <div class="memo-row">
+          <div class="memo-num">8</div>
+          <div class="memo-body">
+            <h4>Vérifier les contrats RGPD (DPA) avant de signer</h4>
+            <div class="memo-date">📝 À chaque nouveau contrat + contrôle annuel chaque janvier</div>
+            <ul class="memo-list check">
+              <li>☐ Y a-t-il une clause RGPD / DPA dans le contrat ?</li>
+              <li>☐ Ce contrat est-il signé par les deux parties ?</li>
+              <li>☐ Le DPA est-il encore en cours de validité ?</li>
+              <li>Si non → demander un avenant RGPD au prestataire. Le DPO a un modèle de clause prêt à envoyer.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="memo-section danger">
+        <div class="memo-tag">🚨 En cas d'incident</div>
+        <div class="memo-row">
+          <div class="memo-num">!</div>
+          <div class="memo-body">
+            <h4>Violation de données — email mal envoyé, dossier perdu, accès non autorisé…</h4>
+            <div class="memo-date">⏱️ 72h max légal pour notifier la CNIL</div>
+            <ul class="memo-list">
+              <li><strong>Dans l'heure :</strong> prévenir le DPO externe par téléphone — pas par email</li>
+              <li><strong>Dans les 24h :</strong> documenter — quoi, combien de personnes, quelles données, est-ce que la fuite est stoppée ?</li>
+              <li><strong>Sous 72h :</strong> le DPO décide si la CNIL doit être notifiée (c'est lui qui le fait)</li>
+              <li><strong>Si risque élevé :</strong> prévenir aussi les personnes concernées</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Le plan d'actions dynamique reste disponible -->
+      <div class="panel memo-actions-panel">
+        <div class="panel-header">
+          <h3>📋 Plan d'actions de l'établissement</h3>
+          <button class="btn-add" id="btn-add-action" type="button" onclick="openForm('actions')">+ Ajouter</button>
+        </div>
+        <div class="list" id="list-actions"></div>
+      </div>
+    </section>
+
+    <!-- MODULE : Formation -->
+    <section id="module-formation" class="module">
+      <div class="intro-card">
+        <h2>🎓 Programme de formation</h2>
+        <p>Former 100% du personnel d'ici mars 2027. Sessions courtes (30 min max), animées par les chefs de service grâce aux supports fournis. Zéro budget formateur externe.</p>
+      </div>
+
+      <div class="panel">
+        <h3 class="phase-title">📘 Phase 1 — Référents RGPD (septembre 2026)</h3>
+        <div class="formation-list">
+          <div class="formation-row">
+            <div class="formation-num">1</div>
+            <div class="formation-body">
+              <h4>Le RGPD en 10 images — la base pour tout comprendre</h4>
+              <p class="formation-meta">⏱️ 2h · Présentiel demi-journée · Référents RGPD</p>
+              <p>Ce qu'est une donnée personnelle avec des exemples concrets de l'UNAPEI92 · Les 5 voyants expliqués simplement · Rôle du référent dans son établissement · Comment remplir le registre des traitements.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+
+          <div class="formation-row">
+            <div class="formation-num">2</div>
+            <div class="formation-body">
+              <h4>Les outils du référent — registre + mémo en pratique</h4>
+              <p class="formation-meta">⏱️ 1h30 · Atelier pratique sur poste · Référents RGPD</p>
+              <p>Ouvrir et remplir le registre · Utiliser le mémo quoi/quand/comment · Saisir une mise à jour ou un incident · Exercice : compléter 2 lignes du registre de son propre service.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+
+          <div class="formation-row">
+            <div class="formation-num">3</div>
+            <div class="formation-body">
+              <h4>Que faire en cas d'incident ? — les 72h qui comptent</h4>
+              <p class="formation-meta">⏱️ 45 min · Mise en situation / jeu de rôle · Référents RGPD</p>
+              <p>Scénario 1 : email envoyé à la mauvaise famille · Scénario 2 : dossier papier perdu · Qui prévenir, dans quel ordre, dans quel délai ? · Remplir la fiche incident ensemble.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 class="phase-title">📗 Phase 2 — Cadres et chefs de service (oct.–nov. 2026)</h3>
+        <div class="formation-list">
+          <div class="formation-row">
+            <div class="formation-num">4</div>
+            <div class="formation-body">
+              <h4>RGPD pour les managers — responsabilités et 3 réflexes clés</h4>
+              <p class="formation-meta">⏱️ 1h · Réunion d'équipe · Chefs de service · Cadres · Direction</p>
+              <p>Les 3 réflexes du manager RGPD : → Salarié qui part = bloquer ses accès le jour même → Nouveau logiciel = prévenir le référent → Incident = appeler le DPO sous 72h · Ce que risque l'association lors d'un contrôle CNIL.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+
+          <div class="formation-row">
+            <div class="formation-num">5</div>
+            <div class="formation-body">
+              <h4>Droits des résidents et familles — ce qu'ils peuvent demander</h4>
+              <p class="formation-meta">⏱️ 45 min · Petit groupe présentiel · Chefs de service · Secrétaires · Éducateurs référents</p>
+              <p>Les 5 droits d'une personne sur ses données · Comment répondre à une demande d'accès · Le cas des photos et vidéos : consentement obligatoire · Exercice : rédiger une réponse type à une famille.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 class="phase-title">📙 Phase 3 — Tout le personnel (janv.–mars 2027)</h3>
+        <div class="formation-list">
+          <div class="formation-row">
+            <div class="formation-num">6</div>
+            <div class="formation-body">
+              <h4>Les 5 règles d'or RGPD — formation courte pour tous</h4>
+              <p class="formation-meta">⏱️ 30 min · Réunion d'équipe — animé par le chef de service · Tous les salariés + intérimaires + stagiaires</p>
+              <p>Diaporama 10 slides : 1️⃣ Je ne partage pas mon mot de passe · 2️⃣ Je n'envoie pas de données par email non sécurisé · 3️⃣ Je ne prends pas de photo sans autorisation · 4️⃣ Je signale tout incident à mon chef de service · 5️⃣ Je redirige les demandes vers le référent RGPD.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+
+          <div class="formation-row">
+            <div class="formation-num">7</div>
+            <div class="formation-body">
+              <h4>Quiz RGPD — 10 questions vrai/faux</h4>
+              <p class="formation-meta">⏱️ 15 min · En ligne ou papier — après la formation · Tous les salariés</p>
+              <p>10 questions vrai/faux sur des cas concrets UNAPEI92 · Score min 7/10 pour validation · En cas d'échec : 15 min de reprise avec le référent · Les résultats remontent au référent RGPD pour le suivi.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À planifier</option>
+              <option>📅 Planifié</option>
+              <option>🔄 En cours</option>
+              <option>✅ Réalisé</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 class="phase-title">🔁 Formations permanentes (tout au long de l'année)</h3>
+        <div class="formation-list">
+          <div class="formation-row">
+            <div class="formation-num">8</div>
+            <div class="formation-body">
+              <h4>Formation des nouveaux arrivants — intégration J+30 max</h4>
+              <p class="formation-meta">⏱️ 30 min · Individuel avec le référent RGPD · Tous les nouveaux salariés</p>
+              <p>Remettre le mémo "5 règles d'or" · Expliquer les accès logiciels et leur sécurisation · Présenter le référent RGPD du service · Faire signer la charte informatique.</p>
+            </div>
+            <select class="formation-status">
+              <option>⬜ À intégrer parcours accueil</option>
+              <option>📅 Planifié</option>
+              <option>✅ En place</option>
+            </select>
+          </div>
+
+          <div class="formation-row">
+            <div class="formation-num">9</div>
+            <div class="formation-body">
+              <h4>Rappel annuel — le mois d'octobre = mois RGPD 🍂</h4>
+              <p class="formation-meta">⏱️ 15 min · Email + affiche + quiz flash · Tous les salariés — chaque année</p>
+              <p>Email de rappel par la direction · Affiche mise à jour en salle de pause · Quiz flash de 5 questions (5 min en ligne) · Partage des résultats du bilan annuel RGPD avec les équipes.</p>
+            </div>
+            <select class="formation-status">
+              <option selected>🔁 Récurrent chaque octobre</option>
+              <option>✅ En place</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="formation-summary">
+          <div class="summary-item">
+            <div class="summary-num">9</div>
+            <div class="summary-label">modules au total</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">~8h</div>
+            <div class="summary-label">de formation totale</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">0€</div>
+            <div class="summary-label">de formateur externe</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">100%</div>
+            <div class="summary-label">du personnel visé</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-num">Mars 27</div>
+            <div class="summary-label">objectif complet</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE : Incident --><section id="module-incidents" class="module">
+      <div class="intro-card">
+        <h2>🚨 Que faire en cas d'incident ?</h2>
+        <p>Un incident RGPD, c'est comme un dégât des eaux : on coupe l'eau d'abord, on appelle le plombier (le DPO), et on documente les dégâts. Pas de panique, mais pas d'attente non plus.</p>
+      </div>
+
+      <div class="panel alert-danger">
+        <h3>⏱️ La règle des 72h</h3>
+        <p>Si des données ont été exposées, perdues ou volées, la loi oblige à notifier la CNIL dans les <strong>72 heures</strong>. C'est le DPO externe qui le fait — mais vous devez l'alerter <strong>immédiatement</strong>, pas le lendemain.</p>
+      </div>
+
+      <div class="two-col">
+        <div class="panel">
+          <h3>🚨 C'est quoi un incident ?</h3>
+          <ul class="memo-list">
+            <li>Email envoyé à la mauvaise famille ou au mauvais salarié</li>
+            <li>Dossier papier perdu, volé ou oublié dans un lieu public</li>
+            <li>Accès non autorisé à un logiciel ou à un dossier</li>
+            <li>Données partagées sans consentement préalable</li>
+            <li>Piratage ou tentative de piratage (ransomware, phishing)</li>
+            <li>Perte d'un ordinateur ou d'une clé USB avec des données</li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>✅ Ce qui n'est PAS un incident</h3>
+          <ul class="memo-list">
+            <li>Un email interne mal rédigé sans données personnelles</li>
+            <li>Une mise à jour logiciel qui fait planter un PC</li>
+            <li>Une demande d'un résident pour accéder à son dossier</li>
+            <li>Un formulaire oublié de mettre à jour</li>
+          </ul>
+          <div class="help-tip inline">En cas de doute : appelez le DPO. Mieux vaut un faux positif qu'une notification CNIL manquée.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>🧭 Les 4 étapes — dans l'ordre, sans exception</h3>
+        <div class="timeline">
+          <div class="timeline-step">
+            <div class="timeline-dot danger"></div>
+            <div class="timeline-badge">Dans l'heure</div>
+            <h4>Étape 1 — Stopper la fuite et appeler le DPO</h4>
+            <p>Bloquez l'accès, récupérez le document, supprimez l'email si possible. Puis appelez le DPO externe par téléphone — pas par email. Donnez-lui les infos de base : quoi, où, combien de personnes.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot info"></div>
+            <div class="timeline-badge">Dans les 24h</div>
+            <h4>Étape 2 — Documenter l'incident</h4>
+            <p>Répondez par écrit à ces 4 questions : Que s'est-il passé exactement ? Combien de personnes sont concernées ? Quelles données ont été exposées ? La fuite est-elle maintenant stoppée ?</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot danger"></div>
+            <div class="timeline-badge">Avant 72h</div>
+            <h4>Étape 3 — Décision CNIL (par le DPO)</h4>
+            <p>Le DPO analyse et décide si la CNIL doit être notifiée. C'est lui qui fait la démarche, pas vous. Votre rôle : lui donner toutes les informations rapidement.</p>
+          </div>
+          <div class="timeline-step">
+            <div class="timeline-dot info"></div>
+            <div class="timeline-badge">Si nécessaire</div>
+            <h4>Étape 4 — Prévenir les personnes concernées</h4>
+            <p>Si le DPO juge que le risque pour les personnes est élevé, les résidents, familles ou salariés concernés doivent être informés. Le DPO vous aide à rédiger le message.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Liste dynamique des incidents -->
+      <div class="panel memo-actions-panel">
+        <div class="panel-header">
+          <h3>📋 Historique des incidents</h3>
+          <button class="btn-add" id="btn-add-incident" type="button" onclick="openForm('incidents')">+ Déclarer</button>
+        </div>
+        <div class="list" id="list-incidents"></div>
+      </div>
+    </section>
+
+    <!-- MODULE : Rapport direction -->
+    <section id="module-rapport" class="module">
+      <div class="intro-card">
+        <h2>📊 Rapport direction</h2>
+        <p>Synthèse mensuelle pour la direction et le DPO externe. Simple, lisible, actionnable. Généré à partir des mises à jour des référents.</p>
+      </div>
+
+      <div class="panel">
+        <div class="rapport-header">
+          <div>
+            <div class="rapport-label">RAPPORT MENSUEL</div>
+            <div class="rapport-mois" id="rapport-mois">Juin 2026</div>
+          </div>
+          <div class="rapport-actions">
+            <button class="btn-export" type="button" onclick="alert('Export PDF à brancher ultérieurement')">📥 Télécharger PDF</button>
+            <button class="btn-export secondary" type="button" onclick="alert('Envoi email à brancher ultérieurement')">📧 Envoyer au DPO</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi ok">
+            <div class="kpi-value">3</div>
+            <div class="kpi-label">Voyants verts</div>
+          </div>
+          <div class="kpi warn">
+            <div class="kpi-value">1</div>
+            <div class="kpi-label">À surveiller</div>
+          </div>
+          <div class="kpi danger">
+            <div class="kpi-value">1</div>
+            <div class="kpi-label">Urgent</div>
+          </div>
+          <div class="kpi info">
+            <div class="kpi-value">1</div>
+            <div class="kpi-label">Incident signalé</div>
+          </div>
+          <div class="kpi ok">
+            <div class="kpi-value">4/4</div>
+            <div class="kpi-label">Prestataires DPA OK</div>
+          </div>
+          <div class="kpi warn">
+            <div class="kpi-value">0%</div>
+            <div class="kpi-label">Personnel formé (objectif mars 27)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>État par établissement</h3>
+        <div class="etab-list">
+          <div class="etab-item">
+            <div class="etab-name">ESAT Les Acacias</div>
+            <div class="etab-ref">Référent : Marie D.</div>
+            <div class="etab-status"><span class="badge danger">🚨 Sécurité urgente</span></div>
+          </div>
+          <div class="etab-item">
+            <div class="etab-name">Foyer de vie Colibri</div>
+            <div class="etab-ref">Référent : Jean-Paul M.</div>
+            <div class="etab-status"><span class="badge ok">✅ Tout OK</span></div>
+          </div>
+          <div class="etab-item">
+            <div class="etab-name">IME Saint-Exupéry</div>
+            <div class="etab-ref">Référent : Sophie L.</div>
+            <div class="etab-status"><span class="badge warn">⚠️ Dossiers à nettoyer</span></div>
+          </div>
+          <div class="etab-item">
+            <div class="etab-name">SAVS Horizon</div>
+            <div class="etab-ref">Référent : Ahmed B.</div>
+            <div class="etab-status"><span class="badge ok">✅ Tout OK</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>🚨 Actions urgentes pour la direction</h3>
+        <ul class="action-list">
+          <li><strong>Avant le 20 juin :</strong> bloquer les 2 accès informatiques d'anciens salariés à l'ESAT Les Acacias → contacter le prestataire informatique.</li>
+          <li><strong>Prestataire vidéosurveillance :</strong> DPA manquant — demander la signature du contrat RGPD en urgence.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>⚠️ Points à traiter avant le 15 octobre</h3>
+        <ul class="action-list">
+          <li>IME Saint-Exupéry : nettoyage de 3 dossiers de résidents partis depuis + de 5 ans.</li>
+          <li>Agence de communication : envoyer l'avenant DPA (modèle disponible auprès du DPO).</li>
+          <li>Mailchimp : vérifier les conditions RGPD ou basculer vers une solution conforme.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>✅ Bonnes nouvelles du mois</h3>
+        <ul class="action-list">
+          <li>4/4 contrats prestataires principaux avec clause RGPD signée — aucun renouvellement avant décembre.</li>
+          <li>Incident email ESAT en cours de résolution — DPO informé, famille avertie, CNIL non concernée.</li>
+          <li>Foyer Colibri et SAVS Horizon : tous les voyants au vert ce mois-ci.</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Historique mensuel</h3>
+        <div class="list" id="list-suivi"></div>
+      </div>
+    </section>
+
+    <!-- MODULE : Rappels & alertes -->
+    <section id="module-rappels" class="module">
+      <div class="intro-card">
+        <h2>🔔 Rappels & alertes</h2>
+        <p>Le système de rappels automatiques à mettre en place. Copiez ces dates dans votre calendrier Outlook ou Google Calendar — une seule fois, et c'est bon pour toute l'année.</p>
+      </div>
+
+      <div class="panel">
+        <div class="help-tip inline">
+          <strong>💡 Comment mettre en place les rappels ?</strong> Dans Outlook : Créer un événement récurrent → cocher "Rappel" → choisir la récurrence (mensuelle, trimestrielle, annuelle). Dans Google Calendar : même principe, activez les notifications par email.
+        </div>
+
+        <h3 class="rappels-title danger">🔴 Rappels mensuels</h3>
+        <ul class="rappels-list">
+          <li><span class="rappel-date">📅 1er lundi du mois</span> Vérifier les demandes de droits en attente (5 min)</li>
+          <li><span class="rappel-date">📅 1er lundi du mois</span> Consulter la boîte rgpd@unapei92.fr</li>
+          <li><span class="rappel-date">📅 1er du mois</span> Coup d'œil sur les 5 voyants</li>
+        </ul>
+
+        <h3 class="rappels-title warn">🟡 Rappels trimestriels</h3>
+        <ul class="rappels-list">
+          <li><span class="rappel-date">📅 1er avril</span> Vérification sous-traitants + DPA à renouveler</li>
+          <li><span class="rappel-date">📅 1er juillet</span> Rappel "pas de partage de mot de passe"</li>
+          <li><span class="rappel-date">📅 1er octobre</span> Grand nettoyage dossiers 🍂 + rappel annuel RGPD</li>
+          <li><span class="rappel-date">📅 1er janvier</span> Révision annuelle complète + vérification accès salariés</li>
+        </ul>
+
+        <h3 class="rappels-title ok">🟢 Rappels annuels</h3>
+        <ul class="rappels-list">
+          <li><span class="rappel-date">📅 Janvier</span> Validation du registre par le DPO externe</li>
+          <li><span class="rappel-date">📅 Octobre</span> Renouvellement consentements photos (tous les 3 ans)</li>
+          <li><span class="rappel-date">📅 Décembre</span> Vérifier les contrats prestataires qui arrivent à échéance</li>
+          <li><span class="rappel-date">📅 Octobre</span> Mois RGPD : affiche + quiz flash pour tous les salariés</li>
+        </ul>
+
+        <h3 class="rappels-title info">🔵 Rappels liés aux événements</h3>
+        <ul class="rappels-list">
+          <li><span class="rappel-date">⚡ Départ d'un salarié</span> Bloquer ses accès le jour même</li>
+          <li><span class="rappel-date">⚡ Nouveau logiciel</span> Mettre à jour le registre avant mise en service</li>
+          <li><span class="rappel-date">⚡ Nouveau prestataire</span> Vérifier le DPA avant signature du contrat</li>
+          <li><span class="rappel-date">⚡ Nouveau salarié</span> Formation RGPD dans les 30 jours</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>💾 Plan de sauvegarde — la règle des 3 exemplaires</h3>
+        <div class="backup-grid">
+          <div class="backup-item">
+            <div class="backup-icon">📁</div>
+            <h4>Exemplaire 1 — Cloud</h4>
+            <p>Dossier partagé SharePoint ou Google Drive nommé <em>"RGPD — NE PAS EFFACER"</em>. Accès limité au référent + DPO + direction. Sauvegarde automatique.</p>
+          </div>
+          <div class="backup-item">
+            <div class="backup-icon">🖨️</div>
+            <h4>Exemplaire 2 — Papier</h4>
+            <p>Copie PDF imprimée chaque trimestre. Classée dans un classeur plastifié dans le bureau du référent, étiqueté "RGPD 2026".</p>
+          </div>
+          <div class="backup-item">
+            <div class="backup-icon">🔄</div>
+            <h4>Plan B humain</h4>
+            <p>Si le référent est absent (congé, maladie), le N+1 assure la continuité. Le nom du remplaçant est noté dans la fiche de poste et connu du DPO.</p>
+          </div>
+        </div>
+        <div class="backup-rule">Règle d'or : si le cloud tombe, le papier prend le relais. Si le papier brûle, le cloud suffit.</div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <a href="index.html" class="footer-link">← Retour à la connexion</a>
+      <span>Version prototype • Données de démonstration uniquement</span>
+    </footer>
+  </main>
+
+  <!-- Modal formulaire -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">Formulaire</h3>
+      <form id="modal-form">
+        <div id="modal-fields"></div>
+        <div class="modal-actions">
+          <button class="secondary" type="button" id="btn-cancel">Annuler</button>
+          <button type="submit" id="btn-save">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="config.js"></script>
+  <script>
+    const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
+    if (!session.success) location.href = 'login.html';
+
+    const CODE = session.code;
+    let currentModule = 'voyants';
+    let data = {};
+
+    const SHEETS = {
+      actions: { title: 'Action', fields: [
+        { name: 'titre', label: 'Titre', type: 'text', required: true },
+        { name: 'priorite', label: 'Priorité', type: 'select', options: ['HAUTE', 'MOYENNE', 'BASSE'], required: true },
+        { name: 'echeance', label: 'Échéance (jj/mm/aaaa)', type: 'text', required: true },
+        { name: 'statut', label: 'Statut', type: 'select', options: ['A_FAIRE', 'EN_COURS', 'FAIT', 'BLOQUE'], required: true },
+        { name: 'responsable', label: 'Responsable', type: 'text' },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]},
+      registre: { title: 'Traitement', fields: [
+        { name: 'categorie', label: 'Catégorie', type: 'text', required: true },
+        { name: 'traitement', label: 'Nom du traitement', type: 'text', required: true },
+        { name: 'finalite', label: 'Finalité', type: 'text', required: true },
+        { name: 'responsable', label: 'Responsable', type: 'text' },
+        { name: 'base_legale', label: 'Base légale', type: 'text' },
+        { name: 'duree_conservation', label: 'Durée de conservation', type: 'text' },
+        { name: 'donnees_concernees', label: 'Données concernées', type: 'textarea' },
+        { name: 'destinataires', label: 'Destinataires', type: 'text' },
+        { name: 'mesures_securite', label: 'Mesures de sécurité', type: 'textarea' },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]},
+      incidents: { title: 'Incident', fields: [
+        { name: 'date_incident', label: 'Date incident (jj/mm/aaaa)', type: 'text', required: true },
+        { name: 'type', label: 'Type', type: 'text', required: true },
+        { name: 'gravite', label: 'Gravité', type: 'select', options: ['FAIBLE', 'MOYENNE', 'ELEVEE', 'CRITIQUE'], required: true },
+        { name: 'description', label: 'Description', type: 'textarea', required: true },
+        { name: 'nb_personnes', label: 'Nb personnes concernées', type: 'text' },
+        { name: 'cnil_declare', label: 'Déclaration CNIL', type: 'select', options: ['NON', 'OUI'] },
+        { name: 'statut', label: 'Statut', type: 'select', options: ['OUVERT', 'EN_COURS', 'CLOTURE'], required: true },
+        { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
+      ]}
+    };
+
+    function showToast(message, type = 'success') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = 'toast show ' + type;
+      setTimeout(() => toast.className = 'toast', 2500);
+    }
+
+    async function loadData() {
+      const res = await api('dashboard', CODE);
+      if (!res.success) {
+        showToast(res.error, 'error');
+        return;
+      }
+      data = res;
+      document.getElementById('title').textContent = session.etablissement || 'Mon tableau de bord';
+      document.getElementById('mois-courant').textContent = new Date().toISOString().slice(0, 7);
+      renderVoyants();
+      renderScore();
+      renderList('actions');
+      renderList('registre');
+      renderList('incidents');
+      renderSuivi();
+    }
+
+    // Voyants alignés sur le Kit publié
+    function renderVoyants() {
+      const actions = data.actions || [];
+      const incidents = data.incidents || [];
+      const registre = data.registre || [];
+
+      const totalActions = actions.length;
+      const faites = actions.filter(a => a.statut === 'FAIT').length;
+      const retards = actions.filter(a => a.echeance < new Date().toISOString().split('T')[0] && a.statut !== 'FAIT').length;
+      const incidentsOuverts = incidents.filter(i => i.statut !== 'CLOTURE').length;
+      const incidentsCritiques = incidents.filter(i => i.gravite === 'CRITIQUE').length;
+
+      const voyantEtat = (condition, inverse = false) => condition ? (inverse ? 'danger' : 'ok') : (inverse ? 'ok' : 'warn');
+
+      document.getElementById('voyants').innerHTML = `
+        <div class="voyant ${voyantEtat(registre.length > 0)}" onclick="switchModule('registre')">
+          <span class="voyant-emoji">🔑</span>
+          <span class="voyant-title">Droits des personnes</span>
+          <span class="voyant-status">${registre.length > 0 ? '✅ OK' : '⚠️ À vérifier'}</span>
+        </div>
+        <div class="voyant ${voyantEtat(registre.length > 0)}" onclick="switchModule('registre')">
+          <span class="voyant-emoji">✋</span>
+          <span class="voyant-title">Consentements</span>
+          <span class="voyant-status">${registre.length > 0 ? '✅ OK' : '⚠️ À vérifier'}</span>
+        </div>
+        <div class="voyant ${voyantEtat(retards === 0, true)}" onclick="switchModule('actions')">
+          <span class="voyant-emoji">🗑️</span>
+          <span class="voyant-title">Durées de conservation</span>
+          <span class="voyant-status">${retards === 0 ? '✅ OK' : '⚠️ À vérifier'}</span>
+        </div>
+        <div class="voyant ${voyantEtat(incidentsCritiques === 0, true)}" onclick="switchModule('incidents')">
+          <span class="voyant-emoji">🔒</span>
+          <span class="voyant-title">Sécurité des accès</span>
+          <span class="voyant-status">${incidentsCritiques === 0 ? '✅ OK' : '🚨 Urgent'}</span>
+        </div>
+        <div class="voyant ${voyantEtat(incidentsOuverts === 0, true)}" onclick="switchModule('incidents')">
+          <span class="voyant-emoji">📝</span>
+          <span class="voyant-title">Sous-traitants</span>
+          <span class="voyant-status">${incidentsOuverts === 0 ? '✅ OK' : '🚨 Urgent'}</span>
+        </div>
+      `;
+    }
+
+    function renderScore() {
+      const currentMonth = new Date().toISOString().slice(0, 7);
+      const row = data.suivi.find(s => s.mois === currentMonth) || data.suivi.sort((a, b) => b.mois.localeCompare(a.mois))[0];
+      const score = row ? row.score : 0;
+      document.getElementById('score').textContent = score + '%';
+      document.getElementById('score').className = 'score-value ' + (score >= 80 ? 'ok' : score >= 50 ? 'warn' : 'danger');
+    }
+
+    function renderList(type) {
+      const container = document.getElementById('list-' + type);
+      const items = data[type] || [];
+      if (!items.length) {
+        container.innerHTML = '<p class="empty">Aucune entrée.</p>';
+        return;
+      }
+      container.innerHTML = items.map(item => {
+        let title = item.titre || item.traitement || item.type || '#' + item.id;
+        let meta = [];
+        if (type === 'actions') {
+          meta.push(`Échéance : ${formatDateFR(item.echeance)}`);
+          meta.push(`Statut : ${item.statut}`);
+        } else if (type === 'registre') {
+          meta.push(`Catégorie : ${item.categorie}`);
+          meta.push(`Responsable : ${item.responsable || '—'}`);
+        } else if (type === 'incidents') {
+          meta.push(`Date : ${formatDateFR(item.date_incident)}`);
+          meta.push(`Gravité : ${item.gravite}`);
+        }
+        const badgeClass = getBadgeClass(type, item);
+        return `
+          <div class="list-item">
+            <div class="list-title">
+              <span>${title}</span>
+              <span class="badge ${badgeClass}">${getBadgeLabel(type, item)}</span>
+            </div>
+            <div class="list-meta">${meta.join(' · ')}</div>
+            <div class="list-actions">
+              <button class="secondary" type="button" onclick="openForm('${type}', '${item.id}')">✏️ Modifier</button>
+              <button class="danger" type="button" onclick="deleteRow('${type}', '${item.id}')">🗑️ Supprimer</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function getBadgeClass(type, item) {
+      if (type === 'actions') {
+        return item.statut === 'FAIT' ? 'ok' : item.priorite === 'HAUTE' ? 'danger' : item.priorite === 'MOYENNE' ? 'warn' : 'info';
+      }
+      if (type === 'incidents') {
+        return item.gravite === 'CRITIQUE' ? 'danger' : item.gravite === 'ELEVEE' ? 'warn' : item.gravite === 'MOYENNE' ? 'warn' : 'ok';
+      }
+      return 'ok';
+    }
+
+    function getBadgeLabel(type, item) {
+      if (type === 'actions') return item.statut;
+      if (type === 'incidents') return item.gravite;
+      return item.categorie;
+    }
+
+    function renderSuivi() {
+      const container = document.getElementById('list-suivi');
+      const rows = data.suivi ? [...data.suivi].sort((a, b) => b.mois.localeCompare(a.mois)) : [];
+      if (!rows.length) {
+        container.innerHTML = '<p class="empty">Aucun suivi mensuel.</p>';
+        return;
+      }
+      container.innerHTML = rows.map(s => {
+        const colorClass = s.score >= 80 ? 'ok' : s.score >= 50 ? 'warn' : 'danger';
+        return `
+          <div class="list-item">
+            <div class="list-title">
+              <span>${s.mois}</span>
+              <span class="score-badge ${colorClass}">${s.score}%</span>
+            </div>
+            <div class="list-meta">
+              Actions : ${s.nb_actions_faites}/${s.nb_actions_total} · Incidents : ${s.nb_incidents} · Critiques : ${s.nb_incidents_critiques}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderSuivi() {
+      const container = document.getElementById('list-suivi');
+      const rows = data.suivi ? [...data.suivi].sort((a, b) => b.mois.localeCompare(a.mois)) : [];
+      if (!rows.length) {
+        container.innerHTML = '<p class="empty">Aucun suivi mensuel.</p>';
+        return;
+      }
+      container.innerHTML = rows.map(s => {
+        const colorClass = s.score >= 80 ? 'ok' : s.score >= 50 ? 'warn' : 'danger';
+        return `
+          <div class="list-item">
+            <div class="list-title">
+              <span>${s.mois}</span>
+              <span class="score-badge ${colorClass}">${s.score}%</span>
+            </div>
+            <div class="list-meta">
+              Actions : ${s.nb_actions_faites}/${s.nb_actions_total} · Incidents : ${s.nb_incidents} · Critiques : ${s.nb_incidents_critiques}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.switchModule = function(module) {
+      currentModule = module;
+      document.querySelectorAll('.module-btn').forEach(b => b.classList.toggle('active', b.dataset.module === module));
+      document.querySelectorAll('.module').forEach(m => m.classList.toggle('active', m.id === 'module-' + module));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.openForm = function(type, id = null) {
+      const sheet = SHEETS[type];
+      const item = id ? data[type].find(r => r.id === id) : {};
+      document.getElementById('modal-title').textContent = (id ? 'Modifier ' : 'Ajouter ') + sheet.title.toLowerCase();
+      document.getElementById('modal-fields').innerHTML = sheet.fields.map(f => {
+        const val = (item[f.name] || '');
+        if (f.type === 'select') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <select id="f-${f.name}" name="${f.name}" ${f.required ? 'required' : ''}>
+              ${f.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+            </select>`;
+        }
+        if (f.type === 'textarea') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <textarea id="f-${f.name}" name="${f.name}" rows="3" ${f.required ? 'required' : ''}>${val}</textarea>`;
+        }
+        return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+          <input type="${f.type}" id="f-${f.name}" name="${f.name}" value="${val}" ${f.required ? 'required' : ''}>`;
+      }).join('') + `<input type="hidden" id="form-type" value="${type}"><input type="hidden" id="form-id" value="${id || ''}">`;
+      document.getElementById('modal').classList.add('active');
+    };
+
+    document.getElementById('btn-cancel').addEventListener('click', () => document.getElementById('modal').classList.remove('active'));
+
+    document.getElementById('modal-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const type = document.getElementById('form-type').value;
+      const id = document.getElementById('form-id').value;
+      const row = { code_etab: CODE };
+      let hasError = false;
+      SHEETS[type].fields.forEach(f => {
+        const val = document.getElementById('f-' + f.name).value.trim();
+        if (f.required && !val) {
+          showToast(`Champ obligatoire : ${f.label}`, 'error');
+          hasError = true;
+        }
+        row[f.name] = val;
+      });
+      if (hasError) return;
+
+      if (row.echeance && row.echeance.includes('/')) {
+        const [j, m, a] = row.echeance.split('/');
+        row.echeance = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+      }
+      if (row.date_incident && row.date_incident.includes('/')) {
+        const [j, m, a] = row.date_incident.split('/');
+        row.date_incident = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+      }
+
+      const action = id ? 'update' : 'create';
+      const res = await api(null, null, 'POST', { action, sheet: type.toUpperCase(), id, row });
+      if (res.success) {
+        showToast(id ? 'Modifié' : 'Ajouté', 'success');
+        document.getElementById('modal').classList.remove('active');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    });
+
+    window.deleteRow = async function(type, id) {
+      if (!confirm('Supprimer cette entrée ?')) return;
+      const res = await api(null, null, 'POST', { action: 'delete', sheet: type.toUpperCase(), id });
+      if (res.success) {
+        showToast('Supprimé', 'success');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    };
+
+    document.getElementById('btn-recalc-score').addEventListener('click', async () => {
+      const mois = new Date().toISOString().slice(0, 7);
+      const res = await api(null, null, 'POST', { action: 'score', code_etab: CODE, mois });
+      if (res.success) {
+        showToast('Score recalculé : ' + res.score + '%', 'success');
+        await loadData();
+      } else {
+        showToast(res.error, 'error');
+      }
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      sessionStorage.removeItem('rgpd_session');
+      location.href = 'login.html';
+    });
+
+    function formatDateFR(d) {
+      if (!d) return '—';
+      if (d.includes('/')) return d;
+      const [a, m, j] = d.split('-');
+      return `${j}/${m}/${a}`;
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
