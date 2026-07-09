@@ -192,7 +192,12 @@
   <div id="toast" class="toast"></div>
 
   <script src="config.js"></script>
+  <script src="config.local.js"></script>
   <script>
+    // Fusionner config locale si elle existe
+    if (typeof CONFIG_LOCAL !== 'undefined') {
+      CONFIG.OPENROUTER_API_KEY = CONFIG_LOCAL.OPENROUTER_API_KEY;
+    }
     const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
     if (!session.success) location.href = 'login.html';
 
