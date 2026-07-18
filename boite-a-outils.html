@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boîte à outils RGPD — UNAPEI92</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;line-height:1.6;font-size:15px;
+    background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%),
+    radial-gradient(circle at 90% 80%,rgba(168,85,247,0.04) 0%,transparent 40%);background-attachment:fixed}
+  .wrap{max-width:900px;margin:0 auto;padding:60px 24px 100px}
+  h1{font-size:clamp(28px,4vw,38px);font-weight:800;margin:0 0 8px;letter-spacing:-0.02em;
+    background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#94a3b8;font-size:15px;margin-bottom:40px;max-width:600px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px}
+  .card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;
+    transition:transform .15s,border-color .15s;cursor:pointer}
+  .card:hover{transform:translateY(-3px);border-color:rgba(99,102,241,0.3)}
+  .card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:22px;margin-bottom:14px}
+  .icon-blue{background:rgba(59,130,246,0.12)}
+  .icon-green{background:rgba(16,185,129,0.12)}
+  .icon-purple{background:rgba(168,85,247,0.12)}
+  .icon-orange{background:rgba(245,158,11,0.12)}
+  .card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
+  .card p{font-size:13px;color:#94a3b8;margin:0 0 14px;line-height:1.5}
+  .card .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;
+    background:rgba(255,255,255,0.06);color:#94a3b8}
+  .card a{color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+  .card a:hover{color:#93bbfd}
+  .section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin-bottom:16px}
+  .strat-card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px}
+  .strat-card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
+  .strat-card p{font-size:13px;color:#94a3b8;margin:0 0 14px}
+  .strat-card a{color:#fbbf24;font-size:13px;font-weight:600;text-decoration:none}
+  .strat-card a:hover{color:#fcd34d}
+  .footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
+  .footer a{color:#60a5fa;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🛡️ Boîte à outils RGPD</h1>
+  <p class="sub">Tous les outils, formations et procédures pour la mise en conformité RGPD du réseau UNAPEI92.</p>
+
+  <div class="section-title">Outils essentiels</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon icon-blue">📋</div>
+      <h2>Kit RGPD — Tableau de bord</h2>
+      <p>Le hub central du référent : registre des traitements, mémo des bonnes pratiques, suivi des actions, calendrier.</p>
+      <span class="tag">Référents</span>
+      <div style="margin-top:12px"><a href="Kit UNAPEI92.html">Accéder au kit →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-green">🎓</div>
+      <h2>Kit de formation — Diaporama</h2>
+      <p>Présentation 12 slides à projeter en réunion d'équipe. Quiz interactif inclus. Prêt à l'emploi.</p>
+      <span class="tag">Tous les salariés</span>
+      <div style="margin-top:12px"><a href="Kit_de_formations.html">Voir le diaporama →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-purple">👨‍🏫</div>
+      <h2>Kit formateur — Avec notes</h2>
+      <p>Les mêmes 12 slides avec les notes d'animation détaillées : conseils, questions à poser, timing.</p>
+      <span class="tag">Formateurs</span>
+      <div style="margin-top:12px"><a href="formation_RGPD.html">Ouvrir le kit formateur →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-orange">🚨</div>
+      <h2>Journal des incidents</h2>
+      <p>Formulaire de signalement d'incident RGPD. Alerte automatique si délai CNIL 72h dépassé.</p>
+      <span class="tag">Tout le personnel</span>
+      <div style="margin-top:12px"><a href="journal_incidents.html">Signaler un incident →</a></div>
+    </div>
+
+  </div>
+
+  <div class="section-title">Document stratégique</div>
+  <div class="strat-card">
+    <h2>📐 3 approches pour déployer le RGPD</h2>
+    <p>Analyse comparative de 3 stratégies de déploiement : Tableau de bord, Réseau des Vigies, Parcours Fléché. Avec recommandation.</p>
+    <a href="UNAPEI92_RGPD_3approches.md">Lire le document →</a>
+  </div>
+
+  <div class="footer">
+    <a href="dashboard_premium.html">📊 Dashboard général</a> · 
+    <a href="rapport_audit.html">📄 Rapport de synthèse</a> · 
+    <a href="plan_action_rgpd.html">📋 Plan d'action</a><br>
+    UNAPEI92 — Audit RGPD 2026
+  </div>
+
+</div>
+</body>
+</html>
