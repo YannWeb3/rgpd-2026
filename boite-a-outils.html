@@ -12,7 +12,7 @@
   body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;line-height:1.6;font-size:15px;
     background-image:radial-gradient(circle at 10% 20%,rgba(99,102,241,0.05) 0%,transparent 40%),
     radial-gradient(circle at 90% 80%,rgba(168,85,247,0.04) 0%,transparent 40%);background-attachment:fixed}
-  .wrap{max-width:900px;margin:0 auto;padding:60px 24px 100px}
+  .wrap{max-width:960px;margin:0 auto;padding:60px 24px 100px}
   h1{font-size:clamp(28px,4vw,38px);font-weight:800;margin:0 0 8px;letter-spacing:-0.02em;
     background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
   .sub{color:#94a3b8;font-size:15px;margin-bottom:40px;max-width:600px}
@@ -26,6 +26,8 @@
   .icon-green{background:rgba(16,185,129,0.12)}
   .icon-purple{background:rgba(168,85,247,0.12)}
   .icon-orange{background:rgba(245,158,11,0.12)}
+  .icon-red{background:rgba(239,68,68,0.12)}
+  .icon-cyan{background:rgba(6,182,212,0.12)}
   .card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
   .card p{font-size:13px;color:#94a3b8;margin:0 0 14px;line-height:1.5}
   .card .tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;
@@ -33,47 +35,97 @@
   .card a{color:#60a5fa;font-size:13px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
   .card a:hover{color:#93bbfd}
   .section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin-bottom:16px}
-  .strat-card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px}
-  .strat-card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
-  .strat-card p{font-size:13px;color:#94a3b8;margin:0 0 14px}
-  .strat-card a{color:#fbbf24;font-size:13px;font-weight:600;text-decoration:none}
-  .strat-card a:hover{color:#fcd34d}
+  .access-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:40px}
+  .access-card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;text-align:center}
+  .access-card h2{font-size:16px;font-weight:700;margin:0 0 6px;color:#fff}
+  .access-card p{font-size:13px;color:#94a3b8;margin:0 0 14px}
+  .access-card a{display:inline-block;font-size:14px;font-weight:600;padding:10px 24px;border-radius:10px;text-decoration:none}
+  .btn-blue{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3)}
+  .btn-blue:hover{background:rgba(59,130,246,0.25)}
+  .btn-red{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+  .btn-red:hover{background:rgba(239,68,68,0.25)}
   .footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
   .footer a{color:#60a5fa;text-decoration:none}
+  @media(max-width:640px){.access-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <h1>🛡️ Boîte à outils RGPD</h1>
-  <p class="sub">Tous les outils, formations et procédures pour la mise en conformité RGPD du réseau UNAPEI92.</p>
+  <p class="sub">Tous les outils, formations, dashboards et rapports pour la mise en conformité RGPD du réseau UNAPEI92.</p>
 
-  <div class="section-title">Outils essentiels</div>
+  <!-- SECTION 1 — Dashboards -->
+  <div class="section-title">📊 Dashboards</div>
   <div class="grid">
 
     <div class="card">
-      <div class="card-icon icon-blue">📋</div>
-      <h2>Kit RGPD — Tableau de bord</h2>
+      <div class="card-icon icon-blue">📈</div>
+      <h2>Dashboard v1</h2>
+      <p>Tableau de bord opérationnel — vue par établissement, indicateurs clés de conformité.</p>
+      <span class="tag">Vue établissement</span>
+      <div style="margin-top:12px"><a href="dashboard.html">Ouvrir le dashboard →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-blue">📉</div>
+      <h2>Dashboard v2</h2>
+      <p>Version 2 — fusion v1 + Kit UNAPEI92, interface unifiée pour le suivi complet.</p>
+      <span class="tag">Vue consolidée</span>
+      <div style="margin-top:12px"><a href="dashboard-v2.html">Ouvrir le dashboard v2 →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-cyan">💎</div>
+      <h2>Dashboard Premium</h2>
+      <p>Dashboard de direction — vue globale consolidée, KPIs, synthèse pour la gouvernance.</p>
+      <span class="tag">Direction</span>
+      <div style="margin-top:12px"><a href="dashboard_premium.html">Ouvrir le dashboard premium →</a></div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 2 — Kit & Guides -->
+  <div class="section-title">🎓 Kit & Guides</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon icon-green">📋</div>
+      <h2>Kit UNAPEI92 complet</h2>
       <p>Le hub central du référent : registre des traitements, mémo des bonnes pratiques, suivi des actions, calendrier.</p>
       <span class="tag">Référents</span>
       <div style="margin-top:12px"><a href="Kit UNAPEI92.html">Accéder au kit →</a></div>
     </div>
 
     <div class="card">
-      <div class="card-icon icon-green">🎓</div>
-      <h2>Kit de formation — Diaporama</h2>
-      <p>Présentation 12 slides à projeter en réunion d'équipe. Quiz interactif inclus. Prêt à l'emploi.</p>
+      <div class="card-icon icon-green">🎬</div>
+      <h2>Formation RGPD</h2>
+      <p>Diaporama 12 slides à projeter en réunion d'équipe. Quiz interactif inclus. Notes animateur toggle.</p>
       <span class="tag">Tous les salariés</span>
-      <div style="margin-top:12px"><a href="formation_RGPD.html">Voir le diaporama →</a></div>
+      <div style="margin-top:12px"><a href="formation_RGPD.html">Voir la formation →</a></div>
     </div>
 
     <div class="card">
-      <div class="card-icon icon-purple">👨‍🏫</div>
-      <h2>Kit formateur — Avec notes</h2>
-      <p>Les mêmes 12 slides avec les notes d'animation détaillées : conseils, questions à poser, timing.</p>
+      <div class="card-icon icon-green">👨‍🏫</div>
+      <h2>Kit Formations</h2>
+      <p>Kit formateur avec notes d'animation détaillées : conseils, questions à poser, timing par slide.</p>
       <span class="tag">Formateurs</span>
-      <div style="margin-top:12px"><a href="formation_RGPD.html">Ouvrir le kit formateur →</a></div>
+      <div style="margin-top:12px"><a href="kit_formations.html">Ouvrir le kit formateur →</a></div>
     </div>
+
+    <div class="card">
+      <div class="card-icon icon-green">📔</div>
+      <h2>Kit UNAPEI92 (carnet visuel)</h2>
+      <p>Version carnet visuel moderne du Kit RGPD — format illustré, navigation simplifiée.</p>
+      <span class="tag">Lecture rapide</span>
+      <div style="margin-top:12px"><a href="kit_unapei92.html">Ouvrir le carnet →</a></div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3 — Incidents & Actions -->
+  <div class="section-title">🚨 Incidents & Actions</div>
+  <div class="grid">
 
     <div class="card">
       <div class="card-icon icon-orange">🚨</div>
@@ -83,20 +135,81 @@
       <div style="margin-top:12px"><a href="journal_incidents.html">Signaler un incident →</a></div>
     </div>
 
+    <div class="card">
+      <div class="card-icon icon-orange">⚠️</div>
+      <h2>Journal des incidents (alt.)</h2>
+      <p>Version alternative du journal d'incidents — format étendu avec champs supplémentaires.</p>
+      <span class="tag">Version étendue</span>
+      <div style="margin-top:12px"><a href="journal_incidents_rgpd.html">Ouvrir la version alt. →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-orange">📋</div>
+      <h2>Plan d'action</h2>
+      <p>Plan d'action RGPD en 3 phases — priorités, responsables, échéances et suivi d'avancement.</p>
+      <span class="tag">Pilotage</span>
+      <div style="margin-top:12px"><a href="plan_action_rgpd.html">Voir le plan d'action →</a></div>
+    </div>
+
   </div>
 
-  <div class="section-title">Document stratégique</div>
-  <div class="strat-card">
-    <h2>📐 3 approches pour déployer le RGPD</h2>
-    <p>Analyse comparative de 3 stratégies de déploiement : Tableau de bord, Réseau des Vigies, Parcours Fléché. Avec recommandation.</p>
-    <a href="3approches.html">Lire le document →</a>
+  <!-- SECTION 4 — Rapports & Stratégies -->
+  <div class="section-title">📄 Rapports & Stratégies</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon icon-purple">📊</div>
+      <h2>Rapport de synthèse</h2>
+      <p>Rapport global d'audit RGPD — scores par établissement, écarts constatés, recommandations.</p>
+      <span class="tag">Audit complet</span>
+      <div style="margin-top:12px"><a href="rapport_audit.html">Lire le rapport →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-purple">📐</div>
+      <h2>3 approches de déploiement</h2>
+      <p>Analyse comparative de 3 stratégies : Tableau de bord, Réseau des Vigies, Parcours Fléché.</p>
+      <span class="tag">Stratégie</span>
+      <div style="margin-top:12px"><a href="3approches.html">Lire le document →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-purple">📈</div>
+      <h2>Avancement mission</h2>
+      <p>Suivi de l'avancement de la mission RGPD — étapes franchies, reste à faire, points de blocage.</p>
+      <span class="tag">Pilotage mission</span>
+      <div style="margin-top:12px"><a href="avancement_UNAPEI92.html">Voir l'avancement →</a></div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon icon-purple">📌</div>
+      <h2>Bilan mission Alten</h2>
+      <p>Bilan de mission pour le responsable Alten — livrables, chiffres clés, recommandation de prolongation.</p>
+      <span class="tag">Reporting direction</span>
+      <div style="margin-top:12px"><a href="bilan-mission-alten.html">Lire le bilan →</a></div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 5 — Accès -->
+  <div class="section-title">🔐 Accès</div>
+  <div class="access-grid">
+    <div class="access-card">
+      <h2>🔑 Accès référent</h2>
+      <p>Connexion par code établissement (ex : 1001 = ESAT, 0000 = admin).</p>
+      <a href="login.html" class="btn-blue">Se connecter →</a>
+    </div>
+    <div class="access-card">
+      <h2>⚙️ Admin</h2>
+      <p>Interface d'administration — gestion des établissements, utilisateurs et paramètres.</p>
+      <a href="admin.html" class="btn-red">Accéder à l'admin →</a>
+    </div>
   </div>
 
   <div class="footer">
-    <a href="dashboard_premium.html">📊 Dashboard général</a> · 
-    <a href="rapport_audit.html">📄 Rapport de synthèse</a> · 
-    <a href="plan_action_rgpd.html">📋 Plan d'action</a><br>
-    UNAPEI92 — Audit RGPD 2026
+    UNAPEI92 — Boîte à outils RGPD 2026 ·
+    <a href="index.html">📋 Formulaires</a> ·
+    <a href="Rapport_Audit/index.html">📄 Rapports d'audit</a>
   </div>
 
 </div>
