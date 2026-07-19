@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit des livrables — UNAPEI92 RGPD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;line-height:1.6;font-size:15px}
+  .wrap{max-width:1100px;margin:0 auto;padding:50px 24px 80px}
+  h1{font-size:32px;font-weight:800;margin:0 0 8px;letter-spacing:-0.02em;
+    background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#94a3b8;font-size:15px;margin-bottom:40px}
+  h2{font-size:22px;font-weight:700;margin:40px 0 16px;color:#fff;display:flex;align-items:center;gap:10px}
+  h3{font-size:16px;font-weight:600;margin:24px 0 12px;color:#60a5fa}
+  .section-title{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin:32px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  table{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px}
+  th{text-align:left;padding:10px 12px;background:rgba(99,102,241,0.1);color:#c7d2fe;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid rgba(99,102,241,0.2)}
+  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:top}
+  tr:hover td{background:rgba(255,255,255,0.02)}
+  .tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
+  .tag-green{background:rgba(16,185,129,0.15);color:#34d399}
+  .tag-orange{background:rgba(245,158,11,0.15);color:#fbbf24}
+  .tag-red{background:rgba(239,68,68,0.15);color:#f87171}
+  .tag-blue{background:rgba(59,130,246,0.15);color:#60a5fa}
+  .tag-purple{background:rgba(168,85,247,0.15);color:#c084fc}
+  .tag-gray{background:rgba(255,255,255,0.06);color:#94a3b8}
+  a{color:#60a5fa;text-decoration:none}
+  a:hover{color:#93bbfd;text-decoration:underline}
+  .alert{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .alert strong{color:#f87171}
+  .info{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .info strong{color:#60a5fa}
+  .checklist{list-style:none;padding:0}
+  .checklist li{padding:8px 0 8px 28px;position:relative;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04)}
+  .checklist li::before{content:'☐';position:absolute;left:0;color:#64748b;font-size:16px}
+  .stat{display:inline-flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+  .stat-item{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;min-width:120px}
+  .stat-num{font-size:28px;font-weight:800;color:#fff}
+  .stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+  code{background:rgba(255,255,255,0.06);padding:2px 6px;border-radius:4px;font-size:12px;color:#94a3b8}
+  .redondance{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15);border-radius:12px;padding:16px 20px;margin-bottom:12px}
+  .redondance h4{font-size:14px;font-weight:700;color:#fbbf24;margin-bottom:8px}
+  .redondance p{font-size:13px;color:#94a3b8}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>🔍 Audit des livrables — UNAPEI92 RGPD</h1>
+  <p class="sub">Document d'audit pour vérifier l'exhaustivité, la cohérence et l'absence de redondances dans la boîte à outils RGPD déployée sur GitHub Pages.</p>
+
+  <div class="stat">
+    <div class="stat-item"><div class="stat-num">36</div><div class="stat-label">Fichiers HTML</div></div>
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">Catégories</div></div>
+    <div class="stat-item"><div class="stat-num">6</div><div class="stat-label">Redondances potentielles</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Liens 200 OK</div></div>
+  </div>
+
+  <div class="info">
+    <strong>📌 Contexte</strong> — Mission mécénat de compétences (fév→déc 2026). Audit RGPD du réseau UNAPEI92 (8 types d'établissements). Livrables déployés sur <a href="https://yannweb3.github.io/rgpd-2026/" target="_blank">GitHub Pages</a>. Hub principal : <a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html" target="_blank">boite-a-outils.html</a>.
+  </div>
+
+  <!-- 1. INVENTAIRE -->
+  <h2>📋 1. Inventaire complet</h2>
+
+  <h3>📊 Dashboards (3 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Titre</th><th>Lignes</th><th>Rôle</th><th>Liens sortants</th></tr>
+    <tr><td><code>dashboard.html</code></td><td>Kit RGPD — Dashboard Référent</td><td>708</td><td><span class="tag tag-blue">Vue établissement</span></td><td>cartographie.html</td></tr>
+    <tr><td><code>dashboard-v2.html</code></td><td>Kit RGPD — Dashboard Référent UNAPEI92</td><td>1063</td><td><span class="tag tag-blue">Fusion v1+Kit</span></td><td>index.html</td></tr>
+    <tr><td><code>dashboard_premium.html</code></td><td>Audit RGPD — Tableau de bord réseau</td><td>895</td><td><span class="tag tag-purple">Direction</span></td><td>8 rapports d'audit</td></tr>
+  </table>
+
+  <h3>🎓 Kit & Guides (4 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Titre</th><th>Lignes</th><th>Rôle</th><th>Liens sortants</th></tr>
+    <tr><td><code>Kit UNAPEI92.html</code></td><td>Kit RGPD — UNAPEI92</td><td>1915</td><td><span class="tag tag-green">Kit complet interactif</span></td><td>boite-a-outils, dashboard_premium</td></tr>
+    <tr><td><code>kit_unapei92.html</code></td><td>Kit RGPD — UNAPEI92</td><td>487</td><td><span class="tag tag-green">Carnet visuel</span></td><td>index, Kit UNAPEI92</td></tr>
+    <tr><td><code>formation_RGPD.html</code></td><td>Formation RGPD – UNAPEI92</td><td>1031</td><td><span class="tag tag-green">Diaporama + notes</span></td><td>boite-a-outils, journal_incidents</td></tr>
+    <tr><td><code>kit_formations.html</code></td><td>RGPD en pratique — UNAPEI92</td><td>804</td><td><span class="tag tag-green">Kit formateur</span></td><td>(aucun)</td></tr>
+  </table>
+
+  <h3>🚨 Incidents & Actions (3 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Titre</th><th>Lignes</th><th>Rôle</th><th>Liens sortants</th></tr>
+    <tr><td><code>journal_incidents.html</code></td><td>Journal des Incidents RGPD</td><td>409</td><td><span class="tag tag-orange">Version sombre (v2)</span></td><td>boite-a-outils, Kit UNAPEI92</td></tr>
+    <tr><td><code>journal_incidents_rgpd.html</code></td><td>(pas de titre)</td><td>350</td><td><span class="tag tag-orange">Version claire (v1)</span></td><td>(aucun)</td></tr>
+    <tr><td><code>plan_action_rgpd.html</code></td><td>Plan d'Action RGPD — UNAPEI92</td><td>328</td><td><span class="tag tag-orange">Plan 3 phases</span></td><td>8 rapports d'audit</td></tr>
+  </table>
+
+  <h3>📄 Rapports & Stratégies (5 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Titre</th><th>Lignes</th><th>Rôle</th><th>Liens sortants</th></tr>
+    <tr><td><code>rapport_audit.html</code></td><td>Audit RGPD — Tableau de bord réseau</td><td>723</td><td><span class="tag tag-purple">Synthèse</span></td><td>8 rapports d'audit</td></tr>
+    <tr><td><code>3approches.html</code></td><td>3 Approches RGPD — UNAPEI92</td><td>319</td><td><span class="tag tag-purple">Stratégie</span></td><td>5 liens internes</td></tr>
+    <tr><td><code>avancement_UNAPEI92.html</code></td><td>Avancement Audit RGPD</td><td>339</td><td><span class="tag tag-purple">Suivi mission</span></td><td>(aucun)</td></tr>
+    <tr><td><code>bilan-mission-alten.html</code></td><td>Bilan mission UNAPEI92</td><td>207</td><td><span class="tag tag-purple">Bilan Alten</span></td><td>(aucun)</td></tr>
+    <tr><td><code>Rapport_Audit/index.html</code></td><td>Rapports d'audit par type</td><td>45</td><td><span class="tag tag-purple">Navigation</span></td><td>8 rapports + boite-a-outils</td></tr>
+  </table>
+
+  <h3>📝 Formulaires (17 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Type</th><th>Lignes</th><th>Liens</th></tr>
+    <tr><td><code>index.html</code></td><td>Page d'accueil (16 formulaires)</td><td>217</td><td>16 formulaires</td></tr>
+    <tr><td><code>ime.html</code></td><td>IME</td><td>1104</td><td>index.html</td></tr>
+    <tr><td><code>EMMA-H.html</code></td><td>EMMA-H</td><td>977</td><td>index.html</td></tr>
+    <tr><td><code>esat.html</code></td><td>ESAT</td><td>1001</td><td>index.html</td></tr>
+    <tr><td><code>eam.html</code></td><td>EAM</td><td>1044</td><td>index.html</td></tr>
+    <tr><td><code>eanm.html</code></td><td>EANM</td><td>928</td><td>index.html</td></tr>
+    <tr><td><code>cmpp.html</code></td><td>CMPP</td><td>968</td><td>index.html</td></tr>
+    <tr><td><code>savs.html</code></td><td>SAVS</td><td>906</td><td>index.html</td></tr>
+    <tr><td><code>sessad.html</code></td><td>SESSAD</td><td>967</td><td>index.html</td></tr>
+    <tr><td><code>SAMSAH.html</code></td><td>SAMSAH</td><td>964</td><td>index.html</td></tr>
+    <tr><td><code>si-it.html</code></td><td>SI-IT</td><td>923</td><td>index.html</td></tr>
+    <tr><td><code>direction.html</code></td><td>Direction</td><td>1025</td><td>index.html</td></tr>
+    <tr><td><code>qualite.html</code></td><td>Qualité</td><td>729</td><td>index.html</td></tr>
+    <tr><td><code>donateurs.html</code></td><td>Donateurs</td><td>812</td><td>index.html</td></tr>
+    <tr><td><code>daf.html</code></td><td>DAF</td><td>687</td><td>index.html</td></tr>
+    <tr><td><code>rh.html</code></td><td>RH/Paie</td><td>977</td><td>index.html</td></tr>
+    <tr><td><code>paie.html</code></td><td>Paie</td><td>827</td><td>index.html</td></tr>
+    <tr><td><code>communication.html</code></td><td>Communication</td><td>860</td><td>index.html</td></tr>
+  </table>
+
+  <h3>🔐 Accès & Autres (4 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Titre</th><th>Lignes</th><th>Rôle</th></tr>
+    <tr><td><code>login.html</code></td><td>Kit RGPD — Connexion</td><td>68</td><td><span class="tag tag-blue">Connexion référent</span></td></tr>
+    <tr><td><code>admin.html</code></td><td>Kit RGPD — Vue DPO / Admin</td><td>225</td><td><span class="tag tag-red">Admin</span></td></tr>
+    <tr><td><code>boite-a-outils.html</code></td><td>Boîte à outils RGPD</td><td>216</td><td><span class="tag tag-gray">Hub principal</span></td></tr>
+    <tr><td><code>cartographie.html</code></td><td>Cartographie des traitements</td><td>87</td><td><span class="tag tag-gray">Outil carto</span></td></tr>
+  </table>
+
+  <h3>📊 Rapports d'audit par type (8 fichiers)</h3>
+  <table>
+    <tr><th>Fichier</th><th>Établissement</th><th>Lignes</th></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_cmpp.html</code></td><td>CMPP</td><td>451</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_eam.html</code></td><td>EAM</td><td>669</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_eanm.html</code></td><td>EANM</td><td>944</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_esat.html</code></td><td>ESAT</td><td>797</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_ime.html</code></td><td>IME</td><td>600</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_samsah.html</code></td><td>SAMSAH</td><td>240</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_savs.html</code></td><td>SAVS</td><td>346</td></tr>
+    <tr><td><code>Rapport_Audit/rapport_rgpd_sessad.html</code></td><td>SESSAD</td><td>249</td></tr>
+  </table>
+
+  <!-- 2. REDONDANCES -->
+  <h2>⚠️ 2. Redondances potentielles à vérifier</h2>
+
+  <div class="redondance">
+    <h4>🔴 R1 — Dashboards (3 versions)</h4>
+    <p><code>dashboard.html</code> (v1, 708 lignes) · <code>dashboard-v2.html</code> (v2 fusion, 1063 lignes) · <code>dashboard_premium.html</code> (direction, 895 lignes). <strong>Questions :</strong> Le v1 est-il obsolète ? Le v2 remplace-t-il le v1 ? Le premium est-il distinct ou duplique-t-il le v2 ?</p>
+  </div>
+
+  <div class="redondance">
+    <h4>🔴 R2 — Kit UNAPEI92 (2 versions)</h4>
+    <p><code>Kit UNAPEI92.html</code> (interactif, 1915 lignes) · <code>kit_unapei92.html</code> (carnet visuel, 487 lignes). <strong>Questions :</strong> Mêmes contenus ? Le carnet est-il un résumé ou une version alternative ? Faut-il garder les deux ?</p>
+  </div>
+
+  <div class="redondance">
+    <h4>🔴 R3 — Formations (2 versions)</h4>
+    <p><code>formation_RGPD.html</code> (1031 lignes, diaporama + toggle notes) · <code>kit_formations.html</code> (804 lignes, kit formateur). <strong>Questions :</strong> Les slides sont-ils identiques ? Les notes animateur sont-elles dans les deux ? Faut-il fusionner ?</p>
+  </div>
+
+  <div class="redondance">
+    <h4>🔴 R4 — Journal d'incidents (2 versions)</h4>
+    <p><code>journal_incidents.html</code> (sombre, 409 lignes) · <code>journal_incidents_rgpd.html</code> (claire, 350 lignes, pas de titre). <strong>Questions :</strong> Laquelle est la version officielle ? L'autre doit-elle être supprimée ?</p>
+  </div>
+
+  <div class="redondance">
+    <h4>🟡 R5 — Rapport de synthèse vs Dashboard Premium</h4>
+    <p><code>rapport_audit.html</code> (723 lignes) et <code>dashboard_premium.html</code> (895 lignes) ont le <strong>même H1</strong> : « Audit RGPD — Synthèse générale du réseau ». <strong>Questions :</strong> Sont-ils identiques ? Doublon ou versions distinctes ?</p>
+  </div>
+
+  <div class="redondance">
+    <h4>🟡 R6 — Formulaires RH/Paie (doublon possible)</h4>
+    <p><code>rh.html</code> (977 lignes, « RH/Paie ») et <code>paie.html</code> (827 lignes, « Paie »). <strong>Questions :</strong> Le formulaire Paie est-il un sous-ensemble de RH ? Faut-il les fusionner ou les différencier clairement ?</p>
+  </div>
+
+  <!-- 3. PROBLÈMES TECHNIQUES -->
+  <h2>🐛 3. Problèmes techniques identifiés</h2>
+
+  <div class="alert">
+    <strong>⚠️ P1 —</strong> <code>journal_incidents_rgpd.html</code> n'a pas de balise <code>&lt;title&gt;</code> ni de <code>&lt;h1&gt;</code>. Fichier partiellement vide (CSS uniquement dans les 20 premières lignes). À vérifier ou supprimer.
+  </div>
+
+  <div class="alert">
+    <strong>⚠️ P2 —</strong> <code>kit_formations.html</code> n'a aucun lien sortant. Page orphelle ? Ajouter un lien de retour vers la boîte à outils.
+  </div>
+
+  <div class="alert">
+    <strong>⚠️ P3 —</strong> <code>avancement_UNAPEI92.html</code> n'a aucun lien sortant. Page orphelle ? Ajouter un lien de retour.
+  </div>
+
+  <div class="alert">
+    <strong>⚠️ P4 —</strong> <code>bilan-mission-alten.html</code> n'a aucun lien sortant. Page orphelle ? Ajouter un lien de retour.
+  </div>
+
+  <div class="alert">
+    <strong>⚠️ P5 —</strong> <code>cartographie.html</code> (87 lignes) est lié depuis <code>dashboard.html</code> mais n'est pas référencé dans la boîte à outils. L'ajouter ou le laisser accessible uniquement depuis le dashboard ?
+  </div>
+
+  <!-- 4. CHECKLIST AUDIT -->
+  <h2>✅ 4. Checklist d'audit pour l'externe</h2>
+
+  <h3>Cohérence visuelle</h3>
+  <ul class="checklist">
+    <li>Tous les outils ont-ils le même design sombre (fond #0b0f19, cartes #161b26) ?</li>
+    <li>Les formulaires (page d'accueil) ont-ils un design différent (clair, bleu UNAPEI) — est-ce intentionnel ?</li>
+    <li>Les icônes sont cohérentes (emojis partout) ?</li>
+    <li>Les typographies sont uniformes (Inter) ?</li>
+    <li>Les couleurs des tags sont cohérentes entre les pages ?</li>
+  </ul>
+
+  <h3>Cohérence des liens</h3>
+  <ul class="checklist">
+    <li>Tous les liens internes renvoient 200 (vérifié ✅ — 36/36)</li>
+    <li>Aucun lien ne pointe vers un fichier supprimé (ex : Kit_de_formations.html, UNAPEI92_RGPD_3approches.md)</li>
+    <li>Le lien « Retour à la boîte à outils » est présent sur toutes les pages sauf la boîte à outils elle-même ?</li>
+    <li>Les 3 pages orphelles (kit_formations, avancement, bilan-alten) ont-elles besoin d'un lien retour ?</li>
+  </ul>
+
+  <h3>Cohérence du contenu</h3>
+  <ul class="checklist">
+    <li>Vérifier les 6 redondances listées ci-dessus (R1 à R6)</li>
+    <li>Les 8 rapports d'audit ont-ils la même structure (même H1 « Audit RGPD — vue globale ») ?</li>
+    <li>Les 16 formulaires ont-ils tous le même format et les mêmes champs de base ?</li>
+    <li>Les scores RGPD sont-ils calculés de la même façon entre les rapports et le dashboard premium ?</li>
+  </ul>
+
+  <h3>Accessibilité</h3>
+  <ul class="checklist">
+    <li>La page <code>login.html</code> redirige-t-elle correctement après connexion ?</li>
+    <li>La page <code>admin.html</code> est-elle protégée (mot de passe, code établissement) ?</li>
+    <li>Les formulaires sont-ils accessibles sans login (lien envoyé aux personnes) ?</li>
+    <li>La boîte à outils est-elle accessible publiquement ou restreinte ?</li>
+  </ul>
+
+  <h3>RGPD de la boîte à outils elle-même</h3>
+  <ul class="checklist">
+    <li>Les formulaires envoient-ils les données vers Google Sheets (Apps Script) ?</li>
+    <li>Y a-t-il une mention d'information sur le traitement des données (article 13 RGPD) ?</li>
+    <li>Les réponses aux formulaires sont-elles anonymisées ou nominatives ?</li>
+    <li>Qui a accès aux données collectées (Google Sheet partagé) ?</li>
+  </ul>
+
+  <!-- 5. RECOMMANDATIONS -->
+  <h2>💡 5. Recommandations</h2>
+
+  <div class="info">
+    <strong>Actions suggérées :</strong>
+    <ol style="margin:12px 0 0 20px;font-size:13px;line-height:2">
+      <li><strong>Résoudre R1</strong> — Déterminer quel dashboard est la version officielle, archiver les autres ou les marquer clairement (v1 obsolète, v2 beta, premium = production)</li>
+      <li><strong>Résoudre R2</strong> — Décider si le carnet visuel <code>kit_unapei92.html</code> reste utile ou si <code>Kit UNAPEI92.html</code> suffit</li>
+      <li><strong>Résoudre R3</strong> — Fusionner <code>kit_formations.html</code> dans <code>formation_RGPD.html</code> (déjà fait pour les notes animateur en toggle) ou les différencier clairement</li>
+      <li><strong>Résoudre R4</strong> — Supprimer <code>journal_incidents_rgpd.html</code> si la version sombre est l'officielle</li>
+      <li><strong>Résoudre R5</strong> — Vérifier si <code>rapport_audit.html</code> et <code>dashboard_premium.html</code> sont des doublons</li>
+      <li><strong>Fix P1-P4</strong> — Ajouter titres et liens de retour aux pages orphelles</li>
+      <li><strong>Fix P5</strong> — Référencer <code>cartographie.html</code> dans la boîte à outils ou la laisser dans le dashboard uniquement</li>
+    </ol>
+  </div>
+
+  <footer>
+    <strong>Audit des livrables — UNAPEI92 RGPD</strong><br>
+    Document généré le 18/07/2026 · 36 fichiers analysés · 6 redondances identifiées · 5 problèmes techniques<br>
+    <a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html">🛡️ Boîte à outils</a> ·
+    <a href="https://yannweb3.github.io/rgpd-2026/">📋 Formulaires</a> ·
+    <a href="https://yannweb3.github.io/rgpd-2026/Rapport_Audit/index.html">📄 Rapports d'audit</a>
+  </footer>
+
+</div>
+</body>
+</html>
