@@ -740,7 +740,34 @@
 
   <div id="toast" class="toast"></div>
 
+  <!-- Assistant IA -->
+  <div class="assistant-fab" id="assistant-fab" onclick="toggleAssistant()" style="position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:#6366f1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(99,102,241,0.4);z-index:9998;">💬</div>
+  <div class="assistant-overlay" id="assistant-overlay" onclick="toggleAssistant()" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:none;"></div>
+  <div class="assistant-drawer" id="assistant-drawer" style="position:fixed;top:0;right:0;height:100%;width:400px;max-width:90vw;background:#161b26;border-left:1px solid rgba(255,255,255,0.1);z-index:9999;display:none;flex-direction:column;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.08);">
+      <h3 style="color:#fff;font-size:16px;">💬 Assistant RGPD</h3>
+      <button class="secondary" onclick="toggleAssistant()" style="background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;">✕</button>
+    </div>
+    <div class="assistant-chat" id="assistant-chat" style="flex:1;overflow-y:auto;padding:16px 20px;">
+      <div class="assistant-msg" style="margin-bottom:16px;">
+        <strong style="color:#fff;">🤖 Assistant RGPD</strong>
+        <p style="color:#94a3b8;margin-top:4px;">Bonjour ! Je peux vous aider à analyser votre tableau de bord. Posez-moi une question :</p>
+        <ul style="list-style:none;padding:0;margin-top:8px;">
+          <li style="margin:4px 0;"><a href="#" onclick="return askAssistant('resume')" style="color:#60a5fa;">📋 Résume ma situation RGPD</a></li>
+          <li style="margin:4px 0;"><a href="#" onclick="return askAssistant('retards')" style="color:#60a5fa;">⏰ Liste mes actions en retard</a></li>
+          <li style="margin:4px 0;"><a href="#" onclick="return askAssistant('ameliorer')" style="color:#60a5fa;">📈 Comment améliorer mon score ?</a></li>
+          <li style="margin:4px 0;"><a href="#" onclick="return askAssistant('incidents')" style="color:#60a5fa;">🚨 Incidents non clôturés</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="assistant-input" style="padding:12px 20px;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:8px;">
+      <input type="text" id="assistant-input" placeholder="Posez votre question..." onkeypress="if(event.key==='Enter') sendAssistantQuestion()" style="flex:1;background:#0b0f19;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 12px;color:#fff;font-size:14px;">
+      <button onclick="sendAssistantQuestion()" style="background:#6366f1;color:#fff;border:none;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:600;">Envoyer</button>
+    </div>
+  </div>
+
   <script src="config.js"></script>
+  <script src="config.local.js"></script>
   <script>
     const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
     if (!session.success) location.href = 'login.html';
@@ -748,6 +775,7 @@
     const CODE = session.code;
     let currentModule = 'voyants';
     let data = {};
+    let monthFilter = null;
 
     const SHEETS = {
       actions: { title: 'Action', fields: [
@@ -806,6 +834,33 @@
       renderSuivi();
     }
 
+    function normalizeDates(data) {
+      ['actions', 'registre', 'incidents'].forEach(type => {
+        (data[type] || []).forEach(item => {
+          if (item.echeance && item.echeance.includes('/')) {
+            const [j, m, a] = item.echeance.split('/');
+            item.echeance = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+          if (item.date_ajout && item.date_ajout.includes('/')) {
+            const [j, m, a] = item.date_ajout.split('/');
+            item.date_ajout = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+          if (item.date_incident && item.date_incident.includes('/')) {
+            const [j, m, a] = item.date_incident.split('/');
+            item.date_incident = `${a}-${m.padStart(2, '0')}-${j.padStart(2, '0')}`;
+          }
+        });
+      });
+    }
+
+    function getFilteredItems(items, dateField) {
+      if (!monthFilter) return items;
+      return items.filter(item => {
+        const val = item[dateField];
+        return val && val.startsWith(monthFilter);
+      });
+    }
+
     // Voyants alignés sur le Kit publié
     function renderVoyants() {
       const actions = data.actions || [];
@@ -859,9 +914,27 @@
 
     function renderList(type) {
       const container = document.getElementById('list-' + type);
-      const items = data[type] || [];
+      const allItems = data[type] || [];
+      let items = allItems;
+      if (monthFilter) {
+        if (type === 'actions') {
+          items = allItems.filter(item =>
+            (item.echeance && item.echeance.startsWith(monthFilter)) ||
+            (item.date_ajout && item.date_ajout.startsWith(monthFilter))
+          );
+        } else if (type === 'incidents') {
+          items = allItems.filter(item =>
+            item.date_incident && item.date_incident.startsWith(monthFilter)
+          );
+        } else if (type === 'registre') {
+          items = allItems.filter(item =>
+            item.date_ajout && item.date_ajout.startsWith(monthFilter)
+          );
+        }
+      }
       if (!items.length) {
-        container.innerHTML = '<p class="empty">Aucune entrée.</p>';
+        const msg = monthFilter ? 'Aucune donnée pour cette période.' : 'Aucune entrée.';
+        container.innerHTML = `<p class="empty">${msg}</p>`;
         return;
       }
       container.innerHTML = items.map(item => {
@@ -908,29 +981,6 @@
       if (type === 'actions') return item.statut;
       if (type === 'incidents') return item.gravite;
       return item.categorie;
-    }
-
-    function renderSuivi() {
-      const container = document.getElementById('list-suivi');
-      const rows = data.suivi ? [...data.suivi].sort((a, b) => b.mois.localeCompare(a.mois)) : [];
-      if (!rows.length) {
-        container.innerHTML = '<p class="empty">Aucun suivi mensuel.</p>';
-        return;
-      }
-      container.innerHTML = rows.map(s => {
-        const colorClass = s.score >= 80 ? 'ok' : s.score >= 50 ? 'warn' : 'danger';
-        return `
-          <div class="list-item">
-            <div class="list-title">
-              <span>${s.mois}</span>
-              <span class="score-badge ${colorClass}">${s.score}%</span>
-            </div>
-            <div class="list-meta">
-              Actions : ${s.nb_actions_faites}/${s.nb_actions_total} · Incidents : ${s.nb_incidents} · Critiques : ${s.nb_incidents_critiques}
-            </div>
-          </div>
-        `;
-      }).join('');
     }
 
     function renderSuivi() {
@@ -1056,6 +1106,121 @@
       const [a, m, j] = d.split('-');
       return `${j}/${m}/${a}`;
     }
+
+    // === Assistant IA — OpenRouter ===
+    window.toggleAssistant = function() {
+      const drawer = document.getElementById('assistant-drawer');
+      const overlay = document.getElementById('assistant-overlay');
+      const isOpen = drawer.style.display === 'flex';
+      drawer.style.display = isOpen ? 'none' : 'flex';
+      overlay.style.display = isOpen ? 'none' : 'block';
+    };
+
+    function addAssistantMsg(text, isUser = false) {
+      const chat = document.getElementById('assistant-chat');
+      const div = document.createElement('div');
+      div.style.marginBottom = '16px';
+      if (isUser) {
+        div.innerHTML = `<strong style="color:#fff;">👤 Vous</strong><p style="color:#cbd5e1;margin-top:4px;">${text}</p>`;
+      } else {
+        div.innerHTML = `<strong style="color:#fff;">🤖 Assistant RGPD</strong><p style="color:#94a3b8;margin-top:4px;">${text}</p>`;
+      }
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function buildContext() {
+      const actions = data.actions || [];
+      const incidents = data.incidents || [];
+      const registre = data.registre || [];
+      const suivi = data.suivi || [];
+      const now = new Date().toISOString().split('T')[0];
+      const retards = actions.filter(a => a.echeance < now && a.statut !== 'FAIT');
+      const ouverts = incidents.filter(i => i.statut !== 'CLOTURE');
+      const critiques = incidents.filter(i => i.gravite === 'CRITIQUE' && i.statut !== 'CLOTURE');
+      const lastScore = suivi.sort((a, b) => b.mois.localeCompare(a.mois))[0];
+
+      return `Établissement : ${session.etablissement || 'N/C'}
+Référent : ${session.referent || 'N/C'}
+Code : ${session.code}
+
+REGISTRE (${registre.length} traitements) :
+${registre.map(r => `- ${r.traitement} (${r.categorie}) — resp: ${r.responsable || 'N/C'}`).join('\n') || '(vide)'}
+
+ACTIONS (${actions.length} total, ${actions.filter(a => a.statut === 'FAIT').length} faites) :
+${actions.map(a => `- ${a.titre} [${a.priorite}] échéance ${a.echeance || 'N/C'} — ${a.statut}`).join('\n') || '(vide)'}
+Actions en retard : ${retards.length}
+
+INCIDENTS (${incidents.length} total, ${ouverts.length} ouverts) :
+${incidents.map(i => `- ${i.type} [${i.gravite}] ${i.date_incident || ''} — ${i.statut}`).join('\n') || '(vide)'}
+
+SCORE : ${lastScore ? lastScore.score + '% (' + lastScore.mois + ')' : 'pas encore calculé'}`;
+    }
+
+    async function askOpenRouter(question) {
+      const context = buildContext();
+      const systemPrompt = `Tu es un assistant RGPD expert pour le réseau UNAPEI92. Tu aides les référents d'établissement à comprendre et améliorer leur conformité.
+
+Voici les données du tableau de bord du référent :
+---
+${context}
+---
+
+Réponds de façon claire, concise et bienveillante en français. Utilise des emojis. Donne des conseils concrets et actionnables.`;
+
+      try {
+        const apiKey = (typeof CONFIG_LOCAL !== 'undefined' && CONFIG_LOCAL.OPENROUTER_API_KEY) || (typeof CONFIG !== 'undefined' && CONFIG.OPENROUTER_API_KEY) || '';
+        const model = (typeof CONFIG !== 'undefined' && CONFIG.OPENROUTER_MODEL) || 'openai/gpt-4o-mini';
+        const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + apiKey,
+            'HTTP-Referer': window.location.origin,
+            'X-Title': 'Kit RGPD UNAPEI92'
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: question }
+            ],
+            max_tokens: 800,
+            temperature: 0.7
+          })
+        });
+        const resData = await res.json();
+        if (resData.choices && resData.choices[0] && resData.choices[0].message) {
+          return resData.choices[0].message.content;
+        }
+        if (resData.error) return '❌ Erreur API : ' + resData.error.message;
+        return '❌ Erreur : réponse inattendue.';
+      } catch (err) {
+        return '❌ Erreur de connexion : ' + err.message;
+      }
+    }
+
+    window.askAssistant = async function(topic) {
+      addAssistantMsg('💭 Réflexion en cours...');
+      const response = await askOpenRouter(topic);
+      const chat = document.getElementById('assistant-chat');
+      chat.removeChild(chat.lastChild);
+      addAssistantMsg(response);
+      return false;
+    };
+
+    window.sendAssistantQuestion = async function() {
+      const input = document.getElementById('assistant-input');
+      const q = input.value.trim();
+      if (!q) return;
+      addAssistantMsg(q, true);
+      input.value = '';
+      addAssistantMsg('💭 Réflexion en cours...');
+      const response = await askOpenRouter(q);
+      const chat = document.getElementById('assistant-chat');
+      chat.removeChild(chat.lastChild);
+      addAssistantMsg(response);
+    };
 
     loadData();
   </script>
