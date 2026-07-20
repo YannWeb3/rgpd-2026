@@ -117,15 +117,15 @@
     font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: .01em;
     flex-shrink: 0;
   }
-  .slide-body { flex: 1; overflow: hidden; padding: 0 48px 70px; }
+  .slide-body { flex: 1; overflow-y: auto; padding: 0 48px 70px; }
 
   /* ─ S2 WHY ─ */
   .s2 { background: var(--mint); }
   .s2 .slide-header { background: rgba(99,102,241,0.15); color: var(--teal2); border-bottom: 1px solid var(--card-border); }
-  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; height: 100%; align-items: start; padding-top: 24px; }
+  .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; height: 100%; align-items: stretch; padding-top: 20px; }
   .card3 {
-    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 28px 24px;
-    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
+    background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 24px 20px;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
     transition: transform .15s, border-color .15s;
   }
   .card3:hover { transform: translateY(-3px); border-color: rgba(99,102,241,0.3); }
@@ -137,8 +137,8 @@
   .card3-title { font-weight: 700; font-size: 15px; color: var(--white); }
   .card3-body { font-size: 13px; color: var(--slate); line-height: 1.6; }
   .tagline {
-    margin-top: 20px; font-size: 13px; color: var(--gold);
-    font-style: italic; text-align: center; padding: 10px 20px;
+    margin-top: 16px; font-size: 13px; color: var(--gold);
+    font-style: italic; text-align: center; padding: 10px 16px;
     background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.15); border-radius: 8px;
   }
 
@@ -147,13 +147,13 @@
   .s3 .slide-header { background: rgba(96,165,250,0.15); color: var(--teal2); border-bottom: 1px solid var(--card-border); }
   .s3-sub { font-size: 14px; color: var(--slate); text-align: center; font-style: italic; margin: 18px 0 20px; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .col-box { border-radius: 12px; padding: 22px; }
+  .col-box { border-radius: 12px; padding: 18px 20px; }
   .col-box.green { background: var(--gbg); border: 1px solid rgba(52,211,153,0.2); }
   .col-box.amber { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); }
-  .col-box h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
+  .col-box h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
   .col-box.green h3 { color: var(--green); }
   .col-box.amber h3 { color: var(--gold); }
-  .col-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--dgray); margin-bottom: 10px; line-height: 1.5; }
+  .col-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--dgray); margin-bottom: 8px; line-height: 1.5; }
   .col-item::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
   .col-box.amber .col-item::before { content: '🔒'; }
 
@@ -188,7 +188,7 @@
   .reflex-num { font-size: 10px; font-weight: 700; color: var(--slate); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 2px; }
   .reflex-main-title { font-family: 'Lora', serif; font-size: clamp(24px, 3.5vw, 34px); color: var(--white); font-weight: 600; }
   .reflex-quote { font-size: 14px; font-style: italic; margin-top: 4px; }
-  .reflex-body { flex: 1; padding: 16px 48px 70px 48px; display: flex; flex-direction: column; gap: 16px; overflow: hidden; }
+  .reflex-body { flex: 1; padding: 16px 48px 70px 48px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
 
   /* ─ REFLEX CONTENT VARIANTS ─ */
   /* Steps row */
@@ -205,25 +205,25 @@
   /* Alarm box */
   .alarm-box {
     background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25);
-    border-radius: 10px; padding: 16px 20px;
+    border-radius: 10px; padding: 14px 18px;
   }
-  .alarm-box h4 { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
-  .alarm-box p { font-size: 12px; color: var(--dgray); line-height: 1.6; }
+  .alarm-box h4 { font-size: 13px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .alarm-box p { font-size: 12px; color: var(--dgray); line-height: 1.55; }
 
   /* Two-col panel */
   .two-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
-  .panel-box { border-radius: 12px; padding: 18px 20px; }
+  .panel-box { border-radius: 12px; padding: 16px 18px; }
   .panel-box.green { background: var(--gbg); border: 1px solid rgba(52,211,153,0.2); }
   .panel-box.red { background: var(--rbg); border: 1px solid rgba(248,113,113,0.2); }
-  .panel-box h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+  .panel-box h3 { font-size: 13px; font-weight: 700; margin-bottom: 10px; }
   .panel-box.green h3 { color: var(--green); }
   .panel-box.red h3 { color: var(--red); }
-  .panel-item { font-size: 12px; color: var(--dgray); margin-bottom: 9px; display: flex; gap: 8px; line-height: 1.5; }
+  .panel-item { font-size: 12px; color: var(--dgray); margin-bottom: 7px; display: flex; gap: 8px; line-height: 1.5; }
 
   /* Photo case */
-  .photo-case { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); border-radius: 12px; padding: 18px 20px; flex: 1; }
-  .photo-case h3 { font-size: 14px; font-weight: 700; color: var(--teal2); margin-bottom: 8px; }
-  .photo-case p { font-size: 12.5px; color: var(--dgray); margin-bottom: 10px; line-height: 1.6; }
+  .photo-case { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); border-radius: 12px; padding: 16px 18px; flex: 1; }
+  .photo-case h3 { font-size: 14px; font-weight: 700; color: var(--teal2); margin-bottom: 6px; }
+  .photo-case p { font-size: 12.5px; color: var(--dgray); margin-bottom: 8px; line-height: 1.55; }
 
   /* Consent props */
   .consent-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; }
@@ -238,11 +238,11 @@
 
   /* Contractor grid */
   .contractor-examples { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
-  .contractor-card { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.15); border-radius: 10px; padding: 14px 10px; text-align: center; font-size: 12px; color: var(--dgray); }
-  .contractor-card .cicon { font-size: 26px; display: block; margin-bottom: 8px; }
-  .dpa-box { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); border-radius: 10px; padding: 16px 20px; }
-  .dpa-box h4 { font-size: 13px; font-weight: 700; color: var(--teal2); margin-bottom: 8px; }
-  .dpa-box p { font-size: 12px; color: var(--dgray); line-height: 1.6; }
+  .contractor-card { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.15); border-radius: 10px; padding: 12px 10px; text-align: center; font-size: 12px; color: var(--dgray); }
+  .contractor-card .cicon { font-size: 24px; display: block; margin-bottom: 6px; }
+  .dpa-box { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); border-radius: 10px; padding: 14px 18px; }
+  .dpa-box h4 { font-size: 13px; font-weight: 700; color: var(--teal2); margin-bottom: 6px; }
+  .dpa-box p { font-size: 12px; color: var(--dgray); line-height: 1.55; }
 
   /* ─ S10 INCIDENT ─ */
   .s10 { background: var(--mint); }
@@ -475,7 +475,7 @@
         <h4>🚨 Signal d'alarme</h4>
         <p>Une demande sans réponse après 1 mois = signalement immédiat au DPO.<br>Sanction CNIL possible si non respecté.</p>
       </div>
-      <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--teal2);font-style:italic;">
+      <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--teal2);font-style:italic;">
         💬 <strong>Jeu de rôle :</strong> « Un parent demande à voir le dossier médical de son enfant adulte. Que faites-vous ? »
       </div>
     </div>
@@ -539,7 +539,7 @@
         </tbody>
       </table>
       <p class="table-note">📅 Nettoyage recommandé chaque <strong>octobre</strong> (nettoyage d'automne 🍂)</p>
-      <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--dgray);">
+      <div style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.15);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--dgray);">
         💬 <strong>Question :</strong> « Avez-vous des dossiers de personnes parties depuis plus de 5 ans dans vos armoires ? »
       </div>
     </div>
@@ -574,7 +574,7 @@
           <div class="panel-item"><span>✗</span> Logiciels non mis à jour depuis longtemps</div>
         </div>
       </div>
-      <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--dgray);">
+      <div style="background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.15);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--dgray);">
         💬 <strong>Question :</strong> « Si un collègue part demain, ses accès sont-ils supprimés automatiquement ou manuellement ? »
       </div>
     </div>
