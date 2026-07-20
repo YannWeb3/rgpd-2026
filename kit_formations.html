@@ -27,23 +27,21 @@
     --card-border: rgba(255,255,255,0.08);
   }
 
-  html, body { height: 100%; overflow: hidden; font-family: 'Sora', sans-serif; background: #0b0f19; }
+  html, body { height: auto; overflow-x: hidden; font-family: 'Sora', sans-serif; background: #0b0f19; }
 
   /* ── DECK ── */
-  #deck { width: 100vw; height: 100vh; position: relative; }
+  #deck { width: 100%; position: relative; }
 
   .slide {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    opacity: 0; pointer-events: none;
-    transform: translateX(60px);
-    transition: opacity .45s cubic-bezier(.4,0,.2,1), transform .45s cubic-bezier(.4,0,.2,1);
+    position: relative; min-height: 100vh; display: flex; flex-direction: column;
+    opacity: 1; pointer-events: auto; transform: none;
+    transition: none;
   }
   .slide.active {
-    opacity: 1; pointer-events: auto; transform: translateX(0);
+    opacity: 1; pointer-events: auto; transform: none;
   }
   .slide.out {
-    opacity: 0; transform: translateX(-60px);
+    opacity: 1; transform: none;
   }
 
   /* ── PROGRESS BAR ── */
@@ -117,7 +115,7 @@
     font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: .01em;
     flex-shrink: 0;
   }
-  .slide-body { flex: 1; overflow-y: auto; padding: 0 48px 70px; }
+  .slide-body { flex: 1; padding: 0 48px 80px; }
 
   /* ─ S2 WHY ─ */
   .s2 { background: var(--mint); }
@@ -188,7 +186,7 @@
   .reflex-num { font-size: 10px; font-weight: 700; color: var(--slate); letter-spacing: .15em; text-transform: uppercase; margin-bottom: 2px; }
   .reflex-main-title { font-family: 'Lora', serif; font-size: clamp(24px, 3.5vw, 34px); color: var(--white); font-weight: 600; }
   .reflex-quote { font-size: 14px; font-style: italic; margin-top: 4px; }
-  .reflex-body { flex: 1; padding: 16px 48px 70px 48px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+  .reflex-body { flex: 1; padding: 20px 48px 80px 48px; display: flex; flex-direction: column; gap: 16px; }
 
   /* ─ REFLEX CONTENT VARIANTS ─ */
   /* Steps row */
@@ -745,14 +743,8 @@
 
   function goTo(n) {
     if (n < 0 || n >= total) return;
-    slides[cur].classList.remove('active');
-    slides[cur].classList.add('out');
-    setTimeout(() => slides[cur < n ? cur : n].classList.remove('out'), 460);
-    // Actually remove out from OLD slide
-    const prev = cur;
     cur = n;
-    slides[cur].classList.add('active');
-    setTimeout(() => slides[prev].classList.remove('out'), 460);
+    slides[cur].scrollIntoView({ behavior: 'smooth', block: 'start' });
     updateUI();
   }
 
@@ -765,6 +757,24 @@
     document.getElementById('progress-bar').style.width = `${((cur + 1) / total) * 100}%`;
     document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === cur));
   }
+
+  // Detect current slide on scroll
+  let scrollTimeout;
+  window.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      const mid = window.scrollY + window.innerHeight / 2;
+      for (let i = 0; i < slides.length; i++) {
+        const r = slides[i].getBoundingClientRect();
+        const top = r.top + window.scrollY;
+        const bottom = top + r.height;
+        if (mid >= top && mid < bottom) {
+          if (cur !== i) { cur = i; updateUI(); }
+          break;
+        }
+      }
+    }, 100);
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
@@ -789,7 +799,6 @@
       if (o === el) o.classList.add(type);
       o.style.pointerEvents = 'none';
     });
-    // Always reveal correct
     opts.forEach(o => {
       if (o.onclick.toString().includes("'correct'")) {
         setTimeout(() => o.classList.add('correct'), 300);
