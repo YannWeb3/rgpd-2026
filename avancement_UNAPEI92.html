@@ -43,6 +43,44 @@
   a:hover{color:#93bbfd;text-decoration:underline}
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+
+  /* ── BARRES DE PROGRESSION ── */
+  .progress-wrap{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+  .progress-row{display:flex;align-items:center;gap:12px}
+  .progress-row .label{width:140px;font-size:12px;color:#94a3b8;flex-shrink:0}
+  .progress-row .bar-bg{flex:1;height:20px;background:rgba(255,255,255,0.04);border-radius:10px;overflow:hidden;position:relative}
+  .progress-row .bar-fill{height:100%;border-radius:10px;transition:width 1.5s ease-out;position:relative}
+  .progress-row .bar-fill::after{content:attr(data-pct);position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;color:#fff}
+  .bar-green{background:linear-gradient(90deg,#059669,#34d399)}
+  .bar-blue{background:linear-gradient(90deg,#2563eb,#60a5fa)}
+  .bar-purple{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+  .bar-orange{background:linear-gradient(90deg,#d97706,#fbbf24)}
+  .bar-red{background:linear-gradient(90deg,#dc2626,#f87171)}
+
+  /* ── GRAPHIQUE DONUT SVG ── */
+  .chart-row{display:flex;gap:24px;align-items:center;margin-bottom:28px;flex-wrap:wrap}
+  .donut-wrap{position:relative;width:160px;height:160px;flex-shrink:0}
+  .donut-wrap svg{transform:rotate(-90deg)}
+  .donut-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+  .donut-value{font-size:28px;font-weight:800;color:#fff;display:block;line-height:1}
+  .donut-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+  .chart-legend{display:flex;flex-direction:column;gap:8px}
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#94a3b8}
+  .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+  /* ── TIMELINE ── */
+  .timeline-v{position:relative;padding-left:28px;margin-bottom:24px}
+  .timeline-v::before{content:'';position:absolute;left:8px;top:4px;bottom:4px;width:2px;background:rgba(255,255,255,0.08)}
+  .tlv-item{position:relative;padding:0 0 20px 20px}
+  .tlv-item:last-child{padding-bottom:0}
+  .tlv-dot{position:absolute;left:-24px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid;z-index:1}
+  .tlv-dot.green{border-color:#34d399;background:rgba(52,211,153,0.15)}
+  .tlv-dot.blue{border-color:#60a5fa;background:rgba(96,165,250,0.15)}
+  .tlv-dot.orange{border-color:#fbbf24;background:rgba(251,191,36,0.15)}
+  .tlv-date{font-size:11px;color:#64748b;margin-bottom:2px}
+  .tlv-title{font-size:13px;font-weight:600;color:#fff}
+  .tlv-desc{font-size:12px;color:#94a3b8;margin-top:2px}
+
   footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
 </style>
 </head>
@@ -58,6 +96,48 @@
     <div class="stat-item"><div class="stat-num">10</div><div class="stat-label">Rapports d'audit</div></div>
     <div class="stat-item"><div class="stat-num">36</div><div class="stat-label">Fichiers HTML</div></div>
     <div class="stat-item"><div class="stat-num">8/10</div><div class="stat-label">Types couverts</div></div>
+  </div>
+
+  <!-- GRAPHIQUES -->
+  <div class="chart-row">
+    <div class="donut-wrap">
+      <svg width="160" height="160">
+        <circle cx="80" cy="80" r="65" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+        <circle cx="80" cy="80" r="65" fill="none" stroke="#34d399" stroke-width="14" stroke-dasharray="408" stroke-dashoffset="82" stroke-linecap="round"/>
+      </svg>
+      <div class="donut-text">
+        <span class="donut-value">80%</span>
+        <span class="donut-label">Types couverts</span>
+      </div>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><span class="legend-dot" style="background:#34d399"></span>8 types d'établissements couverts</div>
+      <div class="legend-item"><span class="legend-dot" style="background:rgba(255,255,255,0.15)"></span>2 types manquants (EAJE, CAJ/Foyers)</div>
+      <div class="legend-item" style="margin-top:4px;font-size:11px;color:#64748b;">📝 Création possible en 30-60 min par type</div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-row">
+      <span class="label">📋 Collecte</span>
+      <div class="bar-bg"><div class="bar-fill bar-green" style="width:85%" data-pct="85%"></div></div>
+    </div>
+    <div class="progress-row">
+      <span class="label">🛡️ Boîte à outils</span>
+      <div class="bar-bg"><div class="bar-fill bar-blue" style="width:95%" data-pct="95%"></div></div>
+    </div>
+    <div class="progress-row">
+      <span class="label">📊 Rapports</span>
+      <div class="bar-bg"><div class="bar-fill bar-purple" style="width:90%" data-pct="90%"></div></div>
+    </div>
+    <div class="progress-row">
+      <span class="label">📚 Docs stratégiques</span>
+      <div class="bar-bg"><div class="bar-fill bar-orange" style="width:80%" data-pct="80%"></div></div>
+    </div>
+    <div class="progress-row">
+      <span class="label">📱 App Kit Tableau bord</span>
+      <div class="bar-bg"><div class="bar-fill bar-red" style="width:10%" data-pct="10%"></div></div>
+    </div>
   </div>
 
   <!-- 1. CE QUI EST FAIT -->
@@ -194,19 +274,47 @@
     </tr>
   </table>
 
-  <!-- 3. PLANNING -->
+  <!-- 3. PLANNING TIMELINE -->
   <h2>📅 3. Planning</h2>
 
-  <table>
-    <tr><th>Période</th><th>Action</th><th>Responsable</th></tr>
-    <tr><td><span class="tag tag-blue">Août 2026</span></td><td>Relance services supports + finalisation collecte</td><td>Yann + Référents</td></tr>
-    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Début Kit RGPD Tableau de bord (volet référent)</td><td>Yann</td></tr>
-    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Formation référents + mise à jour registre</td><td>Yann + Référents</td></tr>
-    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Kit RGPD Tableau de bord (volet DPO) + tests</td><td>Yann</td></tr>
-    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Plans d'action personnalisés par établissement</td><td>Yann + Référents</td></tr>
-    <tr><td><span class="tag tag-blue">Nov 2026</span></td><td>Déploiement Kit Tableau de bord + formation DPO</td><td>Yann</td></tr>
-    <tr><td><span class="tag tag-blue">Déc 2026</span></td><td>Bilan final + passation DPO externe</td><td>Yann + DPO</td></tr>
-  </table>
+  <div class="timeline-v">
+    <div class="tlv-item">
+      <div class="tlv-dot green"></div>
+      <div class="tlv-date">✅ Fait — Juillet 2026</div>
+      <div class="tlv-title">Phase 1 terminée</div>
+      <div class="tlv-desc">19 formulaires, 33 réponses, 10 rapports, boîte à outils complète, docs stratégiques</div>
+    </div>
+    <div class="tlv-item">
+      <div class="tlv-dot blue"></div>
+      <div class="tlv-date">📅 Août 2026</div>
+      <div class="tlv-title">Relance services supports</div>
+      <div class="tlv-desc">Finalisation collecte 100% + création EAJE/CAJ si décidé</div>
+    </div>
+    <div class="tlv-item">
+      <div class="tlv-dot blue"></div>
+      <div class="tlv-date">📅 Septembre 2026</div>
+      <div class="tlv-title">Kit Tableau de bord (volet référent) + Formation</div>
+      <div class="tlv-desc">Début développement app + formation des référents à la boîte à outils</div>
+    </div>
+    <div class="tlv-item">
+      <div class="tlv-dot orange"></div>
+      <div class="tlv-date">📅 Octobre 2026</div>
+      <div class="tlv-title">Kit Tableau de bord (volet DPO) + Plans d'action</div>
+      <div class="tlv-desc">Tests, déploiement, plans d'action personnalisés par établissement</div>
+    </div>
+    <div class="tlv-item">
+      <div class="tlv-dot orange"></div>
+      <div class="tlv-date">📅 Novembre 2026</div>
+      <div class="tlv-title">Déploiement + Formation DPO</div>
+      <div class="tlv-desc">Mise en production du Kit Tableau de bord, passation avec le DPO</div>
+    </div>
+    <div class="tlv-item">
+      <div class="tlv-dot orange"></div>
+      <div class="tlv-date">📅 Décembre 2026</div>
+      <div class="tlv-title">Bilan final + Passation DPO</div>
+      <div class="tlv-desc">Remise des clés, documentation, déclaration CNIL du DPO</div>
+    </div>
+  </div>
 
   <!-- 4. TYPES MANQUANTS -->
   <h2>⚠️ 4. Types d'établissements non couverts</h2>
