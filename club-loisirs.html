@@ -285,39 +285,55 @@
 
         <div class="question">
           <label class="question-label required">Nom du club <span class="question-id">Q0.1</span></label>
-           <input type="text" name="q0_1_nom_club" required oninput="document.getElementById('nom_etablissement').value=this.value">
-           <input type="hidden" id="nom_etablissement" name="nom_etablissement">
+          <input type="text" name="q0_1_nom_club" required oninput="document.getElementById('nom_club').value=this.value">
+          <input type="hidden" id="nom_club" name="nom_club">
         </div>
 
         <div class="question">
-          <label class="question-label required">Personne répondant au questionnaire (Nom Prénom) <span class="question-id">Q0.2</span></label>
-          <input type="text" name="q0_2_nom_prenom_repondant" required>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Fonction du répondant <span class="question-id">Q0.3</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q0_3_fonction" value="responsable_club" required> Responsable du club</label>
-            <label><input type="radio" name="q0_3_fonction" value="animateur"> Animateur / Éducateur sportif</label>
-            <label><input type="radio" name="q0_3_fonction" value="referent_rgpd"> Référent RGPD</label>
-            <label><input type="radio" name="q0_3_fonction" value="secretaire"> Secrétaire / Administratif</label>
-            <label><input type="radio" name="q0_3_fonction" value="autre"> Autre</label>
+          <label class="question-label required">Type d'activités proposées <span class="question-id">Q0.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q0_2_type_activites" value="sport"> Sport</label>
+            <label><input type="checkbox" name="q0_2_type_activites" value="culture"> Culture</label>
+            <label><input type="checkbox" name="q0_2_type_activites" value="loisirs"> Loisirs</label>
+            <label><input type="checkbox" name="q0_2_type_activites" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Date de remplissage <span class="question-id">Q0.4</span></label>
-          <input type="date" name="q0_4_date_remplissage" required>
+          <label class="question-label required">Personne répondant au questionnaire (Nom Prénom) <span class="question-id">Q0.3</span></label>
+          <input type="text" name="q0_3_nom_prenom_repondant" required>
         </div>
 
         <div class="question">
-          <label class="question-label required">Nombre de participants / adhérents au club <span class="question-id">Q0.5</span></label>
-          <input type="number" name="q0_5_nb_participants" min="0" required>
+          <label class="question-label required">Fonction du répondant <span class="question-id">Q0.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_4_fonction" value="responsable_club" required> Responsable du club</label>
+            <label><input type="radio" name="q0_4_fonction" value="animateur"> Animateur / Éducateur sportif</label>
+            <label><input type="radio" name="q0_4_fonction" value="referent_rgpd"> Référent RGPD</label>
+            <label><input type="radio" name="q0_4_fonction" value="secretaire"> Secrétaire / Administratif</label>
+            <label><input type="radio" name="q0_4_fonction" value="benevole"> Bénévole</label>
+            <label><input type="radio" name="q0_4_fonction" value="autre"> Autre</label>
+          </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Nombre de bénévoles et salariés dans le club <span class="question-id">Q0.6</span></label>
-          <input type="number" name="q0_6_nb_benevoles_salaries" min="0" required>
+          <label class="question-label required">Date de remplissage <span class="question-id">Q0.5</span></label>
+          <input type="date" name="q0_5_date_remplissage" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre d'adhérents / participants au club <span class="question-id">Q0.6</span></label>
+          <input type="number" name="q0_6_nb_adherents" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre de bénévoles dans le club <span class="question-id">Q0.7</span></label>
+          <input type="number" name="q0_7_nb_benevoles" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre de salariés dans le club <span class="question-id">Q0.8</span></label>
+          <input type="number" name="q0_8_nb_salaries" min="0" required>
         </div>
       </section>
 
@@ -395,7 +411,7 @@
         <div class="question">
           <label class="question-label required">Utilisez-vous des fichiers ou outils locaux non fournis par le siège ? <span class="question-id">Q2.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, tableaux papier)</label>
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, Google Sheets, tableaux papier)</label>
             <label><input type="radio" name="q2_2_1_outils_locaux" value="non"> Non uniquement outils siège</label>
           </div>
         </div>
@@ -430,7 +446,7 @@
           <div class="checkbox-group">
             <label><input type="checkbox" name="q2t_2_traitements" value="fichier_adherents"> Fichier adhérents / participants</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="photos_videos"> Photos / vidéos des activités</label>
-            <label><input type="checkbox" name="q2t_2_traitements" value="donnees_sante"> Données de santé (adaptation activités)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="listes_diffusion"> Listes de diffusion email / SMS</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="videosurveillance"> Vidéosurveillance des locaux</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="donnees_familles"> Données des représentants légaux / familles</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="aucun"> Aucun de ces traitements</label>
@@ -479,11 +495,12 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Utilisez-vous un outil numérique pour la gestion des adhérents ? <span class="question-id">Q3.2.1</span></label>
+          <label class="question-label required">Comment gérez-vous le fichier des adhérents ? <span class="question-id">Q3.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_2_1_outil_numerique" value="logiciel_dedie" required> Oui logiciel dédié (gestion adhérents)</label>
-            <label><input type="radio" name="q3_2_1_outil_numerique" value="excel"> Fichiers Excel / Google Sheets</label>
-            <label><input type="radio" name="q3_2_1_outil_numerique" value="papier"> Dossiers papier uniquement</label>
+            <label><input type="radio" name="q3_2_1_gestion_adherents" value="logiciel_dedie" required> Logiciel dédié (gestion adhérents / associations)</label>
+            <label><input type="radio" name="q3_2_1_gestion_adherents" value="excel"> Fichier Excel / Google Sheets</label>
+            <label><input type="radio" name="q3_2_1_gestion_adherents" value="papier"> Dossiers papier uniquement</label>
+            <label><input type="radio" name="q3_2_1_gestion_adherents" value="autre"> Autre</label>
           </div>
         </div>
 
@@ -528,6 +545,7 @@
             <label><input type="checkbox" name="q3_3_2_destinataires" value="partenaires"> Partenaires (associations, fédérations)</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="mdph"> MDPH</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="cpam"> CPAM / Sécurité sociale</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="assurance"> Assurance</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="autre"> Autre</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="aucun"> Aucune transmission</label>
           </div>
@@ -542,7 +560,6 @@
           <label class="question-label required">Quelles catégories de données sont traitées par le club ? <span class="question-id">Q3B.1</span></label>
           <div class="checkbox-group">
             <label><input type="checkbox" name="q3b_1_categories" value="identite"> Données d'identité (participants / adhérents)</label>
-            <label><input type="checkbox" name="q3b_1_categories" value="sante"> Données de santé (adaptation des activités)</label>
             <label><input type="checkbox" name="q3b_1_categories" value="familles"> Données des représentants légaux / familles</label>
             <label><input type="checkbox" name="q3b_1_categories" value="presence"> Données de participation / présence</label>
             <label><input type="checkbox" name="q3b_1_categories" value="rh"> Données RH (bénévoles et salariés)</label>
@@ -571,7 +588,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Des photos ou vidéos des participants sont-elles prises lors des activités ? <span class="question-id">Q3B.4</span></label>
+          <label class="question-label required">Des photos des participants sont-elles prises lors des activités ? <span class="question-id">Q3B.4</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3b_4_photos" value="oui" required> Oui</label>
             <label><input type="radio" name="q3b_4_photos" value="non"> Non</label>
@@ -585,6 +602,33 @@
             <label><input type="radio" name="q3b_5_consentement_photos" value="parfois"> Parfois</label>
             <label><input type="radio" name="q3b_5_consentement_photos" value="non"> Non</label>
             <label><input type="radio" name="q3b_5_consentement_photos" value="na"> N/A (pas de photos)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des vidéos des activités sont-elles réalisées ? <span class="question-id">Q3B.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3b_6_videos" value="oui" required> Oui</label>
+            <label><input type="radio" name="q3b_6_videos" value="non"> Non</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Si OUI un consentement écrit est-il recueilli avant toute captation vidéo ? <span class="question-id">Q3B.7</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3b_7_consentement_videos" value="oui_systematique" required> Oui systématiquement</label>
+            <label><input type="radio" name="q3b_7_consentement_videos" value="parfois"> Parfois</label>
+            <label><input type="radio" name="q3b_7_consentement_videos" value="non"> Non</label>
+            <label><input type="radio" name="q3b_7_consentement_videos" value="na"> N/A (pas de vidéos)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le club utilise-t-il des listes de diffusion email pour communiquer avec les participants ? <span class="question-id">Q3B.8</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3b_8_listes_diffusion" value="oui_consentement" required> Oui avec consentement des participants</label>
+            <label><input type="radio" name="q3b_8_listes_diffusion" value="oui_sans_consentement"> Oui sans consentement explicite</label>
+            <label><input type="radio" name="q3b_8_listes_diffusion" value="non"> Non</label>
           </div>
         </div>
       </section>
@@ -759,7 +803,7 @@
         <h2 class="section-title">Spécificités du club</h2>
 
         <div class="question">
-          <label class="question-label required">Le club dispose-t-il d'un fichier adhérents structuré (nom, coordonnées, infos médicales) ? <span class="question-id">Q7C.1</span></label>
+          <label class="question-label required">Le club dispose-t-il d'un fichier adhérents structuré (nom, coordonnées) ? <span class="question-id">Q7C.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q7c_1_fichier_adherents" value="oui_structure" required> Oui fichier structuré et à jour</label>
             <label><input type="radio" name="q7c_1_fichier_adherents" value="oui_informel"> Oui fichier informel</label>
@@ -768,84 +812,77 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Les informations médicales (allergies, traitements, contre-indications) sont-elles collectées pour adapter les activités ? <span class="question-id">Q7C.2</span></label>
+          <label class="question-label required">Les bénévoles du club sont-ils soumis à une clause de confidentialité ? <span class="question-id">Q7C.2</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_2_infos_medicales" value="oui_consentement" required> Oui avec consentement écrit</label>
-            <label><input type="radio" name="q7c_2_infos_medicales" value="oui_sans_consentement"> Oui sans consentement formel</label>
-            <label><input type="radio" name="q7c_2_infos_medicales" value="non"> Non pas collectées</label>
+            <label><input type="radio" name="q7c_2_clause_benevoles" value="oui_tous" required> Oui tous les bénévoles</label>
+            <label><input type="radio" name="q7c_2_clause_benevoles" value="oui_certains"> Certains seulement</label>
+            <label><input type="radio" name="q7c_2_clause_benevoles" value="non"> Non</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les animateurs / éducateurs ont-ils accès aux informations médicales nécessaires à l'encadrement ? <span class="question-id">Q7C.3</span></label>
+          <label class="question-label required">Les participants sont-ils informés de l'utilisation de leurs photos/vidéos pour la communication du club ? <span class="question-id">Q7C.3</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_3_acces_animateurs" value="oui_necessaires" required> Oui uniquement infos nécessaires à l'encadrement</label>
-            <label><input type="radio" name="q7c_3_acces_animateurs" value="oui_toutes"> Oui toutes les infos médicales</label>
-            <label><input type="radio" name="q7c_3_acces_animateurs" value="non"> Non pas d'accès</label>
+            <label><input type="radio" name="q7c_3_info_photos" value="consentements_ecrits" required> Oui avec consentements écrits</label>
+            <label><input type="radio" name="q7c_3_info_photos" value="consentements_oraux"> Oui consentements oraux</label>
+            <label><input type="radio" name="q7c_3_info_photos" value="sans_consentement"> Oui sans consentement</label>
+            <label><input type="radio" name="q7c_3_info_photos" value="non"> Non pas de photos/vidéos</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les bénévoles du club sont-ils soumis à une clause de confidentialité ? <span class="question-id">Q7C.4</span></label>
+          <label class="question-label required">Le club a-t-il souscrit une assurance couvrant les activités ? <span class="question-id">Q7C.4</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_4_clause_benevoles" value="oui_tous" required> Oui tous les bénévoles</label>
-            <label><input type="radio" name="q7c_4_clause_benevoles" value="oui_certains"> Certains seulement</label>
-            <label><input type="radio" name="q7c_4_clause_benevoles" value="non"> Non</label>
+            <label><input type="radio" name="q7c_4_assurance" value="oui_specifique" required> Oui assurance spécifique activités club</label>
+            <label><input type="radio" name="q7c_4_assurance" value="oui_generale"> Oui assurance générale (siège)</label>
+            <label><input type="radio" name="q7c_4_assurance" value="non"> Non pas d'assurance</label>
+            <label><input type="radio" name="q7c_4_assurance" value="inconnu"> Inconnu</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les participants sont-ils informés de l'utilisation de leurs photos/vidéos pour la communication du club ? <span class="question-id">Q7C.5</span></label>
+          <label class="question-label required">Les locaux utilisés par le club sont-ils partagés ou loués ? <span class="question-id">Q7C.5</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_5_info_photos" value="consentements_ecrits" required> Oui avec consentements écrits</label>
-            <label><input type="radio" name="q7c_5_info_photos" value="consentements_oraux"> Oui consentements oraux</label>
-            <label><input type="radio" name="q7c_5_info_photos" value="sans_consentement"> Oui sans consentement</label>
-            <label><input type="radio" name="q7c_5_info_photos" value="non"> Non pas de photos/vidéos</label>
+            <label><input type="radio" name="q7c_5_locaux" value="propres" required> Locaux propres au club</label>
+            <label><input type="radio" name="q7c_5_locaux" value="partages"> Locaux partagés (avec d'autres associations)</label>
+            <label><input type="radio" name="q7c_5_locaux" value="loues"> Locaux loués (mairie, salle municipale)</label>
+            <label><input type="radio" name="q7c_5_locaux" value="exterieurs"> Activités en extérieur uniquement (pas de local fixe)</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Le club utilise-t-il des listes de diffusion (email, SMS, WhatsApp) pour communiquer avec les participants ? <span class="question-id">Q7C.6</span></label>
+          <label class="question-label required">Les activités se déroulent-elles dans des locaux équipés de vidéosurveillance ? <span class="question-id">Q7C.6</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_6_listes_diffusion" value="oui_consentement" required> Oui avec consentement des participants</label>
-            <label><input type="radio" name="q7c_6_listes_diffusion" value="oui_sans_consentement"> Oui sans consentement explicite</label>
-            <label><input type="radio" name="q7c_6_listes_diffusion" value="non"> Non</label>
+            <label><input type="radio" name="q7c_6_videosurveillance" value="oui" required> Oui</label>
+            <label><input type="radio" name="q7c_6_videosurveillance" value="non"> Non</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les activités se déroulent-elles dans des locaux équipés de vidéosurveillance ? <span class="question-id">Q7C.7</span></label>
+          <label class="question-label required">Les animateurs/bénévoles sont-ils sensibilisés aux risques cyber (hameçonnage, mots de passe) ? <span class="question-id">Q7C.7</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_7_videosurveillance" value="oui" required> Oui</label>
-            <label><input type="radio" name="q7c_7_videosurveillance" value="non"> Non</label>
+            <label><input type="radio" name="q7c_7_sensibilisation_cyber" value="reguliere" required> Oui sensibilisation régulière</label>
+            <label><input type="radio" name="q7c_7_sensibilisation_cyber" value="ponctuelle"> Sensibilisation ponctuelle ancienne</label>
+            <label><input type="radio" name="q7c_7_sensibilisation_cyber" value="jamais"> Non jamais</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les animateurs/bénévoles sont-ils sensibilisés aux risques cyber (hameçonnage, mots de passe) ? <span class="question-id">Q7C.8</span></label>
+          <label class="question-label required">Un plan de continuité existe-t-il en cas de perte des données du club ? <span class="question-id">Q7C.8</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_8_sensibilisation_cyber" value="reguliere" required> Oui sensibilisation régulière</label>
-            <label><input type="radio" name="q7c_8_sensibilisation_cyber" value="ponctuelle"> Sensibilisation ponctuelle ancienne</label>
-            <label><input type="radio" name="q7c_8_sensibilisation_cyber" value="jamais"> Non jamais</label>
+            <label><input type="radio" name="q7c_8_pca" value="pca_teste" required> Oui PCA testé (procédures dégradées)</label>
+            <label><input type="radio" name="q7c_8_pca" value="pca_non_teste"> Oui PCA non testé</label>
+            <label><input type="radio" name="q7c_8_pca" value="non"> Non pas de PCA</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Un plan de continuité existe-t-il en cas de perte des données du club ? <span class="question-id">Q7C.9</span></label>
+          <label class="question-label required">Les sauvegardes des données numériques sont-elles testées régulièrement ? <span class="question-id">Q7C.9</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q7c_9_pca" value="pca_teste" required> Oui PCA testé (procédures dégradées)</label>
-            <label><input type="radio" name="q7c_9_pca" value="pca_non_teste"> Oui PCA non testé</label>
-            <label><input type="radio" name="q7c_9_pca" value="non"> Non pas de PCA</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les sauvegardes des données numériques sont-elles testées régulièrement ? <span class="question-id">Q7C.10</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7c_10_sauvegardes_testees" value="trimestriel" required> Oui tests trimestriels ou plus</label>
-            <label><input type="radio" name="q7c_10_sauvegardes_testees" value="annuels"> Tests annuels</label>
-            <label><input type="radio" name="q7c_10_sauvegardes_testees" value="jamais"> Jamais testées</label>
-            <label><input type="radio" name="q7c_10_sauvegardes_testees" value="na"> N/A (pas de données numériques)</label>
+            <label><input type="radio" name="q7c_9_sauvegardes_testees" value="trimestriel" required> Oui tests trimestriels ou plus</label>
+            <label><input type="radio" name="q7c_9_sauvegardes_testees" value="annuels"> Tests annuels</label>
+            <label><input type="radio" name="q7c_9_sauvegardes_testees" value="jamais"> Jamais testées</label>
+            <label><input type="radio" name="q7c_9_sauvegardes_testees" value="na"> N/A (pas de données numériques)</label>
           </div>
         </div>
       </section>

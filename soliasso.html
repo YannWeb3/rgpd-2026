@@ -256,24 +256,22 @@
 
     <header>
       <h1>Soliasso</h1>
-      <p>Questionnaire de conformité RGPD — Service Soliasso</p>
+      <p>Questionnaire de conformité RGPD — Service d'accompagnement médico-social</p>
     </header>
 
     <nav class="nav-blocks">
       <a href="#identification" class="nav-block">Identification</a>
       <a href="#gouvernance" class="nav-block">Gouvernance</a>
       <a href="#registre" class="nav-block">Registre & PIA</a>
-      <a href="#securite" class="nav-block">Sécurité terrain</a>
-      <a href="#donnees-sante" class="nav-block">Données santé</a>
+      <a href="#securite" class="nav-block">Sécurité</a>
       <a href="#droits" class="nav-block">Droits usagers</a>
       <a href="#sous-traitants" class="nav-block">Sous-traitants</a>
       <a href="#incidents" class="nav-block">Incidents</a>
-      <a href="#specifiques" class="nav-block">Spécificités EAM</a>
       <a href="#synthese" class="nav-block">Synthèse</a>
     </nav>
 
     <div class="info-box">
-      <strong>Instructions :</strong> Ce questionnaire porte sur la conformité RGPD et le secret médical de votre EAM. Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
+      <strong>Instructions :</strong> Ce questionnaire porte sur la conformité RGPD de Soliasso (service d'accompagnement médico-social à domicile). Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
     </div>
 
     <div id="message" class="message"></div>
@@ -281,12 +279,12 @@
     <form id="formulaire">
       <!-- Bloc 0 : Identification -->
       <section class="section" id="identification">
-        <h2 class="section-title">Identification de l'établissement</h2>
+        <h2 class="section-title">Identification du service</h2>
 
         <div class="question">
-          <label class="question-label required">Nom de l'établissement EAM (FAM/MAS) <span class="question-id">Q0.1</span></label>
-           <input type="text" name="q0_1_nom_etablissement" required oninput="document.getElementById('nom_etablissement').value=this.value">
-           <input type="hidden" id="nom_etablissement" name="nom_etablissement">
+          <label class="question-label required">Nom du service Soliasso <span class="question-id">Q0.1</span></label>
+           <input type="text" name="q0_1_nom_service" required>
+           <input type="hidden" id="nom_service" name="nom_service">
         </div>
 
         <div class="question">
@@ -297,10 +295,9 @@
         <div class="question">
           <label class="question-label required">Fonction du répondant <span class="question-id">Q0.3</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q0_3_fonction" value="directeur" required> Directeur/trice établissement</label>
-            <label><input type="radio" name="q0_3_fonction" value="medecin_coord"> Médecin coordinateur</label>
-            <label><input type="radio" name="q0_3_fonction" value="cadre_sante"> Cadre de santé</label>
-            <label><input type="radio" name="q0_3_fonction" value="chef_service"> Chef de service éducatif</label>
+            <label><input type="radio" name="q0_3_fonction" value="directeur" required> Directeur/trice du service</label>
+            <label><input type="radio" name="q0_3_fonction" value="chef_service"> Chef de service</label>
+            <label><input type="radio" name="q0_3_fonction" value="coordinateur"> Coordinateur/trice</label>
             <label><input type="radio" name="q0_3_fonction" value="resp_admin"> Responsable administratif</label>
             <label><input type="radio" name="q0_3_fonction" value="autre"> Autre</label>
           </div>
@@ -312,13 +309,40 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Nombre de résidents accueillis dans l'EAM <span class="question-id">Q0.5</span></label>
-          <input type="number" name="q0_5_nb_residents" min="0" required>
+          <label class="question-label required">Nombre de personnes accompagnées par Soliasso <span class="question-id">Q0.5</span></label>
+          <input type="number" name="q0_5_nb_personnes_accompagnees" min="0" required>
         </div>
 
         <div class="question">
-          <label class="question-label required">Nombre de salariés dans l'établissement (dont personnel soignant) <span class="question-id">Q0.6</span></label>
+          <label class="question-label required">Nombre de salariés dans le service <span class="question-id">Q0.6</span></label>
           <input type="number" name="q0_6_nb_salaries" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre d'interventions à domicile réalisées par semaine (environ) <span class="question-id">Q0.7</span></label>
+          <input type="number" name="q0_7_nb_interventions_domicile" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le service dispose-t-il de véhicules de service ? <span class="question-id">Q0.8</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_8_vehicules_service" value="oui" required> Oui</label>
+            <label><input type="radio" name="q0_8_vehicules_service" value="non"> Non</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si OUI, nombre de véhicules de service <span class="question-id">Q0.9</span></label>
+          <input type="number" name="q0_9_nb_vehicules" min="0">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les professionnels utilisent-ils un téléphone professionnel et/ou une adresse email professionnelle ? <span class="question-id">Q0.10</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_10_telephone_email_pro" value="tous" required> Oui, tous les professionnels</label>
+            <label><input type="radio" name="q0_10_telephone_email_pro" value="partiellement"> Partiellement (certains seulement)</label>
+            <label><input type="radio" name="q0_10_telephone_email_pro" value="non"> Non, usage de moyens personnels</label>
+          </div>
         </div>
       </section>
 
@@ -327,7 +351,7 @@
         <h2 class="section-title">Gouvernance locale RGPD</h2>
 
         <div class="question">
-          <label class="question-label required">Un référent RGPD est-il identifié dans votre établissement EAM ? <span class="question-id">Q1.1.1</span></label>
+          <label class="question-label required">Un référent RGPD est-il identifié dans votre service Soliasso ? <span class="question-id">Q1.1.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_connu" required> Oui identifié et connu des équipes</label>
             <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_informel"> Oui identifié mais informel</label>
@@ -350,7 +374,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Les équipes de l'EAM ont-elles reçu une sensibilisation ou formation RGPD spécifique données santé ? <span class="question-id">Q1.3.1</span></label>
+          <label class="question-label required">Les équipes de Soliasso ont-elles reçu une sensibilisation ou formation RGPD spécifique données de santé ? <span class="question-id">Q1.3.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q1_3_1_formation_rgpd" value="rgpd_secret_medical" required> Oui formation RGPD + secret médical récente (&lt;2 ans)</label>
             <label><input type="radio" name="q1_3_1_formation_rgpd" value="rgpd_generale"> Oui formation RGPD générale uniquement</label>
@@ -360,7 +384,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">L'établissement connaît-il les procédures RGPD du siège (gestion demandes incidents) ? <span class="question-id">Q1.4.1</span></label>
+          <label class="question-label required">Le service connaît-il les procédures RGPD du siège (gestion demandes incidents) ? <span class="question-id">Q1.4.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_appliquees" required> Oui procédures connues et appliquées</label>
             <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_non_appliquees"> Oui connues mais non appliquées</label>
@@ -370,7 +394,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">L'établissement remonte-t-il les incidents/questions RGPD au siège ? <span class="question-id">Q1.5.1</span></label>
+          <label class="question-label required">Le service remonte-t-il les incidents/questions RGPD au siège ? <span class="question-id">Q1.5.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q1_5_1_remontees" value="systematiques" required> Oui remontées systématiques</label>
             <label><input type="radio" name="q1_5_1_remontees" value="occasionnelles"> Remontées occasionnelles</label>
@@ -385,9 +409,9 @@
         <h2 class="section-title">Registre des traitements, Bases légales & PIA</h2>
 
         <div class="question">
-          <label class="question-label required">Connaissez-vous les traitements de données recensés pour votre EAM dans le registre ? <span class="question-id">Q2.1.1</span></label>
+          <label class="question-label required">Connaissez-vous les traitements de données recensés pour Soliasso dans le registre ? <span class="question-id">Q2.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q2_1_1_registre" value="connu" required> Oui je connais les traitements EAM du registre</label>
+            <label><input type="radio" name="q2_1_1_registre" value="connu" required> Oui je connais les traitements Soliasso du registre</label>
             <label><input type="radio" name="q2_1_1_registre" value="vaguement"> Vaguement</label>
             <label><input type="radio" name="q2_1_1_registre" value="non_connu"> Non je ne connais pas le registre</label>
           </div>
@@ -396,7 +420,7 @@
         <div class="question">
           <label class="question-label required">Utilisez-vous des fichiers ou outils locaux non fournis par le siège ? <span class="question-id">Q2.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, tableaux médicaux papier)</label>
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, tableaux de suivi, plannings)</label>
             <label><input type="radio" name="q2_2_1_outils_locaux" value="non"> Non uniquement outils siège</label>
           </div>
         </div>
@@ -407,17 +431,17 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Sur quelle base légale repose le traitement des dossiers médicaux des résidents de votre EAM ? <span class="question-id">Q2B.1</span></label>
+          <label class="question-label required">Sur quelle base légale repose le traitement des dossiers des personnes accompagnées par Soliasso ? <span class="question-id">Q2B.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q2b_1_base_legale" value="interet_public" required> Mission d'intérêt public / autorité publique (Art. 6.1.e)</label>
-            <label><input type="radio" name="q2b_1_base_legale" value="consentement"> Consentement résidents/représentants légaux (Art. 6.1.a)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="consentement"> Consentement personnes accompagnées/représentants légaux (Art. 6.1.a)</label>
             <label><input type="radio" name="q2b_1_base_legale" value="obligation_legale"> Obligation légale CASF / CSP (Art. 6.1.c)</label>
             <label><input type="radio" name="q2b_1_base_legale" value="inconnu"> Inconnu</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Avez-vous identifié des traitements à risque élevé dans votre EAM nécessitant une PIA ? <span class="question-id">Q2T.1</span></label>
+          <label class="question-label required">Avez-vous identifié des traitements à risque élevé dans Soliasso nécessitant une PIA ? <span class="question-id">Q2T.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q2t_1_pia" value="realisees" required> Oui PIA réalisées</label>
             <label><input type="radio" name="q2t_1_pia" value="identifiees_non_realisees"> Oui traitements identifiés mais PIA non réalisées</label>
@@ -427,50 +451,42 @@
         </div>
 
         <div class="question">
-          <label class="question-label">Parmi ces traitements lesquels sont présents dans votre EAM ? <span class="question-id">Q2T.2</span></label>
+          <label class="question-label">Parmi ces traitements lesquels sont présents dans votre service ? <span class="question-id">Q2T.2</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q2t_2_traitements" value="dpi"> DPI (Dossier Patient Informatisé) centralisé</label>
-            <label><input type="checkbox" name="q2t_2_traitements" value="dispositifs_connectes"> Dispositifs médicaux connectés (monitoring, pompes)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="dpi"> Dossier usager informatisé (logiciel métier)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="planning_interventions"> Planning des interventions à domicile</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="geolocalisation"> Géolocalisation des véhicules/professionnels</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="telemedecine"> Télémédecine / téléconsultations</label>
-            <label><input type="checkbox" name="q2t_2_traitements" value="videosurveillance_chambres"> Vidéosurveillance chambres résidents (surveillance médicale)</label>
-            <label><input type="checkbox" name="q2t_2_traitements" value="donnees_genetiques"> Données génétiques (diagnostics spécifiques)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="videosurveillance"> Vidéosurveillance locaux du service</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="donnees_sante"> Données de santé (dossiers médicaux, prescriptions)</label>
             <label><input type="checkbox" name="q2t_2_traitements" value="aucun"> Aucun de ces traitements</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label">Si vidéosurveillance chambres, justification médicale documentée existe-t-elle ? <span class="question-id">Q2T.3</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q2t_3_justification_video" value="justification_stricte"> Oui justification médicale stricte (risques vitaux) + PIA + consentement</label>
-            <label><input type="radio" name="q2t_3_justification_video" value="justification_partielle"> Justification partielle</label>
-            <label><input type="radio" name="q2t_3_justification_video" value="sans_justification"> Vidéo chambres sans justification médicale</label>
-            <label><input type="radio" name="q2t_3_justification_video" value="na"> N/A (pas de vidéo chambres)</label>
           </div>
         </div>
       </section>
 
-      <!-- Bloc 3 : Sécurité terrain -->
+      <!-- Bloc 3 : Sécurité -->
       <section class="section" id="securite">
-        <h2 class="section-title">Sécurité terrain</h2>
+        <h2 class="section-title">Sécurité des données</h2>
 
         <div class="question">
-          <label class="question-label required">Où sont stockés les dossiers médicaux des résidents papier ? <span class="question-id">Q3.1.1</span></label>
+          <label class="question-label required">Où sont stockés les dossiers usagers papier ? <span class="question-id">Q3.1.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_fermee_local_medical" required> Armoires fermées à clé dans local médical dédié sécurisé</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_fermee_local_dedie" required> Armoires fermées à clé dans local dédié sécurisé</label>
             <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_fermee_bureau_partage"> Armoires fermées à clé dans bureau partagé</label>
             <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_non_fermee"> Armoires non fermées à clé</label>
             <label><input type="radio" name="q3_1_1_stockage_papier" value="classeurs_bureaux"> Classeurs dans bureaux</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="domicile_professionnel"> Au domicile des professionnels (risque élevé)</label>
             <label><input type="radio" name="q3_1_1_stockage_papier" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Combien de personnes ont les clés des armoires dossiers médicaux ? <span class="question-id">Q3.1.2</span></label>
+          <label class="question-label required">Combien de personnes ont les clés des armoires contenant les dossiers usagers ? <span class="question-id">Q3.1.2</span></label>
           <input type="number" name="q3_1_2_nb_cles" min="0" required>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les dossiers médicaux papier sont-ils détruits de manière sécurisée en fin de conservation ? <span class="question-id">Q3.1.3</span></label>
+          <label class="question-label required">Les dossiers usagers papier sont-ils détruits de manière sécurisée en fin de conservation ? <span class="question-id">Q3.1.3</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3_1_3_destruction" value="dechiqueteuse" required> Oui déchiqueteuse sur site</label>
             <label><input type="radio" name="q3_1_3_destruction" value="prestataire"> Oui prestataire spécialisé avec certificat</label>
@@ -480,45 +496,45 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Utilisez-vous un DPI (Dossier Patient Informatisé) ? <span class="question-id">Q3.2.1</span></label>
+          <label class="question-label required">Utilisez-vous un logiciel métier / dossier usager informatisé ? <span class="question-id">Q3.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_2_1_dpi" value="dpi_certifie" required> Oui DPI dédié certifié (Imago, Netsoins, SI-Handicap)</label>
-            <label><input type="radio" name="q3_2_1_dpi" value="logiciel_module_medical"> Oui logiciel métier avec module médical</label>
-            <label><input type="radio" name="q3_2_1_dpi" value="excel"> Fichiers Excel pour dossiers médicaux</label>
-            <label><input type="radio" name="q3_2_1_dpi" value="papier"> Dossiers papier uniquement</label>
+            <label><input type="radio" name="q3_2_1_logiciel" value="logiciel_dedie" required> Oui logiciel métier dédié (type SI-Handicap, Netsoins, Imago)</label>
+            <label><input type="radio" name="q3_2_1_logiciel" value="module_suivi"> Oui module de suivi social/médico-social</label>
+            <label><input type="radio" name="q3_2_1_logiciel" value="excel"> Fichiers Excel / tableurs pour le suivi</label>
+            <label><input type="radio" name="q3_2_1_logiciel" value="papier"> Dossiers papier uniquement</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Quel logiciel/DPI utilisez-vous pour les dossiers médicaux ? <span class="question-id">Q3.2.2</span></label>
-          <input type="text" name="q3_2_2_logiciel_dpi">
+          <label class="question-label">Quel logiciel utilisez-vous pour le suivi des personnes accompagnées ? <span class="question-id">Q3.2.2</span></label>
+          <input type="text" name="q3_2_2_logiciel">
         </div>
 
         <div class="question">
-          <label class="question-label required">Le DPI/logiciel médical est-il hébergé chez un hébergeur certifié HDS ? <span class="question-id">Q3.2.3</span></label>
+          <label class="question-label required">Le logiciel / dossier usager est-il hébergé chez un hébergeur certifié HDS (données de santé) ? <span class="question-id">Q3.2.3</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3_2_3_hds" value="oui" required> Oui certifié HDS (Hébergeur Données Santé)</label>
             <label><input type="radio" name="q3_2_3_hds" value="non"> Non pas certifié HDS</label>
             <label><input type="radio" name="q3_2_3_hds" value="inconnu"> Inconnu</label>
-            <label><input type="radio" name="q3_2_3_hds" value="na"> N/A (pas de DPI informatique)</label>
+            <label><input type="radio" name="q3_2_3_hds" value="na"> N/A (pas d'outil informatique)</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">Qui a accès au DPI / dossiers médicaux informatiques ? <span class="question-id">Q3.2.4</span></label>
+          <label class="question-label">Qui a accès au logiciel / dossier usager informatisé ? <span class="question-id">Q3.2.4</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q3_2_4_acces" value="medecin_coord"> Médecin coordinateur</label>
-            <label><input type="checkbox" name="q3_2_4_acces" value="infirmiers"> Infirmiers/IDE</label>
-            <label><input type="checkbox" name="q3_2_4_acces" value="cadre_sante"> Cadre de santé</label>
-            <label><input type="checkbox" name="q3_2_4_acces" value="aides_soitants"> Aides-soignants (accès partiel soins uniquement)</label>
-            <label><input type="checkbox" name="q3_2_4_acces" value="direction"> Direction établissement</label>
-            <label><input type="checkbox" name="q3_2_4_acces" value="educateurs"> Éducateurs/personnel non soignant</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="direction"> Direction du service</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="coordinateurs"> Coordinateurs / chefs de service</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="travailleurs_sociaux"> Travailleurs sociaux (éducateurs, assistants sociaux)</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="infirmiers"> Infirmiers / personnel paramédical</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="psychologues"> Psychologues</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="administratif"> Personnel administratif</label>
             <label><input type="checkbox" name="q3_2_4_acces" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les ordinateurs avec accès au DPI ont-ils un verrouillage automatique renforcé ? <span class="question-id">Q3.2.5</span></label>
+          <label class="question-label required">Les ordinateurs/tablettes avec accès aux données ont-ils un verrouillage automatique ? <span class="question-id">Q3.2.5</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3_2_5_verrouillage" value="moins_3min" required> Oui verrouillage auto &lt;3 minutes</label>
             <label><input type="radio" name="q3_2_5_verrouillage" value="5_10min"> Oui 5-10 minutes</label>
@@ -527,7 +543,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label">Comment transmettez-vous des données médicales à l'extérieur (hôpitaux, médecins) ? <span class="question-id">Q3.3.1</span></label>
+          <label class="question-label">Comment transmettez-vous des données à l'extérieur (partenaires de soins, hôpitaux, médecins) ? <span class="question-id">Q3.3.1</span></label>
           <div class="checkbox-group">
             <label><input type="checkbox" name="q3_3_1_transmission" value="email_classique"> Email classique non sécurisé</label>
             <label><input type="checkbox" name="q3_3_1_transmission" value="email_crypte"> Email crypté / sécurisé (Apicrypt, Zepmail)</label>
@@ -535,71 +551,50 @@
             <label><input type="checkbox" name="q3_3_1_transmission" value="plateforme"> Plateforme sécurisée (DMP, MonSisra)</label>
             <label><input type="checkbox" name="q3_3_1_transmission" value="courrier"> Courrier postal recommandé</label>
             <label><input type="checkbox" name="q3_3_1_transmission" value="fax"> Fax</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="remise_main"> Remise en main propre</label>
             <label><input type="checkbox" name="q3_3_1_transmission" value="autre"> Autre</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label">À qui transmettez-vous régulièrement des données médicales des résidents ? <span class="question-id">Q3.3.2</span></label>
+          <label class="question-label">À qui transmettez-vous régulièrement des données des personnes accompagnées ? <span class="question-id">Q3.3.2</span></label>
           <div class="checkbox-group">
             <label><input type="checkbox" name="q3_3_2_destinataires" value="hopitaux"> Hôpitaux / services spécialisés</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="medecins_traitants"> Médecins traitants</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="pharmacies"> Pharmacies</label>
-            <label><input type="checkbox" name="q3_3_2_destinataires" value="mdph"> MDPH (pour renouvellements)</label>
-            <label><input type="checkbox" name="q3_3_2_destinataires" value="cpam"> CPAM</label>
-            <label><input type="checkbox" name="q3_3_2_destinataires" value="familles"> Familles (avec accord résident/tuteur)</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="mdph"> MDPH</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="cpam"> CPAM / Assurance maladie</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="familles"> Familles / représentants légaux</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="partenaires_sociaux"> Partenaires sociaux (CCAS, ASE, logement)</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="autre"> Autre</label>
             <label><input type="checkbox" name="q3_3_2_destinataires" value="aucun"> Aucune transmission</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les prescriptions médicales sont-elles accessibles au personnel non soignant (éducateurs, administratifs) ? <span class="question-id">Q3.4.1</span></label>
+          <label class="question-label required">Les données de santé des personnes accompagnées sont-elles cloisonnées du reste des données ? <span class="question-id">Q3B.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q3_4_1_acces_prescriptions" value="soignant_uniquement" required> Non strictement personnel soignant uniquement</label>
-            <label><input type="radio" name="q3_4_1_acces_prescriptions" value="acces_partiel"> Accès partiel (infos nécessaires accompagnement)</label>
-            <label><input type="radio" name="q3_4_1_acces_prescriptions" value="tous"> Oui tout le monde accède prescriptions</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Des cahiers de soins infirmiers/transmissions médicales sont-ils utilisés ? <span class="question-id">Q3.5.1</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q3_5_1_cahiers_soins" value="securises" required> Oui cahiers sécurisés (armoire fermée)</label>
-            <label><input type="radio" name="q3_5_1_cahiers_soins" value="parfois_accessibles"> Oui mais parfois accessibles</label>
-            <label><input type="radio" name="q3_5_1_cahiers_soins" value="tout_info"> Non tout informatique (DPI)</label>
-          </div>
-        </div>
-      </section>
-
-      <!-- Bloc 3bis : Données santé -->
-      <section class="section" id="donnees-sante">
-        <h2 class="section-title">Données de santé</h2>
-
-        <div class="question">
-          <label class="question-label required">Les données de santé des résidents sont-elles cloisonnées du reste des données (dossier médical séparé) ? <span class="question-id">Q3B.1</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q3b_1_cloisonnement" value="dpi_medical_separe" required> Oui DPI médical strictement séparé, accès personnel soignant uniquement</label>
+            <label><input type="radio" name="q3b_1_cloisonnement" value="dossier_medical_separe" required> Oui dossier médical strictement séparé, accès personnel soignant uniquement</label>
             <label><input type="radio" name="q3b_1_cloisonnement" value="partiellement"> Partiellement (droits différenciés même outil)</label>
             <label><input type="radio" name="q3b_1_cloisonnement" value="non_cloisonne"> Non dossier unique tout accessible</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Le personnel non soignant (direction, éducateurs, administratifs) a-t-il accès aux données médicales complètes des résidents ? <span class="question-id">Q3B.2</span></label>
+          <label class="question-label required">Le personnel non soignant a-t-il accès aux données médicales complètes des personnes accompagnées ? <span class="question-id">Q3B.2</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3b_2_acces_non_soignant" value="soignant_uniquement" required> Non seul personnel soignant diplômé y accède</label>
             <label><input type="radio" name="q3b_2_acces_non_soignant" value="acces_partiel_direction"> Accès partiel direction (urgences uniquement)</label>
-            <label><input type="radio" name="q3b_2_acces_non_soignant" value="direction_educateurs"> Oui direction/éducateurs accèdent données médicales</label>
+            <label><input type="radio" name="q3b_2_acces_non_soignant" value="tous"> Oui tous les professionnels accèdent aux données médicales</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Sur quelle exception Art. 9.2 vous appuyez-vous pour traiter les données de santé des résidents ? <span class="question-id">Q3B.3</span></label>
+          <label class="question-label required">Sur quelle exception Art. 9.2 vous appuyez-vous pour traiter les données de santé des personnes accompagnées ? <span class="question-id">Q3B.3</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q3b_3_exception_art9" value="soins_preventive" required> Médecine préventive et soins (Art. 9.2.h)</label>
             <label><input type="radio" name="q3b_3_exception_art9" value="interet_public"> Intérêt public santé publique (Art. 9.2.i)</label>
-            <label><input type="radio" name="q3b_3_exception_art9" value="consentement"> Consentement explicite résidents/représentants (Art. 9.2.a)</label>
+            <label><input type="radio" name="q3b_3_exception_art9" value="consentement"> Consentement explicite personnes/représentants (Art. 9.2.a)</label>
             <label><input type="radio" name="q3b_3_exception_art9" value="inconnu"> Inconnu</label>
           </div>
         </div>
@@ -609,8 +604,57 @@
           <div class="radio-group">
             <label><input type="radio" name="q3b_4_secret_professionnel" value="oui" required> Oui personnel soignant diplômé soumis secret professionnel</label>
             <label><input type="radio" name="q3b_4_secret_professionnel" value="partiellement"> Partiellement</label>
-            <label><input type="radio" name="q3b_4_secret_professionnel" value="non"> Non pas de personnel soignant EAM</label>
+            <label><input type="radio" name="q3b_4_secret_professionnel" value="non"> Non pas de personnel soignant dans le service</label>
             <label><input type="radio" name="q3b_4_secret_professionnel" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Comment le planning des interventions à domicile est-il géré et partagé ? <span class="question-id">Q3.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_4_1_planning" value="logiciel_securise" required> Logiciel métier sécurisé avec accès nominatifs</label>
+            <label><input type="radio" name="q3_4_1_planning" value="excel_partage"> Fichier Excel partagé (réseau interne)</label>
+            <label><input type="radio" name="q3_4_1_planning" value="papier"> Planning papier affiché dans les locaux</label>
+            <label><input type="radio" name="q3_4_1_planning" value="whatsapp"> Messagerie instantanée (WhatsApp, Signal)</label>
+            <label><input type="radio" name="q3_4_1_planning" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les informations sur les personnes accompagnées sont-elles partagées avec les familles ? <span class="question-id">Q3.5.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_1_partage_familles" value="accord_ecrit" required> Oui avec accord écrit de la personne ou du représentant légal</label>
+            <label><input type="radio" name="q3_5_1_partage_familles" value="accord_oral"> Oui avec accord oral</label>
+            <label><input type="radio" name="q3_5_1_partage_familles" value="systematique"> Partage systématique sans vérifier l'accord</label>
+            <label><input type="radio" name="q3_5_1_partage_familles" value="non"> Non jamais</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les coordinateurs et partenaires de soins ont-ils accès aux données via un outil partagé ? <span class="question-id">Q3.6.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_6_1_outil_partage" value="outil_securise" required> Oui outil sécurisé avec accès contrôlé (profil nominatif)</label>
+            <label><input type="radio" name="q3_6_1_outil_partage" value="email"> Oui par email (non sécurisé)</label>
+            <label><input type="radio" name="q3_6_1_outil_partage" value="papier"> Transmission papier</label>
+            <label><input type="radio" name="q3_6_1_outil_partage" value="non"> Non pas de partage formalisé</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les professionnels emportent-ils des documents papier ou supports numériques contenant des données personnelles à domicile (interventions) ? <span class="question-id">Q3.7.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_7_1_donnees_domicile" value="jamais" required> Non jamais</label>
+            <label><input type="radio" name="q3_7_1_donnees_domicile" value="parfois"> Parfois (documents anonymisés ou minimisés)</label>
+            <label><input type="radio" name="q3_7_1_donnees_domicile" value="souvent"> Oui régulièrement (dossiers complets)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les véhicules de service sont-ils sécurisés pour le transport de documents nominatifs ? <span class="question-id">Q3.8.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_8_1_securite_vehicules" value="coffre_ferme" required> Oui documents rangés dans coffre/boîte fermée à clé</label>
+            <label><input type="radio" name="q3_8_1_securite_vehicules" value="visibles"> Non documents laissés visibles dans l'habitacle</label>
+            <label><input type="radio" name="q3_8_1_securite_vehicules" value="na"> N/A (pas de documents transportés ou pas de véhicules)</label>
           </div>
         </div>
       </section>
@@ -620,7 +664,7 @@
         <h2 class="section-title">Droits des usagers</h2>
 
         <div class="question">
-          <label class="question-label required">Les résidents/familles reçoivent-ils une information RGPD claire incluant données santé à l'admission ? <span class="question-id">Q4.1.1</span></label>
+          <label class="question-label required">Les personnes accompagnées / familles reçoivent-elles une information RGPD claire incluant données de santé à l'admission ? <span class="question-id">Q4.1.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q4_1_1_info_rgpd" value="document_dedie" required> Oui document dédié RGPD + notice santé adapté</label>
             <label><input type="radio" name="q4_1_1_info_rgpd" value="document_standard"> Oui document RGPD standard</label>
@@ -630,7 +674,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Avez-vous déjà reçu des demandes de résidents/familles pour consulter le dossier médical ? <span class="question-id">Q4.2.1</span></label>
+          <label class="question-label required">Avez-vous déjà reçu des demandes de personnes accompagnées/familles pour consulter le dossier ? <span class="question-id">Q4.2.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q4_2_1_demandes_acces" value="oui" required> Oui (nombre sur 12 derniers mois)</label>
             <label><input type="radio" name="q4_2_1_demandes_acces" value="non"> Non jamais</label>
@@ -638,7 +682,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Si OUI quel délai pour répondre aux demandes d'accès au dossier médical ? <span class="question-id">Q4.2.2</span></label>
+          <label class="question-label required">Si OUI quel délai pour répondre aux demandes d'accès au dossier ? <span class="question-id">Q4.2.2</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q4_2_2_delai_acces" value="moins_2mois" required> Moins de 8 jours (dossier récent) ou 2 mois (ancien)</label>
             <label><input type="radio" name="q4_2_2_delai_acces" value="2_3mois"> Entre 2 et 3 mois</label>
@@ -648,18 +692,18 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Savez-vous comment traiter une demande d'accès au dossier médical (procédure spécifique santé) ? <span class="question-id">Q4.3.1</span></label>
+          <label class="question-label required">Savez-vous comment traiter une demande d'accès au dossier (procédure spécifique) ? <span class="question-id">Q4.3.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q4_3_1_procedure_droits" value="procedure_claire" required> Oui procédure claire (possibilité accompagnement médical)</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="procedure_claire" required> Oui procédure claire (possibilité accompagnement médical si données santé)</label>
             <label><input type="radio" name="q4_3_1_procedure_droits" value="vaguement"> Vaguement je contacterais le siège</label>
             <label><input type="radio" name="q4_3_1_procedure_droits" value="non"> Non je ne sais pas</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Les résidents sous tutelle peuvent-ils exercer leurs droits RGPD sur données médicales ? <span class="question-id">Q4.4.1</span></label>
+          <label class="question-label required">Les personnes sous tutelle peuvent-elles exercer leurs droits RGPD sur leurs données ? <span class="question-id">Q4.4.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q4_4_1_droits_tutelle" value="via_tuteur" required> Oui via tuteur qui exerce droits médicaux</label>
+            <label><input type="radio" name="q4_4_1_droits_tutelle" value="via_tuteur" required> Oui via tuteur qui exerce les droits</label>
             <label><input type="radio" name="q4_4_1_droits_tutelle" value="partiellement"> Partiellement selon situations</label>
             <label><input type="radio" name="q4_4_1_droits_tutelle" value="non"> Non pas prévu</label>
             <label><input type="radio" name="q4_4_1_droits_tutelle" value="inconnu"> Inconnu</label>
@@ -667,26 +711,28 @@
         </div>
       </section>
 
-      <!-- Bloc 5 : Sous-traitants locaux -->
+      <!-- Bloc 5 : Sous-traitants -->
       <section class="section" id="sous-traitants">
-        <h2 class="section-title">Sous-traitants locaux</h2>
+        <h2 class="section-title">Sous-traitants et partenaires</h2>
 
         <div class="question">
-          <label class="question-label">Quels sous-traitants locaux utilisez-vous ayant accès aux données de santé des résidents ? <span class="question-id">Q5.1.1</span></label>
+          <label class="question-label">Quels sous-traitants / partenaires externes ont accès aux données des personnes accompagnées ? <span class="question-id">Q5.1.1</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="dpi_logiciel"> DPI / logiciel médical (Netsoins, Imago)</label>
-            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="laboratoires"> Laboratoires analyses médicales</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="logiciel_metier"> Éditeur du logiciel métier / dossier usager</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="hebergeur"> Hébergeur de données (HDS ou non)</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="prestataire_informatique"> Prestataire informatique / maintenance</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="laboratoires"> Laboratoires d'analyses</label>
             <label><input type="checkbox" name="q5_1_1_sous_traitants" value="pharmacies"> Pharmacies</label>
-            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="dispositifs_medicaux"> Prestataires dispositifs médicaux</label>
             <label><input type="checkbox" name="q5_1_1_sous_traitants" value="services_hospitaliers"> Services hospitaliers partenaires</label>
             <label><input type="checkbox" name="q5_1_1_sous_traitants" value="medecins_libéraux"> Médecins libéraux intervenants</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="services_sociaux"> Services sociaux partenaires (CCAS, logement)</label>
             <label><input type="checkbox" name="q5_1_1_sous_traitants" value="autre"> Autre</label>
             <label><input type="checkbox" name="q5_1_1_sous_traitants" value="aucun"> Aucun</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Ces sous-traitants médicaux ont-ils TOUS signé un contrat avec clauses RGPD (Art. 28) ? <span class="question-id">Q5.2.1</span></label>
+          <label class="question-label required">Ces sous-traitants ont-ils TOUS signé un contrat avec clauses RGPD (Art. 28) ? <span class="question-id">Q5.2.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q5_2_1_clauses" value="tous" required> Oui tous ont clauses Art. 28</label>
             <label><input type="radio" name="q5_2_1_clauses" value="certains"> Certains seulement</label>
@@ -696,7 +742,7 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Le logiciel DPI a-t-il un contrat avec clauses RGPD Art. 28 + certification HDS ? <span class="question-id">Q5.3.1</span></label>
+          <label class="question-label required">Le logiciel métier a-t-il un contrat avec clauses RGPD Art. 28 + certification HDS si données de santé ? <span class="question-id">Q5.3.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q5_3_1_contrat_hds" value="oui" required> Oui contrat Art. 28 + éditeur/hébergeur HDS</label>
             <label><input type="radio" name="q5_3_1_contrat_hds" value="art28_uniquement"> Contrat Art. 28 uniquement (pas HDS vérifié)</label>
@@ -704,14 +750,24 @@
             <label><input type="radio" name="q5_3_1_contrat_hds" value="inconnu"> Inconnu (géré par siège)</label>
           </div>
         </div>
-      </section>
-
-      <!-- Bloc 6 : Incidents locaux -->
-      <section class="section" id="incidents">
-        <h2 class="section-title">Incidents locaux</h2>
 
         <div class="question">
-          <label class="question-label required">Des incidents de données médicales ont-ils eu lieu dans votre EAM sur 24 derniers mois ? <span class="question-id">Q6.1.1</span></label>
+          <label class="question-label required">Des conventions de partage d'informations existent-elles avec les partenaires de soins (hôpitaux, médecins) ? <span class="question-id">Q5.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_4_1_conventions" value="conventions_signees" required> Oui conventions signées avec clauses confidentialité</label>
+            <label><input type="radio" name="q5_4_1_conventions" value="conventions_sans_conf"> Oui conventions sans clause confidentialité</label>
+            <label><input type="radio" name="q5_4_1_conventions" value="pas_conventions"> Non pas de conventions</label>
+            <label><input type="radio" name="q5_4_1_conventions" value="na"> N/A (pas de partage avec partenaires de soins)</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 6 : Incidents -->
+      <section class="section" id="incidents">
+        <h2 class="section-title">Incidents de données</h2>
+
+        <div class="question">
+          <label class="question-label required">Des incidents de données ont-ils eu lieu dans Soliasso sur les 24 derniers mois ? <span class="question-id">Q6.1.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q6_1_1_incidents" value="oui" required> Oui</label>
             <label><input type="radio" name="q6_1_1_incidents" value="non"> Non</label>
@@ -720,14 +776,15 @@
         </div>
 
         <div class="question">
-          <label class="question-label">Si OUI type(s) d'incident(s) médicaux <span class="question-id">Q6.1.2</span></label>
+          <label class="question-label">Si OUI type(s) d'incident(s) <span class="question-id">Q6.1.2</span></label>
           <div class="checkbox-group">
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_dossiers"> Perte/vol dossiers médicaux papier</label>
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_cahiers"> Perte cahiers de soins infirmiers</label>
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="email_erreur"> Email avec données médicales à mauvais destinataire</label>
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="panne_dpi"> Panne/indisponibilité DPI prolongée</label>
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="divulgation"> Divulgation accidentelle données médicales</label>
-            <label><input type="checkbox" name="q6_1_2_types_incidents" value="cyberattaque"> Cyberattaque / ransomware DPI</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_dossiers"> Perte/vol dossiers papier</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_support"> Perte/vol support numérique (PC, tablette, clé USB)</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="email_erreur"> Email avec données personnelles à mauvais destinataire</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="panne_logiciel"> Panne/indisponibilité logiciel métier prolongée</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="divulgation"> Divulgation accidentelle de données</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="cyberattaque"> Cyberattaque / ransomware</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="intrusion_domicile"> Intrusion au domicile de la personne accompagnée</label>
             <label><input type="checkbox" name="q6_1_2_types_incidents" value="autre"> Autre</label>
             <label><input type="checkbox" name="q6_1_2_types_incidents" value="na"> N/A</label>
           </div>
@@ -736,194 +793,19 @@
         <div class="question">
           <label class="question-label required">Avez-vous immédiatement informé le siège/DPO (dans les 72h) ? <span class="question-id">Q6.1.3</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q6_1_3_info_siege" value="oui_72h" required> Oui tous incidents médicaux remontés &lt;72h</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="oui_72h" required> Oui tous incidents remontés &lt;72h</label>
             <label><input type="radio" name="q6_1_3_info_siege" value="certains"> Certains seulement</label>
             <label><input type="radio" name="q6_1_3_info_siege" value="non"> Non jamais informé</label>
-            <label><input type="radio" name="q6_1_3_info_siege" value="na"> N/A (pas incident)</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="na"> N/A (pas d'incident)</label>
           </div>
         </div>
 
         <div class="question">
-          <label class="question-label required">Savez-vous reconnaître une violation de données médicales ? <span class="question-id">Q6.2.1</span></label>
+          <label class="question-label required">Savez-vous reconnaître une violation de données ? <span class="question-id">Q6.2.1</span></label>
           <div class="radio-group">
-            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="oui" required> Oui formé à reconnaître violations médicales</label>
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="oui" required> Oui formé à reconnaître les violations</label>
             <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="incertain"> Incertain</label>
             <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="non"> Non</label>
-          </div>
-        </div>
-      </section>
-
-      <!-- Bloc 7 : Spécificités EAM -->
-      <section class="section" id="specifiques">
-        <h2 class="section-title">Spécificités EAM</h2>
-
-        <div class="question">
-          <label class="question-label required">Le DPI comporte-t-il des fonctionnalités de traçabilité des accès aux dossiers médicaux ? <span class="question-id">Q7M.1</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_1_tracabilite" value="logs_consultables" required> Oui logs accès consultables et conservés</label>
-            <label><input type="radio" name="q7m_1_tracabilite" value="logs_partiels"> Logs partiels</label>
-            <label><input type="radio" name="q7m_1_tracabilite" value="pas_tracabilite"> Non pas de traçabilité</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les logs d'accès au DPI sont-ils régulièrement analysés pour détecter accès anormaux ? <span class="question-id">Q7M.2</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_2_analyse_logs" value="reguliere" required> Oui analyse régulière (mensuelle ou plus)</label>
-            <label><input type="radio" name="q7m_2_analyse_logs" value="ponctuelle"> Analyse ponctuelle (annuelle)</label>
-            <label><input type="radio" name="q7m_2_analyse_logs" value="jamais"> Jamais analysés</label>
-            <label><input type="radio" name="q7m_2_analyse_logs" value="na"> N/A (pas de logs)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Des dispositifs médicaux connectés sont-ils utilisés (pompes, monitoring, objets connectés) ? <span class="question-id">Q7M.3</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_3_dispositifs_connectes" value="nombreux" required> Oui nombreux dispositifs connectés</label>
-            <label><input type="radio" name="q7m_3_dispositifs_connectes" value="quelques"> Oui quelques dispositifs</label>
-            <label><input type="radio" name="q7m_3_dispositifs_connectes" value="aucun"> Non aucun dispositif connecté</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Si dispositifs connectés, une PIA a-t-elle été réalisée pour chacun ? <span class="question-id">Q7M.4</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_4_pia_dispositifs" value="pia_chaque_type" required> Oui PIA pour chaque type dispositif</label>
-            <label><input type="radio" name="q7m_4_pia_dispositifs" value="pia_partielle"> PIA partielle</label>
-            <label><input type="radio" name="q7m_4_pia_dispositifs" value="pas_pia"> Non pas de PIA</label>
-            <label><input type="radio" name="q7m_4_pia_dispositifs" value="na"> N/A (pas de dispositifs connectés)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les dispositifs médicaux connectés sont-ils sur un réseau isolé (segmentation réseau) ? <span class="question-id">Q7M.5</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_5_reseau_isole" value="vlan_dedie" required> Oui réseau médical isolé (VLAN dédié)</label>
-            <label><input type="radio" name="q7m_5_reseau_isole" value="reseau_unique"> Réseau unique avec tout</label>
-            <label><input type="radio" name="q7m_5_reseau_isole" value="na"> N/A (pas de dispositifs connectés)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Pratiquez-vous la télémédecine (téléconsultations) ? <span class="question-id">Q7M.6</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_6_telemedecine" value="regulierement" required> Oui régulièrement</label>
-            <label><input type="radio" name="q7m_6_telemedecine" value="occasionnellement"> Occasionnellement</label>
-            <label><input type="radio" name="q7m_6_telemedecine" value="jamais"> Non jamais</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Si télémédecine, les échanges sont-ils sécurisés (plateforme certifiée) ? <span class="question-id">Q7M.7</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_7_securite_telemedecine" value="plateforme_certifiee" required> Oui plateforme télémédecine sécurisée certifiée</label>
-            <label><input type="radio" name="q7m_7_securite_telemedecine" value="visio_standard"> Visioconférence standard (Zoom, Teams)</label>
-            <label><input type="radio" name="q7m_7_securite_telemedecine" value="na"> N/A (pas de télémédecine)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les consultations avec médecins spécialistes externes comportent-elles transmissions données excessives ? <span class="question-id">Q7M.8</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_8_transmissions_excessives" value="non" required> Non uniquement données nécessaires (question posée)</label>
-            <label><input type="radio" name="q7m_8_transmissions_excessives" value="parfois"> Parfois transmissions complètes dossier médical</label>
-            <label><input type="radio" name="q7m_8_transmissions_excessives" value="systematique"> Transmission systématique dossier complet</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Quelle est la durée de conservation des dossiers médicaux après décès ou départ du résident ? <span class="question-id">Q7M.9</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_9_conservation" value="20_ans" required> 20 ans après dernier passage (durée légale CSP)</label>
-            <label><input type="radio" name="q7m_9_conservation" value="10_ans"> 10 ans</label>
-            <label><input type="radio" name="q7m_9_conservation" value="5_ans"> 5 ans</label>
-            <label><input type="radio" name="q7m_9_conservation" value="indefinie"> Conservation indéfinie</label>
-            <label><input type="radio" name="q7m_9_conservation" value="inconnu"> Inconnu</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Le pharmacien qui gère les traitements a-t-il signé une clause de confidentialité ? <span class="question-id">Q7M.10</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_10_clause_pharmacien" value="oui" required> Oui clause confidentialité ou contrat Art. 28</label>
-            <label><input type="radio" name="q7m_10_clause_pharmacien" value="non"> Non pas de clause</label>
-            <label><input type="radio" name="q7m_10_clause_pharmacien" value="na"> N/A (pharmacie interne ou gérée par siège)</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les familles ont-elles accès aux comptes-rendus médicaux du résident (si pas sous tutelle) ? <span class="question-id">Q7M.11</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_11_acces_familles" value="accord_ecrit" required> Oui uniquement avec accord écrit résident</label>
-            <label><input type="radio" name="q7m_11_acces_familles" value="acces_systematique"> Accès systématique sans vérifier accord</label>
-            <label><input type="radio" name="q7m_11_acces_familles" value="non"> Non jamais sauf urgence</label>
-            <label><input type="radio" name="q7m_11_acces_familles" value="depend_situations"> Dépend des situations</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">En cas de décès du résident, les ayants-droit peuvent-ils accéder au dossier médical ? <span class="question-id">Q7M.12</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_12_acces_deces" value="procedure_encadree" required> Oui avec procédure encadrée (motifs légaux CSP)</label>
-            <label><input type="radio" name="q7m_12_acces_deces" value="acces_systematique"> Oui accès systématique</label>
-            <label><input type="radio" name="q7m_12_acces_deces" value="refuse"> Non refusé systématiquement</label>
-            <label><input type="radio" name="q7m_12_acces_deces" value="inconnu"> Inconnu</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Des données génétiques sont-elles collectées/traitées pour certains résidents ? <span class="question-id">Q7M.13</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_13_donnees_genetiques" value="oui_pia" required> Oui avec consentement explicite et PIA</label>
-            <label><input type="radio" name="q7m_13_donnees_genetiques" value="oui_sans_pia"> Oui sans PIA</label>
-            <label><input type="radio" name="q7m_13_donnees_genetiques" value="non"> Non jamais</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Le personnel soignant est-il sensibilisé aux risques cyber sur les systèmes médicaux (DPI, dispositifs) ? <span class="question-id">Q7M.14</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_14_sensibilisation_cyber" value="reguliere" required> Oui sensibilisation cyber régulière</label>
-            <label><input type="radio" name="q7m_14_sensibilisation_cyber" value="ponctuelle"> Sensibilisation ponctuelle ancienne</label>
-            <label><input type="radio" name="q7m_14_sensibilisation_cyber" value="jamais"> Non jamais</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Un plan de continuité spécifique médical existe-t-il en cas de panne DPI/systèmes médicaux ? <span class="question-id">Q7M.15</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_15_pca_medical" value="pca_teste" required> Oui PCA médical testé (procédures dégradées papier)</label>
-            <label><input type="radio" name="q7m_15_pca_medical" value="pca_non_teste"> Oui PCA non testé</label>
-            <label><input type="radio" name="q7m_15_pca_medical" value="non"> Non pas de PCA médical</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Des photos/vidéos de résidents sont-elles utilisées pour communication externe ? <span class="question-id">Q7M.16</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_16_photos_communication" value="consentements_ecrits" required> Oui avec consentements écrits résidents/tuteurs</label>
-            <label><input type="radio" name="q7m_16_photos_communication" value="consentements_oraux"> Oui consentements oraux</label>
-            <label><input type="radio" name="q7m_16_photos_communication" value="sans_consentement"> Oui sans consentement</label>
-            <label><input type="radio" name="q7m_16_photos_communication" value="non"> Non jamais</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Le DPI est-il accessible depuis l'extérieur de l'établissement (accès distant médecins) ? <span class="question-id">Q7M.17</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_17_acces_distant" value="vpn_2fa" required> Oui avec VPN sécurisé + authentification forte (2FA)</label>
-            <label><input type="radio" name="q7m_17_acces_distant" value="identifiants_simples"> Oui avec identifiants simples</label>
-            <label><input type="radio" name="q7m_17_acces_distant" value="non"> Non accès uniquement sur site</label>
-          </div>
-        </div>
-
-        <div class="question">
-          <label class="question-label required">Les sauvegardes du DPI sont-elles testées régulièrement ? <span class="question-id">Q7M.18</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q7m_18_sauvegardes_testees" value="trimestriel" required> Oui tests restauration DPI trimestriels ou plus</label>
-            <label><input type="radio" name="q7m_18_sauvegardes_testees" value="annuels"> Tests annuels</label>
-            <label><input type="radio" name="q7m_18_sauvegardes_testees" value="jamais"> Jamais testées</label>
-            <label><input type="radio" name="q7m_18_sauvegardes_testees" value="na"> N/A (DPI papier uniquement)</label>
           </div>
         </div>
       </section>
@@ -933,12 +815,12 @@
         <h2 class="section-title">Synthèse et commentaires</h2>
 
         <div class="question">
-          <label class="question-label">Principales difficultés EAM pour conformité RGPD et secret médical <span class="question-id">Q_SYNTH.1</span></label>
-          <textarea name="qsynth_1_difficultes" placeholder="Décrivez les principales difficultés rencontrées..."></textarea>
+          <label class="question-label">Principales difficultés de Soliasso pour la conformité RGPD <span class="question-id">Q_SYNTH.1</span></label>
+          <textarea name="qsynth_1_difficultes" placeholder="Décrivez les principales difficultés rencontrées (interventions à domicile, partage d'informations, sécurité des données sur le terrain...)"></textarea>
         </div>
 
         <div class="question">
-          <label class="question-label">Commentaires libres ou points EAM médicaux non abordés <span class="question-id">Q_SYNTH.2</span></label>
+          <label class="question-label">Commentaires libres ou points non abordés <span class="question-id">Q_SYNTH.2</span></label>
           <textarea name="qsynth_2_commentaires" placeholder="Toute information complémentaire..."></textarea>
         </div>
       </section>
@@ -950,7 +832,7 @@
   </div>
 
   <script>
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQBhjBdwuEBtj5Ef63L_5ej3eyXB15DLmpnDBxqM5u0EdVRgoLK6NR1Hkn682obuvN7Q/exec';
 const FORM_TYPE = 'Soliasso_RGPD';
 
 // Navigation sticky
@@ -999,9 +881,9 @@ function collectResponses() {
     }
     responses.push({ id: fieldId, question, answer });
   });
-  const nomEtabEl = document.getElementById('nom_etablissement');
-  if (nomEtabEl) {
-    responses.push({ id: 'nom_etablissement', question: 'Nom de l\'établissement', answer: nomEtabEl.value || '' });
+  const nomServiceEl = document.getElementById('nom_service');
+  if (nomServiceEl) {
+    responses.push({ id: 'nom_service', question: 'Nom du service', answer: nomServiceEl.value || '' });
   }
   return responses;
 }
