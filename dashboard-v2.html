@@ -5,6 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kit RGPD — Dashboard Référent UNAPEI92</title>
   <link rel="stylesheet" href="style-v2.css">
+  <style>
+    /* ── MODE JOUR ── */
+    body.light-mode{background:#f5f7fa!important;color:#1e293b!important}
+    body.light-mode .site-header{background:linear-gradient(135deg,#1B4F8A,#0F3260)!important}
+    body.light-mode .module-nav{background:#fff!important;border-bottom:1px solid #e2e8f0!important}
+    body.light-mode .module-btn{color:#64748b!important}
+    body.light-mode .module-btn.active{color:#1B4F8A!important;border-bottom-color:#1B4F8A!important}
+    body.light-mode .intro-card{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .intro-card h2{color:#1B4F8A!important}
+    body.light-mode .intro-card p{color:#64748b!important}
+    body.light-mode .panel{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .panel h2,body.light-mode .panel h3{color:#1e293b!important}
+    body.light-mode .panel p,body.light-mode .panel li{color:#475569!important}
+    body.light-mode .memory-card{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .memory-item{background:#f1f5f9!important}
+    body.light-mode .memory-title{color:#1B4F8A!important}
+    body.light-mode .memory-item p{color:#64748b!important}
+    body.light-mode .memo-section{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .memo-row{background:#f8fafc!important}
+    body.light-mode .memo-body h4{color:#1e293b!important}
+    body.light-mode .memo-body li{color:#475569!important}
+    body.light-mode .memo-date{color:#64748b!important}
+    body.light-mode .alert-strip{background:#eef2ff!important;border-color:#c7d2fe!important}
+    body.light-mode .alert-strip span{color:#4338ca!important}
+    body.light-mode .alert-strip a{color:#1B4F8A!important}
+    body.light-mode .formation-row{background:#f8fafc!important;border-color:#e2e8f0!important}
+    body.light-mode .formation-body h4{color:#1e293b!important}
+    body.light-mode .formation-meta{color:#64748b!important}
+    body.light-mode .formation-body p{color:#475569!important}
+    body.light-mode .formation-summary{background:#eef2ff!important}
+    body.light-mode .summary-num{color:#1B4F8A!important}
+    body.light-mode .summary-label{color:#64748b!important}
+    body.light-mode .rappels-list li{color:#475569!important}
+    body.light-mode .backup-item{background:#f1f5f9!important;border-color:#e2e8f0!important}
+    body.light-mode .backup-item h4{color:#1e293b!important}
+    body.light-mode .backup-item p{color:#64748b!important}
+    body.light-mode .backup-rule{color:#1B4F8A!important}
+    body.light-mode .site-footer{color:#94a3b8!important}
+    body.light-mode .site-footer a{color:#1B4F8A!important}
+    body.light-mode .help-card{background:#f8fafc!important;border-color:#e2e8f0!important}
+    body.light-mode .help-card summary{color:#1e293b!important}
+    body.light-mode .help-body p,body.light-mode .help-body li{color:#475569!important}
+    body.light-mode .help-tip{color:#1B4F8A!important}
+    body.light-mode .identity-bar h2{color:#1e293b!important}
+    body.light-mode .score-card{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .score-month{color:#64748b!important}
+    body.light-mode .voyant{background:#f1f5f9!important;border-color:#e2e8f0!important}
+    body.light-mode .voyant .voyant-title{color:#1e293b!important}
+    body.light-mode .voyant .voyant-status{color:#64748b!important}
+    body.light-mode .list-item{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .list-item .title span{color:#1e293b!important}
+    body.light-mode .list-item .meta{color:#64748b!important}
+    body.light-mode .empty{color:#94a3b8!important}
+    body.light-mode .modal-content{background:#fff!important}
+    body.light-mode .modal-content h3{color:#1e293b!important}
+    body.light-mode .modal-content label{color:#475569!important}
+    body.light-mode .modal-content input,body.light-mode .modal-content select,body.light-mode .modal-content textarea{background:#f8fafc!important;border-color:#e2e8f0!important;color:#1e293b!important}
+    body.light-mode .phase-title{color:#1B4F8A!important}
+    body.light-mode .rapport-header{background:#f1f5f9!important}
+    body.light-mode .rapport-label{color:#64748b!important}
+    body.light-mode .rapport-mois{color:#1e293b!important}
+    body.light-mode .kpi{background:#fff!important;border-color:#e2e8f0!important}
+    body.light-mode .kpi-value{color:#1e293b!important}
+    body.light-mode .kpi-label{color:#64748b!important}
+    body.light-mode .etab-item{background:#f8fafc!important;border-color:#e2e8f0!important}
+    body.light-mode .etab-name{color:#1e293b!important}
+    body.light-mode .etab-ref{color:#64748b!important}
+    body.light-mode .action-list li{color:#475569!important}
+    body.light-mode .timeline-step h4{color:#1e293b!important}
+    body.light-mode .timeline-step p{color:#475569!important}
+    body.light-mode .incident-examples{background:#f8fafc!important;border-color:#e2e8f0!important}
+    body.light-mode .incident-examples p{color:#475569!important}
+    body.light-mode .rappels-title{color:#1e293b!important}
+    body.light-mode .rappel-date{color:#64748b!important}
+    body.light-mode .backup-grid{color:#475569!important}
+    body.light-mode .theme-btn{background:rgba(27,79,138,0.1)!important;border-color:rgba(27,79,138,0.2)!important;color:#1B4F8A!important}
+  </style>
 </head>
 <body>
   <!-- Header UNAPEI92 -->
@@ -29,6 +106,7 @@
             <div class="contact-link">72h max</div>
           </div>
         </div>
+        <button id="theme-toggle" class="theme-btn" onclick="toggleTheme()" title="Mode jour/nuit" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;cursor:pointer;font-size:18px;padding:6px 10px;margin-left:12px;transition:background .2s;">🌙</button>
       </div>
     </div>
   </header>
@@ -1116,6 +1194,23 @@
       const [a, m, j] = d.split('-');
       return `${j}/${m}/${a}`;
     }
+
+    // ── MODE JOUR / NUIT ──
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById('theme-toggle');
+      const isLight = body.classList.toggle('light-mode');
+      btn.textContent = isLight ? '☀️' : '🌙';
+      localStorage.setItem('dashboard-theme', isLight ? 'light' : 'dark');
+    }
+    // Restaurer le thème sauvegardé
+    (function() {
+      const saved = localStorage.getItem('dashboard-theme');
+      if (saved === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('theme-toggle').textContent = '☀️';
+      }
+    })();
 
     // === Assistant IA — OpenRouter ===
     window.toggleAssistant = function() {
