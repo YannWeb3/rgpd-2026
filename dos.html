@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNAPEI92 — DOS (Questionnaire RGPD)</title>
+  <style>
+    :root {
+      --primary: #0055A4;
+      --primary-dark: #003d7a;
+      --secondary: #E60028;
+      --bg: #f5f7fa;
+      --card: #fff;
+      --text: #333;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --success: #28a745;
+      --error: #dc3545;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+    header p { opacity: 0.9; font-size: 0.95rem; }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--primary);
+      text-decoration: none;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    .back-link:hover { text-decoration: underline; }
+
+    .nav-blocks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 25px;
+      padding: 15px;
+      background: var(--card);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+    }
+
+    .nav-block {
+      padding: 8px 16px;
+      background: var(--bg);
+      border: 2px solid transparent;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-block:hover, .nav-block.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .section {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      scroll-margin-top: 80px;
+    }
+
+    .section-title {
+      color: var(--primary);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .question {
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .question:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .question-label {
+      font-weight: 600;
+      margin-bottom: 10px;
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .question-id {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-weight: normal;
+      margin-left: 5px;
+    }
+
+    .required::after {
+      content: ' *';
+      color: var(--secondary);
+    }
+
+    input, select, textarea {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .radio-group label, .checkbox-group label {
+      font-weight: normal;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .radio-group label:hover, .checkbox-group label:hover {
+      background: var(--bg);
+    }
+
+    input[type="radio"], input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      padding: 14px 40px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .message.show { display: block; }
+
+    .info-box {
+      background: #e3f2fd;
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.4rem; }
+      .nav-blocks { justify-content: center; }
+      .nav-block { font-size: 0.8rem; padding: 6px 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← Retour à l'accueil</a>
+
+    <header>
+      <h1>Questionnaire RGPD — DOS</h1>
+      <p>Dispositif d'Offres et de Services — Appels d'offres, réponses et données associées</p>
+    </header>
+
+    <nav class="nav-blocks">
+      <a href="#identification" class="nav-block">Identification</a>
+      <a href="#gouvernance" class="nav-block">Gouvernance</a>
+      <a href="#registre" class="nav-block">Registre & PIA</a>
+      <a href="#securite" class="nav-block">Sécurité</a>
+      <a href="#droits" class="nav-block">Droits</a>
+      <a href="#sous-traitants" class="nav-block">Sous-traitants</a>
+      <a href="#incidents" class="nav-block">Incidents</a>
+      <a href="#synthese" class="nav-block">Synthèse</a>
+    </nav>
+
+    <div class="info-box">
+      <strong>Instructions :</strong> Ce questionnaire porte sur la conformité RGPD de votre Dispositif d'Offres et de Services (DOS) — appels d'offres, réponses, marchés publics et données associées. Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <form id="formulaire">
+      <!-- Bloc 0 : Identification -->
+      <section class="section" id="identification">
+        <h2 class="section-title">Identification du DOS</h2>
+
+        <div class="question">
+          <label class="question-label required">Nom du DOS (Dispositif d'Offres et de Services) <span class="question-id">Q0.1</span></label>
+           <input type="text" name="q0_1_nom_dos" required>
+           <input type="hidden" id="nom_dos" name="nom_dos">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Personne répondant au questionnaire (Nom Prénom) <span class="question-id">Q0.2</span></label>
+          <input type="text" name="q0_2_nom_prenom_repondant" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Fonction du répondant <span class="question-id">Q0.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_3_fonction" value="responsable_dos" required> Responsable du DOS</label>
+            <label><input type="radio" name="q0_3_fonction" value="charge_appels_offres"> Chargé(e) d'appels d'offres</label>
+            <label><input type="radio" name="q0_3_fonction" value="directeur"> Directeur/trice</label>
+            <label><input type="radio" name="q0_3_fonction" value="resp_admin"> Responsable administratif</label>
+            <label><input type="radio" name="q0_3_fonction" value="resp_juridique"> Responsable juridique</label>
+            <label><input type="radio" name="q0_3_fonction" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Date de remplissage <span class="question-id">Q0.4</span></label>
+          <input type="date" name="q0_4_date_remplissage" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre d'appels d'offres traités par an (en moyenne) <span class="question-id">Q0.5</span></label>
+          <input type="number" name="q0_5_nb_appels_offres" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Nombre de salariés impliqués dans le DOS <span class="question-id">Q0.6</span></label>
+          <input type="number" name="q0_6_nb_salaries_dos" min="0" required>
+        </div>
+      </section>
+
+      <!-- Bloc 1 : Gouvernance -->
+      <section class="section" id="gouvernance">
+        <h2 class="section-title">Gouvernance RGPD du DOS</h2>
+
+        <div class="question">
+          <label class="question-label required">Un référent RGPD est-il identifié pour le DOS ? <span class="question-id">Q1.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_connu" required> Oui identifié et connu des équipes</label>
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="identifie_informel"> Oui identifié mais informel</label>
+            <label><input type="radio" name="q1_1_1_referent_rgpd" value="non_identifie"> Non personne n'est identifiée</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Nom et fonction du référent RGPD local <span class="question-id">Q1.1.2</span></label>
+          <input type="text" name="q1_1_2_nom_fonction_referent">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le référent RGPD du DOS sait-il contacter le DPO externe ? <span class="question-id">Q1.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="connu_contacte" required> Oui coordonnées connues et DPO déjà contacté</label>
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="connu_jamais"> Oui coordonnées connues mais jamais contacté</label>
+            <label><input type="radio" name="q1_2_1_contact_dpo" value="non_connu"> Non ne connaît pas le DPO</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les équipes du DOS ont-elles reçu une sensibilisation ou formation RGPD spécifique aux appels d'offres et données associées ? <span class="question-id">Q1.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="rgpd_approfondie" required> Oui formation RGPD approfondie récente (&lt;2 ans)</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="rgpd_generale"> Oui formation RGPD générale uniquement</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="rapide"> Sensibilisation rapide uniquement</label>
+            <label><input type="radio" name="q1_3_1_formation_rgpd" value="jamais"> Non jamais</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le DOS connaît-il les procédures RGPD du siège (gestion demandes, incidents) ? <span class="question-id">Q1.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_appliquees" required> Oui procédures connues et appliquées</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="connues_non_appliquees"> Oui connues mais non appliquées</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="existent_non_connues"> Procédures existent mais non connues</label>
+            <label><input type="radio" name="q1_4_1_procedures_siege" value="pas_de_procedures"> Pas de procédures siège</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le DOS remonte-t-il les incidents/questions RGPD au siège ? <span class="question-id">Q1.5.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_5_1_remontees" value="systematiques" required> Oui remontées systématiques</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="occasionnelles"> Remontées occasionnelles</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="jamais"> Non jamais de remontée</label>
+            <label><input type="radio" name="q1_5_1_remontees" value="na"> N/A (jamais d'incident)</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 2 : Registre & PIA -->
+      <section class="section" id="registre">
+        <h2 class="section-title">Registre des traitements, Bases légales & PIA</h2>
+
+        <div class="question">
+          <label class="question-label required">Connaissez-vous les traitements de données recensés pour le DOS dans le registre ? <span class="question-id">Q2.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_1_1_registre" value="connu" required> Oui je connais les traitements DOS du registre</label>
+            <label><input type="radio" name="q2_1_1_registre" value="vaguement"> Vaguement</label>
+            <label><input type="radio" name="q2_1_1_registre" value="non_connu"> Non je ne connais pas le registre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Utilisez-vous des fichiers ou outils locaux non fournis par le siège pour le suivi des appels d'offres ? <span class="question-id">Q2.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="oui" required> Oui fichiers/outils locaux (Excel, logiciel dédié)</label>
+            <label><input type="radio" name="q2_2_1_outils_locaux" value="non"> Non uniquement outils siège</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si OUI, précisez quels fichiers/outils locaux vous utilisez (Excel, logiciel de suivi, etc.) <span class="question-id">Q2.2.2</span></label>
+          <textarea name="q2_2_2_precisions_outils"></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Sur quelle base légale repose le traitement des données liées aux appels d'offres et marchés publics ? <span class="question-id">Q2B.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2b_1_base_legale" value="interet_public" required> Mission d'intérêt public / autorité publique (Art. 6.1.e)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="obligation_legale"> Obligation légale (code commande publique, Art. 6.1.c)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="consentement"> Consentement des personnes concernées (Art. 6.1.a)</label>
+            <label><input type="radio" name="q2b_1_base_legale" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Avez-vous identifié des traitements à risque élevé dans le DOS nécessitant une PIA ? <span class="question-id">Q2T.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2t_1_pia" value="realisees" required> Oui PIA réalisées</label>
+            <label><input type="radio" name="q2t_1_pia" value="identifiees_non_realisees"> Oui traitements identifiés mais PIA non réalisées</label>
+            <label><input type="radio" name="q2t_1_pia" value="aucun"> Non aucun traitement à risque identifié</label>
+            <label><input type="radio" name="q2t_1_pia" value="inconnu"> Inconnu (ne sait pas ce qu'est une PIA)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Parmi ces traitements, lesquels sont présents dans le DOS ? <span class="question-id">Q2T.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q2t_2_traitements" value="fichier_suivi_appels_offres"> Fichier de suivi des appels d'offres (Excel/logiciel)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="dossiers_reponse"> Dossiers de réponse aux appels d'offres</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="donnees_partenaires"> Données des partenaires et co-traitants</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="donnees_candidatures"> Données des candidatures (CV, diplômes, expériences)</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="conventions"> Conventions et marchés publics signés</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="clauses_rgpd_reponses"> Clauses RGPD intégrées dans les réponses</label>
+            <label><input type="checkbox" name="q2t_2_traitements" value="aucun"> Aucun de ces traitements</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 3 : Sécurité -->
+      <section class="section" id="securite">
+        <h2 class="section-title">Sécurité des données du DOS</h2>
+
+        <div class="question">
+          <label class="question-label required">Où sont stockés les dossiers de réponse aux appels d'offres (papier) ? <span class="question-id">Q3.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_fermee_local_dedie" required> Armoires fermées à clé dans local dédié sécurisé</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_fermee_bureau_partage"> Armoires fermées à clé dans bureau partagé</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="armoire_non_fermee"> Armoires non fermées à clé</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="classeurs_bureaux"> Classeurs dans bureaux</label>
+            <label><input type="radio" name="q3_1_1_stockage_papier" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Combien de personnes ont accès aux dossiers de réponse et fichiers de suivi ? <span class="question-id">Q3.1.2</span></label>
+          <input type="number" name="q3_1_2_nb_acces" min="0" required>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les dossiers de réponse papier sont-ils détruits de manière sécurisée en fin de conservation ? <span class="question-id">Q3.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_3_destruction" value="dechiqueteuse" required> Oui déchiqueteuse sur site</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="prestataire"> Oui prestataire spécialisé avec certificat</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="poubelle"> Poubelle classique</label>
+            <label><input type="radio" name="q3_1_3_destruction" value="jamais"> Jamais détruits (conservation indéfinie)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Utilisez-vous un logiciel ou outil dédié pour le suivi des appels d'offres et la gestion des réponses ? <span class="question-id">Q3.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_1_logiciel_suivi" value="logiciel_dedie" required> Oui logiciel dédié (solution métier)</label>
+            <label><input type="radio" name="q3_2_1_logiciel_suivi" value="excel_avance"> Oui fichiers Excel structurés</label>
+            <label><input type="radio" name="q3_2_1_logiciel_suivi" value="excel_simple"> Fichiers Excel simples / documents partagés</label>
+            <label><input type="radio" name="q3_2_1_logiciel_suivi" value="papier"> Suivi papier uniquement</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Quel logiciel/outil utilisez-vous pour le suivi des appels d'offres ? <span class="question-id">Q3.2.2</span></label>
+          <input type="text" name="q3_2_2_logiciel_suivi">
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les fichiers de suivi et dossiers de réponse sont-ils stockés sur un espace sécurisé (serveur, cloud professionnel) ? <span class="question-id">Q3.2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_3_stockage_securise" value="serveur_interne" required> Oui serveur interne sécurisé</label>
+            <label><input type="radio" name="q3_2_3_stockage_securise" value="cloud_professionnel"> Oui cloud professionnel sécurisé (OneDrive, SharePoint)</label>
+            <label><input type="radio" name="q3_2_3_stockage_securise" value="cloud_personnel"> Cloud personnel non professionnel</label>
+            <label><input type="radio" name="q3_2_3_stockage_securise" value="postes_locaux"> Postes locaux uniquement</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Qui a accès aux fichiers de suivi et dossiers de réponse ? <span class="question-id">Q3.2.4</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_2_4_acces" value="responsable_dos"> Responsable du DOS</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="charge_appels_offres"> Chargé(e) d'appels d'offres</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="direction"> Direction</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="resp_admin"> Responsable administratif</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="resp_juridique"> Responsable juridique</label>
+            <label><input type="checkbox" name="q3_2_4_acces" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les postes de travail avec accès aux données du DOS ont-ils un verrouillage automatique ? <span class="question-id">Q3.2.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_2_5_verrouillage" value="moins_3min" required> Oui verrouillage auto &lt;3 minutes</label>
+            <label><input type="radio" name="q3_2_5_verrouillage" value="5_10min"> Oui 5-10 minutes</label>
+            <label><input type="radio" name="q3_2_5_verrouillage" value="manuel"> Verrouillage manuel uniquement</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Comment transmettez-vous des dossiers de réponse et données associées à l'extérieur (partenaires, acheteurs publics) ? <span class="question-id">Q3.3.1</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_3_1_transmission" value="plateforme_acheteur"> Plateforme acheteur sécurisée (PLACE, Marchés en ligne)</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="email_classique"> Email classique non sécurisé</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="email_crypte"> Email crypté / sécurisé</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="plateforme_partage"> Plateforme de partage sécurisée (Nextcloud, Dropbox pro)</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="courrier"> Courrier postal recommandé</label>
+            <label><input type="checkbox" name="q3_3_1_transmission" value="autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">À qui transmettez-vous régulièrement des données dans le cadre des appels d'offres ? <span class="question-id">Q3.3.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="acheteurs_publics"> Acheteurs publics (collectivités, hôpitaux, ESMS)</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="partenaires"> Partenaires / co-traitants</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="candidats"> Candidats (personnes postulant via le DOS)</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="financeurs"> Financeurs / organismes de contrôle</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="siege"> Siège UNAPEI92</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q3_3_2_destinataires" value="aucun"> Aucune transmission</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les CV et données personnelles des candidats sont-ils conservés séparément des dossiers de réponse ? <span class="question-id">Q3.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_4_1_separation_cv" value="separe" required> Oui CV et données candidats conservés à part</label>
+            <label><input type="radio" name="q3_4_1_separation_cv" value="melange"> Non mélangés aux dossiers de réponse</label>
+            <label><input type="radio" name="q3_4_1_separation_cv" value="pas_cv"> N/A (pas de CV traités)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les clauses RGPD sont-elles intégrées dans les réponses aux appels d'offres (mentions d'information, engagements) ? <span class="question-id">Q3.5.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_1_clauses_rgpd_reponses" value="systematiques" required> Oui systématiquement dans chaque réponse</label>
+            <label><input type="radio" name="q3_5_1_clauses_rgpd_reponses" value="parfois"> Parfois selon le type d'appel d'offres</label>
+            <label><input type="radio" name="q3_5_1_clauses_rgpd_reponses" value="jamais"> Non jamais</label>
+            <label><input type="radio" name="q3_5_1_clauses_rgpd_reponses" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 4 : Droits -->
+      <section class="section" id="droits">
+        <h2 class="section-title">Droits des personnes concernées</h2>
+
+        <div class="question">
+          <label class="question-label required">Les partenaires et candidats reçoivent-ils une information RGPD claire sur le traitement de leurs données dans le cadre des appels d'offres ? <span class="question-id">Q4.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="document_dedie" required> Oui document dédié RGPD adapté</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="document_standard"> Oui document RGPD standard</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="orale"> Information orale uniquement</label>
+            <label><input type="radio" name="q4_1_1_info_rgpd" value="non"> Non pas d'information</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Avez-vous déjà reçu des demandes d'exercice de droits RGPD (accès, rectification, opposition) de la part de partenaires ou candidats ? <span class="question-id">Q4.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_1_demandes_droits" value="oui" required> Oui (nombre sur 12 derniers mois)</label>
+            <label><input type="radio" name="q4_2_1_demandes_droits" value="non"> Non jamais</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Si OUI, quel délai pour répondre aux demandes ? <span class="question-id">Q4.2.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_2_delai_droits" value="moins_1mois" required> Moins d'1 mois (délai légal RGPD)</label>
+            <label><input type="radio" name="q4_2_2_delai_droits" value="1_3mois"> Entre 1 et 3 mois</label>
+            <label><input type="radio" name="q4_2_2_delai_droits" value="plus_3mois"> Plus de 3 mois</label>
+            <label><input type="radio" name="q4_2_2_delai_droits" value="na"> N/A (pas de demande)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Savez-vous comment traiter une demande d'exercice de droits RGPD (procédure interne) ? <span class="question-id">Q4.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="procedure_claire" required> Oui procédure claire et connue</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="vaguement"> Vaguement je contacterais le siège</label>
+            <label><input type="radio" name="q4_3_1_procedure_droits" value="non"> Non je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les données des candidats (CV) sont-elles conservées au-delà de la durée nécessaire à l'appel d'offres ? <span class="question-id">Q4.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_4_1_conservation_cv" value="duree_limitee" required> Oui avec durée de conservation définie et communiquée</label>
+            <label><input type="radio" name="q4_4_1_conservation_cv" value="indefinie"> Oui conservation indéfinie sans limite</label>
+            <label><input type="radio" name="q4_4_1_conservation_cv" value="detruits_apres"> Non détruits après la fin de l'appel d'offres</label>
+            <label><input type="radio" name="q4_4_1_conservation_cv" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 5 : Sous-traitants -->
+      <section class="section" id="sous-traitants">
+        <h2 class="section-title">Sous-traitants et partenaires</h2>
+
+        <div class="question">
+          <label class="question-label">Quels sous-traitants ou partenaires externes ont accès aux données du DOS (dossiers de réponse, données partenaires, CV) ? <span class="question-id">Q5.1.1</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="prestataire_informatique"> Prestataire informatique / hébergeur</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="editeur_logiciel"> Éditeur de logiciel de suivi appels d'offres</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="co_traitants"> Co-traitants / partenaires de réponse</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="sous_traitants_marché"> Sous-traitants dans le cadre du marché public</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="cabinet_conseil"> Cabinet de conseil / accompagnement appels d'offres</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="prestataire_archivage"> Prestataire d'archivage / destruction</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q5_1_1_sous_traitants" value="aucun"> Aucun</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Ces sous-traitants ont-ils TOUS signé un contrat avec clauses RGPD (Art. 28) ? <span class="question-id">Q5.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_2_1_clauses" value="tous" required> Oui tous ont clauses Art. 28</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="certains"> Certains seulement</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="non"> Non aucun</label>
+            <label><input type="radio" name="q5_2_1_clauses" value="inconnu"> Inconnu (géré par siège)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les conventions et marchés publics signés intègrent-ils des clauses de protection des données ? <span class="question-id">Q5.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_3_1_clauses_conventions" value="oui_systematique" required> Oui systématiquement</label>
+            <label><input type="radio" name="q5_3_1_clauses_conventions" value="parfois"> Parfois selon le partenaire</label>
+            <label><input type="radio" name="q5_3_1_clauses_conventions" value="non"> Non jamais</label>
+            <label><input type="radio" name="q5_3_1_clauses_conventions" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 6 : Incidents -->
+      <section class="section" id="incidents">
+        <h2 class="section-title">Incidents de données</h2>
+
+        <div class="question">
+          <label class="question-label required">Des incidents de données ont-ils eu lieu dans le cadre du DOS sur les 24 derniers mois ? <span class="question-id">Q6.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_1_1_incidents" value="oui" required> Oui</label>
+            <label><input type="radio" name="q6_1_1_incidents" value="non"> Non</label>
+            <label><input type="radio" name="q6_1_1_incidents" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Si OUI, type(s) d'incident(s) <span class="question-id">Q6.1.2</span></label>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="perte_dossiers"> Perte/vol dossiers de réponse papier</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="email_erreur"> Email avec données à mauvais destinataire</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="divulgation"> Divulgation accidentelle données partenaires/candidats</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="cyberattaque"> Cyberattaque / ransomware</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="panne_systeme"> Panne système / perte de données</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="acces_non_autorise"> Accès non autorisé aux fichiers de suivi</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="autre"> Autre</label>
+            <label><input type="checkbox" name="q6_1_2_types_incidents" value="na"> N/A</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Avez-vous immédiatement informé le siège/DPO (dans les 72h) ? <span class="question-id">Q6.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_1_3_info_siege" value="oui_72h" required> Oui tous les incidents remontés &lt;72h</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="certains"> Certains seulement</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="non"> Non jamais informé</label>
+            <label><input type="radio" name="q6_1_3_info_siege" value="na"> N/A (pas d'incident)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Savez-vous reconnaître une violation de données dans le cadre du DOS ? <span class="question-id">Q6.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="oui" required> Oui formé à reconnaître les violations</label>
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="incertain"> Incertain</label>
+            <label><input type="radio" name="q6_2_1_reconnaitre_violation" value="non"> Non</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc Synthèse -->
+      <section class="section" id="synthese">
+        <h2 class="section-title">Synthèse et commentaires</h2>
+
+        <div class="question">
+          <label class="question-label">Principales difficultés du DOS pour la conformité RGPD <span class="question-id">Q_SYNTH.1</span></label>
+          <textarea name="qsynth_1_difficultes" placeholder="Décrivez les principales difficultés rencontrées..."></textarea>
+        </div>
+
+        <div class="question">
+          <label class="question-label">Commentaires libres ou points DOS non abordés <span class="question-id">Q_SYNTH.2</span></label>
+          <textarea name="qsynth_2_commentaires" placeholder="Toute information complémentaire..."></textarea>
+        </div>
+      </section>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="btn-submit">Envoyer le questionnaire</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
+const FORM_TYPE = 'DOS_RGPD';
+
+// Navigation sticky
+const navBlocks = document.querySelectorAll('.nav-block');
+const sections = document.querySelectorAll('.section');
+function updateActiveNav() {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    if (scrollY >= sectionTop - 100) current = section.getAttribute('id');
+  });
+  navBlocks.forEach(block => {
+    block.classList.remove('active');
+    if (block.getAttribute('href') === '#' + current) block.classList.add('active');
+  });
+}
+if (navBlocks.length > 0) {
+  window.addEventListener('scroll', updateActiveNav);
+  updateActiveNav();
+}
+
+// Collecte des réponses (format array v2.0)
+function collectResponses() {
+  const responses = [];
+  const seen = new Set();
+  document.querySelectorAll('.question:not(.hidden)').forEach(qEl => {
+    const labelEl = qEl.querySelector('.q-label, .question-label');
+    if (!labelEl) return;
+    const question = labelEl.innerText.replace(/^\*\s*/, '').replace(/\s+/g, ' ').trim();
+    const inputs = qEl.querySelectorAll('input, textarea, select');
+    if (inputs.length === 0) return;
+    const firstInput = inputs[0];
+    const fieldId = firstInput.name || firstInput.id || '';
+    if (seen.has(fieldId)) return;
+    seen.add(fieldId);
+    let answer = '';
+    const type = firstInput.type;
+    if (type === 'radio') {
+      const checked = qEl.querySelector('input[type="radio"]:checked');
+      answer = checked ? checked.value : '';
+    } else if (type === 'checkbox') {
+      const checkeds = qEl.querySelectorAll('input[type="checkbox"]:checked');
+      answer = Array.from(checkeds).map(c => c.value).join(' | ');
+    } else {
+      answer = firstInput.value.trim();
+    }
+    responses.push({ id: fieldId, question, answer });
+  });
+  const nomDosEl = document.getElementById('nom_dos');
+  if (nomDosEl) {
+    responses.push({ id: 'nom_dos', question: 'Nom du DOS', answer: nomDosEl.value || '' });
+  }
+  return responses;
+}
+
+// Soumission
+document.getElementById('formulaire').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  if (!this.checkValidity()) return;
+  const btn = document.getElementById('btn-submit');
+  const message = document.getElementById('message');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours...';
+  const payload = { type: FORM_TYPE, responses: collectResponses() };
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    if (result.status === 'success') {
+      message.className = 'message success show';
+      message.textContent = 'Questionnaire envoyé avec succès ! Merci pour votre participation.';
+      this.reset();
+      const dateField = document.querySelector('[name*="date"]');
+      if (dateField && dateField.type === 'date') dateField.valueAsDate = new Date();
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (err) {
+    message.className = 'message error show';
+    message.textContent = 'Erreur lors de l\'envoi : ' + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Envoyer le questionnaire';
+  }
+});
+
+// Date par défaut
+const dateField = document.querySelector('[name*="date"]');
+if (dateField && dateField.type === 'date') dateField.valueAsDate = new Date();
+</script>
+</body>
+</html>
