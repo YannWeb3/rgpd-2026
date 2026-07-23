@@ -46,6 +46,22 @@
   .btn-red:hover{background:rgba(239,68,68,0.25)}
   .footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
   .footer a{color:#60a5fa;text-decoration:none}
+  .locked-card{position:relative}
+  .locked-card::after{content:'🔒';position:absolute;top:12px;right:12px;font-size:16px;opacity:0.5}
+  .locked-card .lock-msg{font-size:11px;color:#fbbf24;margin-top:8px;display:flex;align-items:center;gap:4px}
+  .lock-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:none;align-items:center;justify-content:center}
+  .lock-modal{background:#161b26;border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:400px;width:90%;text-align:center}
+  .lock-modal h3{color:#fff;font-size:18px;margin-bottom:8px}
+  .lock-modal p{color:#94a3b8;font-size:13px;margin-bottom:20px}
+  .lock-modal input{width:100%;padding:12px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:#0b0f19;color:#fff;font-size:16px;text-align:center;margin-bottom:12px;outline:none}
+  .lock-modal input:focus{border-color:#6366f1}
+  .lock-modal .lock-actions{display:flex;gap:10px}
+  .lock-modal .lock-actions button{flex:1;padding:10px;border-radius:10px;border:none;font-weight:600;cursor:pointer;font-size:14px}
+  .lock-btn{background:#6366f1;color:#fff}
+  .lock-btn:hover{background:#4f46e5}
+  .lock-cancel{background:rgba(255,255,255,0.05);color:#94a3b8}
+  .lock-cancel:hover{background:rgba(255,255,255,0.1)}
+  .lock-error{color:#f87171;font-size:12px;display:none;margin-bottom:8px}
   @media(max-width:640px){.access-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -165,12 +181,12 @@
       <div style="margin-top:12px"><a href="avancement_UNAPEI92.html">Voir l'avancement →</a></div>
     </div>
 
-    <div class="card">
+    <div class="card locked-card" onclick="openLock('bilan-mission-alten.html')">
       <div class="card-icon icon-purple">📌</div>
       <h2>Bilan mission Alten</h2>
       <p>Bilan de mission pour le responsable Alten — livrables, chiffres clés, recommandation de prolongation.</p>
       <span class="tag">Reporting direction</span>
-      <div style="margin-top:12px"><a href="bilan-mission-alten.html">Lire le bilan →</a></div>
+      <div class="lock-msg">🔒 Protégé — accès restreint</div>
     </div>
 
   </div>
@@ -197,5 +213,47 @@
   </div>
 
 </div>
+
+<!-- Lock overlay -->
+<div class="lock-overlay" id="lock-overlay">
+  <div class="lock-modal">
+    <h3>🔒 Accès restreint</h3>
+    <p>Ce document est réservé à la direction. Saisissez le mot de passe.</p>
+    <div class="lock-error" id="lock-error">Mot de passe incorrect</div>
+    <input type="password" id="lock-password" placeholder="Mot de passe" onkeypress="if(event.key==='Enter') checkLock()">
+    <div class="lock-actions">
+      <button class="lock-cancel" onclick="closeLock()">Annuler</button>
+      <button class="lock-btn" onclick="checkLock()">Déverrouiller</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let lockTarget = '';
+  const LOCK_PASSWORD = 'unapei2026';
+
+  function openLock(url) {
+    lockTarget = url;
+    document.getElementById('lock-overlay').style.display = 'flex';
+    document.getElementById('lock-password').value = '';
+    document.getElementById('lock-error').style.display = 'none';
+    document.getElementById('lock-password').focus();
+  }
+
+  function closeLock() {
+    document.getElementById('lock-overlay').style.display = 'none';
+  }
+
+  function checkLock() {
+    const pwd = document.getElementById('lock-password').value;
+    if (pwd === LOCK_PASSWORD) {
+      closeLock();
+      window.open(lockTarget, '_blank');
+    } else {
+      document.getElementById('lock-error').style.display = 'block';
+    }
+  }
+</script>
+
 </body>
 </html>
