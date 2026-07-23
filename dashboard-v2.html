@@ -787,15 +787,21 @@
         { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
       ]},
       registre: { title: 'Traitement', fields: [
+        { name: 'ref', label: 'Réf. traitement', type: 'text', required: true },
         { name: 'categorie', label: 'Catégorie', type: 'text', required: true },
         { name: 'traitement', label: 'Nom du traitement', type: 'text', required: true },
         { name: 'finalite', label: 'Finalité', type: 'text', required: true },
-        { name: 'responsable', label: 'Responsable', type: 'text' },
-        { name: 'base_legale', label: 'Base légale', type: 'text' },
-        { name: 'duree_conservation', label: 'Durée de conservation', type: 'text' },
+        { name: 'base_legale', label: 'Base légale', type: 'select', options: ['Consentement', 'Contrat', 'Obligation légale', 'Mission intérêt public', 'Intérêt légitime', 'Sauvegarde intérêts vitaux'], required: true },
+        { name: 'responsable', label: 'Responsable du traitement', type: 'text' },
         { name: 'donnees_concernees', label: 'Données concernées', type: 'textarea' },
+        { name: 'donnees_sensibles', label: 'Données sensibles (santé, religion, etc.)', type: 'select', options: ['Non', 'Oui - Santé', 'Oui - Autres'] },
+        { name: 'personnes_concernees', label: 'Personnes concernées', type: 'text' },
         { name: 'destinataires', label: 'Destinataires', type: 'text' },
+        { name: 'sous_traitants', label: 'Sous-traitants / DPA signé ?', type: 'text' },
+        { name: 'duree_conservation', label: 'Durée de conservation', type: 'text' },
         { name: 'mesures_securite', label: 'Mesures de sécurité', type: 'textarea' },
+        { name: 'date_revision', label: 'Prochaine révision (jj/mm/aaaa)', type: 'text' },
+        { name: 'statut', label: 'Statut', type: 'select', options: ['Actif', 'Archivé', 'En cours de modification'] },
         { name: 'commentaire', label: 'Commentaire', type: 'textarea' }
       ]},
       incidents: { title: 'Incident', fields: [
@@ -945,7 +951,11 @@
           meta.push(`Statut : ${item.statut}`);
         } else if (type === 'registre') {
           meta.push(`Catégorie : ${item.categorie}`);
+          meta.push(`Base légale : ${item.base_legale || '—'}`);
           meta.push(`Responsable : ${item.responsable || '—'}`);
+          meta.push(`Données sensibles : ${item.donnees_sensibles || 'Non'}`);
+          meta.push(`Révision : ${item.date_revision || '—'}`);
+          meta.push(`Statut : ${item.statut || 'Actif'}`);
         } else if (type === 'incidents') {
           meta.push(`Date : ${formatDateFR(item.date_incident)}`);
           meta.push(`Gravité : ${item.gravite}`);
@@ -980,7 +990,7 @@
     function getBadgeLabel(type, item) {
       if (type === 'actions') return item.statut;
       if (type === 'incidents') return item.gravite;
-      return item.categorie;
+      return item.statut || item.categorie;
     }
 
     function renderSuivi() {
