@@ -881,7 +881,7 @@ select {
 // ════════════════════════════════════════
 // CONFIGURATION
 // ════════════════════════════════════════
-const SHEETS_URL = "";  // ← Coller ici l'URL Apps Script après déploiement
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
 const FORM_TYPE  = "IME";
 const TOTAL_BLOCS = 6;
 
@@ -1071,7 +1071,7 @@ document.getElementById('main-form').addEventListener('submit', async function(e
   };
 
   try {
-    const response = await fetch(SHEETS_URL, {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
