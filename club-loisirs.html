@@ -285,8 +285,8 @@
 
         <div class="question">
           <label class="question-label required">Nom du club <span class="question-id">Q0.1</span></label>
-           <input type="text" name="q0_1_nom_club" required>
-           <input type="hidden" id="nom_club" name="nom_club">
+           <input type="text" name="q0_1_nom_club" required oninput="document.getElementById('nom_etablissement').value=this.value">
+           <input type="hidden" id="nom_etablissement" name="nom_etablissement">
         </div>
 
         <div class="question">
