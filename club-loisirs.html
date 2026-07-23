@@ -1073,10 +1073,12 @@ document.getElementById('main-form').addEventListener('submit', async function(e
   try {
     const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(payload)
     });
-    const result = await response.json();
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch(e) { result = { status: 'error', message: text.substring(0,200) }; }
     if (result.status !== 'success') throw new Error(result.message || 'Erreur serveur');
     // Masquer tous les blocs + nav
     document.querySelectorAll('.bloc').forEach(b => b.classList.remove('active'));
