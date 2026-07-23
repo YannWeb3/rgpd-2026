@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Point mission UNAPEI92 — Yann</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;padding:40px 20px}
+  .wrap{max-width:800px;margin:0 auto}
+  h1{font-size:28px;font-weight:800;margin:0 0 6px;letter-spacing:-0.02em;background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#94a3b8;font-size:14px;margin-bottom:32px}
+  h2{font-size:18px;font-weight:700;margin:32px 0 16px;color:#fff;display:flex;align-items:center;gap:10px}
+  h3{font-size:15px;font-weight:600;margin:20px 0 10px;color:#60a5fa}
+  .section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .stat{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .stat-item{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;min-width:100px;flex:1}
+  .stat-num{font-size:26px;font-weight:800;color:#fff}
+  .stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+  .card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:12px}
+  .card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+  .card p{font-size:13px;color:#94a3b8;line-height:1.6}
+  .card .tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px}
+  .tag-green{background:rgba(52,211,153,0.15);color:#34d399}
+  .tag-orange{background:rgba(251,191,36,0.15);color:#fbbf24}
+  .tag-red{background:rgba(248,113,113,0.15);color:#f87171}
+  .tag-blue{background:rgba(96,165,250,0.15);color:#60a5fa}
+  .tag-purple{background:rgba(168,85,247,0.15);color:#c084fc}
+  .tag-grey{background:rgba(255,255,255,0.06);color:#94a3b8}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  th{text-align:left;padding:10px 12px;background:rgba(99,102,241,0.1);color:#c7d2fe;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid rgba(99,102,241,0.2)}
+  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);color:#94a3b8;vertical-align:top}
+  tr:hover td{background:rgba(255,255,255,0.02)}
+  .alert{background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .alert strong{color:#f87171}
+  .info{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .info strong{color:#60a5fa}
+  .success-box{background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .success-box strong{color:#34d399}
+  a{color:#60a5fa;text-decoration:none}
+  a:hover{color:#93bbfd;text-decoration:underline}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>📋 Point mission UNAPEI92</h1>
+  <p class="sub">Apport réalisé · Reste à faire · Planning · Articulation avec le futur DPO externe</p>
+
+  <div class="stat">
+    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Formulaires</div></div>
+    <div class="stat-item"><div class="stat-num">33</div><div class="stat-label">Réponses collectées</div></div>
+    <div class="stat-item"><div class="stat-num">10</div><div class="stat-label">Rapports d'audit</div></div>
+    <div class="stat-item"><div class="stat-num">36</div><div class="stat-label">Fichiers HTML</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Liens OK</div></div>
+  </div>
+
+  <!-- 1. CE QUI EST FAIT -->
+  <h2>✅ 1. Ce qui est fait (ne pas refaire)</h2>
+  <p style="color:#94a3b8;font-size:13px;margin-bottom:16px;">Tout ce qui est listé ici est livré, testé et opérationnel. Un DPO externe ne doit pas refacturer ces éléments.</p>
+
+  <div class="section-title">📊 Audit & Diagnostic</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📝 19 formulaires de collecte</h4>
+      <p>8 types d'établissements (IME, ESAT, EAM, EANM, CMPP, SAVS, SAMSAH, SESSAD) + 9 services supports (Direction, DAF, RH, Paie, Qualité, Communication, SI-IT, Donateurs, DOS) + 3 nouveaux (Club Loisirs, DAOC/PFR, Soliasso).</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📋 33 réponses collectées</h4>
+      <p>Données réelles des établissements et services. Envoyées vers Google Sheet via Apps Script.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📄 10 rapports d'audit</h4>
+      <p>1 rapport par type d'établissement avec scores, écarts, recommandations. Accessibles sur la boîte à outils.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🔍 Audit des redondances</h4>
+      <p>6 redondances identifiées, 3 corrigées (suppression fichiers obsolètes, harmonisation données).</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
+
+  <div class="section-title">🛡️ Boîte à outils RGPD</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📊 Dashboards</h4>
+      <p>Dashboard Référent (v2 enrichi : registre 16 colonnes, filtre mois, assistant IA) + Dashboard Premium direction. Mode jour/nuit.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🎓 Kit & Guides</h4>
+      <p>Kit UNAPEI92 complet (interactif) + Carnet visuel + Formation RGPD (diaporama 12 slides + quiz) + Kit formateur. Thème sombre.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🚨 Incidents & Actions</h4>
+      <p>Journal des incidents (alerte 72h) + Plan d'action 3 phases. Liés au dashboard.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📄 Rapports & Stratégies</h4>
+      <p>Rapport de synthèse + 3 approches de déploiement + Avancement mission + Bilan Alten.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🔐 Accès référent + Admin</h4>
+      <p>Connexion par code établissement (1001=ESAT, 0000=admin). Pages login et admin.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📱 Déploiement GitHub Pages</h4>
+      <p>36 fichiers HTML, 100% des liens fonctionnels, accessibles publiquement. Mise à jour en temps réel.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
+
+  <div class="section-title">⚙️ Technique</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📊 Google Sheets (2)</h4>
+      <p>Sheet 1 : réponses formulaires (19 types). Sheet 2 : données dashboard (registre, actions, incidents, suivi). Apps Script redéployé.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📋 Registre enrichi</h4>
+      <p>16 colonnes CNIL (réf, catégorie, finalité, base légale, données sensibles, personnes concernées, destinataires, sous-traitants, durée, mesures sécurité, date révision, statut).</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
+
+  <!-- 2. CE QUI RESTE À FAIRE -->
+  <h2>⏳ 2. Ce qui reste à faire</h2>
+
+  <div class="section-title">🔴 Prioritaire (avant septembre)</div>
+
+  <div class="card">
+    <h4>🔍 Audit des 9 services supports</h4>
+    <p>Les questionnaires sont créés et déployés. Il faut relancer les services qui n'ont pas encore répondu (Direction, DAF, RH, Paie, Qualité, Communication, SI-IT, Donateurs, DOS). Objectif : 100% de réponses.</p>
+    <span class="tag tag-orange">À faire</span>
+    <span style="color:#64748b;font-size:12px;margin-left:8px;">⏱️ 1 semaine</span>
+  </div>
+
+  <div class="card">
+    <h4>📊 Kit RGPD Tableau de bord (app 2 volets)</h4>
+    <p>Application web complète : volet 1 = référent local (dashboard par établissement), volet 2 = coordinateur/DPO (vue consolidée réseau). Stack 100% gratuit. Plan déjà créé.</p>
+    <span class="tag tag-orange">À faire</span>
+    <span style="color:#64748b;font-size:12px;margin-left:8px;">⏱️ 3-4 semaines</span>
+  </div>
+
+  <div class="card">
+    <h4>🎓 Formation des référents</h4>
+    <p>Animer des sessions de prise en main de la boîte à outils avec les référents RGPD de chaque établissement. Kit de formation déjà prêt.</p>
+    <span class="tag tag-orange">À faire</span>
+    <span style="color:#64748b;font-size:12px;margin-left:8px;">⏱️ 2 semaines</span>
+  </div>
+
+  <div class="section-title">🟡 Secondaire (septembre → décembre)</div>
+
+  <div class="card">
+    <h4>📝 Mise à jour registre des traitements</h4>
+    <p>Saisir les traitements identifiés dans le registre enrichi du dashboard. Accompagner les référents.</p>
+    <span class="tag tag-orange">À faire</span>
+  </div>
+
+  <div class="card">
+    <h4>📋 Plan d'action personnalisé par établissement</h4>
+    <p>À partir des rapports d'audit, décliner les actions par établissement avec échéances et responsables.</p>
+    <span class="tag tag-orange">À faire</span>
+  </div>
+
+  <div class="card">
+    <h4>🔄 Bilan final + passation DPO</h4>
+    <p>Remise des clés au DPO externe : documentation, accès, procédures. S'assurer de la continuité.</p>
+    <span class="tag tag-orange">À faire</span>
+  </div>
+
+  <!-- 3. PLANNING -->
+  <h2>📅 3. Planning proposé</h2>
+
+  <table>
+    <tr><th>Période</th><th>Action</th><th>Responsable</th></tr>
+    <tr><td><span class="tag tag-blue">Août 2026</span></td><td>Relance services supports + finalisation collecte</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Début Kit RGPD Tableau de bord (volet référent)</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Formation référents + mise à jour registre</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Kit RGPD Tableau de bord (volet DPO) + tests</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Plans d'action personnalisés par établissement</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Nov 2026</span></td><td>Déploiement Kit Tableau de bord + formation DPO</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Déc 2026</span></td><td>Bilan final + passation DPO externe</td><td>Yann + DPO</td></tr>
+  </table>
+
+  <!-- 4. ARTICULATION DPO EXTERNE -->
+  <h2>🤝 4. Mon apport vs rôle du DPO externe</h2>
+
+  <div class="info">
+    <strong>💡 Pourquoi ce document est important :</strong> L'UNAPEI92 reçoit 3 propositions de DPO externe. Ce tableau permet de <strong>ne pas payer pour du travail déjà fait</strong> et de définir précisément ce qui revient au DPO vs ce qui est déjà livré.
+  </div>
+
+  <table>
+    <tr><th>Domaine</th><th>Fait par Yann (gratuit, mécénat)</th><th>Rôle du DPO externe (payant)</th></tr>
+    <tr>
+      <td><strong>Audit initial</strong></td>
+      <td>✅ 19 formulaires, 33 réponses, 10 rapports</td>
+      <td>❌ Ne pas refaire — utiliser les données existantes</td>
+    </tr>
+    <tr>
+      <td><strong>Boîte à outils</strong></td>
+      <td>✅ Dashboard, registre, incidents, formation, kit</td>
+      <td>❌ Ne pas recréer — former le DPO à l'utiliser</td>
+    </tr>
+    <tr>
+      <td><strong>Conseil & accompagnement</strong></td>
+      <td>❌ Non (mission terminée juillet, prolongation souhaitée)</td>
+      <td>✅ Accompagnement continu, réponse aux questions</td>
+    </tr>
+    <tr>
+      <td><strong>Registre des traitements</strong></td>
+      <td>✅ Structure 16 colonnes, outil prêt</td>
+      <td>✅ Valider, compléter, tenir à jour</td>
+    </tr>
+    <tr>
+      <td><strong>Formation</strong></td>
+      <td>✅ Kit formation prêt (diaporama, quiz, notes animateur)</td>
+      <td>✅ Animer les sessions, adapter au public</td>
+    </tr>
+    <tr>
+      <td><strong>Gestion des incidents</strong></td>
+      <td>✅ Journal des incidents + alerte 72h</td>
+      <td>✅ Notification CNIL, suivi, conseil</td>
+    </tr>
+    <tr>
+      <td><strong>DPA / Sous-traitants</strong></td>
+      <td>❌ Non traité</td>
+      <td>✅ Vérifier et signer les DPA</td>
+    </tr>
+    <tr>
+      <td><strong>PIA (analyse d'impact)</strong></td>
+      <td>❌ Non traité</td>
+      <td>✅ Réaliser les PIA nécessaires</td>
+    </tr>
+    <tr>
+      <td><strong>Contact CNIL</strong></td>
+      <td>❌ Non traité</td>
+      <td>✅ Interlocuteur unique CNIL</td>
+    </tr>
+    <tr>
+      <td><strong>Veille réglementaire</strong></td>
+      <td>❌ Non traité</td>
+      <td>✅ Suivi des évolutions RGPD</td>
+    </tr>
+  </table>
+
+  <div class="success-box">
+    <strong>✅ Recommandation :</strong> Le DPO externe doit être choisi sur sa capacité à <strong>prendre le relais</strong> des outils déjà construits, pas sur sa capacité à tout refaire. Demandez à chaque prestataire : <em>« Comment comptez-vous utiliser et enrichir les outils déjà en place ? »</em> — la réponse vous dira tout.
+  </div>
+
+  <div class="alert">
+    <strong>⚠️ Piège à éviter :</strong> Certains DPO externes facturent un <strong>audit initial complet</strong> (souvent 5-10k€). Cet audit est déjà fait. Exigez une proposition qui démarre à la <strong>phase 2</strong> (accompagnement, PIA, DPA, CNIL) en utilisant les livrables existants.
+  </div>
+
+  <!-- 5. LIENS UTILES -->
+  <h2>🔗 5. Accès aux livrables</h2>
+
+  <table>
+    <tr><th>Ressource</th><th>Lien</th></tr>
+    <tr><td>Boîte à outils RGPD</td><td><a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html" target="_blank">yannweb3.github.io/rgpd-2026/boite-a-outils.html</a></td></tr>
+    <tr><td>Formulaires (19)</td><td><a href="https://yannweb3.github.io/rgpd-2026/index.html" target="_blank">yannweb3.github.io/rgpd-2026/index.html</a></td></tr>
+    <tr><td>Rapports d'audit</td><td><a href="https://yannweb3.github.io/rgpd-2026/Rapport_Audit/index.html" target="_blank">yannweb3.github.io/rgpd-2026/Rapport_Audit/</a></td></tr>
+    <tr><td>Dashboard Référent</td><td><a href="https://yannweb3.github.io/rgpd-2026/dashboard-v2.html" target="_blank">yannweb3.github.io/rgpd-2026/dashboard-v2.html</a></td></tr>
+    <tr><td>Dashboard Premium</td><td><a href="https://yannweb3.github.io/rgpd-2026/dashboard_premium.html" target="_blank">yannweb3.github.io/rgpd-2026/dashboard_premium.html</a></td></tr>
+    <tr><td>Bilan mission Alten</td><td><a href="https://yannweb3.github.io/rgpd-2026/bilan-mission-alten.html" target="_blank">yannweb3.github.io/rgpd-2026/bilan-mission-alten.html</a></td></tr>
+    <tr><td>Audit des livrables</td><td><a href="https://yannweb3.github.io/rgpd-2026/audit-livrables.html" target="_blank">yannweb3.github.io/rgpd-2026/audit-livrables.html</a></td></tr>
+  </table>
+
+  <footer>
+    <strong>Point mission UNAPEI92</strong> — Document préparé par Yann, consultant AMOA (mécénat de compétences)<br>
+    Mission : fév→déc 2026 · Prolongation sept→déc recommandée<br>
+    <a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html">🛡️ Boîte à outils</a>
+  </footer>
+
+</div>
+</body>
+</html>
