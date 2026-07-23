@@ -881,7 +881,7 @@ select {
 // ════════════════════════════════════════
 // CONFIGURATION
 // ════════════════════════════════════════
-const SHEETS_URL = "";  // ← Coller ici l'URL Apps Script après déploiement
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQBhjBdwuEBtj5Ef63L_5ej3eyXB15DLmpnDBxqM5u0EdVRgoLK6NR1Hkn682obuvN7Q/exec';
 const FORM_TYPE  = "Soliasso_RGPD";
 const TOTAL_BLOCS = 6;
 
@@ -1071,7 +1071,7 @@ document.getElementById('main-form').addEventListener('submit', async function(e
   };
 
   try {
-    const response = await fetch(SHEETS_URL, {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
