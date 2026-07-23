@@ -1,339 +1,257 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avancement Audit RGPD — Unapei 92</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #0284c7;
-            --primary-dark: #0369a1;
-            --secondary: #10b981;
-            --warning: #f59e0b;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --text-light: #64748b;
-            --border: #e2e8f0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .logo-placeholder {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
-            border-radius: 20px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-            font-size: 2rem;
-            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            color: var(--primary-dark);
-            margin-bottom: 8px;
-        }
-
-        .tagline {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-
-        /* Main Progress */
-        .progress-section {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-
-        .progress-circle-container {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            flex-shrink: 0;
-        }
-
-        .progress-circle {
-            transform: rotate(-90deg);
-        }
-
-        .progress-circle-bg {
-            fill: none;
-            stroke: var(--border);
-            stroke-width: 12;
-        }
-
-        .progress-circle-bar {
-            fill: none;
-            stroke: var(--secondary);
-            stroke-width: 12;
-            stroke-linecap: round;
-            stroke-dasharray: 440;
-            stroke-dashoffset: 325; /* 26% of 440 */
-            transition: stroke-dashoffset 2s ease-out;
-        }
-
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-
-        .progress-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: var(--text);
-            display: block;
-        }
-
-        .progress-total {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        .progress-info h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .progress-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .stat-card {
-            background: var(--bg);
-            padding: 15px;
-            border-radius: 12px;
-        }
-
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        /* Next Steps List */
-        .steps-section {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 35px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .section-title {
-            font-size: 1.3rem;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--primary-dark);
-        }
-
-        .step-list {
-            list-style: none;
-        }
-
-        .step-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .step-item:last-child {
-            border-bottom: none;
-        }
-
-        .step-icon {
-            width: 24px;
-            height: 24px;
-            background: var(--bg);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-
-        .step-content h4 {
-            font-size: 1.05rem;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .step-content p {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .badge-status {
-            font-size: 0.75rem;
-            padding: 4px 10px;
-            border-radius: 10px;
-            font-weight: 600;
-            margin-top: 8px;
-            display: inline-block;
-        }
-
-        .badge-waiting { background: #fff7ed; color: #9a3412; }
-        .badge-process { background: #eff6ff; color: #1e40af; }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            color: var(--text-light);
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 600px) {
-            .progress-section { flex-direction: column; text-align: center; }
-            .progress-stats { grid-template-columns: 1fr; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avancement Audit RGPD — UNAPEI92</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0b0f19;color:#f3f4f6;font-family:'Inter',sans-serif;font-size:14px;line-height:1.6;padding:40px 20px}
+  .wrap{max-width:800px;margin:0 auto}
+  h1{font-size:28px;font-weight:800;margin:0 0 6px;letter-spacing:-0.02em;background:linear-gradient(to right,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:#94a3b8;font-size:14px;margin-bottom:32px}
+  h2{font-size:18px;font-weight:700;margin:36px 0 16px;color:#fff;display:flex;align-items:center;gap:10px}
+  .section-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#64748b;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.08)}
+  .stat{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+  .stat-item{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;min-width:100px;flex:1;text-align:center}
+  .stat-num{font-size:26px;font-weight:800;color:#fff}
+  .stat-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-top:4px}
+  .card{background:#161b26;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;margin-bottom:12px}
+  .card h4{font-size:14px;font-weight:700;color:#fff;margin-bottom:6px}
+  .card p{font-size:13px;color:#94a3b8;line-height:1.6}
+  .card .tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;margin-right:4px}
+  .tag-green{background:rgba(52,211,153,0.15);color:#34d399}
+  .tag-orange{background:rgba(251,191,36,0.15);color:#fbbf24}
+  .tag-red{background:rgba(248,113,113,0.15);color:#f87171}
+  .tag-blue{background:rgba(96,165,250,0.15);color:#60a5fa}
+  .tag-purple{background:rgba(168,85,247,0.15);color:#c084fc}
+  .tag-grey{background:rgba(255,255,255,0.06);color:#94a3b8}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px}
+  th{text-align:left;padding:10px 12px;background:rgba(99,102,241,0.1);color:#c7d2fe;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;border-bottom:1px solid rgba(99,102,241,0.2)}
+  td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.06);color:#94a3b8;vertical-align:top}
+  tr:hover td{background:rgba(255,255,255,0.02)}
+  .info{background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .info strong{color:#60a5fa}
+  .alert{background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .alert strong{color:#f87171}
+  .success-box{background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px}
+  .success-box strong{color:#34d399}
+  a{color:#60a5fa;text-decoration:none}
+  a:hover{color:#93bbfd;text-decoration:underline}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.grid-2{grid-template-columns:1fr}}
+  footer{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.08);text-align:center;font-size:13px;color:#64748b}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo-placeholder">U92</div>
-            <h1>Audit de Conformité RGPD</h1>
-            <p class="tagline">Unapei 92 — Rapport d'avancement</p>
-        </header>
+<div class="wrap">
 
-        <section class="progress-section">
-            <div class="progress-circle-container">
-                <svg class="progress-circle" width="180" height="180">
-                    <circle class="progress-circle-bg" cx="90" cy="90" r="70" />
-                    <circle class="progress-circle-bar" cx="90" cy="90" r="70" />
-                </svg>
-                <div class="progress-text">
-                    <span class="progress-value">26%</span>
-                    <span class="progress-total">14 / 54</span>
-                </div>
-            </div>
-            <div class="progress-info">
-                <h2>Collecte des données</h2>
-                <p style="color: var(--text-light); margin-bottom: 20px;">
-                    Le taux de réponse actuel est de 26%. Les formulaires sont actifs et les établissements commencent à renseigner leurs pratiques.
-                </p>
-                <div class="progress-stats">
-                    <div class="stat-card">
-                        <span class="stat-value">14</span>
-                        <span class="stat-label">Réponses validées</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">40</span>
-                        <span class="stat-label">En attente</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+  <h1>📊 Avancement mission RGPD</h1>
+  <p class="sub">UNAPEI92 — Mécénat de compétences · Février → Décembre 2026</p>
 
-        <section class="steps-section">
-            <h3 class="section-title">🚀 Étapes suivantes</h3>
-            <ul class="step-list">
-                <li class="step-item">
-                    <div class="step-icon">01</div>
-                    <div class="step-content">
-                        <h4>Analyse des résultats</h4>
-                        <p>Traitement des 14 premières réponses pour identifier les tendances et les écarts majeurs.</p>
-                        <span class="badge-status badge-process">EN COURS</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-icon">02</div>
-                    <div class="step-content">
-                        <h4>Entretiens individuels</h4>
-                        <p>Seuls 2 entretiens ont été réalisés à ce jour. Nécessité de planifier les sessions restantes.</p>
-                        <span class="badge-status badge-waiting">À PLANIFIER</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-icon">03</div>
-                    <div class="step-content">
-                        <h4>Présentation aux fonctions Support</h4>
-                        <p>Soumettre le formulaire spécifique aux services supports (RH, DAF, Communication, etc.) pour audit.</p>
-                        <span class="badge-status badge-waiting">À FAIRE</span>
-                    </div>
-                </li>
-                <li class="step-item">
-                    <div class="step-icon">04</div>
-                    <div class="step-content">
-                        <h4>Préparation Support de Formation</h4>
-                        <p>Élaboration du matériel pédagogique basé sur les premiers retours du terrain.</p>
-                        <span class="badge-status badge-waiting">À FAIRE</span>
-                    </div>
-                </li>
-            </ul>
-        </section>
+  <div class="stat">
+    <div class="stat-item"><div class="stat-num">33</div><div class="stat-label">Réponses collectées</div></div>
+    <div class="stat-item"><div class="stat-num">19</div><div class="stat-label">Formulaires créés</div></div>
+    <div class="stat-item"><div class="stat-num">10</div><div class="stat-label">Rapports d'audit</div></div>
+    <div class="stat-item"><div class="stat-num">36</div><div class="stat-label">Fichiers HTML</div></div>
+    <div class="stat-item"><div class="stat-num">8/10</div><div class="stat-label">Types couverts</div></div>
+  </div>
 
-        <footer>
-            Dernière mise à jour : 06 Mai 2026 — Projet Audit RGPD Unapei 92
-        </footer>
+  <!-- 1. CE QUI EST FAIT -->
+  <h2>✅ 1. Ce qui est fait</h2>
+
+  <div class="section-title">Audit & Diagnostic</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📝 19 formulaires de collecte</h4>
+      <p>8 types d'établissements (IME, ESAT, EAM, EANM, CMPP, SAVS, SAMSAH, SESSAD) + 9 services supports (Direction, DAF, RH, Paie, Qualité, Communication, SI-IT, Donateurs, DOS) + 3 nouveaux (Club Loisirs, DAOC/PFR, Soliasso).</p>
+      <span class="tag tag-green">✅ Fait</span>
     </div>
+    <div class="card">
+      <h4>📋 33 réponses collectées</h4>
+      <p>Données réelles des établissements et services. Envoyées vers Google Sheet via Apps Script. Taux de couverture : ~97% des types d'établissements.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📄 10 rapports d'audit</h4>
+      <p>1 rapport par type d'établissement avec scores, écarts, recommandations. Accessibles sur la boîte à outils.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🔍 Audit des redondances</h4>
+      <p>6 redondances identifiées, 3 corrigées (suppression fichiers obsolètes, harmonisation données).</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
 
-    <script>
-        // Start progress animation
-        window.onload = function() {
-            const circle = document.querySelector('.progress-circle-bar');
-            const percent = 26;
-            const offset = 440 - (440 * percent / 100);
-            circle.style.strokeDashoffset = offset;
-        }
-    </script>
+  <div class="section-title">Boîte à outils RGPD</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📊 Dashboards</h4>
+      <p>Dashboard Référent (v2 enrichi : registre 16 colonnes, filtre mois, assistant IA) + Dashboard Premium direction. Mode jour/nuit.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🎓 Kit & Guides</h4>
+      <p>Kit UNAPEI92 complet (interactif) + Carnet visuel + Formation RGPD (diaporama 12 slides + quiz) + Kit formateur. Thème sombre.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🚨 Incidents & Actions</h4>
+      <p>Journal des incidents (alerte 72h) + Plan d'action 3 phases. Liés au dashboard.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📄 Rapports & Stratégies</h4>
+      <p>Rapport de synthèse + 3 approches de déploiement + Avancement mission + Bilan Alten.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🔐 Accès référent + Admin</h4>
+      <p>Connexion par code établissement (1001=ESAT, 0000=admin). Pages login et admin.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📱 Déploiement GitHub Pages</h4>
+      <p>36 fichiers HTML, 100% des liens fonctionnels, accessibles publiquement.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
+
+  <div class="section-title">Documents stratégiques</div>
+  <div class="grid-2">
+    <div class="card">
+      <h4>📋 Point mission</h4>
+      <p>Apport réalisé, reste à faire, planning, articulation DPO externe.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>💰 Bénéfices mission</h4>
+      <p>Économies, gains, comparaison avant/après, rôle DPO vérifié CNIL.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>🎯 Conseils DPO interne</h4>
+      <p>Profil, formation, temps, comparatif interne vs externe, plan mise en place.</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+    <div class="card">
+      <h4>📊 Couverture</h4>
+      <p>Vérification site vs formulaires, 2 types manquants (EAJE, CAJ/Foyers).</p>
+      <span class="tag tag-green">✅ Fait</span>
+    </div>
+  </div>
+
+  <!-- 2. CE QUI RESTE À FAIRE -->
+  <h2>⏳ 2. Reste à faire</h2>
+
+  <table>
+    <tr><th>Priorité</th><th>Tâche</th><th>Échéance</th><th>Statut</th></tr>
+    <tr>
+      <td><span class="tag tag-red">Haute</span></td>
+      <td>Relance services supports pour 100% de réponses</td>
+      <td>Août 2026</td>
+      <td><span class="tag tag-orange">En cours</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-red">Haute</span></td>
+      <td>Kit RGPD Tableau de bord (app 2 volets : référent + DPO)</td>
+      <td>Sept-Déc 2026</td>
+      <td><span class="tag tag-orange">Plan prêt</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-red">Haute</span></td>
+      <td>Formation des référents à la boîte à outils</td>
+      <td>Sept 2026</td>
+      <td><span class="tag tag-orange">À faire</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-orange">Moyenne</span></td>
+      <td>Création formulaires EAJE et CAJ/Foyers (2 types manquants)</td>
+      <td>Sept 2026</td>
+      <td><span class="tag tag-orange">À faire</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-orange">Moyenne</span></td>
+      <td>Mise à jour registre des traitements</td>
+      <td>Oct 2026</td>
+      <td><span class="tag tag-orange">À faire</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-orange">Moyenne</span></td>
+      <td>Plans d'action personnalisés par établissement</td>
+      <td>Oct 2026</td>
+      <td><span class="tag tag-orange">À faire</span></td>
+    </tr>
+    <tr>
+      <td><span class="tag tag-blue">Basse</span></td>
+      <td>Bilan final + passation DPO externe</td>
+      <td>Déc 2026</td>
+      <td><span class="tag tag-orange">À faire</span></td>
+    </tr>
+  </table>
+
+  <!-- 3. PLANNING -->
+  <h2>📅 3. Planning</h2>
+
+  <table>
+    <tr><th>Période</th><th>Action</th><th>Responsable</th></tr>
+    <tr><td><span class="tag tag-blue">Août 2026</span></td><td>Relance services supports + finalisation collecte</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Début Kit RGPD Tableau de bord (volet référent)</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Sept 2026</span></td><td>Formation référents + mise à jour registre</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Kit RGPD Tableau de bord (volet DPO) + tests</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Oct 2026</span></td><td>Plans d'action personnalisés par établissement</td><td>Yann + Référents</td></tr>
+    <tr><td><span class="tag tag-blue">Nov 2026</span></td><td>Déploiement Kit Tableau de bord + formation DPO</td><td>Yann</td></tr>
+    <tr><td><span class="tag tag-blue">Déc 2026</span></td><td>Bilan final + passation DPO externe</td><td>Yann + DPO</td></tr>
+  </table>
+
+  <!-- 4. TYPES MANQUANTS -->
+  <h2>⚠️ 4. Types d'établissements non couverts</h2>
+
+  <div class="info">
+    <strong>📌 Source :</strong> <a href="https://www.unapei92.fr/nos-dispositifs/" target="_blank">unapei92.fr/nos-dispositifs/</a> — 2 types sur 10 ne sont pas encore couverts par un formulaire.
+  </div>
+
+  <table>
+    <tr><th>Type</th><th>Description</th><th>Action</th></tr>
+    <tr>
+      <td><strong>EAJE</strong></td>
+      <td>Établissement d'Accueil du Jeune Enfant (crèches, multi-accueil)</td>
+      <td><span class="tag tag-orange">Formulaire à créer</span></td>
+    </tr>
+    <tr>
+      <td><strong>CAJ / Foyers</strong></td>
+      <td>Centre d'Accueil de Jour / Foyers d'hébergement</td>
+      <td><span class="tag tag-orange">Formulaire à créer</span></td>
+    </tr>
+  </table>
+
+  <div class="success-box">
+    <strong>💡 Facilité d'adaptation :</strong> Ajouter un nouvel établissement = copier un formulaire existant + adapter les questions. Comptez <strong>30 à 60 minutes</strong> par nouveau type. Les 2 types manquants peuvent être créés en <strong>une demi-journée</strong>.
+  </div>
+
+  <!-- 5. LIENS -->
+  <h2>🔗 5. Accès aux livrables</h2>
+
+  <table>
+    <tr><th>Ressource</th><th>Lien</th></tr>
+    <tr><td>Boîte à outils RGPD</td><td><a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html" target="_blank">yannweb3.github.io/rgpd-2026/boite-a-outils.html</a></td></tr>
+    <tr><td>Formulaires (19)</td><td><a href="https://yannweb3.github.io/rgpd-2026/index.html" target="_blank">yannweb3.github.io/rgpd-2026/index.html</a></td></tr>
+    <tr><td>Rapports d'audit</td><td><a href="https://yannweb3.github.io/rgpd-2026/Rapport_Audit/index.html" target="_blank">yannweb3.github.io/rgpd-2026/Rapport_Audit/</a></td></tr>
+    <tr><td>Dashboard Référent</td><td><a href="https://yannweb3.github.io/rgpd-2026/dashboard-v2.html" target="_blank">yannweb3.github.io/rgpd-2026/dashboard-v2.html</a></td></tr>
+    <tr><td>Point mission</td><td><a href="https://yannweb3.github.io/rgpd-2026/point-mission-UNAPEI92.html" target="_blank">yannweb3.github.io/rgpd-2026/point-mission-UNAPEI92.html</a></td></tr>
+    <tr><td>Bénéfices mission</td><td><a href="https://yannweb3.github.io/rgpd-2026/benefices-mission-UNAPEI92.html" target="_blank">yannweb3.github.io/rgpd-2026/benefices-mission-UNAPEI92.html</a></td></tr>
+  </table>
+
+  <footer>
+    <strong>Avancement mission UNAPEI92</strong> — Dernière mise à jour : 23/07/2026<br>
+    Mission : fév→déc 2026 · Prolongation sept→déc recommandée<br>
+    <a href="https://yannweb3.github.io/rgpd-2026/boite-a-outils.html">🛡️ Boîte à outils</a>
+  </footer>
+
+</div>
 </body>
 </html>
-  
