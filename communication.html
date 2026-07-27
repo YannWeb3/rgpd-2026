@@ -788,46 +788,83 @@
       btn.textContent = 'Envoi en cours...';
 
       const formData = new FormData(this);
-      const responses = {};
+      const responses = [];
 
       // Champs texte
+      // Champs texte
       const textFields = [
-        'id_1_nom_association', 'id_2_nom_prenom_repondant', 'id_3_fonction_repondant',
-        'id_4_date_remplissage', 'id_5_nb_contacts', 'q12_nb_acces', 'q13_sauvegarde',
-        'q16_liste_prestataires', 'q18_prestataires_sans_contrat', 'q31_procedure_droits',
-        'q41_types_incidents', 'q44_difficultes', 'q45_points_specifiques', 'q46_avis_conformite'
+        { id: 'id_1_nom_association', question: 'Nom de lassociation' },
+        { id: 'id_2_nom_prenom_repondant', question: 'Nom et prenom du repondant' },
+        { id: 'id_3_fonction_repondant', question: 'Fonction du repondant' },
+        { id: 'id_4_date_remplissage', question: 'Date de remplissage' },
+        { id: 'id_5_nb_contacts', question: 'Nombre de contacts' },
+        { id: 'q12_nb_acces', question: 'Nombre dacces' },
+        { id: 'q13_sauvegarde', question: 'Sauvegarde' },
+        { id: 'q16_liste_prestataires', question: 'Liste des prestataires' },
+        { id: 'q18_prestataires_sans_contrat', question: 'Prestataires sans contrat' },
+        { id: 'q31_procedure_droits', question: 'Procedure droits' },
+        { id: 'q41_types_incidents', question: 'Types dincidents' },
+        { id: 'q44_difficultes', question: 'Difficultes' },
+        { id: 'q45_points_specifiques', question: 'Points specifiques' },
+        { id: 'q46_avis_conformite', question: 'Avis sur la conformite' }
       ];
 
-      textFields.forEach(field => {
-        responses[field] = formData.get(field) || '';
+      textFields.forEach(f => {
+        responses.push({ id: f.id, question: f.question, answer: formData.get(f.id) || '' });
       });
 
       // Champs radio
       const radioFields = [
-        'q1_referent_rgpd', 'q2_contact_dpo', 'q3_formation_rgpd', 'q4_registre_prospects',
-        'q5_registre_communication', 'q7_document_base_legale', 'q8_consentement_fichiers',
-        'q9_politique_inactifs', 'q10_info_rgpd_collecte', 'q11_outil_stockage',
-        'q14_outil_emailing', 'q15_outil_dons', 'q17_contrats_art28', 'q19_heritement_donnees',
-        'q20_ads_reseaux', 'q21_cookies', 'q22_banniere_cookies', 'q23_refus_cookies',
-        'q24_cookies_pub', 'q25_https', 'q26_politique_confidentialite', 'q27_mentions_formulaires',
-        'q28_lien_desinscription', 'q29_delai_desinscription', 'q30_demandes_droits',
-        'q32_acces_donnees', 'q33_photos_usagers', 'q34_consentement_ecrit',
-        'q35_consentement_renforce', 'q36_precision_consentement', 'q37_photos_anciennes',
-        'q38_temoignages', 'q39_retrait_consentement', 'q40_incidents', 'q42_notification_72h',
-        'q43_procedure_erreur'
+        { id: 'q1_referent_rgpd', question: 'Referent RGPD' },
+        { id: 'q2_contact_dpo', question: 'Contact DPO' },
+        { id: 'q3_formation_rgpd', question: 'Formation RGPD' },
+        { id: 'q4_registre_prospects', question: 'Registre des prospects' },
+        { id: 'q5_registre_communication', question: 'Registre de communication' },
+        { id: 'q7_document_base_legale', question: 'Document base legale' },
+        { id: 'q8_consentement_fichiers', question: 'Consentement fichiers' },
+        { id: 'q9_politique_inactifs', question: 'Politique inactifs' },
+        { id: 'q10_info_rgpd_collecte', question: 'Info RGPD collecte' },
+        { id: 'q11_outil_stockage', question: 'Outil de stockage' },
+        { id: 'q14_outil_emailing', question: 'Outil demailing' },
+        { id: 'q15_outil_dons', question: 'Outil de dons' },
+        { id: 'q17_contrats_art28', question: 'Contrats art 28' },
+        { id: 'q19_heritement_donnees', question: 'Heritage de donnees' },
+        { id: 'q20_ads_reseaux', question: 'Ads reseaux sociaux' },
+        { id: 'q21_cookies', question: 'Cookies' },
+        { id: 'q22_banniere_cookies', question: 'Banniere cookies' },
+        { id: 'q23_refus_cookies', question: 'Refus cookies' },
+        { id: 'q24_cookies_pub', question: 'Cookies publicitaires' },
+        { id: 'q25_https', question: 'HTTPS' },
+        { id: 'q26_politique_confidentialite', question: 'Politique confidentialite' },
+        { id: 'q27_mentions_formulaires', question: 'Mentions formulaires' },
+        { id: 'q28_lien_desinscription', question: 'Lien de desinscription' },
+        { id: 'q29_delai_desinscription', question: 'Delai desinscription' },
+        { id: 'q30_demandes_droits', question: 'Demandes de droits' },
+        { id: 'q32_acces_donnees', question: 'Acces aux donnees' },
+        { id: 'q33_photos_usagers', question: 'Photos des usagers' },
+        { id: 'q34_consentement_ecrit', question: 'Consentement ecrit' },
+        { id: 'q35_consentement_renforce', question: 'Consentement renforce' },
+        { id: 'q36_precision_consentement', question: 'Precision du consentement' },
+        { id: 'q37_photos_anciennes', question: 'Photos anciennes' },
+        { id: 'q38_temoignages', question: 'Temoignages' },
+        { id: 'q39_retrait_consentement', question: 'Retrait du consentement' },
+        { id: 'q40_incidents', question: 'Incidents' },
+        { id: 'q42_notification_72h', question: 'Notification 72h' },
+        { id: 'q43_procedure_erreur', question: 'Procedure erreur' }
       ];
 
-      radioFields.forEach(field => {
-        responses[field] = document.querySelector('input[name="' + field + '"]:checked')?.value || '';
+      radioFields.forEach(f => {
+        responses.push({ id: f.id, question: f.question, answer: document.querySelector('input[name="' + f.id + '"]:checked')?.value || '' });
       });
 
       // Champs checkbox
       const checkboxFields = [
-        'q6_sources_contacts'
+        { id: 'q6_sources_contacts', question: 'Sources des contacts' }
       ];
 
-      checkboxFields.forEach(field => {
-        responses[field] = Array.from(document.querySelectorAll('input[name="' + field + '"]:checked')).map(cb => cb.value).join(', ');
+      checkboxFields.forEach(f => {
+        const vals = Array.from(document.querySelectorAll('input[name="' + f.id + '"]:checked')).map(cb => cb.value).join(', ');
+        responses.push({ id: f.id, question: f.question, answer: vals });
       });
 
       try {
