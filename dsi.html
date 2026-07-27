@@ -256,11 +256,13 @@
 
     <header>
       <h1>Questionnaire RGPD — DSI</h1>
-      <p>Systèmes d'Information &amp; Informatique — Sécurité et conformité RGPD</p>
+      <p>Direction des Systèmes d'Information — Gouvernance, Sécurité et conformité RGPD</p>
     </header>
 
     <nav class="nav-blocks">
       <a href="#identification" class="nav-block">Identification</a>
+      <a href="#gouvernance-si" class="nav-block">Gouvernance SI</a>
+      <a href="#parc-informatique" class="nav-block">Parc &amp; prestataires</a>
       <a href="#infrastructure" class="nav-block">Infrastructure SI</a>
       <a href="#sauvegardes" class="nav-block">Sauvegardes</a>
       <a href="#antivirus" class="nav-block">Antivirus</a>
@@ -270,13 +272,14 @@
       <a href="#chiffrement" class="nav-block">Chiffrement</a>
       <a href="#reseau" class="nav-block">Réseau</a>
       <a href="#mises-a-jour" class="nav-block">Mises à jour</a>
+      <a href="#sensibilisation-dpo" class="nav-block">Sensibilisation &amp; DPO</a>
       <a href="#sous-traitants" class="nav-block">Sous-traitants IT</a>
       <a href="#incidents" class="nav-block">Incidents cyber</a>
       <a href="#synthese" class="nav-block">Synthèse</a>
     </nav>
 
     <div class="info-box">
-      <strong>Instructions :</strong> Ce questionnaire porte sur la conformité RGPD et la sécurité informatique de votre association. Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
+      <strong>Instructions :</strong> Ce questionnaire porte sur la gouvernance SI, la conformité RGPD et la sécurité informatique de votre association. Il s'adresse au DSI / responsable informatique. Répondez en fonction de votre situation actuelle. Les champs marqués d'une étoile (*) sont obligatoires.
     </div>
 
     <div id="message" class="message"></div>
@@ -312,6 +315,147 @@
           <label class="question-label required">Date de remplissage <span class="question-id">Q0.4</span></label>
           <input type="date" name="q0_4_date_remplissage" required>
         </div>
+
+        <div class="question">
+          <label class="question-label required">Combien d'enregistrements de données sensibles (santé) sont gérés par l'association ? <span class="question-id">Q0.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q0_5_volume_donnees_sante" value="moins_100" required> Moins de 100</label>
+            <label><input type="radio" name="q0_5_volume_donnees_sante" value="100_1000"> 100 à 1 000</label>
+            <label><input type="radio" name="q0_5_volume_donnees_sante" value="1000_10000"> 1 000 à 10 000</label>
+            <label><input type="radio" name="q0_5_volume_donnees_sante" value="plus_10000"> Plus de 10 000</label>
+            <label><input type="radio" name="q0_5_volume_donnees_sante" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 1 : Gouvernance SI -->
+      <section class="section" id="gouvernance-si">
+        <h2 class="section-title">Gouvernance SI</h2>
+
+        <div class="question">
+          <label class="question-label required">Existe-t-il un comité de pilotage / gouvernance SI qui valide les orientations informatiques ? <span class="question-id">Q1.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_1_1_comite_pilotage" value="formalise" required> Oui comité formalisé se réunissant régulièrement (trimestriel ou plus)</label>
+            <label><input type="radio" name="q1_1_1_comite_pilotage" value="informel"> Comité informel, réunions ponctuelles</label>
+            <label><input type="radio" name="q1_1_1_comite_pilotage" value="non"> Non décisions IT prises sans instance de pilotage</label>
+            <label><input type="radio" name="q1_1_1_comite_pilotage" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Un schéma directeur / plan stratégique du système d'information existe-t-il (feuille de route 2-3 ans) ? <span class="question-id">Q1.1.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_1_2_schema_directeur" value="formalise" required> Oui formalisé et validé par la direction générale</label>
+            <label><input type="radio" name="q1_1_2_schema_directeur" value="en_cours"> En cours d'élaboration</label>
+            <label><input type="radio" name="q1_1_2_schema_directeur" value="non"> Non pas de schéma directeur</label>
+            <label><input type="radio" name="q1_1_2_schema_directeur" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Un budget informatique annuel dédié (hors salaires) est-il alloué et suivi ? <span class="question-id">Q1.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_2_1_budget_it" value="formalise_suivi" required> Oui budget formalisé et suivi (investissement + fonctionnement)</label>
+            <label><input type="radio" name="q1_2_1_budget_it" value="existant_non_suivi"> Budget existant mais non formalisé/suivi</label>
+            <label><input type="radio" name="q1_2_1_budget_it" value="non"> Pas de budget dédié (dépenses au fil de l'eau)</label>
+            <label><input type="radio" name="q1_2_1_budget_it" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI a-t-elle un pouvoir de validation sur les achats/outils numériques utilisés par les établissements (risque de « shadow IT ») ? <span class="question-id">Q1.2.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_2_2_validation_achats" value="systematique" required> Oui validation systématique avant tout nouvel outil/logiciel</label>
+            <label><input type="radio" name="q1_2_2_validation_achats" value="partielle"> Validation partielle (certains services achètent sans consulter la DSI)</label>
+            <label><input type="radio" name="q1_2_2_validation_achats" value="non"> Non chaque établissement achète librement ses outils</label>
+            <label><input type="radio" name="q1_2_2_validation_achats" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Quel budget est alloué annuellement à la sécurité de l'information et à la conformité RGPD (hors budget IT général) ? <span class="question-id">Q1.2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_2_3_budget_securite_rgpd" value="dedie_suivi" required> Budget dédié formalisé et suivi</label>
+            <label><input type="radio" name="q1_2_3_budget_securite_rgpd" value="ponctuel"> Budget ponctuel selon les besoins (pas de ligne dédiée)</label>
+            <label><input type="radio" name="q1_2_3_budget_securite_rgpd" value="aucun"> Aucun budget spécifique alloué</label>
+            <label><input type="radio" name="q1_2_3_budget_securite_rgpd" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI est-elle associée dès la conception aux projets numériques et nouveaux traitements de données (privacy by design) ? <span class="question-id">Q1.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_3_1_privacy_by_design" value="systematique" required> Oui systématiquement dès la phase de conception</label>
+            <label><input type="radio" name="q1_3_1_privacy_by_design" value="tardive"> Parfois, associée tardivement</label>
+            <label><input type="radio" name="q1_3_1_privacy_by_design" value="non"> Non jamais consultée en amont</label>
+            <label><input type="radio" name="q1_3_1_privacy_by_design" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI dispose-t-elle d'indicateurs de sécurité (KPI) permettant de piloter son activité (taux de patchs à jour, délai de traitement des incidents, etc.) ? <span class="question-id">Q1.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q1_4_1_kpi_securite" value="formalises" required> Oui indicateurs formalisés et suivis régulièrement</label>
+            <label><input type="radio" name="q1_4_1_kpi_securite" value="ponctuels"> Indicateurs collectés ponctuellement sans suivi régulier</label>
+            <label><input type="radio" name="q1_4_1_kpi_securite" value="non"> Non aucun indicateur</label>
+            <label><input type="radio" name="q1_4_1_kpi_securite" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 2 : Parc informatique & pilotage prestataires -->
+      <section class="section" id="parc-informatique">
+        <h2 class="section-title">Parc informatique &amp; pilotage prestataires</h2>
+
+        <div class="question">
+          <label class="question-label required">Un inventaire à jour du parc informatique (postes, serveurs, licences) existe-t-il ? <span class="question-id">Q2.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_1_1_inventaire_parc" value="exhaustif" required> Oui inventaire exhaustif et à jour (outil de gestion de parc/CMDB)</label>
+            <label><input type="radio" name="q2_1_1_inventaire_parc" value="partiel"> Inventaire partiel ou non à jour</label>
+            <label><input type="radio" name="q2_1_1_inventaire_parc" value="non"> Non pas d'inventaire</label>
+            <label><input type="radio" name="q2_1_1_inventaire_parc" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Une politique de renouvellement/obsolescence du matériel est-elle définie ? <span class="question-id">Q2.1.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_1_2_renouvellement" value="definie" required> Oui politique définie et respectée</label>
+            <label><input type="radio" name="q2_1_2_renouvellement" value="au_cas_par_cas"> Renouvellement au cas par cas sans règle</label>
+            <label><input type="radio" name="q2_1_2_renouvellement" value="non"> Non matériel utilisé jusqu'à panne, sans anticipation</label>
+            <label><input type="radio" name="q2_1_2_renouvellement" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les équipements en fin de vie sont-ils effacés/détruits de manière sécurisée avant mise au rebut ou revente ? <span class="question-id">Q2.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_2_1_effacement_securise" value="certifie" required> Oui procédure d'effacement sécurisé systématique (destruction certifiée ou wipe)</label>
+            <label><input type="radio" name="q2_2_1_effacement_securise" value="basique"> Effacement basique (formatage simple) sans garantie</label>
+            <label><input type="radio" name="q2_2_1_effacement_securise" value="non"> Non pas de procédure, risque de fuite de données</label>
+            <label><input type="radio" name="q2_2_1_effacement_securise" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les usages du numérique (postes, messagerie, internet, outils cloud) sont-ils encadrés par une charte informatique signée par les utilisateurs ? <span class="question-id">Q2.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_3_1_charte_informatique" value="signee" required> Oui charte formalisée signée par tous les collaborateurs</label>
+            <label><input type="radio" name="q2_3_1_charte_informatique" value="non_diffusee"> Charte existante mais non signée/diffusée largement</label>
+            <label><input type="radio" name="q2_3_1_charte_informatique" value="non"> Non pas de charte</label>
+            <label><input type="radio" name="q2_3_1_charte_informatique" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Un contrat/SLA formalise-t-il les engagements (délais d'intervention, disponibilité) des prestataires IT/infogérance ? <span class="question-id">Q2.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q2_4_1_sla_prestataires" value="chiffre" required> Oui contrats avec SLA chiffrés et suivis</label>
+            <label><input type="radio" name="q2_4_1_sla_prestataires" value="sans_sla"> Contrats existants mais sans SLA précis</label>
+            <label><input type="radio" name="q2_4_1_sla_prestataires" value="informel"> Relation informelle sans contrat</label>
+            <label><input type="radio" name="q2_4_1_sla_prestataires" value="na"> N/A (pas de prestataire externe)</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 3 : Infrastructure SI -->
@@ -335,6 +479,16 @@
             <label><input type="radio" name="q3_1_2_pssi" value="ecrite_non_appliquee"> Oui PSSI écrite mais non appliquée</label>
             <label><input type="radio" name="q3_1_2_pssi" value="en_projet"> PSSI en projet</label>
             <label><input type="radio" name="q3_1_2_pssi" value="pas_pssi"> Non pas de PSSI</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Une procédure de gestion des changements SI (change management) est-elle formalisée avant toute modification des systèmes en production ? <span class="question-id">Q3.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_1_3_gestion_changements" value="formalisee" required> Oui procédure formalisée avec validation et traçabilité</label>
+            <label><input type="radio" name="q3_1_3_gestion_changements" value="informelle"> Procédure informelle (validation orale, sans traçabilité)</label>
+            <label><input type="radio" name="q3_1_3_gestion_changements" value="non"> Non changements appliqués sans procédure</label>
+            <label><input type="radio" name="q3_1_3_gestion_changements" value="inconnu"> Inconnu</label>
           </div>
         </div>
 
@@ -574,6 +728,16 @@
             <label><input type="radio" name="q3_7_5_comptes_inactifs" value="jamais"> Non jamais désactivés</label>
           </div>
         </div>
+
+        <div class="question">
+          <label class="question-label required">Les droits d'accès des utilisateurs actifs font-ils l'objet d'une revue périodique (recertification), indépendamment des départs ? <span class="question-id">Q3.7.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_7_6_revue_droits_acces" value="annuelle" required> Oui revue formalisée au moins annuelle</label>
+            <label><input type="radio" name="q3_7_6_revue_droits_acces" value="ponctuelle"> Revue ponctuelle irrégulière</label>
+            <label><input type="radio" name="q3_7_6_revue_droits_acces" value="non"> Non seulement lors des départs</label>
+            <label><input type="radio" name="q3_7_6_revue_droits_acces" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 3-Chiffrement -->
@@ -655,6 +819,92 @@
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="occasionnelles"> MAJ occasionnelles</label>
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="obsoletes"> Versions obsolètes (&gt;2 ans)</label>
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 4 : Sensibilisation & articulation RGPD/DPO -->
+      <section class="section" id="sensibilisation-dpo">
+        <h2 class="section-title">Sensibilisation &amp; articulation RGPD/DPO</h2>
+
+        <div class="question">
+          <label class="question-label required">Les collaborateurs bénéficient-ils de formations/sensibilisation régulières à la cybersécurité (phishing, mots de passe, etc.) ? <span class="question-id">Q4.1.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_1_1_formation_cyber" value="reguliere" required> Oui formations régulières (annuelles ou plus) avec suivi</label>
+            <label><input type="radio" name="q4_1_1_formation_cyber" value="ponctuelle"> Sensibilisation ponctuelle (une fois, il y a longtemps)</label>
+            <label><input type="radio" name="q4_1_1_formation_cyber" value="non"> Non aucune sensibilisation</label>
+            <label><input type="radio" name="q4_1_1_formation_cyber" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des campagnes de simulation de phishing sont-elles réalisées pour tester la vigilance des utilisateurs ? <span class="question-id">Q4.1.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_1_2_simulation_phishing" value="regulieres" required> Oui campagnes régulières avec retours aux équipes</label>
+            <label><input type="radio" name="q4_1_2_simulation_phishing" value="ponctuelle"> Test ponctuel réalisé une fois</label>
+            <label><input type="radio" name="q4_1_2_simulation_phishing" value="non"> Non jamais réalisé</label>
+            <label><input type="radio" name="q4_1_2_simulation_phishing" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">L'équipe DSI/IT a-t-elle elle-même reçu une formation spécifique au RGPD (obligations légales, registre, sous-traitance Art. 28, etc.) ? <span class="question-id">Q4.1.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_1_3_formation_rgpd_equipe_it" value="dediee" required> Oui formation RGPD dédiée suivie par l'équipe technique</label>
+            <label><input type="radio" name="q4_1_3_formation_rgpd_equipe_it" value="generale"> Sensibilisation générale uniquement (comme le reste des salariés)</label>
+            <label><input type="radio" name="q4_1_3_formation_rgpd_equipe_it" value="non"> Non aucune formation RGPD spécifique</label>
+            <label><input type="radio" name="q4_1_3_formation_rgpd_equipe_it" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI collabore-t-elle avec le DPO sur les aspects techniques de conformité (registre, AIPD, sécurité) ? <span class="question-id">Q4.2.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_1_collaboration_dpo" value="reguliere" required> Oui collaboration régulière et formalisée</label>
+            <label><input type="radio" name="q4_2_1_collaboration_dpo" value="ponctuelle"> Collaboration ponctuelle, sur demande uniquement</label>
+            <label><input type="radio" name="q4_2_1_collaboration_dpo" value="non"> Non aucune interaction avec le DPO</label>
+            <label><input type="radio" name="q4_2_1_collaboration_dpo" value="na"> N/A (pas de DPO désigné)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI dispose-t-elle d'une cartographie des risques informatiques mise à jour régulièrement ? <span class="question-id">Q4.2.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_2_cartographie_risques" value="actualisee" required> Oui cartographie formalisée et actualisée (annuelle ou plus)</label>
+            <label><input type="radio" name="q4_2_2_cartographie_risques" value="ancienne"> Cartographie ancienne ou incomplète</label>
+            <label><input type="radio" name="q4_2_2_cartographie_risques" value="non"> Non pas de cartographie des risques</label>
+            <label><input type="radio" name="q4_2_2_cartographie_risques" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La DSI a-t-elle cartographié les flux techniques de données personnelles (quels systèmes échangent quelles données, via quels canaux) ? <span class="question-id">Q4.2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_3_cartographie_flux" value="formalisee" required> Oui cartographie des flux formalisée et à jour</label>
+            <label><input type="radio" name="q4_2_3_cartographie_flux" value="partielle"> Cartographie partielle ou ancienne</label>
+            <label><input type="radio" name="q4_2_3_cartographie_flux" value="non"> Non pas de cartographie des flux</label>
+            <label><input type="radio" name="q4_2_3_cartographie_flux" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">En cas de désaccord entre la DSI et le DPO sur une décision de conformité (ex : fonctionnalité vs risque RGPD), qui a le dernier mot ? <span class="question-id">Q4.2.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_2_4_arbitrage_dsi_dpo" value="dpo_autorite" required> Le DPO a autorité de blocage sur les décisions à risque</label>
+            <label><input type="radio" name="q4_2_4_arbitrage_dsi_dpo" value="direction_arbitre"> La direction générale arbitre au cas par cas</label>
+            <label><input type="radio" name="q4_2_4_arbitrage_dsi_dpo" value="dsi_seule"> La DSI décide seule sans arbitrage formalisé</label>
+            <label><input type="radio" name="q4_2_4_arbitrage_dsi_dpo" value="inconnu"> Inconnu</label>
+            <label><input type="radio" name="q4_2_4_arbitrage_dsi_dpo" value="na"> N/A (pas de DPO désigné)</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">En cas de nouveau traitement de données à risque, la DSI est-elle impliquée dans l'analyse d'impact (AIPD/PIA) ? <span class="question-id">Q4.3.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_3_1_implication_aipd" value="systematique" required> Oui systématiquement associée à l'analyse technique</label>
+            <label><input type="radio" name="q4_3_1_implication_aipd" value="parfois"> Parfois consultée</label>
+            <label><input type="radio" name="q4_3_1_implication_aipd" value="non"> Non jamais impliquée</label>
+            <label><input type="radio" name="q4_3_1_implication_aipd" value="na"> N/A (aucune AIPD réalisée à ce jour)</label>
           </div>
         </div>
       </section>
