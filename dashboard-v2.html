@@ -371,6 +371,7 @@
               <li>Répondez dans les 30 jours — si besoin d'aide, contactez le DPO</li>
               <li>Consignez la demande dans votre fichier de suivi (date, type, réponse)</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Répondre à une demande de droit (30 jours)')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
 
@@ -384,6 +385,7 @@
               <li>Vérifier le fichier de suivi des demandes</li>
               <li>Si une demande est en attente depuis + 30 jours → relancer immédiatement et alerter le DPO</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Vérifier les demandes de droits en attente (+30 jours)')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
       </div>
@@ -402,6 +404,7 @@
               <li>☐ On dit comment se désinscrire ou retirer son consentement</li>
               <li>Si doute → envoyer le formulaire au DPO avant diffusion</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Vérifier un nouveau formulaire (consentement)')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
 
@@ -416,6 +419,7 @@
               <li>Classer les formulaires signés dans le dossier résident papier ET numérique</li>
               <li>Si refus ou pas de réponse → supprimer les photos de la personne de tous les supports</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Renouveler les consentements photos/vidéos (3 ans)')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
       </div>
@@ -434,6 +438,7 @@
               <li>⚠️ Supprimer = garder une trace de la suppression (date + qui a supprimé)</li>
               <li>Signaler au DPO si doute sur une durée avant suppression</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Grand nettoyage d\'automne (durées de conservation)')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
       </div>
@@ -452,6 +457,7 @@
               <li>☐ Changer les mots de passe partagés si le salarié les connaissait</li>
               <li>Consigner dans le registre des accès : nom, date de départ, date de blocage</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Bloquer les accès d\'un salarié qui part')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
 
@@ -465,6 +471,7 @@
               <li>Vérifier que chaque salarié a son propre compte nominatif</li>
               <li>Signaler tout compte générique (ex : "admin" partagé) au responsable informatique</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Rappel pas de partage de mot de passe')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
       </div>
@@ -482,6 +489,7 @@
               <li>☐ Le DPA est-il encore en cours de validité ?</li>
               <li>Si non → demander un avenant RGPD au prestataire. Le DPO a un modèle de clause prêt à envoyer.</li>
             </ul>
+            <button class="btn-add" type="button" onclick="addMemoAction('Vérifier les contrats RGPD (DPA) des prestataires')" style="margin-top:8px;font-size:12px">➕ Ajouter à mon plan</button>
           </div>
         </div>
       </div>
@@ -1187,6 +1195,16 @@
         container.innerHTML = `<p class="empty">${msg}</p>`;
         return;
       }
+      // OPTION C : trier les actions par priorité (CRITIQUE > HAUTE > MOYENNE > BASSE) puis par échéance
+      if (type === 'actions') {
+        const prioriteOrder = { 'CRITIQUE': 0, 'HAUTE': 1, 'MOYENNE': 2, 'BASSE': 3 };
+        items = [...items].sort((a, b) => {
+          const pa = prioriteOrder[a.priorite] ?? 9;
+          const pb = prioriteOrder[b.priorite] ?? 9;
+          if (pa !== pb) return pa - pb;
+          return String(a.echeance || '').localeCompare(String(b.echeance || ''));
+        });
+      }
       container.innerHTML = items.map(item => {
         let title = item.titre || item.traitement || item.type || '#' + item.id;
         let meta = [];
@@ -1223,7 +1241,12 @@
 
     function getBadgeClass(type, item) {
       if (type === 'actions') {
-        return item.statut === 'FAIT' ? 'ok' : item.priorite === 'HAUTE' ? 'danger' : item.priorite === 'MOYENNE' ? 'warn' : 'info';
+        // Statut : FAIT = vert, EN_COURS = bleu, A_FAIRE = orange, BLOQUE = rouge
+        if (item.statut === 'FAIT') return 'ok';
+        if (item.statut === 'EN_COURS') return 'info';
+        if (item.statut === 'BLOQUE') return 'danger';
+        // A_FAIRE : priorité HAUTE/CRITIQUE = rouge, sinon orange
+        return (item.priorite === 'HAUTE' || item.priorite === 'CRITIQUE') ? 'danger' : 'warn';
       }
       if (type === 'incidents') {
         return item.gravite === 'CRITIQUE' ? 'danger' : item.gravite === 'ELEVEE' ? 'warn' : item.gravite === 'MOYENNE' ? 'warn' : 'ok';
@@ -1232,7 +1255,11 @@
     }
 
     function getBadgeLabel(type, item) {
-      if (type === 'actions') return item.statut;
+      if (type === 'actions') {
+        // Afficher le statut lisible + priorité
+        const statutLabel = { 'A_FAIRE': 'À faire', 'EN_COURS': 'En cours', 'FAIT': 'Fait', 'BLOQUE': 'Bloqué' }[item.statut] || item.statut;
+        return statutLabel;
+      }
       if (type === 'incidents') return item.gravite;
       return item.statut || item.categorie;
     }
@@ -1286,6 +1313,32 @@
         return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
           <input type="${f.type}" id="f-${f.name}" name="${f.name}" value="${val}" ${f.required ? 'required' : ''}>`;
       }).join('') + `<input type="hidden" id="form-type" value="${type}"><input type="hidden" id="form-id" value="${id || ''}">`;
+      document.getElementById('modal').classList.add('active');
+    };
+
+    // ── OPTION A : Ajouter une mémo-action au plan d'actions ──
+    window.addMemoAction = function(titre) {
+      // Pré-remplir le formulaire d'action avec le titre de la mémo-action
+      const sheet = SHEETS['actions'];
+      document.getElementById('modal-title').textContent = 'Ajouter action';
+      document.getElementById('modal-fields').innerHTML = sheet.fields.map(f => {
+        let val = '';
+        if (f.name === 'titre') val = titre;
+        if (f.name === 'statut') val = 'A_FAIRE';
+        if (f.name === 'priorite') val = 'MOYENNE';
+        if (f.type === 'select') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <select id="f-${f.name}" name="${f.name}" ${f.required ? 'required' : ''}>
+              ${f.options.map(o => `<option value="${o}" ${val === o ? 'selected' : ''}>${o}</option>`).join('')}
+            </select>`;
+        }
+        if (f.type === 'textarea') {
+          return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+            <textarea id="f-${f.name}" name="${f.name}" rows="3" ${f.required ? 'required' : ''}>${val}</textarea>`;
+        }
+        return `<label for="f-${f.name}">${f.label}${f.required ? ' *' : ''}</label>
+          <input type="${f.type}" id="f-${f.name}" name="${f.name}" value="${val}" ${f.required ? 'required' : ''}>`;
+      }).join('') + `<input type="hidden" id="form-type" value="actions"><input type="hidden" id="form-id" value="">`;
       document.getElementById('modal').classList.add('active');
     };
 
