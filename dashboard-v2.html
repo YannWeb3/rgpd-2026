@@ -776,105 +776,12 @@
     <!-- MODULE : Rapport direction -->
     <section id="module-rapport" class="module">
       <div class="intro-card">
-        <h2>📊 Rapport direction</h2>
-        <p>Synthèse mensuelle pour la direction et le DPO externe. Simple, lisible, actionnable. Généré à partir des mises à jour des référents.</p>
+        <h2>📊 Rapport</h2>
+        <p id="rapport-intro">Synthèse mensuelle pour la direction et le DPO externe. Simple, lisible, actionnable. Généré à partir des mises à jour des référents.</p>
       </div>
 
-      <div class="panel">
-        <div class="rapport-header">
-          <div>
-            <div class="rapport-label">RAPPORT MENSUEL</div>
-            <div class="rapport-mois" id="rapport-mois">Juin 2026</div>
-          </div>
-          <div class="rapport-actions">
-            <button class="btn-export" type="button" onclick="alert('Export PDF à brancher ultérieurement')">📥 Télécharger PDF</button>
-            <button class="btn-export secondary" type="button" onclick="alert('Envoi email à brancher ultérieurement')">📧 Envoyer au DPO</button>
-          </div>
-        </div>
-
-        <div class="kpi-grid">
-          <div class="kpi ok">
-            <div class="kpi-value">3</div>
-            <div class="kpi-label">Voyants verts</div>
-          </div>
-          <div class="kpi warn">
-            <div class="kpi-value">1</div>
-            <div class="kpi-label">À surveiller</div>
-          </div>
-          <div class="kpi danger">
-            <div class="kpi-value">1</div>
-            <div class="kpi-label">Urgent</div>
-          </div>
-          <div class="kpi info">
-            <div class="kpi-value">1</div>
-            <div class="kpi-label">Incident signalé</div>
-          </div>
-          <div class="kpi ok">
-            <div class="kpi-value">4/4</div>
-            <div class="kpi-label">Prestataires DPA OK</div>
-          </div>
-          <div class="kpi warn">
-            <div class="kpi-value">0%</div>
-            <div class="kpi-label">Personnel formé (objectif mars 27)</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>État par établissement</h3>
-        <div class="etab-list">
-          <div class="etab-item">
-            <div class="etab-name">ESAT Les Acacias</div>
-            <div class="etab-ref">Référent : Marie D.</div>
-            <div class="etab-status"><span class="badge danger">🚨 Sécurité urgente</span></div>
-          </div>
-          <div class="etab-item">
-            <div class="etab-name">Foyer de vie Colibri</div>
-            <div class="etab-ref">Référent : Jean-Paul M.</div>
-            <div class="etab-status"><span class="badge ok">✅ Tout OK</span></div>
-          </div>
-          <div class="etab-item">
-            <div class="etab-name">IME Saint-Exupéry</div>
-            <div class="etab-ref">Référent : Sophie L.</div>
-            <div class="etab-status"><span class="badge warn">⚠️ Dossiers à nettoyer</span></div>
-          </div>
-          <div class="etab-item">
-            <div class="etab-name">SAVS Horizon</div>
-            <div class="etab-ref">Référent : Ahmed B.</div>
-            <div class="etab-status"><span class="badge ok">✅ Tout OK</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h3>🚨 Actions urgentes pour la direction</h3>
-        <ul class="action-list">
-          <li><strong>Avant le 20 juin :</strong> bloquer les 2 accès informatiques d'anciens salariés à l'ESAT Les Acacias → contacter le prestataire informatique.</li>
-          <li><strong>Prestataire vidéosurveillance :</strong> DPA manquant — demander la signature du contrat RGPD en urgence.</li>
-        </ul>
-      </div>
-
-      <div class="panel">
-        <h3>⚠️ Points à traiter avant le 15 octobre</h3>
-        <ul class="action-list">
-          <li>IME Saint-Exupéry : nettoyage de 3 dossiers de résidents partis depuis + de 5 ans.</li>
-          <li>Agence de communication : envoyer l'avenant DPA (modèle disponible auprès du DPO).</li>
-          <li>Mailchimp : vérifier les conditions RGPD ou basculer vers une solution conforme.</li>
-        </ul>
-      </div>
-
-      <div class="panel">
-        <h3>✅ Bonnes nouvelles du mois</h3>
-        <ul class="action-list">
-          <li>4/4 contrats prestataires principaux avec clause RGPD signée — aucun renouvellement avant décembre.</li>
-          <li>Incident email ESAT en cours de résolution — DPO informé, famille avertie, CNIL non concernée.</li>
-          <li>Foyer Colibri et SAVS Horizon : tous les voyants au vert ce mois-ci.</li>
-        </ul>
-      </div>
-
-      <div class="panel">
-        <h3>Historique mensuel</h3>
-        <div class="list" id="list-suivi"></div>
+      <div id="rapport-content">
+        <!-- Contenu généré dynamiquement selon le rôle (référent = son établissement, DPO = consolidé) -->
       </div>
     </section>
 
@@ -998,6 +905,8 @@
   <script>
     const session = JSON.parse(sessionStorage.getItem('rgpd_session') || '{}');
     if (!session.success) location.href = 'login.html';
+    // Séparation des rôles : l'admin/DPO va sur son espace dédié (admin.html)
+    if (session.role === 'admin') location.href = 'admin.html';
 
     const CODE = session.code;
     let currentModule = 'voyants';
@@ -1090,6 +999,7 @@
       renderList('registre');
       renderList('incidents');
       renderSuivi();
+      renderRapport();
     }
 
     function normalizeDates(data) {
@@ -1285,6 +1195,66 @@
           </div>
         `;
       }).join('');
+    }
+
+    // ── RAPPORT DYNAMIQUE (vue référent uniquement — l'admin va sur admin.html) ──
+    function renderRapport() {
+      const container = document.getElementById('rapport-content');
+      if (!container) return;
+      const intro = document.getElementById('rapport-intro');
+      if (intro) {
+        intro.textContent = 'Rapport de votre établissement — vue référent. Vos voyants, votre score, vos actions et incidents.';
+      }
+      container.innerHTML = renderRapportReferent();
+    }
+
+    function renderRapportReferent() {
+      const actions = data.actions || [];
+      const incidents = data.incidents || [];
+      const registre = data.registre || [];
+      const suivi = data.suivi || [];
+      const now = new Date().toISOString().split('T')[0];
+      const retards = actions.filter(a => a.echeance < now && a.statut !== 'FAIT');
+      const ouverts = incidents.filter(i => i.statut !== 'CLOTURE');
+      const critiques = incidents.filter(i => i.gravite === 'CRITIQUE' && i.statut !== 'CLOTURE');
+      const lastScore = [...suivi].sort((a, b) => b.mois.localeCompare(a.mois))[0];
+      const score = lastScore ? lastScore.score : 0;
+      const scoreClass = score >= 80 ? 'ok' : score >= 50 ? 'warn' : 'danger';
+      const mois = lastScore ? lastScore.mois : new Date().toISOString().slice(0, 7);
+
+      return `
+        <div class="panel">
+          <div class="rapport-header">
+            <div>
+              <div class="rapport-label">RAPPORT MENSUEL — ${session.etablissement || 'Mon établissement'}</div>
+              <div class="rapport-mois">${mois}</div>
+            </div>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi ${scoreClass}"><div class="kpi-value">${score}%</div><div class="kpi-label">Score de conformité</div></div>
+            <div class="kpi ${retards.length ? 'danger' : 'ok'}"><div class="kpi-value">${retards.length}</div><div class="kpi-label">Actions en retard</div></div>
+            <div class="kpi ${ouverts.length ? 'warn' : 'ok'}"><div class="kpi-value">${ouverts.length}</div><div class="kpi-label">Incidents ouverts</div></div>
+            <div class="kpi ${critiques.length ? 'danger' : 'ok'}"><div class="kpi-value">${critiques.length}</div><div class="kpi-label">Incidents critiques</div></div>
+            <div class="kpi info"><div class="kpi-value">${registre.length}</div><div class="kpi-label">Traitements au registre</div></div>
+            <div class="kpi info"><div class="kpi-value">${actions.length}</div><div class="kpi-label">Actions totales</div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>🚨 Actions en retard</h3>
+          ${retards.length ? `<ul class="action-list">${retards.map(a => `<li><strong>${a.titre}</strong> — échéance ${formatDateFR(a.echeance)}</li>`).join('')}</ul>` : '<p class="empty">Aucune action en retard. 👍</p>'}
+        </div>
+
+        <div class="panel">
+          <h3>🚨 Incidents ouverts</h3>
+          ${ouverts.length ? `<ul class="action-list">${ouverts.map(i => `<li><strong>${i.type}</strong> [${i.gravite}] — ${i.description || ''}</li>`).join('')}</ul>` : '<p class="empty">Aucun incident ouvert. 👍</p>'}
+        </div>
+
+        <div class="panel">
+          <h3>📈 Historique mensuel</h3>
+          <div class="list" id="list-suivi"></div>
+        </div>
+      `;
     }
 
     window.switchModule = function(module) {
