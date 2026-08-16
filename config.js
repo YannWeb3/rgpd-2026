@@ -1,6 +1,6 @@
 // Configuration locale — à remplacer par l'URL de la Web App Apps Script au déploiement
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbyW1Mkvz0cZZ6kQ6jdWdeQzezJZ_amUXf_RUmWPbbcNiMqR6eKyCoS0aCFmWRZ2IXgSkQ/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbwaCmQ5TLWufcXJgFp1EIWWE9z38_z_Mz-9HOilahu-FBR42QL67EW9tSH8Vi1On-N9mA/exec',
   OPENROUTER_API_KEY: 'CHANGER_DANS_CONFIG_LOCAL', // Mettre la clé dans config.local.js
   OPENROUTER_MODEL: 'nvidia/nemotron-3-ultra-550b-a55b:free'
 };
