@@ -1,26 +1,26 @@
 # rgpd-2026
+
 Formulaires RGPD — Audit 2026
 
 Site déployé : https://yannweb3.github.io/rgpd-2026/
 
 ## Contenu
+
 - **index.html** — Landing page boîte à outils (14 outils)
 - **login.html** — Connexion par code établissement (avec paramètre `?redirect=`)
-- **dashboard.html** — Dashboard v1 (référent) + **Assistant IA** (Nemotron via OpenRouter)
-- **dashboard-v2.html** — Dashboard v2 (v1 + Kit fusion)
-- **Kit UNAPEI92.html** — Kit pédagogique interactif
+- **dashboard-v2.html** — Dashboard référent + Assistant IA
 - **kit_unapei92.html** — Kit carnet visuel (moderne, cartes, timeline)
-- **dashboard_premium.html** — Vue direction consolidée
-- **admin.html** — Admin DPO
-- **config.js** — Configuration API + mode MOCK + clé OpenRouter
-- **formation_RGPD.html**, **journal_incidents.html**, **plan_action_rgpd.html**, etc.
+- **formation_RGPD.html** — Formation RGPD
+- **3approches.html** — Les 3 approches RGPD
+- **Questionnaires par structure** : EMMA-H, SAMSAH, club-loisirs, cmpp, communication, daf, daoc-pfr, direction, donateurs, dos, dsi, eam, eanm, esat, ime, paie, qualite, rh, savs, sessad, soliasso
+- **config.js** — Configuration API + mode MOCK
 
-## Backend
-- **Google Sheet** : `173hyHK1reC4HaLxZRAvRQKPSxaVH6hF52P4NPEHQPSw` (5 onglets)
-- **API Apps Script** : déployée et branchée (`MOCK = false`)
-- **Assistant IA** : OpenRouter → Nvidia Nemotron 3 Ultra 550B (free)
+## Mode démo
 
-## Codes de test
+Le site fonctionne en **mode MOCK** (`MOCK = true`) : les données de démonstration sont intégrées dans `config.js`. Aucun backend n'est exposé publiquement.
+
+## Codes de test (mode démo)
+
 | Code | Rôle |
 |------|------|
 | `1001` | Référent — ESAT Les Lilas |
