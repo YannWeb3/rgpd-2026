@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation RGPD UNAPEI92 — Socle + Parcours par entité (v3)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #718096;
+    --primary: #6366f1; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #ef4444; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
+  }
+  html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
+  .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
+  .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--primary); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #8b5cf6); border-radius: 20px; transition: width .4s ease; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .welcome { text-align: center; padding: 40px 0; }
+  .welcome-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 8px 18px; border-radius: 30px; margin-bottom: 24px; }
+  .welcome h1 { font-size: 32px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .welcome p { color: var(--muted); font-size: 16px; max-width: 500px; margin: 0 auto 28px; line-height: 1.6; }
+  .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,.3); }
+  .welcome-cta:hover { transform: translateY(-2px); }
+  .picker h2 { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+  .picker-sub { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+  .picker-groups { display: flex; flex-direction: column; gap: 20px; }
+  .picker-group-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 10px; }
+  .picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .picker-btn { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all .15s; font-family: 'Nunito', sans-serif; }
+  .picker-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .picker-btn .ent { font-weight: 800; font-size: 15px; color: var(--ink); }
+  .picker-btn .thm { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .scenario-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .scenario-back { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .scenario-back:hover { color: var(--primary); }
+  .scenario-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
+  .scenario-title { font-size: 22px; font-weight: 900; line-height: 1.25; margin-bottom: 4px; }
+  .scenario-entity { font-size: 14px; color: var(--muted); font-weight: 700; }
+  .part-badge { display: inline-block; background: var(--amber-soft); color: #92400e; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; }
+  .reveal { margin-bottom: 12px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: var(--card); }
+  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; }
+  .reveal-btn .icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .reveal-btn .label { font-weight: 800; font-size: 15px; color: var(--ink); flex: 1; }
+  .reveal-btn .chev { color: var(--muted); transition: transform .2s; font-size: 14px; }
+  .reveal.open .reveal-btn .chev { transform: rotate(180deg); }
+  .reveal-body { display: none; padding: 0 18px 18px; }
+  .reveal.open .reveal-body { display: block; animation: fadeIn .3s ease; }
+  .reveal-body p { font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .reveal-body ol { padding-left: 20px; }
+  .reveal-body li { font-size: 15px; line-height: 1.7; margin-bottom: 4px; }
+  .b-situation .icon { background: var(--sky-soft); } .b-situation { border-color: #bae6fd; }
+  .b-piege .icon { background: var(--red-soft); } .b-piege { border-color: #fecaca; }
+  .b-reflexe .icon { background: var(--green-soft); } .b-reflexe { border-color: #a7f3d0; }
+  .b-retenir .icon { background: var(--amber-soft); } .b-retenir { border-color: #fde68a; }
+  .b-savoir .icon { background: var(--sky-soft); } .b-savoir { border-color: #bae6fd; }
+  .retenir-text { font-size: 16px; font-weight: 800; color: #92400e; font-style: italic; line-height: 1.5; }
+  .quiz { margin-top: 16px; border-radius: 16px; border: 2px solid var(--primary); background: var(--primary-soft); padding: 18px; }
+  .quiz-q { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: all .15s; color: var(--ink); }
+  .quiz-opt:hover { border-color: var(--primary); }
+  .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: #065f46; }
+  .quiz-opt.wrong { background: var(--red-soft); border-color: var(--red); color: #991b1b; }
+  .quiz-feedback { margin-top: 12px; font-size: 14px; font-weight: 700; color: #065f46; display: none; }
+  .quiz.revealed .quiz-feedback { display: block; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all .15s; }
+  .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
+  .nav-next { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.3); }
+  .nav-next:disabled { opacity: .4; cursor: not-allowed; }
+  .done { text-align: center; padding: 50px 0; }
+  .done-icon { font-size: 64px; margin-bottom: 16px; }
+  .done h2 { font-size: 28px; font-weight: 900; margin-bottom: 10px; }
+  .done p { color: var(--muted); font-size: 16px; margin-bottom: 24px; }
+  .done-score { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 24px; }
+  .form { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; text-align: left; max-width: 420px; margin: 0 auto 20px; }
+  .form label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+  .form input:focus { outline: none; border-color: var(--primary); }
+  .form .btn { width: 100%; background: var(--green); color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .form .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
+  @media (max-width: 480px) { .welcome h1 { font-size: 26px; } .scenario-title { font-size: 19px; } .picker-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Module 1 / 12</span>
+      <span class="progress-count" id="progress-count">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome-badge">🛡️ Formation RGPD UNAPEI92</div>
+      <h1>Comprendre et appliquer le RGPD</h1>
+      <p>Ton parcours en 2 parties : d'abord le <b>socle commun</b> (les fondamentaux que tout le monde doit savoir), puis des <b>situations adaptées à ton métier</b>, y compris des cas où la pression humaine met à l'épreuve le bon réflexe. Ton nom et tes scores seront enregistrés comme preuve de formation.</p>
+      <button class="welcome-cta" onclick="showPicker()">Commencer →</button>
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">6 modules socle + scénarios métier · ~10 min · émargement automatique</div>
+    </div>
+  </div>
+
+  <!-- PICKER -->
+  <div class="screen" id="screen-picker">
+    <div class="picker">
+      <h2>Choisis ton entité</h2>
+      <p class="picker-sub">Sélectionne ton établissement ou ton service. Ton parcours (socle + scénarios) démarre à zéro.</p>
+      <div class="picker-groups" id="picker-groups"></div>
+    </div>
+  </div>
+
+  <!-- CODE ETABLISSEMENT -->
+  <div class="screen" id="screen-code">
+    <div class="picker">
+      <h2>Code de ton établissement</h2>
+      <p class="picker-sub">Saisis le code fourni par ton référent RGPD (ex : 1001, 1002...). Il permet de tracer ton émargement sur le bon établissement.</p>
+      <div class="form" style="max-width:420px;margin:0 auto">
+        <label>Code établissement</label>
+        <input type="text" id="code-input" placeholder="Ex : 1001" autocomplete="off" inputmode="numeric">
+        <div id="code-error" style="color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px;display:none"></div>
+        <button class="btn" id="code-btn" onclick="verifyCode()" disabled>Vérifier et commencer →</button>
+      </div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="scenario-back" onclick="showPicker()">← Changer d'entité</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="screen" id="screen-scenario">
+    <div class="scenario-head">
+      <button class="scenario-back" onclick="showPicker()">← Toutes les entités</button>
+    </div>
+    <div class="part-badge" id="part-badge"></div>
+    <div class="scenario-badge" id="scenario-badge"></div>
+    <h2 class="scenario-title" id="scenario-title"></h2>
+    <div class="scenario-entity" id="scenario-entity"></div>
+    <div style="height:16px"></div>
+    <div id="scenario-content"></div>
+    <div class="nav">
+      <button class="nav-btn nav-prev" id="nav-prev" onclick="prevScenario()">← Précédent</button>
+      <button class="nav-btn nav-next" id="nav-next" onclick="nextScenario()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- DONE / EMARGEMENT -->
+  <div class="screen" id="screen-done">
+    <div class="done">
+      <div class="done-icon">🎉</div>
+      <h2>Parcours terminé !</h2>
+      <p id="done-entity"></p>
+      <div class="done-score" id="done-score"></div>
+      <div class="saved" id="saved-msg">✅ Ton émargement a été enregistré. Merci !</div>
+      <div class="form" id="emargement-form">
+        <label>Ton nom complet</label>
+        <input type="text" id="name-input" placeholder="Prénom Nom" autocomplete="name">
+        <label>Établissement / antenne précis</label>
+        <input type="text" id="site-input" placeholder="Ex : IME Les Lilas, ESAT Meudon, Siège..." autocomplete="organization">
+        <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer mon émargement</button>
+      </div>
+      <button class="welcome-cta" onclick="showPicker()">Choisir une autre entité</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// SOCLE COMMUN — 6 modules
+// ============================================================
+const SOCLE = [
+  { titre:'Qu\'est-ce qu\'une donnée personnelle ?', savoir:'Une donnée personnelle est toute information qui permet d\'identifier une personne : nom, prénom, photo, adresse, téléphone, email, mais aussi un numéro de dossier, une plaque, une voix. Dans ton métier : le nom d\'un usager, sa photo, son dossier, son planning — tout ça, c\'est une donnée personnelle.', retenir:'Une donnée personnelle = toute info qui identifie une personne. Nom, photo, dossier, planning : tout est protégé.', quiz:{q:'Parmi ces éléments, lequel est une donnée personnelle ?', options:['Le nom d\'un usager','La couleur du mur du bureau','L\'heure de la pause'], correct:0} },
+  { titre:'Les données sensibles (Art. 9)', savoir:'Certaines données sont particulièrement protégées : la santé, le handicap, l\'origine, la religion, les opinions. Dans ton métier, le handicap et la santé des usagers sont des données sensibles. Elles ne peuvent être traitées que dans des cas très précis (prise en charge, obligation légale) et avec des garanties renforcées.', retenir:'La santé et le handicap sont des données sensibles. Protection renforcée, toujours.', quiz:{q:'Quelle donnée est considérée comme sensible ?', options:['Le prénom d\'un usager','Le handicap d\'un usager','Le numéro de téléphone du bureau'], correct:1} },
+  { titre:'Les 5 réflexes RGPD', savoir:'5 réflexes à avoir au quotidien : 1) Respecter les droits des personnes (accès, effacement) ; 2) Obtenir le consentement et respecter la finalité ; 3) Respecter les durées de conservation ; 4) Sécuriser les accès (poste verrouillé, mots de passe) ; 5) Encadrer les sous-traitants et prestataires.', retenir:'5 réflexes : droits, consentement, conservation, sécurité, sous-traitants.', quiz:{q:'Quel est un bon réflexe RGPD au quotidien ?', options:['Laisser son poste ouvert','Verrouiller son poste quand on s\'absente','Partager son mot de passe avec un collègue'], correct:1} },
+  { titre:'Que faire en cas d\'incident ?', savoir:'Un incident = une fuite, une perte, un accès non autorisé à des données. Exemples : un dossier perdu, un email envoyé à la mauvaise personne, un poste laissé ouvert. Il faut : 1) ne pas paniquer ni cacher ; 2) signaler immédiatement au référent RGPD ; 3) noter ce qui s\'est passé. La CNIL doit être prévenue sous 72h si le risque est élevé.', retenir:'Un incident se signale immédiatement au référent. On ne cache jamais.', quiz:{q:'Vous perdez un dossier contenant des données. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD','Je le cache pour éviter les ennuis'], correct:1} },
+  { titre:'Qui contacter ?', savoir:'Chaque établissement a un référent RGPD (et un backup). Le référent est ton premier interlocuteur pour toute question ou incident. Au-dessus, il y a le DPO (délégué à la protection des données) qui pilote la conformité. En cas de doute, on contacte le référent — jamais on ne décide seul.', retenir:'En cas de doute, on contacte le référent RGPD. Jamais on ne décide seul.', quiz:{q:'Vous avez un doute sur une demande de données. Qui contactez-vous ?', options:['Personne, je décide seul','Le référent RGPD de mon établissement','Un collègue au hasard'], correct:1} },
+  { titre:'Le papier et le numérique', savoir:'Le RGPD s\'applique aussi au papier : un carnet, un dossier, une liste laissés en clair sont des fuites. Règles : ranger sous clé, ne noter que le nécessaire, détruire les documents obsolètes (déchiqueteuse), ne pas emporter chez soi. Le numérique : poste verrouillé, mots de passe forts, pas de données sensibles par email classique ou WhatsApp.', retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Où rangez-vous un carnet avec des infos sur les usagers ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} }
+];
+
+// ============================================================
+// SCÉNARIOS — 6 par entité (rédigés manuellement, fiables)
+// ============================================================
+const ENTITIES = {
+  'ESAT': {
+    type: 'etab', label: 'ESAT',
+    scenarios: [
+      { titre:'Photos + consentement', situation:'Un moniteur d\'atelier veut prendre une photo des travailleurs en train de fabriquer des objets, pour la publier sur la page Facebook de l\'ESAT. « C\'est pour montrer notre travail, c\'est positif ! »', piege:'Publier des photos de personnes identifiables (travailleurs handicapés = personnes vulnérables) sans consentement écrit ni information. Une photo = donnée personnelle (Art. 4.1), le handicap = donnée sensible (Art. 9).', reflexe:['Ne pas publier sans accord — jamais','Obtenir un consentement écrit (Art. 6.1.a + 7) de chaque travailleur (ou de son représentant)','Expliquer clairement : où, pourquoi, pendant combien de temps','Prévoir le retrait : le travailleur peut changer d\'avis à tout moment','Éviter les photos identifiables si possible (de dos, flou, groupe large)'], retenir:'Une photo, c\'est une donnée. On demande l\'accord AVANT, par écrit, et on explique.', quiz:{q:'Vous voulez publier une photo des travailleurs sur Facebook. Que faites-vous ?', options:['Je la publie, c\'est de la bonne pub','Je demande un consentement écrit à chaque travailleur et j\'explique','Je floute tout le monde pour être sûr'], correct:1} },
+      { titre:'Dossier médical au travail', situation:'Un travailleur d\'ESAT a un accident léger. Le moniteur note les détails (blessure, soins) dans le cahier de l\'atelier, ouvert sur la table.', piege:'Noter des données de santé (Art. 9) dans un cahier partagé accessible à tous. Les collègues et visiteurs peuvent les voir.', reflexe:['Noter les infos de santé dans un support confidentiel, pas le cahier partagé','Ne noter que le strict nécessaire (minimisation — Art. 5.1.c)','Ranger le support sous clé après usage','Signaler tout incident de santé au référent RGPD','Ne pas discuter des données de santé devant les autres travailleurs'], retenir:'Les données de santé ne se notent pas dans un cahier partagé. Support confidentiel, toujours.', quiz:{q:'Un travailleur a un accident. Où notez-vous les détails de santé ?', options:['Dans le cahier de l\'atelier, c\'est pratique','Dans un support confidentiel rangé sous clé','Sur un post-it sur le tableau'], correct:1} },
+      { titre:'Appel d\'un proche', situation:'Un proche d\'un travailleur appelle pour demander « comment ça va aujourd\'hui, il a fait quoi ? ». Le moniteur connaît bien ce proche.', piege:'Donner des infos sur le travailleur (présence, activités, comportement) sans vérifier que le proche a le droit d\'y accéder.', reflexe:['Ne jamais donner d\'infos sans vérifier le droit d\'accès','Vérifier l\'identité et le lien (mandat, autorité)','Contacter le travailleur lui-même si possible','En cas de doute : contacter le référent RGPD','Ne pas donner d\'infos de santé au téléphone'], retenir:'Les infos sur un travailleur lui appartiennent. On vérifie qui demande et pourquoi.', quiz:{q:'Un proche appelle pour des infos sur un travailleur. Que faites-vous ?', options:['Je réponds, je le connais bien','Je vérifie le droit d\'accès avant de donner quoi que ce soit','Je donne les infos de santé aussi'], correct:1} },
+      { titre:'Poste laissé ouvert', situation:'Un moniteur laisse son ordinateur ouvert avec le logiciel de suivi des travailleurs, et s\'absente 5 minutes. Un collègue passe et voit les dossiers.', piege:'Laisser un accès ouvert à des données personnelles (et parfois de santé) — n\'importe qui peut voir ou modifier. C\'est un incident de sécurité (Art. 32).', reflexe:['Verrouiller systématiquement son poste (Windows+L)','Ne jamais partager ses identifiants','Signaler tout accès non autorisé au référent RGPD','Changer le mot de passe si on a un doute','Enregistrer l\'incident dans le journal (Art. 33-34)'], retenir:'Poste verrouillé = données protégées. Un accès non autorisé se signale, toujours.', quiz:{q:'Vous vous absentez 5 minutes. Que faites-vous de votre poste ?', options:['Je le laisse ouvert, je reviens vite','Je le verrouille systématiquement','Je demande à un collègue de surveiller'], correct:1} },
+      { titre:'Liste des salaires', situation:'Le responsable d\'atelier reçoit la liste des salaires des travailleurs pour préparer la paie. Il la laisse sur le bureau de l\'atelier.', piege:'Des données de salaire (Art. 4.1) laissées en clair dans un lieu accessible. Les travailleurs et visiteurs peuvent les voir.', reflexe:['Ranger les documents de paie dans un tiroir fermé à clé','Ne pas laisser les listes de salaires sur le bureau','Ne partager la liste qu\'avec les personnes concernées','Détruire les documents obsolètes (déchiqueteuse)','Signaler toute consultation non autorisée'], retenir:'Les salaires sont confidentiels. On range, on limite l\'accès, on détruit.', quiz:{q:'Vous recevez la liste des salaires. Où la rangez-vous ?', options:['Sur le bureau, j\'en ai besoin','Dans un tiroir fermé à clé','Dans le cahier de l\'atelier'], correct:1} },
+      { titre:'Le proche insistant', situation:'Un proche d\'un travailleur appelle tous les jours pour avoir des nouvelles. Aujourd\'hui il insiste : « Je sais que vous avez les infos, c\'est mon fils, j\'ai le droit. Allez, faites un effort, je suis inquiet. » Il est poli mais très insistant.', piege:'Céder à la pression émotionnelle et donner des infos « pour être gentil », sans vérifier le droit d\'accès. La familiarité et l\'insistance ne remplacent jamais la vérification.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que vous comprenez son inquiétude, mais que vous devez vérifier le droit d\'accès','Ne jamais donner d\'infos sous la pression','Proposer une démarche : contacter le référent RGPD qui vérifiera le droit','Ne pas se laisser intimider par l\'insistance'], retenir:'La pression émotionnelle ne remplace pas la vérification. On reste ferme et bienveillant.', quiz:{q:'Un proche insiste beaucoup pour avoir des infos. Que faites-vous ?', options:['Je cède, il est inquiet','Je reste ferme et je propose de vérifier le droit d\'accès via le référent','Je lui donne les infos de santé pour le rassurer'], correct:1} }
+    ]
+  },
+  'IME': {
+    type: 'etab', label: 'IME',
+    scenarios: [
+      { titre:'Droit d\'accès au dossier médical', situation:'Un éducateur reçoit un appel d\'un parent qui demande « le dossier complet de mon fils, avec les comptes rendus médicaux et les évaluations ». Le parent est pressé et veut tout tout de suite.', piege:'Donner le dossier complet par email sans vérifier l\'identité, ni le droit du parent, ni le contenu (le dossier contient des données de santé Art. 9).', reflexe:['Accueillir la demande (c\'est un droit légitime — Art. 15)','Vérifier l\'identité du demandeur (pièce d\'identité)','Vérifier le droit : le parent a-t-il l\'autorité parentale ? L\'enfant est-il majeur ?','Ne pas tout envoyer d\'un coup : distinguer le droit d\'accès vs les notes internes','Contacter le référent RGPD dans les 24h + répondre sous 30 jours (Art. 12.3)'], retenir:'Un dossier médical ne se donne pas au téléphone. On vérifie, on réfléchit, on répond sous 30 jours.', quiz:{q:'Un parent demande le dossier médical de son enfant par téléphone. Que faites-vous ?', options:['Je l\'envoie par email tout de suite','Je vérifie l\'identité et le droit, puis je contacte le référent RGPD','Je refuse, c\'est interdit'], correct:1} },
+      { titre:'Carnet papier', situation:'Un éducateur note sur un carnet papier les informations du jour sur les enfants (repas, humeur, comportement). Il laisse le carnet sur la table de la salle commune.', piege:'Des données personnelles (et parfois sensibles) laissées en clair dans un lieu accessible à tous. Le papier est aussi soumis au RGPD.', reflexe:['Ranger le carnet dans un tiroir fermé à clé après usage','Ne pas noter plus que nécessaire (minimisation — Art. 5.1.c)','Utiliser des codes si possible (initiales, pas de noms complets)','Détruire les notes obsolètes (déchiqueteuse)','Ne pas emporter le carnet chez soi'], retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Vous notez des infos sur les enfants dans un carnet. Où le rangez-vous ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} },
+      { titre:'Téléphone perso / WhatsApp', situation:'Un éducateur travaille et utilise son téléphone personnel pour prendre des notes sur les enfants suivis (progrès, comportement, santé). Il envoie parfois des photos à la coordinatrice par WhatsApp.', piege:'Utiliser un outil personnel (téléphone, WhatsApp) pour des données de santé d\'enfants (Art. 9) — pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Utiliser les outils fournis par l\'établissement (pas le téléphone perso)','Ne jamais envoyer de données de santé par WhatsApp (non sécurisé)','Anonymiser les notes quand c\'est possible','Signaler tout envoi accidentel au référent RGPD','Supprimer les données perso une fois transférées'], retenir:'Les données des enfants ne passent pas par mon téléphone perso. Outils pro, toujours.', quiz:{q:'Vous devez transmettre des notes sur un enfant à la coordinatrice. Comment ?', options:['Par WhatsApp, c\'est rapide','Par l\'outil sécurisé de l\'établissement','Par SMS'], correct:1} },
+      { titre:'Dossier psychologique', situation:'Un psychologue reçoit une demande d\'un parent de consulter le dossier psychologique de son enfant. Le dossier contient des notes très personnelles et des évaluations.', piege:'Donner l\'intégralité du dossier psychologique brut, y compris les notes internes du psychologue, sans distinction.', reflexe:['Distinguer les données communicables (faits, évaluations) des notes internes de réflexion','Vérifier l\'identité et le droit du parent','Préparer une réponse claire : ce qui est communiqué, ce qui ne l\'est pas, pourquoi','Contacter le référent RGPD pour les cas sensibles','Répondre sous 30 jours (Art. 12.3)'], retenir:'Le dossier psychologique se communique avec discernement : les faits oui, les notes internes non.', quiz:{q:'Un parent demande le dossier psychologique de son enfant. Que faites-vous ?', options:['Je donne tout le dossier brut','Je distingue les données communicables des notes internes, et je contacte le référent','Je refuse tout'], correct:1} },
+      { titre:'Photo de groupe', situation:'L\'IME organise une fête et veut publier une photo de groupe des enfants sur le site de l\'association pour « montrer la vie de l\'établissement ».', piege:'Publier des photos d\'enfants (personnes vulnérables) sans consentement écrit des parents. Le handicap = donnée sensible (Art. 9).', reflexe:['Obtenir le consentement écrit des parents avant toute publication','Expliquer où la photo va être publiée et pourquoi','Respecter les refus (ne pas photographier les enfants concernés)','Prévoir le retrait à tout moment','Éviter les photos identifiables si possible'], retenir:'Les photos d\'enfants ne se publient pas sans l\'accord écrit des parents.', quiz:{q:'Vous voulez publier une photo de groupe des enfants. Que faites-vous ?', options:['Je la publie, c\'est une belle photo','Je demande le consentement écrit des parents et je respecte les refus','Je publie sur WhatsApp sans rien demander'], correct:1} },
+      { titre:'Le parent pressé', situation:'Un parent appelle et insiste : « Je veux le dossier de mon fils MAINTENANT, j\'ai le droit, c\'est mon enfant. Je suis pressé, je dois le montrer à un avocat aujourd\'hui. » Il est poli mais très insistant et pressé.', piege:'Céder à la pression et donner le dossier immédiatement, sans vérifier l\'identité, le droit, ni distinguer les données communicables des notes internes.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que le droit d\'accès existe, mais que la vérification est obligatoire','Vérifier l\'identité et le droit (autorité parentale, majorité)','Distinguer les données communicables des notes internes','Répondre sous 30 jours, pas sous la pression'], retenir:'L\'urgence et la pression ne suppriment pas la vérification. On répond sous 30 jours, pas sous la pression.', quiz:{q:'Un parent pressé exige le dossier immédiatement. Que faites-vous ?', options:['Je le donne tout de suite, il est pressé','Je vérifie l\'identité et le droit, puis je réponds dans les délais','Je refuse tout'], correct:1} }
+    ]
+  },
+  'EAM': {
+    type: 'etab', label: 'EAM',
+    scenarios: [
+      { titre:'Transmission entre antennes', situation:'Une aide-soignante doit transmettre le dossier d\'un résident qui change d\'antenne. Elle copie nom, adresse, diagnostic et traitements dans son application de messagerie personnelle pour l\'envoyer.', piege:'Transmettre des données de santé (Art. 9) via un outil personnel non sécurisé. Pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Reconnaître que le dossier contient des données de santé protégées','Identifier le support autorisé de transmission entre les antennes','Utiliser le canal professionnel sécurisé','Ne jamais copier les données dans un outil personnel','Conserver une trace écrite de la transmission'], retenir:'Transmettre par les bons supports, jamais par un outil personnel.', quiz:{q:'Comment transmettez-vous le dossier d\'un résident entre antennes ?', options:['Depuis mon application de messagerie personnelle','Par le canal professionnel sécurisé établi','Par email classique sans protection'], correct:1} },
+      { titre:'Photo d\'accueil', situation:'À l\'accueil, une bénévole souhaite prendre la photo du nouveau résident pour l\'afficher dans le hall et la mettre dans le planning des activités. Ni lui ni son aidant n\'ont signé de consentement.', piege:'Prendre et publier la photo sans avoir demandé l\'autorisation. Une photo = donnée personnelle, le handicap = donnée sensible.', reflexe:['Ne pas prendre la photo sans accord','Informer la personne de l\'usage envisagé','Recueillir un consentement explicite et écrit','En cas de refus, ne pas produire ni diffuser la photo','Si la photo est déjà prise, la détruire et consigner la démarche'], retenir:'Une photo sans consentement, on ne la prend pas.', quiz:{q:'Quelle est la bonne démarche pour la photo d\'un résident ?', options:['La prendre et la publier immédiatement','Informer, obtenir le consentement écrit, puis diffuser uniquement avec l\'autorisation','Demander à l\'aidant au téléphone puis publier quand même'], correct:1} },
+      { titre:'Mot de passe partagé', situation:'Une nouvelle infirmière reste bloquée sur l\'application de soin. Pour ne pas faire attendre les soins, un collègue lui propose d\'utiliser son compte en lui donnant son identifiant et son mot de passe « juste ce soir ».', piege:'Partager son compte et son mot de passe avec une collègue. Perte de traçabilité : impossible de savoir qui a accédé aux données de santé.', reflexe:['Ne jamais donner son identifiant ni son mot de passe','Créer sa propre identité de connexion pour la nouvelle infirmière','Utiliser une authentification sécurisée','Signaler à l\'informatique les difficultés d\'accès','Utiliser des comptes nominatifs'], retenir:'Un compte, une seule personne. Jamais de mot de passe partagé.', quiz:{q:'Que doit faire la nouvelle infirmière bloquée ?', options:['Demander le mot de passe du collègue','Créer sa propre identité de connexion et signaler les difficultés d\'accès','Continuer à utiliser le compte partagé pour ne pas interrompre les soins'], correct:1} },
+      { titre:'Tablette perdue', situation:'Une auxiliaire dépose la tablette (avec l\'application contenant le planning et les traitements des résidents) dans son sac à main, l\'écran allumé, puis s\'éloigne. Le matériel disparaît.', piege:'Ne rien faire et penser qu\'une telle fuite n\'est rien. Une perte de matériel avec données de santé = incident (Art. 32).', reflexe:['Alerter sans attendre en signalant un incident','Isoler le matériel concerné','Réinitialiser les mots de passe exposés sans délai','Lancer la recherche et l\'enquête','Vérifier si une alerte aux personnes est requise (Art. 33-34)'], retenir:'Une perte de matériel à risque, on la déclare tout de suite.', quiz:{q:'Quelle est la première action face à la tablette perdue ?', options:['Attendre de savoir si le matériel est retrouvé','Annoncer l\'incident et sécuriser l\'appareil','Se justifier seul avec la direction le lendemain'], correct:1} },
+      { titre:'Demande d\'effacement', situation:'Un ancien résident demande par courriel qu\'on efface l\'ensemble de ses données : dossier médical, photos et courriers. La requête arrive signée et catégorique.', piege:'Conserver quand même « au cas où », ou ignorer la demande. Le droit à l\'effacement (Art. 17) doit être traité, en respectant les obligations de conservation.', reflexe:['Recueillir la demande par écrit','Vérifier les obligations de conservation des données de santé','Consigner la demande et sa date','Transmettre le dossier au référent RGPD ou au DPO','Effacer les données dans les délais, en conservant ce que la loi impose'], retenir:'Une demande d\'effacement, on la traite dans les délais, en respectant la loi.', quiz:{q:'Que fait-on face à une demande d\'effacement ?', options:['On l\'ignore, ce sont des données du passé','On la traite dans les délais et on vérifie les obligations de conservation','On efface tout sans vérification ni consignation'], correct:1} },
+      { titre:'La directrice pressée', situation:'La directrice arrive en retard, un résident pressé de soins. « Donne-moi l\'accès à son dossier, tout de suite, je n\'ai pas le temps », exige-t-elle de la soignante encore non connectée, en précisant que « c\'est la procédure habituelle ».', piege:'Obéir à la pression hiérarchique et se connecter avec le compte de la direction, ou donner l\'accès sans vérifier.', reflexe:['Rester calme et rappeler poliment la règle','Identifier la bonne voie : le rôle et le compte dédié','En cas d\'urgence légitime, créer l\'accès voulu au nom du rôle','Consigner l\'exception dans le registre','Signaler l\'insistance au référent RGPD ou au DPO'], retenir:'Une urgence humaine n\'annule pas la règle. On passe par la voie légitime.', quiz:{q:'Que fait la soignante face à l\'insistance de la directrice ?', options:['Elle donne l\'accès avec le compte du manager','Elle refuse la pression et fait passer l\'accès par la voie légitime, en consignant l\'exception','Elle lit discrètement le dossier puis se connecte elle-même'], correct:1} }
+    ]
+  },
+  'EANM': {
+    type: 'etab', label: 'EANM',
+    scenarios: [
+      { titre:'Accès au dossier d\'un mineur', situation:'Un stagiaire arrive seul et demande le dossier complet d\'une enfant non verbale autiste, pour le compléter tout seul pour sa première journée. Vous n\'êtes pas sûr qu\'il soit habilité à consulter ces données de santé.', piege:'Laisser le stagiaire travailler seul avec le dossier, en prétextant qu\'une collègue habilitée n\'est pas là.', reflexe:['Vérifier la matrice des habilitations du système d\'information','Si l\'accès n\'est pas validé, orienter vers une personne habilitée présente','Ne rien imprimer ni exporter avant validation de l\'accès','Encadrer le stagiaire avec une personne habilitée','Appliquer le principe du moindre droit : accès à ce dont il a besoin'], retenir:'On donne accès à une personne, à ce dont elle a besoin, pour faire son travail.', quiz:{q:'Le stagiaire insiste pour voir le dossier tout de suite. Que faites-vous ?', options:['Je lui ouvre le dossier pour qu\'il avance vite','Je rappelle le principe du moindre droit : accès sur habilitation uniquement, et je l\'aide via une personne habilitée','Je donne une copie papier du dossier'], correct:1} },
+      { titre:'Photo d\'un mineur', situation:'Pendant une animation de peinture, une parente vous demande de photographier sa fille posant devant une œuvre, pour l\'intégrer dans un groupe familial privé.', piege:'Prendre la photo sans vérifier le consentement écrit, même si « c\'est juste pour la famille ». Une photo d\'enfant = donnée sensible.', reflexe:['Vérifier le consentement écrit des parents pour la photographie','Expliquer où la photo va être utilisée','Respecter les refus','Prévoir le retrait à tout moment','Ne pas publier sur des canaux non sécurisés'], retenir:'Une photo d\'enfant ne se prend pas sans consentement écrit des parents.', quiz:{q:'Une parente demande une photo de sa fille. Que faites-vous ?', options:['Je la prends, c\'est sa mère','Je vérifie le consentement écrit et j\'explique l\'usage','Je la publie sur le groupe WhatsApp'], correct:1} },
+      { titre:'Vidéosurveillance', situation:'L\'EANM a installé une vidéosurveillance dans les couloirs. Un éducateur veut montrer les images à un parent « pour prouver que son enfant va bien ».', piege:'Montrer des images de vidéosurveillance à un tiers sans base légale. La vidéosurveillance a une finalité précise (sécurité), pas de démonstration.', reflexe:['Ne pas montrer les images de vidéosurveillance à des tiers','Rappeler la finalité de la vidéosurveillance (sécurité des locaux)','Vérifier qui a le droit de consulter les images','Signaler toute demande non conforme au référent RGPD','Respecter la durée de conservation des images'], retenir:'La vidéosurveillance sert à la sécurité, pas à montrer des images. Accès limité.', quiz:{q:'Un parent demande à voir les images de vidéosurveillance. Que faites-vous ?', options:['Je les montre, c\'est son enfant','Je rappelle la finalité (sécurité) et je refuse de montrer les images à un tiers','Je les envoie par email'], correct:1} },
+      { titre:'Biométrie', situation:'L\'EANM envisage d\'utiliser l\'empreinte digitale des enfants pour pointer leur présence. Un éducateur propose de lancer ça « rapidement, c\'est plus simple ».', piege:'Mettre en place un traitement biométrique sans analyse d\'impact (PIA) ni information des parents. La biométrie est une donnée sensible très encadrée.', reflexe:['Ne pas lancer la biométrie sans validation','Réaliser une analyse d\'impact (PIA) avant tout traitement biométrique','Informer les parents et recueillir le consentement','Vérifier la proportionnalité (un autre moyen suffit-il ?)','Consulter le référent RGPD ou le DPO'], retenir:'La biométrie ne se lance pas « rapidement ». PIA + information + consentement obligatoires.', quiz:{q:'On vous propose de lancer la biométrie rapidement. Que faites-vous ?', options:['Je lance, c\'est plus simple','Je demande une analyse d\'impact (PIA) et l\'information des parents avant tout','Je l\'installe sans rien dire'], correct:1} },
+      { titre:'Incident de données', situation:'Un éducateur découvre qu\'un dossier papier d\'un enfant a été laissé dans la salle commune et qu\'une personne non autorisée a pu le consulter.', piege:'Ne rien signaler « parce que rien n\'a été fait » ou « pour éviter les ennuis ». Un accès non autorisé à des données de santé = incident (Art. 32).', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Noter ce qui s\'est passé (qui, quand, quoi)','Sécuriser le dossier (le ranger sous clé)','Évaluer le risque pour l\'enfant','Enregistrer l\'incident dans le journal (Art. 33-34)'], retenir:'Un accès non autorisé se signale, toujours. On ne cache jamais.', quiz:{q:'Un dossier a été consulté par une personne non autorisée. Que faites-vous ?', options:['Rien, personne ne l\'a vu','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je le range et je n\'en parle pas'], correct:1} },
+      { titre:'Le parent insistant', situation:'Un parent insiste pour avoir le dossier complet de son enfant « tout de suite », en disant qu\'il a le droit et qu\'il est pressé. Il est poli mais très insistant.', piege:'Céder à la pression et donner le dossier immédiatement, sans vérifier l\'identité, le droit, ni distinguer les données communicables des notes internes.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que le droit d\'accès existe, mais que la vérification est obligatoire','Vérifier l\'identité et le droit (autorité parentale)','Distinguer les données communicables des notes internes','Répondre sous 30 jours, pas sous la pression'], retenir:'L\'urgence et la pression ne suppriment pas la vérification. On répond dans les délais.', quiz:{q:'Un parent pressé exige le dossier immédiatement. Que faites-vous ?', options:['Je le donne tout de suite, il est pressé','Je vérifie l\'identité et le droit, puis je réponds dans les délais','Je refuse tout'], correct:1} }
+    ]
+  },
+  'SAMSAH': {
+    type: 'etab', label: 'SAMSAH',
+    scenarios: [
+      { titre:'Demande d\'état de santé', situation:'Un intervenant est à domicile chez un usager. Une visiteuse s\'approche et demande des détails sur l\'état de santé de la personne accompagnée, en disant qu\'elle est de la famille.', piege:'Répondre oralement, dans un lieu partagé, des données de santé sans vérifier l\'identité ni l\'autorisation de la visiteuse.', reflexe:['Vérifier que la visiteuse est bien autorisée à connaître ces données','Ne pas verbaliser les détails sensibles là où d\'autres peuvent entendre','Consigner l\'information dans l\'outil officiel, jamais sur un post-it','Si la demande n\'est pas justifiée, orienter vers le coordinateur ou le référent','Rappeler que les données de santé restent sous contrôle de communication'], retenir:'Les données de santé, c\'est moi qui contrôle à qui elles partent.', quiz:{q:'Une visiteuse demande des détails sur l\'état de santé de la personne accompagnée. Que faites-vous ?', options:['Je réponds immédiatement avec les détails','Je vérifie son autorisation et je ne verbalise pas les données sensibles en public','Je lui donne les infos par téléphone'], correct:1} },
+      { titre:'Téléphone perso', situation:'Un intervenant utilise son téléphone personnel pour prendre des notes sur les usagers (santé, comportement) et envoie parfois des infos à la coordinatrice par SMS.', piege:'Utiliser un outil personnel (téléphone, SMS) pour des données de santé (Art. 9) — pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Utiliser les outils fournis par le service (pas le téléphone perso)','Ne jamais envoyer de données de santé par SMS ou WhatsApp','Anonymiser les notes quand c\'est possible','Signaler tout envoi accidentel au référent RGPD','Supprimer les données perso une fois transférées'], retenir:'Les données des usagers ne passent pas par mon téléphone perso. Outils pro, toujours.', quiz:{q:'Vous devez transmettre des notes sur un usager à la coordinatrice. Comment ?', options:['Par SMS, c\'est rapide','Par l\'outil sécurisé du service','Par WhatsApp'], correct:1} },
+      { titre:'Poste laissé ouvert', situation:'Un intervenant laisse son ordinateur ouvert avec le dossier des usagers, et s\'absente quelques minutes dans le bureau partagé.', piege:'Laisser un accès ouvert à des données personnelles (et parfois de santé) — n\'importe qui peut voir ou modifier. C\'est un incident de sécurité (Art. 32).', reflexe:['Verrouiller systématiquement son poste (Windows+L)','Ne jamais partager ses identifiants','Signaler tout accès non autorisé au référent RGPD','Changer le mot de passe si on a un doute','Enregistrer l\'incident dans le journal (Art. 33-34)'], retenir:'Poste verrouillé = données protégées. Un accès non autorisé se signale, toujours.', quiz:{q:'Vous vous absentez quelques minutes. Que faites-vous de votre poste ?', options:['Je le laisse ouvert, je reviens vite','Je le verrouille systématiquement','Je demande à un collègue de surveiller'], correct:1} },
+      { titre:'Carnet papier', situation:'Un intervenant note sur un carnet papier les informations du jour sur les usagers (repas, humeur, comportement). Il laisse le carnet dans la salle commune.', piege:'Des données personnelles (et parfois sensibles) laissées en clair dans un lieu accessible à tous. Le papier est aussi soumis au RGPD.', reflexe:['Ranger le carnet dans un tiroir fermé à clé après usage','Ne pas noter plus que nécessaire (minimisation — Art. 5.1.c)','Utiliser des codes si possible (initiales, pas de noms complets)','Détruire les notes obsolètes (déchiqueteuse)','Ne pas emporter le carnet chez soi'], retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Vous notez des infos sur les usagers dans un carnet. Où le rangez-vous ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} },
+      { titre:'Demande d\'un proche', situation:'Un proche d\'un usager appelle pour demander « comment ça va, il a fait quoi aujourd\'hui ? ». L\'intervenant connaît bien ce proche.', piege:'Donner des infos sur l\'usager (présence, activités, comportement) sans vérifier que le proche a le droit d\'y accéder.', reflexe:['Ne jamais donner d\'infos sans vérifier le droit d\'accès','Vérifier l\'identité et le lien (mandat, autorité)','Contacter l\'usager lui-même si possible','En cas de doute : contacter le référent RGPD','Ne pas donner d\'infos de santé au téléphone'], retenir:'Les infos sur un usager lui appartiennent. On vérifie qui demande et pourquoi.', quiz:{q:'Un proche appelle pour des infos sur un usager. Que faites-vous ?', options:['Je réponds, je le connais bien','Je vérifie le droit d\'accès avant de donner quoi que ce soit','Je donne les infos de santé aussi'], correct:1} },
+      { titre:'Le proche insistant', situation:'Un proche insiste beaucoup pour avoir des nouvelles de l\'usager : « Je suis inquiet, faites un effort, c\'est mon frère. » Il est poli mais très insistant.', piege:'Céder à la pression émotionnelle et donner des infos « pour être gentil », sans vérifier le droit d\'accès. La familiarité et l\'insistance ne remplacent jamais la vérification.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que vous comprenez son inquiétude, mais que vous devez vérifier le droit d\'accès','Ne jamais donner d\'infos sous la pression','Proposer une démarche : contacter le référent RGPD qui vérifiera le droit','Ne pas se laisser intimider par l\'insistance'], retenir:'La pression émotionnelle ne remplace pas la vérification. On reste ferme et bienveillant.', quiz:{q:'Un proche insiste beaucoup pour avoir des infos. Que faites-vous ?', options:['Je cède, il est inquiet','Je reste ferme et je propose de vérifier le droit d\'accès via le référent','Je lui donne les infos de santé pour le rassurer'], correct:1} }
+    ]
+  },
+  'SAVS': {
+    type: 'etab', label: 'SAVS',
+    scenarios: [
+      { titre:'Écran partagé à domicile', situation:'Un accompagnant SAVS remplit le diagnostic éducatif sur la tablette de l\'usager pendant une visite à domicile. Le diagnostic contient des données sensibles. Il laisse l\'écran allumé alors qu\'une autre personne entre dans le salon.', piege:'Laisser des données sensibles sur un écran partagé ou non verrouillé, visible par une personne non autorisée.', reflexe:['Verrouiller l\'écran avant de quitter un champ sensible','Saisir les données sensibles en dernier, sur un écran privé','Utiliser le dossier officiel de la structure (pas de fichiers personnels)','Ne pas garder l\'application ouverte en dehors de la pièce concernée','Signaler toute tablette inaccessible sans code écran'], retenir:'Les données sensibles ne se saisissent jamais sur un écran partagé ou non verrouillé.', quiz:{q:'Vous ouvrez le diagnostic lors d\'une visite et une autre personne entre. Que faites-vous d\'abord ?', options:['Je continue à saisir les données, on est à domicile','Je verrouille l\'écran et je n\'expose plus les données sensibles','Je copie le dossier sur mon téléphone pour le lire plus tard'], correct:1} },
+      { titre:'Connexion mobile non sécurisée', situation:'Un accompagnant utilise le Wi-Fi public d\'un café pour se connecter au dossier des usagers, car « c\'est plus rapide que le réseau du service ».', piege:'Se connecter à des données personnelles via un réseau non sécurisé (Wi-Fi public). Risque d\'interception (Art. 32).', reflexe:['Utiliser le réseau sécurisé du service (VPN si nécessaire)','Ne pas se connecter aux dossiers via un Wi-Fi public','Vérifier la sécurité de la connexion avant d\'accéder aux données','Signaler tout doute sur la sécurité au référent RGPD','Utiliser les outils fournis par le service'], retenir:'Jamais de données personnelles sur un Wi-Fi public. Réseau sécurisé, toujours.', quiz:{q:'Vous devez accéder au dossier d\'un usager en déplacement. Comment ?', options:['Via le Wi-Fi public du café','Via le réseau sécurisé du service (VPN)','Via le Wi-Fi de n\'importe quel endroit'], correct:1} },
+      { titre:'Téléphone perso', situation:'Un accompagnant utilise son téléphone personnel pour prendre des notes sur les usagers et envoie des infos à la coordinatrice par SMS.', piege:'Utiliser un outil personnel (téléphone, SMS) pour des données personnelles — pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Utiliser les outils fournis par le service (pas le téléphone perso)','Ne jamais envoyer de données personnelles par SMS ou WhatsApp','Anonymiser les notes quand c\'est possible','Signaler tout envoi accidentel au référent RGPD','Supprimer les données perso une fois transférées'], retenir:'Les données des usagers ne passent pas par mon téléphone perso. Outils pro, toujours.', quiz:{q:'Vous devez transmettre des notes sur un usager à la coordinatrice. Comment ?', options:['Par SMS, c\'est rapide','Par l\'outil sécurisé du service','Par WhatsApp'], correct:1} },
+      { titre:'Demande d\'un proche', situation:'Un proche d\'un usager appelle pour demander « comment ça va, il a fait quoi aujourd\'hui ? ». L\'accompagnant connaît bien ce proche.', piege:'Donner des infos sur l\'usager (présence, activités, comportement) sans vérifier que le proche a le droit d\'y accéder.', reflexe:['Ne jamais donner d\'infos sans vérifier le droit d\'accès','Vérifier l\'identité et le lien (mandat, autorité)','Contacter l\'usager lui-même si possible','En cas de doute : contacter le référent RGPD','Ne pas donner d\'infos de santé au téléphone'], retenir:'Les infos sur un usager lui appartiennent. On vérifie qui demande et pourquoi.', quiz:{q:'Un proche appelle pour des infos sur un usager. Que faites-vous ?', options:['Je réponds, je le connais bien','Je vérifie le droit d\'accès avant de donner quoi que ce soit','Je donne les infos de santé aussi'], correct:1} },
+      { titre:'Incident de données', situation:'Un accompagnant découvre qu\'il a envoyé par erreur un dossier d\'un usager à la mauvaise personne par email.', piege:'Ne rien signaler « parce que ça arrive » ou « pour éviter les ennuis ». Une erreur de destinataire = fuite de données (Art. 32).', reflexe:['Signaler immédiatement l\'erreur au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour l\'usager','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez un dossier à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le proche insistant', situation:'Un proche insiste beaucoup pour avoir des nouvelles de l\'usager : « Je suis inquiet, faites un effort, c\'est mon frère. » Il est poli mais très insistant.', piege:'Céder à la pression émotionnelle et donner des infos « pour être gentil », sans vérifier le droit d\'accès. La familiarité et l\'insistance ne remplacent jamais la vérification.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que vous comprenez son inquiétude, mais que vous devez vérifier le droit d\'accès','Ne jamais donner d\'infos sous la pression','Proposer une démarche : contacter le référent RGPD qui vérifiera le droit','Ne pas se laisser intimider par l\'insistance'], retenir:'La pression émotionnelle ne remplace pas la vérification. On reste ferme et bienveillant.', quiz:{q:'Un proche insiste beaucoup pour avoir des infos. Que faites-vous ?', options:['Je cède, il est inquiet','Je reste ferme et je propose de vérifier le droit d\'accès via le référent','Je lui donne les infos de santé pour le rassurer'], correct:1} }
+    ]
+  },
+  'SESSAD': {
+    type: 'etab', label: 'SESSAD',
+    scenarios: [
+      { titre:'Téléphone perso / WhatsApp', situation:'Un intervenant travaille à domicile et utilise son téléphone personnel pour prendre des notes sur les enfants suivis (progrès, comportement, santé). Il envoie parfois des photos à la coordinatrice par WhatsApp.', piege:'Utiliser un outil personnel (téléphone, WhatsApp) pour des données de santé d\'enfants (Art. 9) — pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Utiliser les outils fournis par l\'établissement (pas le téléphone perso)','Ne jamais envoyer de données de santé par WhatsApp (non sécurisé)','Anonymiser les notes quand c\'est possible','Signaler tout envoi accidentel au référent RGPD','Supprimer les données perso une fois transférées'], retenir:'Les données des enfants ne passent pas par mon téléphone perso. Outils pro, toujours.', quiz:{q:'Vous devez transmettre des notes sur un enfant à la coordinatrice. Comment ?', options:['Par WhatsApp, c\'est rapide','Par l\'outil sécurisé de l\'établissement','Par SMS'], correct:1} },
+      { titre:'Droit d\'accès au dossier', situation:'Un parent demande le dossier complet de son enfant, avec les comptes rendus médicaux et les évaluations. Le parent est pressé et veut tout tout de suite.', piege:'Donner le dossier complet par email sans vérifier l\'identité, ni le droit du parent, ni le contenu (le dossier contient des données de santé Art. 9).', reflexe:['Accueillir la demande (c\'est un droit légitime — Art. 15)','Vérifier l\'identité du demandeur (pièce d\'identité)','Vérifier le droit : le parent a-t-il l\'autorité parentale ? L\'enfant est-il majeur ?','Ne pas tout envoyer d\'un coup : distinguer le droit d\'accès vs les notes internes','Contacter le référent RGPD dans les 24h + répondre sous 30 jours (Art. 12.3)'], retenir:'Un dossier médical ne se donne pas au téléphone. On vérifie, on réfléchit, on répond sous 30 jours.', quiz:{q:'Un parent demande le dossier médical de son enfant par téléphone. Que faites-vous ?', options:['Je l\'envoie par email tout de suite','Je vérifie l\'identité et le droit, puis je contacte le référent RGPD','Je refuse, c\'est interdit'], correct:1} },
+      { titre:'Carnet papier', situation:'Un intervenant note sur un carnet papier les informations du jour sur les enfants (repas, humeur, comportement). Il laisse le carnet dans la salle commune.', piege:'Des données personnelles (et parfois sensibles) laissées en clair dans un lieu accessible à tous. Le papier est aussi soumis au RGPD.', reflexe:['Ranger le carnet dans un tiroir fermé à clé après usage','Ne pas noter plus que nécessaire (minimisation — Art. 5.1.c)','Utiliser des codes si possible (initiales, pas de noms complets)','Détruire les notes obsolètes (déchiqueteuse)','Ne pas emporter le carnet chez soi'], retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Vous notez des infos sur les enfants dans un carnet. Où le rangez-vous ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} },
+      { titre:'Photo d\'un enfant', situation:'Un intervenant veut prendre une photo d\'un enfant en activité pour la montrer à la coordinatrice « pour le dossier ».', piege:'Prendre et partager une photo d\'enfant sans consentement écrit des parents. Une photo = donnée personnelle, le handicap = donnée sensible.', reflexe:['Obtenir le consentement écrit des parents avant toute photo','Expliquer où la photo va être utilisée','Respecter les refus','Ne pas partager la photo sur des canaux non sécurisés','Prévoir le retrait à tout moment'], retenir:'Une photo d\'enfant ne se prend pas sans consentement écrit des parents.', quiz:{q:'Vous voulez prendre une photo d\'un enfant pour le dossier. Que faites-vous ?', options:['Je la prends, c\'est pour le dossier','Je demande le consentement écrit des parents et j\'explique l\'usage','Je la partage sur WhatsApp'], correct:1} },
+      { titre:'Incident de données', situation:'Un intervenant découvre qu\'il a envoyé par erreur un dossier d\'un enfant à la mauvaise personne par email.', piege:'Ne rien signaler « parce que ça arrive » ou « pour éviter les ennuis ». Une erreur de destinataire = fuite de données (Art. 32).', reflexe:['Signaler immédiatement l\'erreur au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour l\'enfant','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez un dossier à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le parent insistant', situation:'Un parent insiste pour avoir le dossier complet de son enfant « tout de suite », en disant qu\'il a le droit et qu\'il est pressé. Il est poli mais très insistant.', piege:'Céder à la pression et donner le dossier immédiatement, sans vérifier l\'identité, le droit, ni distinguer les données communicables des notes internes.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que le droit d\'accès existe, mais que la vérification est obligatoire','Vérifier l\'identité et le droit (autorité parentale)','Distinguer les données communicables des notes internes','Répondre sous 30 jours, pas sous la pression'], retenir:'L\'urgence et la pression ne suppriment pas la vérification. On répond dans les délais.', quiz:{q:'Un parent pressé exige le dossier immédiatement. Que faites-vous ?', options:['Je le donne tout de suite, il est pressé','Je vérifie l\'identité et le droit, puis je réponds dans les délais','Je refuse tout'], correct:1} }
+    ]
+  },
+  'CMPP': {
+    type: 'etab', label: 'CMPP',
+    scenarios: [
+      { titre:'Dossier psychologique', situation:'Un psychologue reçoit une demande d\'un parent de consulter le dossier psychologique de son enfant. Le dossier contient des notes très personnelles et des évaluations.', piege:'Donner l\'intégralité du dossier psychologique brut, y compris les notes internes du psychologue, sans distinction.', reflexe:['Distinguer les données communicables (faits, évaluations) des notes internes de réflexion','Vérifier l\'identité et le droit du parent','Préparer une réponse claire : ce qui est communiqué, ce qui ne l\'est pas, pourquoi','Contacter le référent RGPD pour les cas sensibles','Répondre sous 30 jours (Art. 12.3)'], retenir:'Le dossier psychologique se communique avec discernement : les faits oui, les notes internes non.', quiz:{q:'Un parent demande le dossier psychologique de son enfant. Que faites-vous ?', options:['Je donne tout le dossier brut','Je distingue les données communicables des notes internes, et je contacte le référent','Je refuse tout'], correct:1} },
+      { titre:'Carnet de consultation', situation:'Un psychologue note ses observations sur un carnet papier qu\'il laisse sur le bureau de la salle d\'attente.', piege:'Des notes de consultation (données de santé mentale, Art. 9) laissées en clair dans un lieu accessible. Le papier est aussi soumis au RGPD.', reflexe:['Ranger le carnet dans un tiroir fermé à clé après usage','Ne pas noter plus que nécessaire (minimisation — Art. 5.1.c)','Utiliser des codes si possible (initiales, pas de noms complets)','Détruire les notes obsolètes (déchiqueteuse)','Ne pas emporter le carnet chez soi'], retenir:'Les notes de consultation sont confidentielles. On range, on minimise, on détruit.', quiz:{q:'Vous notez vos observations dans un carnet. Où le rangez-vous ?', options:['Sur le bureau de la salle d\'attente','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} },
+      { titre:'Téléphone perso', situation:'Un psychologue utilise son téléphone personnel pour prendre des notes sur les enfants et envoie des infos à un collègue par SMS.', piege:'Utiliser un outil personnel (téléphone, SMS) pour des données de santé mentale (Art. 9) — pas de chiffrement, pas de contrôle, risque de fuite.', reflexe:['Utiliser les outils fournis par le centre (pas le téléphone perso)','Ne jamais envoyer de données de santé par SMS ou WhatsApp','Anonymiser les notes quand c\'est possible','Signaler tout envoi accidentel au référent RGPD','Supprimer les données perso une fois transférées'], retenir:'Les données des enfants ne passent pas par mon téléphone perso. Outils pro, toujours.', quiz:{q:'Vous devez transmettre des notes sur un enfant à un collègue. Comment ?', options:['Par SMS, c\'est rapide','Par l\'outil sécurisé du centre','Par WhatsApp'], correct:1} },
+      { titre:'Poste laissé ouvert', situation:'Un psychologue laisse son ordinateur ouvert avec les dossiers des enfants, et s\'absente quelques minutes dans le bureau partagé.', piege:'Laisser un accès ouvert à des données de santé mentale — n\'importe qui peut voir ou modifier. C\'est un incident de sécurité (Art. 32).', reflexe:['Verrouiller systématiquement son poste (Windows+L)','Ne jamais partager ses identifiants','Signaler tout accès non autorisé au référent RGPD','Changer le mot de passe si on a un doute','Enregistrer l\'incident dans le journal (Art. 33-34)'], retenir:'Poste verrouillé = données protégées. Un accès non autorisé se signale, toujours.', quiz:{q:'Vous vous absentez quelques minutes. Que faites-vous de votre poste ?', options:['Je le laisse ouvert, je reviens vite','Je le verrouille systématiquement','Je demande à un collègue de surveiller'], correct:1} },
+      { titre:'Demande d\'effacement', situation:'Un parent demande l\'effacement de toutes les données de son enfant : « Supprimez tout, je ne veux plus que vous ayez quoi que ce soit. »', piege:'Supprimer TOUT immédiatement, y compris les données nécessaires à la prise en charge en cours, ou que la loi oblige à conserver.', reflexe:['Accueillir la demande (c\'est un droit — Art. 17)','Analyser : quelles données peuvent être effacées, lesquelles doivent être conservées','Ne pas effacer les données nécessaires à la prise en charge en cours','Conserver ce que la loi impose (facturation, archives)','Répondre sous 30 jours en expliquant ce qui est effacé et conservé'], retenir:'Le droit à l\'effacement n\'est pas absolu. On efface ce qu\'on peut, on conserve ce que la loi impose.', quiz:{q:'Un parent demande l\'effacement de toutes les données. Que faites-vous ?', options:['Je supprime tout immédiatement','J\'analyse ce qui peut être effacé vs ce que la loi impose de conserver','Je refuse, c\'est impossible'], correct:1} },
+      { titre:'Le parent insistant', situation:'Un parent insiste pour avoir le dossier psychologique de son enfant « tout de suite », en disant qu\'il a le droit et qu\'il est pressé. Il est poli mais très insistant.', piege:'Céder à la pression et donner le dossier immédiatement, sans vérifier l\'identité, le droit, ni distinguer les données communicables des notes internes.', reflexe:['Rester calme et bienveillant, mais ferme','Expliquer que le droit d\'accès existe, mais que la vérification est obligatoire','Vérifier l\'identité et le droit (autorité parentale)','Distinguer les données communicables des notes internes','Répondre sous 30 jours, pas sous la pression'], retenir:'L\'urgence et la pression ne suppriment pas la vérification. On répond dans les délais.', quiz:{q:'Un parent pressé exige le dossier psychologique immédiatement. Que faites-vous ?', options:['Je le donne tout de suite, il est pressé','Je vérifie l\'identité et le droit, puis je réponds dans les délais','Je refuse tout'], correct:1} }
+    ]
+  },
+  'RH': {
+    type: 'service', label: 'RH',
+    scenarios: [
+      { titre:'Départ salarié / compte', situation:'Un salarié quitte l\'entreprise. Son compte informatique doit être désactivé, mais le service RH est débordé et « on verra la semaine prochaine ».', piege:'Laisser un compte actif après le départ = risque d\'accès non autorisé aux données RH (salaires, santé, évaluations). C\'est un incident potentiel (Art. 32).', reflexe:['Désactiver le compte le jour du départ (procédure immédiate)','Récupérer les badges, clés, matériel','Transférer les emails nécessaires à un collègue (avec accord)','Conserver les données RH selon les durées légales (paie 5 ans, etc.)','Documenter la procédure de départ'], retenir:'Départ d\'un salarié = compte désactivé le jour même. Pas de délai.', quiz:{q:'Un salarié quitte l\'entreprise. Quand désactivez-vous son compte ?', options:['La semaine prochaine, on a le temps','Le jour même de son départ','Quand il le demande'], correct:1} },
+      { titre:'CV et candidatures', situation:'Le service RH reçoit des CV par email. Un recruteur garde les CV des candidats non retenus « au cas où un poste se libère », dans un dossier partagé.', piege:'Conserver des CV sans base légale ni durée définie. Les candidats n\'ont pas été informés de la conservation de leurs données.', reflexe:['Informer les candidats de la conservation de leurs données (durée, finalité)','Ne conserver les CV que le temps nécessaire (max 2 ans avec accord)','Obtenir le consentement pour une conservation plus longue','Sécuriser l\'accès aux CV (dossier restreint)','Supprimer les CV des candidats non retenus après le délai'], retenir:'Un CV se conserve avec l\'accord du candidat, pour une durée définie, dans un accès restreint.', quiz:{q:'Un candidat n\'est pas retenu. Que faites-vous de son CV ?', options:['Je le garde indéfiniment au cas où','Je l\'informe de la conservation et je le garde max 2 ans avec accord','Je le partage dans tout le service'], correct:1} },
+      { titre:'Demande d\'accès salarié', situation:'Un salarié demande « toutes les données que l\'entreprise détient sur moi » (Art. 15). Le service RH ne sait pas quoi faire.', piege:'Ignorer la demande, ou répondre de façon incomplète, ou tarder au-delà de 30 jours. C\'est une infraction (Art. 12.3).', reflexe:['Accuser réception de la demande immédiatement','Identifier toutes les données concernées (RH, paie, emails, évaluations)','Répondre sous 30 jours (prolongeable de 2 mois si complexe, en informant)','Protéger les données des tiers (ne pas communiquer les infos d\'autres personnes)','Documenter la demande et la réponse'], retenir:'Une demande d\'accès se traite sous 30 jours, complète, en protégeant les tiers.', quiz:{q:'Un salarié demande toutes ses données. Quel est le délai de réponse ?', options:['1 mois (30 jours)','1 an','Pas de délai'], correct:0} },
+      { titre:'Email de santé', situation:'Le service RH reçoit un arrêt maladie d\'un salarié par email. Un collègue le transfère « pour info » à plusieurs personnes.', piege:'Transmettre des données de santé (arrêt maladie) à des personnes qui n\'en ont pas besoin. C\'est une donnée sensible (Art. 9).', reflexe:['Ne transmettre les arrêts maladie qu\'aux personnes concernées (paie, manager direct)','Ne pas transférer « pour info »','Utiliser un canal sécurisé','Ne pas mettre de données de santé dans l\'objet ou le corps de l\'email','Signaler tout transfert non autorisé'], retenir:'Un arrêt maladie ne se transfère pas « pour info ». Seules les personnes concernées y ont accès.', quiz:{q:'Vous recevez un arrêt maladie. Que faites-vous ?', options:['Je le transfère à tout le service pour info','Je ne le transmets qu\'aux personnes concernées, par canal sécurisé','Je le poste sur le tableau'], correct:1} },
+      { titre:'Le manager qui insiste', situation:'Un manager vous appelle : « J\'ai besoin du dossier complet de mon salarié, il est en arrêt et je dois gérer son remplacement. Donne-moi tout, je suis pressé. » Il est votre supérieur et insiste.', piege:'Céder à la pression hiérarchique et donner le dossier complet (y compris les données de santé) à un manager qui n\'a pas forcément le droit d\'y accéder.', reflexe:['Rester respectueux mais ferme','Expliquer que les données de santé ne se partagent pas sans base légale','Vérifier ce que le manager a le droit de savoir (présence, pas le diagnostic)','Ne donner que le strict nécessaire','En cas de doute : contacter le référent RGPD ou le DPO'], retenir:'La pression hiérarchique ne donne pas le droit d\'accéder aux données de santé. On vérifie, on limite.', quiz:{q:'Un manager insiste pour avoir le dossier complet d\'un salarié en arrêt. Que faites-vous ?', options:['Je lui donne tout, c\'est mon supérieur','Je vérifie son droit et je ne donne que le nécessaire, sans les données de santé','Je lui donne le diagnostic médical'], correct:1} },
+      { titre:'Le collègue « de confiance »', situation:'Un collègue du service RH vous demande : « Je dois préparer un dossier pour la direction, donne-moi ton accès au logiciel, je n\'ai pas encore le mien. T\'inquiète, c\'est juste pour aujourd\'hui. »', piege:'Partager son accès « juste pour aujourd\'hui » = perte de traçabilité. Impossible de savoir qui a accédé aux données RH (salaires, santé).', reflexe:['Ne jamais partager son accès, même « juste pour aujourd\'hui »','Proposer une solution : demander un accès dédié au service SI','Expliquer que c\'est une règle de sécurité, pas un manque de confiance','Signaler la demande au référent RGPD si elle se répète','Utiliser des comptes nominatifs'], retenir:'Jamais d\'accès partagé, même « juste pour aujourd\'hui ». On demande un accès dédié.', quiz:{q:'Un collègue vous demande votre accès « juste pour aujourd\'hui ». Que faites-vous ?', options:['Je le donne, c\'est un collègue de confiance','Je refuse et je propose un accès dédié via le service SI','Je lui écris mon mot de passe'], correct:1} }
+    ]
+  },
+  'Paie': {
+    type: 'service', label: 'Paie',
+    scenarios: [
+      { titre:'Email non sécurisé', situation:'Le service Paie reçoit des bulletins de salaire et des données de santé (arrêts maladie) par email classique non sécurisé, car « c\'est comme ça qu\'on a toujours fait ».', piege:'Transmettre des données sensibles (santé, salaires) par email non chiffré = risque de fuite (Art. 32). C\'est un des constats de l\'audit.', reflexe:['Bannir l\'email classique pour les données sensibles','Utiliser un canal sécurisé (plateforme RH, coffre-fort numérique, email chiffré)','Vérifier le destinataire avant chaque envoi','Ne pas mettre de données de santé dans l\'objet ou le corps de l\'email','Former l\'équipe à la bonne pratique'], retenir:'Les bulletins et les arrêts maladie ne passent pas par l\'email classique. Canal sécurisé, toujours.', quiz:{q:'Vous devez envoyer un bulletin de salaire. Comment ?', options:['Par email classique, c\'est rapide','Par un canal sécurisé (plateforme RH, coffre-fort)','Par WhatsApp'], correct:1} },
+      { titre:'Conservation des bulletins', situation:'Le service Paie garde les bulletins de salaire de tous les salariés depuis 20 ans dans un dossier partagé, « au cas où ».', piege:'Conserver des données au-delà des durées légales. Les bulletins se conservent 5 ans (ou 6 ans pour les fiches de paie), pas indéfiniment.', reflexe:['Connaître les durées légales de conservation (paie 5 ans, fiches 6 ans)','Purger les documents au-delà de la durée légale','Sécuriser l\'accès aux bulletins (dossier restreint)','Documenter la politique de conservation','Détruire les documents obsolètes (déchiqueteuse)'], retenir:'Les bulletins se conservent 5 ans, pas 20. On purge, on sécurise, on détruit.', quiz:{q:'Combien de temps conservez-vous les bulletins de salaire ?', options:['Indéfiniment, au cas où','5 ans (durée légale), puis je purge','1 an'], correct:1} },
+      { titre:'RIB / accès restreint', situation:'Le service Paie reçoit un RIB d\'un salarié pour le virement. Il le classe dans un dossier partagé accessible à tout le service.', piege:'Des données bancaires (RIB) accessibles à des personnes qui n\'en ont pas besoin = violation de la minimisation (Art. 5.1.c) et risque de fraude.', reflexe:['Restreindre l\'accès aux documents financiers (dossiers à droits limités)','Ne pas stocker les RIB plus longtemps que nécessaire','Sécuriser les données bancaires (chiffrement, accès restreint)','Vérifier qui a accès aux dossiers partagés','Purge régulière des documents obsolètes'], retenir:'Les données bancaires ne se partagent pas à tout le service. Accès restreint, toujours.', quiz:{q:'Un document contient un RIB. Où le rangez-vous ?', options:['Dans le dossier partagé de tout le service','Dans un dossier à accès restreint','Sur le bureau'], correct:1} },
+      { titre:'Erreur de destinataire', situation:'Un gestionnaire de paie envoie un virement à un salarié, mais tape une erreur dans l\'adresse email et envoie le bulletin à la mauvaise personne.', piege:'Une erreur de destinataire = fuite de données (Art. 32). Il faut réagir vite et documenter.', reflexe:['Vérifier le destinataire avant chaque envoi','Signaler immédiatement l\'erreur au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez un bulletin à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le directeur pressé', situation:'Le directeur vous appelle : « J\'ai besoin des bulletins de tout le service pour un audit, envoie-les-moi tout de suite par email. C\'est urgent, la direction attend. »', piege:'Céder à la pression hiérarchique et envoyer des bulletins de salaire (données sensibles) par email non sécurisé, sans vérifier le besoin réel ni le canal.', reflexe:['Rester respectueux mais ferme','Expliquer que les bulletins sont des données sensibles','Vérifier le besoin réel et le périmètre (qui, quoi)','Utiliser un canal sécurisé, pas l\'email classique','En cas de doute : contacter le référent RGPD ou le DPO'], retenir:'La pression hiérarchique ne justifie pas un envoi non sécurisé de données sensibles. Canal sécurisé, toujours.', quiz:{q:'Le directeur vous demande les bulletins par email urgent. Que faites-vous ?', options:['Je les envoie par email, c\'est le directeur','Je vérifie le besoin et j\'utilise un canal sécurisé','Je les envoie par WhatsApp'], correct:1} },
+      { titre:'Le collègue « pour dépanner »', situation:'Un collègue du service Paie vous demande : « Je dois faire un virement urgent, donne-moi ton accès au logiciel, je n\'ai pas le mien. T\'inquiète, c\'est juste pour aujourd\'hui. »', piege:'Partager son accès « juste pour aujourd\'hui » = perte de traçabilité. Impossible de savoir qui a accédé aux données de paie (salaires, santé).', reflexe:['Ne jamais partager son accès, même « juste pour aujourd\'hui »','Proposer une solution : demander un accès dédié au service SI','Expliquer que c\'est une règle de sécurité, pas un manque de confiance','Signaler la demande au référent RGPD si elle se répète','Utiliser des comptes nominatifs'], retenir:'Jamais d\'accès partagé, même « juste pour aujourd\'hui ». On demande un accès dédié.', quiz:{q:'Un collègue vous demande votre accès « juste pour aujourd\'hui ». Que faites-vous ?', options:['Je le donne, c\'est un collègue de confiance','Je refuse et je propose un accès dédié via le service SI','Je lui écris mon mot de passe'], correct:1} }
+    ]
+  },
+  'Communication': {
+    type: 'service', label: 'Communication',
+    scenarios: [
+      { titre:'Newsletter', situation:'Le service Communication veut lancer une newsletter avec une liste de contacts stockée dans un fichier Excel sur un poste partagé.', piege:'Une liste de contacts (emails, noms) dans un Excel non sécurisé, sans consentement, sans outil conforme = violation (Art. 6.1.a consentement + Art. 32 sécurité).', reflexe:['Obtenir le consentement des contacts (case à cocher, pas de case pré-cochée)','Utiliser un outil conforme (Brevo, Mailchimp — avec DPA signée)','Ne pas stocker la liste dans un Excel non sécurisé','Prévoir le désabonnement (lien dans chaque email — Art. 21)','Sécuriser le fichier via la DSI si temporaire'], retenir:'Une newsletter = consentement + outil conforme + lien de désabonnement. Pas d\'Excel non sécurisé.', quiz:{q:'Vous lancez une newsletter. Que faut-il ?', options:['Une liste Excel et c\'est parti','Le consentement des contacts + un outil conforme + un lien de désabonnement','Rien, c\'est de la communication'], correct:1} },
+      { titre:'Photo sur les réseaux', situation:'Le service Communication veut publier une photo d\'usagers sur la page Facebook de l\'association pour « montrer la vie des établissements ».', piege:'Publier des photos de personnes identifiables (usagers vulnérables) sans consentement écrit. Une photo = donnée personnelle, le handicap = donnée sensible.', reflexe:['Obtenir le consentement écrit des personnes (ou de leur représentant)','Expliquer où la photo va être publiée et pourquoi','Respecter les refus','Prévoir le retrait à tout moment','Éviter les photos identifiables si possible'], retenir:'Une photo d\'usager ne se publie pas sans consentement écrit.', quiz:{q:'Vous voulez publier une photo d\'usagers sur Facebook. Que faites-vous ?', options:['Je la publie, c\'est de la bonne pub','Je demande le consentement écrit et j\'explique l\'usage','Je la publie sur WhatsApp'], correct:1} },
+      { titre:'Liste de contacts partagée', situation:'Le service Communication partage la liste des contacts (emails, noms) des familles avec un prestataire externe « pour un projet commun », sans contrat.', piege:'Partager des données personnelles avec un prestataire sans contrat de sous-traitance (DPA) ni information des personnes.', reflexe:['Vérifier la base légale du partage','Signer un contrat de sous-traitance (DPA) avec le prestataire','Informer les personnes de l\'usage de leurs données','Limiter les données partagées au strict nécessaire','Ne pas partager sans vérification'], retenir:'On ne partage pas des données avec un prestataire sans contrat de sous-traitance.', quiz:{q:'Un prestataire demande la liste des contacts. Que faites-vous ?', options:['Je la partage, c\'est un partenaire','Je vérifie la base légale et je signe un contrat de sous-traitance (DPA)','Je la partage sans rien dire'], correct:1} },
+      { titre:'Droit d\'opposition', situation:'Un contact demande à ne plus recevoir la newsletter. Le service Communication continue de l\'envoyer « au cas où il changerait d\'avis ».', piege:'Ignorer le droit d\'opposition (Art. 21). Un contact qui refuse doit être retiré immédiatement de la liste.', reflexe:['Respecter immédiatement le droit d\'opposition','Retirer le contact de la liste','Ne pas le recontacter sans son accord','Documenter la demande d\'opposition','Vérifier que le désabonnement fonctionne'], retenir:'Le droit d\'opposition se respecte immédiatement. On retire, on ne recontacte pas.', quiz:{q:'Un contact demande à ne plus recevoir la newsletter. Que faites-vous ?', options:['Je continue, il pourrait changer d\'avis','Je le retire immédiatement de la liste et je respecte son opposition','Je le recontacte pour lui demander pourquoi'], correct:1} },
+      { titre:'Incident de données', situation:'Le service Communication découvre qu\'il a envoyé la newsletter à la mauvaise liste de contacts, exposant des emails à des personnes non autorisées.', piege:'Ne rien signaler « parce que ça arrive ». Une erreur de diffusion = fuite de données (Art. 32).', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Identifier l\'ampleur (qui a reçu quoi)','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour les personnes','Mettre en place une double vérification pour les envois'], retenir:'Une erreur de diffusion se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez la newsletter à la mauvaise liste. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne liste sans rien dire'], correct:1} },
+      { titre:'Le collègue pressé', situation:'Un collègue vous demande : « Donne-moi la liste des contacts des familles, je dois lancer une campagne urgente. T\'inquiète, c\'est pour le bien de l\'asso. »', piege:'Céder à la pression et partager la liste sans vérifier la base légale ni le besoin réel.', reflexe:['Rester calme et ferme','Vérifier la base légale de la campagne','Vérifier le besoin réel et le périmètre','Ne partager que le strict nécessaire','En cas de doute : contacter le référent RGPD'], retenir:'La pression ne justifie pas un partage de données sans base légale. On vérifie.', quiz:{q:'Un collègue pressé demande la liste des contacts. Que faites-vous ?', options:['Je la donne, c\'est pour le bien de l\'asso','Je vérifie la base légale et le besoin réel avant de partager','Je la partage sur WhatsApp'], correct:1} }
+    ]
+  },
+  'DAF': {
+    type: 'service', label: 'DAF',
+    scenarios: [
+      { titre:'RIB / accès restreint', situation:'Le DAF reçoit une facture d\'un fournisseur contenant son RIB et des données bancaires. Il la classe dans un dossier partagé accessible à tout le service.', piege:'Des données bancaires (RIB) accessibles à des personnes qui n\'en ont pas besoin = violation du principe de minimisation (Art. 5.1.c) et risque de fraude.', reflexe:['Restreindre l\'accès aux documents financiers (dossiers à droits limités)','Ne pas stocker les RIB plus longtemps que nécessaire','Sécuriser les données bancaires (chiffrement, accès restreint)','Vérifier qui a accès aux dossiers partagés','Purge régulière des documents obsolètes'], retenir:'Les données bancaires ne se partagent pas à tout le service. Accès restreint, toujours.', quiz:{q:'Un document contient un RIB. Où le rangez-vous ?', options:['Dans le dossier partagé de tout le service','Dans un dossier à accès restreint','Sur le bureau'], correct:1} },
+      { titre:'Facture par email', situation:'Le DAF reçoit des factures avec des RIB et des données bancaires par email classique non sécurisé.', piege:'Transmettre des données bancaires par email non chiffré = risque de fuite et de fraude (Art. 32).', reflexe:['Bannir l\'email classique pour les données bancaires','Utiliser un canal sécurisé (plateforme, coffre-fort numérique)','Vérifier le destinataire avant chaque envoi','Ne pas mettre de données bancaires dans l\'objet ou le corps de l\'email','Former l\'équipe à la bonne pratique'], retenir:'Les données bancaires ne passent pas par l\'email classique. Canal sécurisé, toujours.', quiz:{q:'Vous devez envoyer une facture avec un RIB. Comment ?', options:['Par email classique, c\'est rapide','Par un canal sécurisé (plateforme, coffre-fort)','Par WhatsApp'], correct:1} },
+      { titre:'Conservation des factures', situation:'Le DAF garde les factures avec les RIB des fournisseurs depuis 15 ans dans un dossier partagé, « au cas où ».', piege:'Conserver des données bancaires au-delà des durées légales. Les factures se conservent 10 ans (comptabilité), pas indéfiniment.', reflexe:['Connaître les durées légales de conservation (factures 10 ans)','Purger les documents au-delà de la durée légale','Sécuriser l\'accès aux factures (dossier restreint)','Documenter la politique de conservation','Détruire les documents obsolètes (déchiqueteuse)'], retenir:'Les factures se conservent 10 ans, pas 15. On purge, on sécurise, on détruit.', quiz:{q:'Combien de temps conservez-vous les factures avec RIB ?', options:['Indéfiniment, au cas où','10 ans (durée légale), puis je purge','1 an'], correct:1} },
+      { titre:'Incident de données', situation:'Le DAF découvre qu\'un document financier avec des RIB a été envoyé par erreur à un fournisseur non concerné.', piege:'Ne rien signaler « parce que ça arrive ». Une erreur de destinataire avec des données bancaires = fuite (Art. 32) et risque de fraude.', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque de fraude','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire avec des données bancaires se signale immédiatement.', quiz:{q:'Vous envoyez un document avec RIB à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le directeur pressé', situation:'Le directeur vous appelle : « J\'ai besoin des RIB de tous les fournisseurs pour un audit, envoie-les-moi tout de suite par email. C\'est urgent. »', piege:'Céder à la pression hiérarchique et envoyer des données bancaires par email non sécurisé, sans vérifier le besoin réel ni le canal.', reflexe:['Rester respectueux mais ferme','Expliquer que les RIB sont des données sensibles','Vérifier le besoin réel et le périmètre (qui, quoi)','Utiliser un canal sécurisé, pas l\'email classique','En cas de doute : contacter le référent RGPD ou le DPO'], retenir:'La pression hiérarchique ne justifie pas un envoi non sécurisé de données bancaires. Canal sécurisé, toujours.', quiz:{q:'Le directeur vous demande les RIB par email urgent. Que faites-vous ?', options:['Je les envoie par email, c\'est le directeur','Je vérifie le besoin et j\'utilise un canal sécurisé','Je les envoie par WhatsApp'], correct:1} },
+      { titre:'Le collègue « pour dépanner »', situation:'Un collègue du DAF vous demande : « Je dois faire un paiement urgent, donne-moi ton accès au logiciel, je n\'ai pas le mien. T\'inquiète, c\'est juste pour aujourd\'hui. »', piege:'Partager son accès « juste pour aujourd\'hui » = perte de traçabilité. Impossible de savoir qui a accédé aux données financières.', reflexe:['Ne jamais partager son accès, même « juste pour aujourd\'hui »','Proposer une solution : demander un accès dédié au service SI','Expliquer que c\'est une règle de sécurité, pas un manque de confiance','Signaler la demande au référent RGPD si elle se répète','Utiliser des comptes nominatifs'], retenir:'Jamais d\'accès partagé, même « juste pour aujourd\'hui ». On demande un accès dédié.', quiz:{q:'Un collègue vous demande votre accès « juste pour aujourd\'hui ». Que faites-vous ?', options:['Je le donne, c\'est un collègue de confiance','Je refuse et je propose un accès dédié via le service SI','Je lui écris mon mot de passe'], correct:1} }
+    ]
+  },
+  'DSI': {
+    type: 'service', label: 'DSI',
+    scenarios: [
+      { titre:'Phishing', situation:'Le service SI reçoit un email qui semble venir de la direction : « Urgent : cliquez sur ce lien pour mettre à jour votre mot de passe. » Un salarié a cliqué.', piege:'Le phishing (hameçonnage) — un lien frauduleux qui vole les identifiants. C\'est la porte d\'entrée n°1 des cyberattaques.', reflexe:['Ne jamais cliquer sur un lien demandant un mot de passe','Vérifier l\'adresse de l\'expéditeur (pas juste le nom affiché)','Signaler immédiatement l\'email suspect au service SI','Changer le mot de passe si on a cliqué','Activer la double authentification (2FA)'], retenir:'Jamais de mot de passe via un lien. On vérifie, on signale, on change.', quiz:{q:'Vous recevez un email « urgent » demandant votre mot de passe. Que faites-vous ?', options:['Je clique, c\'est urgent','Je ne clique pas, je signale au service SI','Je réponds avec mon mot de passe'], correct:1} },
+      { titre:'Accès administrateur', situation:'Un administrateur SI partage son compte administrateur avec un collègue « pour qu\'il puisse dépanner pendant les congés ».', piege:'Partager un compte administrateur = accès total aux données de tout le réseau, sans traçabilité. Risque majeur (Art. 32).', reflexe:['Ne jamais partager un compte administrateur','Créer un compte dédié avec les droits nécessaires','Utiliser des comptes nominatifs','Activer la double authentification (2FA)','Changer le mot de passe si on a partagé'], retenir:'Jamais de compte administrateur partagé. Chaque personne a son compte, avec ses droits.', quiz:{q:'Un collègue a besoin d\'un accès administrateur. Que faites-vous ?', options:['Je lui donne mon compte','Je crée un compte dédié avec les droits nécessaires','Je lui écris mon mot de passe'], correct:1} },
+      { titre:'Sauvegarde non sécurisée', situation:'Le service SI stocke les sauvegardes des données (dossiers, registres) sur un disque dur non chiffré, accessible à tout le service.', piege:'Des sauvegardes de données personnelles non chiffrées et accessibles = risque de fuite massive (Art. 32).', reflexe:['Chiffrer les sauvegardes','Restreindre l\'accès aux sauvegardes (personnes autorisées)','Vérifier qui a accès aux disques','Documenter la politique de sauvegarde','Tester régulièrement la restauration'], retenir:'Les sauvegardes se chiffrent et se protègent. Accès restreint, toujours.', quiz:{q:'Où stockez-vous les sauvegardes des données ?', options:['Sur un disque non chiffré accessible à tous','Sur un support chiffré à accès restreint','Sur un poste partagé'], correct:1} },
+      { titre:'Incident de sécurité', situation:'Le service SI découvre qu\'un serveur a été compromis et que des données ont pu être consultées par un attaquant.', piege:'Cacher l\'incident « pour éviter la panique » ou « pour ne pas être blâmé ». Une violation de données doit être signalée (Art. 33-34).', reflexe:['Signaler immédiatement l\'incident au référent RGPD et au DPO','Isoler le serveur compromis','Évaluer l\'ampleur (quelles données, combien de personnes)','Enregistrer l\'incident dans le journal','Notifier la CNIL sous 72h si le risque est élevé'], retenir:'Une violation de données se signale immédiatement. On ne cache jamais.', quiz:{q:'Un serveur a été compromis. Que faites-vous ?', options:['Je le cache pour éviter la panique','Je signale immédiatement au référent RGPD et au DPO, et j\'évalue l\'ampleur','J\'attends de voir si ça se reproduit'], correct:1} },
+      { titre:'Accès aux données', situation:'Un développeur demande un accès en lecture à toutes les données des usagers « pour tester une nouvelle fonctionnalité ».', piege:'Donner un accès large à des données personnelles sans besoin réel. Principe du moindre droit : accès à ce dont on a besoin.', reflexe:['Vérifier le besoin réel (quelles données, pourquoi)','Donner un accès limité au strict nécessaire','Utiliser des données de test anonymisées si possible','Restreindre l\'accès dans le temps','Consigner les accès accordés'], retenir:'On donne accès à ce dont on a besoin, pas plus. Moindre droit, toujours.', quiz:{q:'Un développeur demande un accès à toutes les données. Que faites-vous ?', options:['Je lui donne tout, il en a besoin pour tester','Je vérifie le besoin réel et je donne un accès limité, avec des données de test si possible','Je lui donne un accès permanent'], correct:1} },
+      { titre:'Le collègue pressé', situation:'Un collègue vous demande : « Donne-moi l\'accès admin au serveur, je dois régler un problème urgent. T\'inquiète, c\'est juste pour aujourd\'hui. »', piege:'Céder à la pression et partager un accès admin « juste pour aujourd\'hui » = accès total sans traçabilité.', reflexe:['Rester calme et ferme','Ne jamais partager un accès admin','Proposer une solution : créer un accès dédié avec les droits nécessaires','Expliquer que c\'est une règle de sécurité','Signaler la demande au référent RGPD si elle se répète'], retenir:'La pression ne justifie pas un accès admin partagé. On crée un accès dédié.', quiz:{q:'Un collègue pressé demande l\'accès admin. Que faites-vous ?', options:['Je le donne, c\'est urgent','Je refuse et je crée un accès dédié avec les droits nécessaires','Je lui écris mon mot de passe'], correct:1} }
+    ]
+  },
+  'Direction': {
+    type: 'service', label: 'Direction',
+    scenarios: [
+      { titre:'Demande d\'accès', situation:'La Direction reçoit une demande d\'accès (Art. 15) d\'un salarié qui veut « toutes les données que l\'entreprise détient sur moi ». La Direction ne sait pas quoi faire.', piege:'Ignorer la demande, ou répondre de façon incomplète, ou tarder au-delà de 30 jours. C\'est une infraction (Art. 12.3).', reflexe:['Accuser réception de la demande immédiatement','Identifier toutes les données concernées (RH, paie, emails, évaluations)','Répondre sous 30 jours (prolongeable de 2 mois si complexe, en informant)','Protéger les données des tiers (ne pas communiquer les infos d\'autres personnes)','Documenter la demande et la réponse'], retenir:'Une demande d\'accès se traite sous 30 jours, complète, en protégeant les tiers.', quiz:{q:'Un salarié demande toutes ses données. Quel est le délai de réponse ?', options:['1 mois (30 jours)','1 an','Pas de délai'], correct:0} },
+      { titre:'Décision sur un traitement', situation:'La Direction décide d\'installer un nouveau logiciel de suivi des usagers, sans consulter le référent RGPD ni le DPO.', piege:'Lancer un traitement de données sans analyse préalable (privacy by design). Le DPO doit être consulté dès qu\'un traitement est envisagé.', reflexe:['Consulter le référent RGPD et le DPO avant de lancer','Réaliser une analyse d\'impact (PIA) si nécessaire','Informer les personnes concernées','Documenter la décision','Vérifier la base légale du traitement'], retenir:'Un nouveau traitement se lance après consultation du DPO, pas avant.', quiz:{q:'Vous voulez installer un nouveau logiciel de suivi. Que faites-vous ?', options:['Je l\'installe, c\'est décidé','Je consulte le référent RGPD et le DPO avant de lancer','Je l\'installe sans rien dire'], correct:1} },
+      { titre:'Conflit d\'intérêts DPO', situation:'La Direction envisage de nommer le directeur général comme DPO interne, « car il connaît bien l\'organisation ».', piege:'Nommer une personne en conflit d\'intérêts. Le DPO ne peut pas être celui qui décide des finalités et moyens des traitements (le DG décide).', reflexe:['Vérifier l\'absence de conflit d\'intérêts','Ne pas nommer le DG, le RH, le DSI ou un décideur des traitements','Choisir une personne indépendante (ex. qualité, sans arbitrage)','Documenter l\'analyse d\'absence de conflit','Consulter le référent RGPD'], retenir:'Le DPO ne peut pas être celui qui décide des traitements. Indépendance obligatoire.', quiz:{q:'Qui peut être nommé DPO interne ?', options:['Le directeur général','Une personne indépendante, sans arbitrage sur les traitements','Le responsable informatique'], correct:1} },
+      { titre:'Vidéosurveillance', situation:'La Direction veut installer une vidéosurveillance dans les couloirs « pour la sécurité », sans analyse préalable.', piege:'Installer une vidéosurveillance sans analyse d\'impact (PIA) ni information des personnes. La vidéosurveillance est un traitement encadré.', reflexe:['Réaliser une analyse d\'impact (PIA) avant l\'installation','Informer les personnes (affichage)','Vérifier la proportionnalité (un autre moyen suffit-il ?)','Consulter le référent RGPD et le DPO','Respecter la durée de conservation des images'], retenir:'La vidéosurveillance ne s\'installe pas sans PIA ni information. On consulte le DPO.', quiz:{q:'Vous voulez installer une vidéosurveillance. Que faites-vous ?', options:['Je l\'installe, c\'est pour la sécurité','Je réalise une analyse d\'impact (PIA) et j\'informe les personnes avant','Je l\'installe sans rien dire'], correct:1} },
+      { titre:'Incident de données', situation:'La Direction apprend qu\'un incident de données a eu lieu (perte de données, accès non autorisé) mais hésite à le signaler « pour éviter les ennuis ».', piege:'Cacher un incident de données. Une violation doit être signalée (Art. 33-34), la CNIL sous 72h si le risque est élevé.', reflexe:['Signaler immédiatement l\'incident au référent RGPD et au DPO','Évaluer l\'ampleur (quelles données, combien de personnes)','Enregistrer l\'incident dans le journal','Notifier la CNIL sous 72h si le risque est élevé','Informer les personnes concernées si nécessaire'], retenir:'Un incident de données se signale, jamais on ne le cache. La CNIL sous 72h si risque élevé.', quiz:{q:'Un incident de données a eu lieu. Que faites-vous ?', options:['Je le cache pour éviter les ennuis','Je le signale au référent RGPD et au DPO, et je notifie la CNIL si nécessaire','J\'attends de voir si ça se reproduit'], correct:1} },
+      { titre:'Le prestataire pressé', situation:'Un prestataire vous appelle : « Donne-moi accès à vos données d\'usagers pour un projet, c\'est urgent, la direction a validé. »', piege:'Céder à la pression et donner accès aux données sans contrat de sous-traitance (DPA) ni vérification.', reflexe:['Vérifier que la direction a bien validé','Signer un contrat de sous-traitance (DPA) avec le prestataire','Limiter les données partagées au strict nécessaire','Informer les personnes concernées','Ne pas donner accès sans vérification'], retenir:'On ne donne pas accès aux données à un prestataire sans contrat de sous-traitance.', quiz:{q:'Un prestataire demande accès aux données. Que faites-vous ?', options:['Je lui donne, il dit que c\'est validé','Je vérifie la validation et je signe un contrat de sous-traitance (DPA) avant','Je lui donne un accès large'], correct:1} }
+    ]
+  },
+  'Donateurs': {
+    type: 'service', label: 'Donateurs',
+    scenarios: [
+      { titre:'Relance / opposition', situation:'Le service Mécénat veut appeler des donateurs pour les remercier et leur proposer un nouveau don. La liste des donateurs contient leurs coordonnées et l\'historique de leurs dons.', piege:'Utiliser les données des donateurs pour une finalité différente (relance commerciale) sans base légale, ou sans avoir informé les donateurs de cet usage.', reflexe:['Vérifier la base légale de la relance (intérêt légitime Art. 6.1.f, ou consentement)','Informer les donateurs de l\'usage de leurs données','Respecter le droit d\'opposition (Art. 21) — un donateur peut refuser d\'être recontacté','Ne pas partager la liste avec des tiers','Conserver les données selon les durées (10 ans fiscal)'], retenir:'Les donateurs ont le droit de dire non. On respecte l\'opposition, on informe, on ne partage pas.', quiz:{q:'Vous voulez relancer des donateurs. Que vérifiez-vous ?', options:['Rien, ils ont déjà donné','La base légale + le droit d\'opposition + l\'information','Leur adresse exacte'], correct:1} },
+      { titre:'Liste des donateurs', situation:'Le service Mécénat stocke la liste des donateurs (noms, coordonnées, montants) dans un fichier Excel sur un poste partagé.', piege:'Une liste de donateurs (données personnelles + montants) dans un Excel non sécurisé, accessible à des personnes non autorisées.', reflexe:['Sécuriser la liste (accès restreint, chiffrement)','Ne partager la liste qu\'avec les personnes concernées','Vérifier qui a accès au fichier','Purge régulière des données obsolètes','Documenter la politique de conservation'], retenir:'La liste des donateurs se protège. Accès restreint, toujours.', quiz:{q:'Où stockez-vous la liste des donateurs ?', options:['Dans un Excel sur un poste partagé','Dans un fichier sécurisé à accès restreint','Sur le bureau'], correct:1} },
+      { titre:'Partage avec un tiers', situation:'Le service Mécénat veut partager la liste des donateurs avec une autre association « pour une cause commune », sans contrat.', piege:'Partager des données de donateurs avec un tiers sans base légale ni contrat de sous-traitance (DPA).', reflexe:['Vérifier la base légale du partage','Signer un contrat de sous-traitance (DPA) si nécessaire','Informer les donateurs de l\'usage','Limiter les données partagées au strict nécessaire','Ne pas partager sans vérification'], retenir:'On ne partage pas les données des donateurs avec un tiers sans base légale ni contrat.', quiz:{q:'Une autre association demande la liste des donateurs. Que faites-vous ?', options:['Je la partage, c\'est une bonne cause','Je vérifie la base légale et je signe un contrat de sous-traitance (DPA) si nécessaire','Je la partage sans rien dire'], correct:1} },
+      { titre:'Incident de données', situation:'Le service Mécénat découvre qu\'il a envoyé la liste des donateurs à la mauvaise personne par email.', piege:'Ne rien signaler « parce que ça arrive ». Une erreur de destinataire avec des données de donateurs = fuite (Art. 32).', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour les donateurs','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez la liste des donateurs à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le collègue pressé', situation:'Un collègue vous demande : « Donne-moi la liste des donateurs, je dois préparer une campagne urgente. T\'inquiète, c\'est pour le bien de l\'asso. »', piege:'Céder à la pression et partager la liste sans vérifier la base légale ni le besoin réel.', reflexe:['Rester calme et ferme','Vérifier la base légale de la campagne','Vérifier le besoin réel et le périmètre','Ne partager que le strict nécessaire','En cas de doute : contacter le référent RGPD'], retenir:'La pression ne justifie pas un partage de données sans base légale. On vérifie.', quiz:{q:'Un collègue pressé demande la liste des donateurs. Que faites-vous ?', options:['Je la donne, c\'est pour le bien de l\'asso','Je vérifie la base légale et le besoin réel avant de partager','Je la partage sur WhatsApp'], correct:1} },
+      { titre:'Le donateur insistant', situation:'Un donateur insiste pour connaître les coordonnées d\'un autre donateur « pour le remercier personnellement ».', piege:'Donner les coordonnées d\'un donateur à un autre sans son accord. Les données d\'un donateur lui appartiennent.', reflexe:['Ne jamais donner les coordonnées d\'un donateur sans son accord','Expliquer que les données sont confidentielles','Proposer une alternative (transmettre un message)','Contacter le donateur concerné pour son accord','En cas de doute : contacter le référent RGPD'], retenir:'Les coordonnées d\'un donateur ne se donnent pas sans son accord. On propose une alternative.', quiz:{q:'Un donateur demande les coordonnées d\'un autre. Que faites-vous ?', options:['Je les donne, ils se connaissent','Je refuse et je propose de transmettre un message à la place','Je les donne au téléphone'], correct:1} }
+    ]
+  },
+  'Qualité': {
+    type: 'service', label: 'Qualité',
+    scenarios: [
+      { titre:'Enquête anonymisée', situation:'Le service Qualité réalise une enquête de satisfaction auprès des familles. Les réponses contiennent des appréciations sur les établissements et parfois des noms.', piege:'Une enquête avec des données identifiantes (noms, établissements) analysée sans anonymisation = risque d\'identification des répondants et de données sensibles.', reflexe:['Anonymiser les réponses dès que possible','Ne collecter que le nécessaire (minimisation)','Informer les répondants de l\'usage','Sécuriser les réponses (accès restreint)','Détruire les données brutes après analyse'], retenir:'Une enquête s\'analyse anonymement. On ne garde que ce qui est nécessaire.', quiz:{q:'Vous analysez une enquête de satisfaction. Que faites-vous des réponses ?', options:['Je garde tout avec les noms','J\'anonymise et je ne garde que le nécessaire','Je publie les réponses nominatives'], correct:1} },
+      { titre:'Évaluations des établissements', situation:'Le service Qualité collecte des évaluations sur les établissements, avec des noms de directeurs et des appréciations, dans un fichier partagé.', piege:'Des évaluations nominatives (directeurs, appréciations) accessibles à des personnes qui n\'en ont pas besoin = violation de la minimisation (Art. 5.1.c).', reflexe:['Restreindre l\'accès aux évaluations (dossier à droits limités)','Ne partager les appréciations qu\'avec les personnes concernées','Sécuriser les fichiers (accès restreint)','Vérifier qui a accès aux dossiers partagés','Purge régulière des documents obsolètes'], retenir:'Les évaluations ne se partagent pas à tout le service. Accès restreint, toujours.', quiz:{q:'Vous notez des évaluations sur les établissements. Où les rangez-vous ?', options:['Dans le dossier partagé de tout le service','Dans un dossier à accès restreint','Sur le bureau'], correct:1} },
+      { titre:'Incident de données', situation:'Le service Qualité découvre qu\'une enquête avec des réponses nominatives a été envoyée par erreur à un établissement non concerné.', piege:'Ne rien signaler « parce que ça arrive ». Une erreur de destinataire avec des réponses nominatives = fuite (Art. 32).', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour les répondants','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez une enquête nominative à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le collègue pressé', situation:'Un collègue vous demande : « Donne-moi les réponses de l\'enquête avec les noms, je dois préparer un rapport urgent. T\'inquiète, c\'est pour la direction. »', piege:'Céder à la pression et partager des réponses nominatives sans vérifier le besoin réel ni l\'anonymisation.', reflexe:['Rester calme et ferme','Vérifier le besoin réel et le périmètre','Anonymiser les réponses avant de les partager','Ne partager que le strict nécessaire','En cas de doute : contacter le référent RGPD'], retenir:'La pression ne justifie pas un partage de réponses nominatives. On anonymise, on vérifie.', quiz:{q:'Un collègue pressé demande les réponses nominatives. Que faites-vous ?', options:['Je les donne, c\'est pour la direction','Je vérifie le besoin et j\'anonymise avant de partager','Je les partage sur WhatsApp'], correct:1} },
+      { titre:'Conservation des enquêtes', situation:'Le service Qualité garde les enquêtes de satisfaction depuis 10 ans, avec les noms, « pour comparer dans le temps ».', piege:'Conserver des données identifiantes au-delà des durées nécessaires. Les enquêtes anonymisées se conservent, pas les données nominatives.', reflexe:['Anonymiser les enquêtes après analyse','Ne conserver les données nominatives que le temps nécessaire','Purger les données obsolètes','Documenter la politique de conservation','Détruire les données brutes après analyse'], retenir:'On conserve les enquêtes anonymisées, pas les données nominatives. On purge.', quiz:{q:'Combien de temps gardez-vous les enquêtes avec les noms ?', options:['10 ans, pour comparer','Le temps nécessaire, puis j\'anonymise et je purge','Indéfiniment'], correct:1} },
+      { titre:'Le manager insistant', situation:'Un manager insiste pour avoir les réponses nominatives d\'une enquête « pour évaluer son équipe ». Il est votre supérieur et insiste.', piege:'Céder à la pression hiérarchique et donner des réponses nominatives à un manager qui n\'a pas forcément le droit d\'y accéder.', reflexe:['Rester respectueux mais ferme','Expliquer que les réponses sont anonymisées pour protéger les répondants','Vérifier ce que le manager a le droit de savoir','Ne donner que des données anonymisées','En cas de doute : contacter le référent RGPD'], retenir:'La pression hiérarchique ne donne pas le droit d\'accéder aux réponses nominatives. On anonymise.', quiz:{q:'Un manager insiste pour avoir les réponses nominatives. Que faites-vous ?', options:['Je les donne, c\'est mon supérieur','Je vérifie son droit et je ne donne que des données anonymisées','Je lui donne les noms'], correct:1} }
+    ]
+  },
+  'Club Loisirs': {
+    type: 'service', label: 'Club Loisirs',
+    scenarios: [
+      { titre:'Photos / consentement', situation:'Le Club Loisirs organise une sortie et veut partager les photos des participants sur le groupe WhatsApp de l\'association. Certains participants ne veulent pas être photographiés.', piege:'Publier des photos de personnes identifiables sans consentement, et sur un canal non sécurisé (WhatsApp).', reflexe:['Demander le consentement avant de photographier (ou à l\'inscription)','Respecter les refus (ne pas photographier ceux qui refusent)','Ne pas publier sur WhatsApp sans accord','Prévoir le retrait à tout moment','Utiliser un canal avec contrôle d\'accès'], retenir:'On photographie avec l\'accord de chacun, et on respecte les refus.', quiz:{q:'Vous voulez partager des photos d\'une sortie. Que faites-vous ?', options:['Je les publie sur WhatsApp, tout le monde est content','Je demande le consentement et je respecte les refus','Je ne photographie personne, jamais'], correct:1} },
+      { titre:'Liste des participants', situation:'Le Club Loisirs stocke la liste des participants (noms, coordonnées, parfois santé) dans un fichier sur un poste partagé.', piege:'Une liste de participants (données personnelles, parfois santé) dans un fichier non sécurisé, accessible à des personnes non autorisées.', reflexe:['Sécuriser la liste (accès restreint, chiffrement)','Ne partager la liste qu\'avec les personnes concernées','Vérifier qui a accès au fichier','Purge régulière des données obsolètes','Documenter la politique de conservation'], retenir:'La liste des participants se protège. Accès restreint, toujours.', quiz:{q:'Où stockez-vous la liste des participants ?', options:['Dans un fichier sur un poste partagé','Dans un fichier sécurisé à accès restreint','Sur le bureau'], correct:1} },
+      { titre:'Données de santé', situation:'Un participant a une allergie. L\'organisateur note « allergie aux arachides » sur la liste des participants, affichée dans la salle.', piege:'Afficher des données de santé (allergie, Art. 9) dans un lieu accessible à tous. Les autres participants peuvent les voir.', reflexe:['Noter les données de santé dans un support confidentiel, pas sur la liste affichée','Ne noter que le strict nécessaire (minimisation)','Ranger le support sous clé après usage','Ne partager l\'info qu\'avec les personnes concernées (encadrement)','Signaler tout incident au référent RGPD'], retenir:'Les données de santé ne s\'affichent pas sur une liste publique. Support confidentiel, toujours.', quiz:{q:'Un participant a une allergie. Où notez-vous cette info ?', options:['Sur la liste affichée dans la salle','Dans un support confidentiel, partagé seulement avec l\'encadrement','Sur le tableau'], correct:1} },
+      { titre:'Incident de données', situation:'Le Club Loisirs découvre qu\'il a envoyé la liste des participants (avec coordonnées) à la mauvaise personne par email.', piege:'Ne rien signaler « parce que ça arrive ». Une erreur de destinataire avec des données personnelles = fuite (Art. 32).', reflexe:['Signaler immédiatement l\'incident au référent RGPD','Tenter de récupérer le document envoyé par erreur','Enregistrer l\'incident dans le journal (Art. 33-34)','Évaluer le risque pour les participants','Mettre en place une double vérification pour les envois sensibles'], retenir:'Une erreur de destinataire se signale immédiatement. On vérifie avant d\'envoyer.', quiz:{q:'Vous envoyez la liste des participants à la mauvaise personne. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD et j\'enregistre l\'incident','Je réessaie avec la bonne adresse sans rien dire'], correct:1} },
+      { titre:'Le participant insistant', situation:'Un participant insiste pour avoir les coordonnées d\'un autre participant « pour organiser une sortie ensemble ».', piege:'Donner les coordonnées d\'un participant à un autre sans son accord. Les données d\'un participant lui appartiennent.', reflexe:['Ne jamais donner les coordonnées d\'un participant sans son accord','Expliquer que les données sont confidentielles','Proposer une alternative (transmettre un message)','Contacter le participant concerné pour son accord','En cas de doute : contacter le référent RGPD'], retenir:'Les coordonnées d\'un participant ne se donnent pas sans son accord. On propose une alternative.', quiz:{q:'Un participant demande les coordonnées d\'un autre. Que faites-vous ?', options:['Je les donne, ils se connaissent','Je refuse et je propose de transmettre un message à la place','Je les donne au téléphone'], correct:1} },
+      { titre:'Le collègue pressé', situation:'Un collègue vous demande : « Donne-moi la liste des participants avec les coordonnées, je dois prévenir tout le monde d\'un changement urgent. T\'inquiète, c\'est pour le bien du club. »', piege:'Céder à la pression et partager la liste sans vérifier le besoin réel ni le canal sécurisé.', reflexe:['Rester calme et ferme','Vérifier le besoin réel et le périmètre','Utiliser un canal sécurisé, pas WhatsApp','Ne partager que le strict nécessaire','En cas de doute : contacter le référent RGPD'], retenir:'La pression ne justifie pas un partage de données sans vérification. On utilise un canal sécurisé.', quiz:{q:'Un collègue pressé demande la liste des participants. Que faites-vous ?', options:['Je la donne, c\'est pour le bien du club','Je vérifie le besoin et j\'utilise un canal sécurisé','Je la partage sur WhatsApp'], correct:1} }
+    ]
+  }
+};
+
+// ============================================================
+// LOGIQUE — socle d'abord, puis scénarios
+// ============================================================
+let currentEntity = null;
+let currentCode = null;
+let current = 0;
+let score = 0;
+let answered = 0;
+let inSocle = true;
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showPicker() {
+  const groups = document.getElementById('picker-groups');
+  const etabs = Object.entries(ENTITIES).filter(([,e]) => e.type === 'etab');
+  const services = Object.entries(ENTITIES).filter(([,e]) => e.type === 'service');
+  groups.innerHTML = `
+    <div>
+      <div class="picker-group-title">🏥 Établissements (${etabs.length})</div>
+      <div class="picker-grid">${etabs.map(([k,e]) => `<button class="picker-btn" onclick="openEntity('${k}')"><div class="ent">${e.label}</div><div class="thm">Socle + scénarios</div></button>`).join('')}</div>
+    </div>
+    <div>
+      <div class="picker-group-title">🏢 Services support (${services.length})</div>
+      <div class="picker-grid">${services.map(([k,e]) => `<button class="picker-btn" onclick="openEntity('${k}')"><div class="ent">${e.label}</div><div class="thm">Socle + scénarios</div></button>`).join('')}</div>
+    </div>`;
+  document.getElementById('progress-wrap').style.display = 'none';
+  show('screen-picker');
+}
+
+function openEntity(key) {
+  currentEntity = key;
+  // aller à l'écran de saisie du code établissement
+  document.getElementById('code-input').value = '';
+  document.getElementById('code-error').style.display = 'none';
+  document.getElementById('code-btn').disabled = true;
+  show('screen-code');
+}
+
+const codeInput = document.getElementById('code-input');
+codeInput.addEventListener('input', () => {
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 2;
+  document.getElementById('code-error').style.display = 'none';
+});
+
+// Vérifie le code établissement via le script Apps Script (action=login)
+async function verifyCode() {
+  const code = codeInput.value.trim();
+  if (code.length < 2) return;
+  const btn = document.getElementById('code-btn');
+  btn.disabled = true;
+  btn.textContent = 'Vérification...';
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL + '?action=login&code=' + encodeURIComponent(code));
+    const result = await res.json();
+    if (result.success) {
+      // Vérifier que le type de l'établissement correspond au type d'entité choisi
+      const chosenType = ENTITIES[currentEntity].label;
+      const returnedType = (result.type || '').trim().toUpperCase();
+      const chosenTypeUp = chosenType.toUpperCase();
+      if (returnedType && returnedType !== chosenTypeUp) {
+        document.getElementById('code-error').textContent = 'Ce code correspond à un ' + result.type + ' (' + result.etablissement + '), pas à ' + chosenType + '. Vérifie ton code.';
+        document.getElementById('code-error').style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Vérifier et commencer →';
+        return;
+      }
+      currentCode = code;
+      current = 0; score = 0; answered = 0; inSocle = true;
+      document.getElementById('progress-wrap').style.display = 'block';
+      renderScenario();
+      show('screen-scenario');
+    } else {
+      document.getElementById('code-error').textContent = 'Code invalide ou inactif. Vérifie auprès de ton référent RGPD.';
+      document.getElementById('code-error').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('code-error').textContent = 'Erreur de connexion. Réessaie.';
+    document.getElementById('code-error').style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Vérifier et commencer →';
+}
+
+function totalSteps() { return SOCLE.length + ENTITIES[currentEntity].scenarios.length; }
+
+function renderScenario() {
+  const total = totalSteps();
+  const isSocle = inSocle;
+  const item = isSocle ? SOCLE[current] : ENTITIES[currentEntity].scenarios[current - SOCLE.length];
+  const partLabel = isSocle ? '📘 Socle commun' : '🎯 Scénarios métier';
+
+  document.getElementById('part-badge').textContent = partLabel;
+  document.getElementById('scenario-badge').textContent = `Étape ${current+1} / ${total}`;
+  document.getElementById('scenario-title').textContent = item.titre;
+  document.getElementById('scenario-entity').textContent = ENTITIES[currentEntity].label;
+  document.getElementById('progress-label').textContent = `Étape ${current+1} / ${total}`;
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-count').textContent = pct + '%';
+
+  let html = '';
+  if (isSocle) {
+    html = `
+      <div class="reveal b-savoir" id="r-savoir">
+        <button class="reveal-btn" onclick="toggleReveal('r-savoir')"><span class="icon">📘</span><span class="label">À savoir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.savoir}</p></div>
+      </div>
+      <div class="reveal b-retenir" id="r-retenir">
+        <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
+      </div>
+      <div class="quiz" id="quiz-${current}">
+        <div class="quiz-q">❓ ${item.quiz.q}</div>
+        <div class="quiz-options">
+          ${item.quiz.options.map((o, i) => `<button class="quiz-opt" onclick="answer(${current}, ${i}, ${item.quiz.correct})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${current}"></div>
+      </div>`;
+  } else {
+    html = `
+      <div class="reveal b-situation" id="r-sit">
+        <button class="reveal-btn" onclick="toggleReveal('r-sit')"><span class="icon">📋</span><span class="label">La situation</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.situation}</p></div>
+      </div>
+      <div class="reveal b-piege" id="r-piege">
+        <button class="reveal-btn" onclick="toggleReveal('r-piege')"><span class="icon">⚠️</span><span class="label">Le piège à éviter</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.piege}</p></div>
+      </div>
+      <div class="reveal b-reflexe" id="r-reflexe">
+        <button class="reveal-btn" onclick="toggleReveal('r-reflexe')"><span class="icon">✅</span><span class="label">Le bon réflexe</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><ol>${item.reflexe.map(r => `<li>${r}</li>`).join('')}</ol></div>
+      </div>
+      <div class="reveal b-retenir" id="r-retenir">
+        <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
+      </div>
+      <div class="quiz" id="quiz-${current}">
+        <div class="quiz-q">❓ ${item.quiz.q}</div>
+        <div class="quiz-options">
+          ${item.quiz.options.map((o, i) => `<button class="quiz-opt" onclick="answer(${current}, ${i}, ${item.quiz.correct})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${current}"></div>
+      </div>`;
+  }
+  document.getElementById('scenario-content').innerHTML = html;
+
+  document.getElementById('nav-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('nav-next');
+  nextBtn.textContent = current === total - 1 ? 'Terminer 🎉' : 'Suivant →';
+}
+
+function toggleReveal(id) { document.getElementById(id).classList.toggle('open'); }
+
+function answer(num, chosen, correct) {
+  const quiz = document.getElementById('quiz-' + num);
+  if (quiz.classList.contains('revealed')) return;
+  const opts = quiz.querySelectorAll('.quiz-opt');
+  opts.forEach((o, i) => { if (i === correct) o.classList.add('correct'); else if (i === chosen) o.classList.add('wrong'); });
+  quiz.classList.add('revealed');
+  const fb = document.getElementById('fb-' + num);
+  if (chosen === correct) {
+    fb.textContent = '✅ Bonne réponse !';
+    fb.style.color = '#065f46';
+    score++;
+  } else {
+    fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + String.fromCharCode(65+correct) + '. ' + opts[correct].textContent;
+    fb.style.color = '#991b1b';
+  }
+  answered++;
+}
+
+function nextScenario() {
+  const total = totalSteps();
+  if (current < total - 1) {
+    current++;
+    if (inSocle && current >= SOCLE.length) inSocle = false;
+    renderScenario();
+  } else {
+    document.getElementById('done-entity').textContent = `Entité : ${ENTITIES[currentEntity].label}`;
+    document.getElementById('done-score').textContent = `Score : ${score} / ${answered} bonnes réponses`;
+    document.getElementById('saved-msg').style.display = 'none';
+    document.getElementById('emargement-form').style.display = 'block';
+    document.getElementById('name-input').value = '';
+    document.getElementById('submit-btn').disabled = true;
+    show('screen-done');
+  }
+}
+
+function prevScenario() { if (current > 0) { current--; if (current < SOCLE.length) inSocle = true; renderScenario(); } }
+
+const nameInput = document.getElementById('name-input');
+const siteInput = document.getElementById('site-input');
+function checkEmargementReady() {
+  document.getElementById('submit-btn').disabled = nameInput.value.trim().length < 2 || siteInput.value.trim().length < 2;
+}
+nameInput.addEventListener('input', checkEmargementReady);
+siteInput.addEventListener('input', checkEmargementReady);
+
+// URL du Google Apps Script (même que le questionnaire rgpd-2026)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn3tZOBZwNRkYVFaVlFwAONYdMNgUr4YKHHivoqb3ES7c9qzgVLKye58XGKu_Hl05H/exec';
+
+async function submitEmargement() {
+  const name = nameInput.value.trim();
+  const site = siteInput.value.trim();
+  if (name.length < 2 || site.length < 2) return;
+  const record = {
+    code_etab: currentCode,
+    nom: name,
+    type_entite: ENTITIES[currentEntity].label,
+    site: site,
+    date: new Date().toISOString(),
+    score: `${score}/${answered}`,
+    pct: answered > 0 ? Math.round((score/answered)*100) : 0
+  };
+  // 1. Envoi vers le Google Sheet (format du script Apps Script : action + sheet + row)
+  const payload = {
+    action: 'create',
+    sheet: 'EMARGEMENT',
+    row: {
+      code_etab: record.code_etab,
+      nom: record.nom,
+      type_entite: record.type_entite,
+      site: record.site,
+      date: record.date,
+      score: record.score,
+      pct: record.pct
+    }
+  };
+  let sent = false;
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    sent = result.status === 'success';
+  } catch (e) {
+    console.warn('Envoi Google Sheet échoué, fallback localStorage:', e);
+  }
+  // 2. Fallback localStorage (toujours, pour le test)
+  const saved = JSON.parse(localStorage.getItem('emargements') || '[]');
+  saved.push(record);
+  localStorage.setItem('emargements', JSON.stringify(saved));
+  document.getElementById('emargement-form').style.display = 'none';
+  document.getElementById('saved-msg').textContent = sent
+    ? '✅ Ton émargement a été enregistré dans le registre. Merci !'
+    : '✅ Émargement enregistré localement (envoi sheet en attente de config).';
+  document.getElementById('saved-msg').style.display = 'block';
+}
+</script>
+</body>
+</html>
