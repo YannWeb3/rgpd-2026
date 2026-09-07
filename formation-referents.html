@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation Référents RGPD UNAPEI92 — Niveau 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #718096;
+    --primary: #6366f1; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #ef4444; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
+  }
+  html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
+  .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
+  .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--primary); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #8b5cf6); border-radius: 20px; transition: width .4s ease; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .welcome { text-align: center; padding: 40px 0; }
+  .welcome-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 8px 18px; border-radius: 30px; margin-bottom: 24px; }
+  .welcome h1 { font-size: 32px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .welcome p { color: var(--muted); font-size: 16px; max-width: 500px; margin: 0 auto 28px; line-height: 1.6; }
+  .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,.3); }
+  .welcome-cta:hover { transform: translateY(-2px); }
+  .scenario-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .scenario-back { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .scenario-back:hover { color: var(--primary); }
+  .scenario-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
+  .scenario-title { font-size: 22px; font-weight: 900; line-height: 1.25; margin-bottom: 4px; }
+  .scenario-entity { font-size: 14px; color: var(--muted); font-weight: 700; }
+  .part-badge { display: inline-block; background: var(--amber-soft); color: #92400e; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; }
+  .reveal { margin-bottom: 12px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: var(--card); }
+  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; }
+  .reveal-btn .icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .reveal-btn .label { font-weight: 800; font-size: 15px; color: var(--ink); flex: 1; }
+  .reveal-btn .chev { color: var(--muted); transition: transform .2s; font-size: 14px; }
+  .reveal.open .reveal-btn .chev { transform: rotate(180deg); }
+  .reveal-body { display: none; padding: 0 18px 18px; }
+  .reveal.open .reveal-body { display: block; animation: fadeIn .3s ease; }
+  .reveal-body p { font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .reveal-body ol { padding-left: 20px; }
+  .reveal-body li { font-size: 15px; line-height: 1.7; margin-bottom: 4px; }
+  .b-situation .icon { background: var(--sky-soft); } .b-situation { border-color: #bae6fd; }
+  .b-piege .icon { background: var(--red-soft); } .b-piege { border-color: #fecaca; }
+  .b-reflexe .icon { background: var(--green-soft); } .b-reflexe { border-color: #a7f3d0; }
+  .b-retenir .icon { background: var(--amber-soft); } .b-retenir { border-color: #fde68a; }
+  .b-savoir .icon { background: var(--sky-soft); } .b-savoir { border-color: #bae6fd; }
+  .retenir-text { font-size: 16px; font-weight: 800; color: #92400e; font-style: italic; line-height: 1.5; }
+  .quiz { margin-top: 16px; border-radius: 16px; border: 2px solid var(--primary); background: var(--primary-soft); padding: 18px; }
+  .quiz-q { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: all .15s; color: var(--ink); }
+  .quiz-opt:hover { border-color: var(--primary); }
+  .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: #065f46; }
+  .quiz-opt.wrong { background: var(--red-soft); border-color: var(--red); color: #991b1b; }
+  .quiz-feedback { margin-top: 12px; font-size: 14px; font-weight: 700; color: #065f46; display: none; }
+  .quiz.revealed .quiz-feedback { display: block; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all .15s; }
+  .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
+  .nav-next { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.3); }
+  .nav-next:disabled { opacity: .4; cursor: not-allowed; }
+  .done { text-align: center; padding: 50px 0; }
+  .done-icon { font-size: 64px; margin-bottom: 16px; }
+  .done h2 { font-size: 28px; font-weight: 900; margin-bottom: 10px; }
+  .done p { color: var(--muted); font-size: 16px; margin-bottom: 24px; }
+  .done-score { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 24px; }
+  .form { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; text-align: left; max-width: 420px; margin: 0 auto 20px; }
+  .form label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+  .form input:focus { outline: none; border-color: var(--primary); }
+  .form .btn { width: 100%; background: var(--green); color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .form .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
+  .fail { background: var(--red-soft); border: 2px solid var(--red); border-radius: 12px; padding: 14px; color: #991b1b; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
+  @media (max-width: 480px) { .welcome h1 { font-size: 26px; } .scenario-title { font-size: 19px; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Module 1 / 14</span>
+      <span class="progress-count" id="progress-count">0%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- WELCOME -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome-badge">🛡️ Formation Référents RGPD UNAPEI92</div>
+      <h1>Devenir le référent RGPD<br>de ton établissement</h1>
+      <p>Formation niveau 2, plus poussée que la sensibilisation. Tu apprends ton rôle, les outils (registre, incidents, droits), puis tu passes des cas pratiques. Un quiz final valide ta formation (80% minimum).</p>
+      <button class="welcome-cta" onclick="showCode()">Commencer →</button>
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">7 modules + 6 cas pratiques + quiz final · ~30 min · 80% requis</div>
+    </div>
+  </div>
+
+  <!-- CODE ETABLISSEMENT -->
+  <div class="screen" id="screen-code">
+    <div class="picker">
+      <h2>Code de ton établissement</h2>
+      <p class="picker-sub">Saisis le code fourni par ton référent ou le DPO. Il permet de tracer ta formation sur le bon établissement.</p>
+      <div class="form" style="max-width:420px;margin:0 auto">
+        <label>Code établissement</label>
+        <input type="text" id="code-input" placeholder="Ex : 1004" autocomplete="off" inputmode="numeric">
+        <div id="code-error" style="color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px;display:none"></div>
+        <button class="btn" id="code-btn" onclick="verifyCode()" disabled>Vérifier et commencer →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="screen" id="screen-scenario">
+    <div class="scenario-head">
+      <button class="scenario-back" onclick="showCode()">← Recommencer</button>
+    </div>
+    <div class="part-badge" id="part-badge"></div>
+    <div class="scenario-badge" id="scenario-badge"></div>
+    <h2 class="scenario-title" id="scenario-title"></h2>
+    <div class="scenario-entity" id="scenario-entity"></div>
+    <div style="height:16px"></div>
+    <div id="scenario-content"></div>
+    <div class="nav">
+      <button class="nav-btn nav-prev" id="nav-prev" onclick="prevScenario()">← Précédent</button>
+      <button class="nav-btn nav-next" id="nav-next" onclick="nextScenario()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- DONE -->
+  <div class="screen" id="screen-done">
+    <div class="done">
+      <div class="done-icon" id="done-icon">🎉</div>
+      <h2 id="done-title">Parcours terminé !</h2>
+      <p id="done-entity"></p>
+      <div class="done-score" id="done-score"></div>
+      <div class="saved" id="saved-msg">✅ Ta formation a été enregistrée. Merci !</div>
+      <div class="fail" id="fail-msg">❌ Score insuffisant (moins de 80%). Tu peux refaire le quiz final pour valider ta formation.</div>
+      <div class="form" id="emargement-form">
+        <label>Ton nom complet</label>
+        <input type="text" id="name-input" placeholder="Prénom Nom" autocomplete="name">
+        <label>Établissement / antenne précis</label>
+        <input type="text" id="site-input" placeholder="Ex : IME Saint-Exupéry, ESAT Meudon..." autocomplete="organization">
+        <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer ma formation</button>
+      </div>
+      <button class="welcome-cta" onclick="showCode()">Recommencer</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// MODULES — Partie A (rôle) + Partie B (outils)
+// ============================================================
+const MODULES = [
+  { part:'A', titre:'Ta mission de référent', savoir:'Le référent RGPD est le point d\'entrée de son établissement pour tout ce qui touche aux données personnelles. Il est le relais entre les collègues et le DPO. Il sensibilise, répond aux questions simples, et fait remonter les cas complexes. Il n\'est pas le DPO : il ne décide pas seul, il oriente.', retenir:'Le référent = point d\'entrée, relais DPO, sensibilisateur. Il oriente, il ne décide pas seul.', quiz:{q:'Quel est le rôle principal du référent RGPD ?', options:['Décider seul des traitements','Être le point d\'entrée et le relais entre les collègues et le DPO','Remplacer le DPO'], correct:1} },
+  { part:'A', titre:'Ton périmètre', savoir:'Le référent peut répondre aux questions simples (où ranger un document, comment verrouiller un poste, qui contacter). Il escalade au DPO les cas complexes : demande d\'accès, incident, doute sur un traitement, conflit. Ne jamais décider seul sur un cas sensible.', retenir:'Simple = je réponds. Complexe = j\'escalade au DPO.', quiz:{q:'Un collègue a un doute sur une demande d\'accès. Que fait le référent ?', options:['Il répond seul','Il escalade au DPO','Il ignore la demande'], correct:1} },
+  { part:'A', titre:'La remontée d\'alerte', savoir:'En cas d\'incident (fuite, perte, accès non autorisé), le référent doit : 1) signaler immédiatement au DPO, 2) noter ce qui s\'est passé, 3) ne pas cacher. Le DPO évalue si la CNIL doit être prévenue (sous 72h si risque élevé). La remontée doit être rapide et complète.', retenir:'Incident = signalement immédiat au DPO. On ne cache jamais.', quiz:{q:'En cas d\'incident de données, que fait le référent ?', options:['Il attend de voir','Il signale immédiatement au DPO et note ce qui s\'est passé','Il le cache pour éviter les ennuis'], correct:1} },
+  { part:'B', titre:'Tenir le registre', savoir:'Le registre des traitements liste toutes les données traitées par l\'établissement : finalité, base légale, durée de conservation, destinataires, mesures de sécurité. Le référent le met à jour régulièrement (nouveau traitement, changement). C\'est un outil de preuve pour la CNIL.', retenir:'Le registre se tient à jour. Nouveau traitement = nouvelle ligne.', quiz:{q:'Quand le référent met-il à jour le registre ?', options:['Jamais, c\'est le DPO','Dès qu\'un traitement change ou qu\'un nouveau apparaît','Une fois par an seulement'], correct:1} },
+  { part:'B', titre:'Gérer les incidents', savoir:'Un incident = fuite, perte, accès non autorisé. Le référent doit : 1) détecter, 2) qualifier (gravité, nombre de personnes), 3) signaler au DPO, 4) enregistrer dans le journal des incidents. La CNIL doit être prévenue sous 72h si le risque est élevé.', retenir:'Incident = détecter, qualifier, signaler, enregistrer. 72h pour la CNIL si risque élevé.', quiz:{q:'Quelle est la première action du référent face à un incident ?', options:['Le signaler au DPO et l\'enregistrer dans le journal','Attendre la fin du mois','Le cacher'], correct:0} },
+  { part:'B', titre:'Répondre aux droits', savoir:'Les personnes ont des droits : accès (Art. 15), rectification, effacement (Art. 17), opposition (Art. 21). Le référent doit : 1) accuser réception, 2) vérifier l\'identité, 3) répondre sous 30 jours, 4) protéger les données des tiers. Ne jamais répondre de façon incomplète ou tardive.', retenir:'Droits = accuser réception, vérifier, répondre sous 30 jours, protéger les tiers.', quiz:{q:'Quel est le délai pour répondre à une demande d\'accès ?', options:['1 semaine','30 jours','1 an'], correct:1} },
+  { part:'B', titre:'Vérifier les consentements', savoir:'Pour les photos, publications, enquêtes : il faut un consentement écrit, libre, éclairé, spécifique. Le référent vérifie que le consentement existe avant toute publication. Pour les mineurs, l\'accord des parents est indispensable. Le consentement peut être retiré à tout moment.', retenir:'Consentement = écrit, libre, éclairé, spécifique. Mineurs = accord des parents.', quiz:{q:'Avant de publier une photo d\'un usager, que vérifie le référent ?', options:['Rien, c\'est de la communication','Le consentement écrit de la personne (ou des parents pour un mineur)','Que la photo est jolie'], correct:1} }
+];
+
+// ============================================================
+// CAS PRATIQUES — Partie C (6 scénarios référents)
+// ============================================================
+const CASES = [
+  { titre:'Un collègue demande un accès', situation:'Un collègue vous demande l\'accès au dossier d\'un usager « pour vérifier une info ». Il n\'a pas d\'habilitation.', piege:'Donner l\'accès « pour rendre service », sans vérifier l\'habilitation. C\'est un accès non autorisé (Art. 32).', reflexe:['Vérifier l\'habilitation du collègue dans le système','Ne pas donner l\'accès sans habilitation','Orienter vers le service SI pour une demande d\'accès','Signaler toute demande suspecte au DPO','Appliquer le principe du moindre droit'], retenir:'Accès = habilitation vérifiée. Jamais « pour rendre service ».', quiz:{q:'Un collègue demande un accès sans habilitation. Que fait le référent ?', options:['Il lui donne, c\'est un collègue','Il vérifie l\'habilitation et oriente vers le service SI','Il lui donne son propre accès'], correct:1} },
+  { titre:'Un incident de données', situation:'Un collègue vous signale qu\'il a envoyé un dossier par erreur à la mauvaise personne par email.', piege:'Minimiser l\'incident « parce que ça arrive » ou ne rien faire.', reflexe:['Signaler immédiatement l\'incident au DPO','Noter ce qui s\'est passé (qui, quand, quoi)','Tenter de récupérer le document','Enregistrer l\'incident dans le journal','Évaluer le risque pour la personne'], retenir:'Incident = signalement immédiat au DPO + journal. On ne minimise pas.', quiz:{q:'Un collègue a envoyé un dossier à la mauvaise personne. Que fait le référent ?', options:['Rien, ça arrive','Il signale au DPO et enregistre l\'incident dans le journal','Il demande au collègue de ne pas en parler'], correct:1} },
+  { titre:'Une demande d\'accès', situation:'Un usager demande « toutes les données que vous avez sur moi ». Le référent ne sait pas quoi faire.', piege:'Ignorer la demande, ou répondre de façon incomplète, ou tarder au-delà de 30 jours.', reflexe:['Accuser réception de la demande immédiatement','Vérifier l\'identité du demandeur','Identifier toutes les données concernées','Répondre sous 30 jours','Protéger les données des tiers'], retenir:'Demande d\'accès = accuser réception, vérifier, répondre sous 30 jours.', quiz:{q:'Un usager demande ses données. Quel est le délai de réponse ?', options:['1 mois (30 jours)','1 an','Pas de délai'], correct:0} },
+  { titre:'Un prestataire', situation:'Un prestataire vous demande accès aux données des usagers « pour un projet », sans contrat.', piege:'Donner accès aux données sans contrat de sous-traitance (DPA).', reflexe:['Vérifier la base légale du partage','Signer un contrat de sous-traitance (DPA) avec le prestataire','Limiter les données partagées au strict nécessaire','Informer les personnes concernées','Consulter le DPO en cas de doute'], retenir:'Prestataire = DPA signée avant tout accès aux données.', quiz:{q:'Un prestataire demande accès aux données. Que fait le référent ?', options:['Il lui donne, c\'est un partenaire','Il vérifie la base légale et exige un contrat de sous-traitance (DPA)','Il lui donne un accès large'], correct:1} },
+  { titre:'Un parent insistant', situation:'Un parent insiste pour avoir le dossier complet de son enfant « tout de suite », en disant qu\'il a le droit et qu\'il est pressé.', piege:'Céder à la pression et donner le dossier immédiatement, sans vérifier l\'identité ni le droit.', reflexe:['Rester calme et bienveillant, mais ferme','Vérifier l\'identité et le droit (autorité parentale)','Distinguer les données communicables des notes internes','Répondre sous 30 jours, pas sous la pression','Escalader au DPO si le cas est sensible'], retenir:'La pression ne supprime pas la vérification. On répond dans les délais.', quiz:{q:'Un parent pressé exige le dossier immédiatement. Que fait le référent ?', options:['Il le donne tout de suite','Il vérifie l\'identité et le droit, puis répond dans les délais','Il refuse tout'], correct:1} },
+  { titre:'Un doute sur un traitement', situation:'Un service veut lancer un nouveau traitement de données (ex: un nouveau logiciel de suivi). Le référent n\'est pas sûr de la base légale.', piege:'Laisser lancer le traitement sans vérification, ou décider seul.', reflexe:['Consulter le DPO avant de lancer','Vérifier la base légale du traitement','Réaliser une analyse d\'impact (PIA) si nécessaire','Informer les personnes concernées','Documenter la décision'], retenir:'Nouveau traitement = consultation du DPO avant de lancer.', quiz:{q:'Un service veut lancer un nouveau traitement. Que fait le référent ?', options:['Il laisse faire','Il consulte le DPO et vérifie la base légale avant','Il décide seul'], correct:1} }
+];
+
+// ============================================================
+// QUIZ FINAL — Partie D (10 questions, 80% requis)
+// ============================================================
+const FINAL_QUIZ = [
+  { q:'Quel est le rôle principal du référent RGPD ?', options:['Décider seul des traitements','Être le point d\'entrée et le relais entre les collègues et le DPO','Remplacer le DPO'], correct:1 },
+  { q:'En cas d\'incident de données, quelle est la première action ?', options:['Le signaler au DPO et l\'enregistrer dans le journal','Attendre la fin du mois','Le cacher'], correct:0 },
+  { q:'Quel est le délai pour répondre à une demande d\'accès ?', options:['1 semaine','30 jours','1 an'], correct:1 },
+  { q:'Avant de publier une photo d\'un usager, que vérifie le référent ?', options:['Rien, c\'est de la communication','Le consentement écrit de la personne (ou des parents pour un mineur)','Que la photo est jolie'], correct:1 },
+  { q:'Un prestataire demande accès aux données. Que fait le référent ?', options:['Il lui donne, c\'est un partenaire','Il vérifie la base légale et exige un contrat de sous-traitance (DPA)','Il lui donne un accès large'], correct:1 },
+  { q:'Quand le référent met-il à jour le registre des traitements ?', options:['Jamais, c\'est le DPO','Dès qu\'un traitement change ou qu\'un nouveau apparaît','Une fois par an seulement'], correct:1 },
+  { q:'Un collègue demande un accès sans habilitation. Que fait le référent ?', options:['Il lui donne, c\'est un collègue','Il vérifie l\'habilitation et oriente vers le service SI','Il lui donne son propre accès'], correct:1 },
+  { q:'Un parent pressé exige le dossier immédiatement. Que fait le référent ?', options:['Il le donne tout de suite','Il vérifie l\'identité et le droit, puis répond dans les délais','Il refuse tout'], correct:1 },
+  { q:'Un service veut lancer un nouveau traitement. Que fait le référent ?', options:['Il laisse faire','Il consulte le DPO et vérifie la base légale avant','Il décide seul'], correct:1 },
+  { q:'Quel est le principe du moindre droit ?', options:['Donner accès à tout le monde','Donner accès à ce dont on a besoin, pas plus','Donner accès à personne'], correct:1 }
+];
+
+// ============================================================
+// LOGIQUE
+// ============================================================
+let currentCode = null;
+let current = 0;
+let score = 0;
+let answered = 0;
+let inModules = true;
+let inFinal = false;
+let finalScore = 0;
+let finalAnswered = 0;
+
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFyWK2gpIKtedKXaonVcUBaPggePAot6cqQZoHxbfQQe1b6cUyhzH1r3zx8TrIDQ5z4g/exec';
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showCode() {
+  document.getElementById('code-input').value = '';
+  document.getElementById('code-error').style.display = 'none';
+  document.getElementById('code-btn').disabled = true;
+  show('screen-code');
+}
+
+const codeInput = document.getElementById('code-input');
+codeInput.addEventListener('input', () => {
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 2;
+  document.getElementById('code-error').style.display = 'none';
+});
+
+async function verifyCode() {
+  const code = codeInput.value.trim();
+  if (code.length < 2) return;
+  const btn = document.getElementById('code-btn');
+  btn.disabled = true;
+  btn.textContent = 'Vérification...';
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL + '?action=login&code=' + encodeURIComponent(code));
+    const result = await res.json();
+    if (result.success) {
+      currentCode = code;
+      current = 0; score = 0; answered = 0; inModules = true; inFinal = false;
+      finalScore = 0; finalAnswered = 0;
+      document.getElementById('progress-wrap').style.display = 'block';
+      renderScenario();
+      show('screen-scenario');
+    } else {
+      document.getElementById('code-error').textContent = 'Code invalide ou inactif. Vérifie auprès de ton référent ou du DPO.';
+      document.getElementById('code-error').style.display = 'block';
+    }
+  } catch (e) {
+    document.getElementById('code-error').textContent = 'Erreur de connexion. Réessaie.';
+    document.getElementById('code-error').style.display = 'block';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Vérifier et commencer →';
+}
+
+function totalSteps() {
+  if (inFinal) return MODULES.length + CASES.length + FINAL_QUIZ.length;
+  return MODULES.length + CASES.length;
+}
+
+function renderScenario() {
+  const total = totalSteps();
+  let item, partLabel;
+  if (inFinal) {
+    item = FINAL_QUIZ[current - MODULES.length - CASES.length];
+    partLabel = '📝 Quiz final';
+  } else if (current < MODULES.length) {
+    item = MODULES[current];
+    partLabel = item.part === 'A' ? '📘 Partie A — Ton rôle' : '🛠️ Partie B — Les outils';
+  } else {
+    item = CASES[current - MODULES.length];
+    partLabel = '🎯 Partie C — Cas pratiques';
+  }
+
+  document.getElementById('part-badge').textContent = partLabel;
+  document.getElementById('scenario-badge').textContent = `Étape ${current+1} / ${total}`;
+  document.getElementById('scenario-title').textContent = item.titre;
+  document.getElementById('scenario-entity').textContent = 'Formation Référents';
+  document.getElementById('progress-label').textContent = `Étape ${current+1} / ${total}`;
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-count').textContent = pct + '%';
+
+  let html = '';
+  if (inFinal) {
+    html = `
+      <div class="quiz" id="quiz-${current}">
+        <div class="quiz-q">❓ ${item.q}</div>
+        <div class="quiz-options">
+          ${item.options.map((o, i) => `<button class="quiz-opt" onclick="answer(${current}, ${i}, ${item.correct})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${current}"></div>
+      </div>`;
+  } else if (current < MODULES.length) {
+    html = `
+      <div class="reveal b-savoir" id="r-savoir">
+        <button class="reveal-btn" onclick="toggleReveal('r-savoir')"><span class="icon">📘</span><span class="label">À savoir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.savoir}</p></div>
+      </div>
+      <div class="reveal b-retenir" id="r-retenir">
+        <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
+      </div>
+      <div class="quiz" id="quiz-${current}">
+        <div class="quiz-q">❓ ${item.quiz.q}</div>
+        <div class="quiz-options">
+          ${item.quiz.options.map((o, i) => `<button class="quiz-opt" onclick="answer(${current}, ${i}, ${item.quiz.correct})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${current}"></div>
+      </div>`;
+  } else {
+    html = `
+      <div class="reveal b-situation" id="r-sit">
+        <button class="reveal-btn" onclick="toggleReveal('r-sit')"><span class="icon">📋</span><span class="label">La situation</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.situation}</p></div>
+      </div>
+      <div class="reveal b-piege" id="r-piege">
+        <button class="reveal-btn" onclick="toggleReveal('r-piege')"><span class="icon">⚠️</span><span class="label">Le piège à éviter</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p>${item.piege}</p></div>
+      </div>
+      <div class="reveal b-reflexe" id="r-reflexe">
+        <button class="reveal-btn" onclick="toggleReveal('r-reflexe')"><span class="icon">✅</span><span class="label">Le bon réflexe</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><ol>${item.reflexe.map(r => `<li>${r}</li>`).join('')}</ol></div>
+      </div>
+      <div class="reveal b-retenir" id="r-retenir">
+        <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
+        <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
+      </div>
+      <div class="quiz" id="quiz-${current}">
+        <div class="quiz-q">❓ ${item.quiz.q}</div>
+        <div class="quiz-options">
+          ${item.quiz.options.map((o, i) => `<button class="quiz-opt" onclick="answer(${current}, ${i}, ${item.quiz.correct})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+        </div>
+        <div class="quiz-feedback" id="fb-${current}"></div>
+      </div>`;
+  }
+  document.getElementById('scenario-content').innerHTML = html;
+
+  document.getElementById('nav-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+  const nextBtn = document.getElementById('nav-next');
+  nextBtn.textContent = current === total - 1 ? 'Terminer 🎉' : 'Suivant →';
+}
+
+function toggleReveal(id) { document.getElementById(id).classList.toggle('open'); }
+
+function answer(num, chosen, correct) {
+  const quiz = document.getElementById('quiz-' + num);
+  if (quiz.classList.contains('revealed')) return;
+  const opts = quiz.querySelectorAll('.quiz-opt');
+  opts.forEach((o, i) => { if (i === correct) o.classList.add('correct'); else if (i === chosen) o.classList.add('wrong'); });
+  quiz.classList.add('revealed');
+  const fb = document.getElementById('fb-' + num);
+  if (chosen === correct) {
+    fb.textContent = '✅ Bonne réponse !';
+    fb.style.color = '#065f46';
+    if (inFinal) finalScore++; else score++;
+  } else {
+    fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + String.fromCharCode(65+correct) + '. ' + opts[correct].textContent;
+    fb.style.color = '#991b1b';
+  }
+  if (inFinal) finalAnswered++; else answered++;
+}
+
+function nextScenario() {
+  const total = totalSteps();
+  if (current < total - 1) {
+    current++;
+    if (!inFinal && current >= MODULES.length + CASES.length) inFinal = true;
+    renderScenario();
+  } else {
+    // Fin : calculer le score final (quiz final uniquement)
+    const finalPct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
+    document.getElementById('done-entity').textContent = 'Formation Référents RGPD';
+    document.getElementById('done-score').textContent = `Quiz final : ${finalScore} / ${finalAnswered} (${finalPct}%)`;
+    document.getElementById('saved-msg').style.display = 'none';
+    document.getElementById('fail-msg').style.display = 'none';
+    document.getElementById('emargement-form').style.display = 'none';
+    if (finalPct >= 80) {
+      document.getElementById('done-icon').textContent = '🎉';
+      document.getElementById('done-title').textContent = 'Formation validée !';
+      document.getElementById('emargement-form').style.display = 'block';
+      document.getElementById('name-input').value = '';
+      document.getElementById('site-input').value = '';
+      document.getElementById('submit-btn').disabled = true;
+    } else {
+      document.getElementById('done-icon').textContent = '📚';
+      document.getElementById('done-title').textContent = 'Score insuffisant';
+      document.getElementById('fail-msg').style.display = 'block';
+    }
+    show('screen-done');
+  }
+}
+
+function prevScenario() { if (current > 0) { current--; if (current < MODULES.length + CASES.length) inFinal = false; renderScenario(); } }
+
+const nameInput = document.getElementById('name-input');
+const siteInput = document.getElementById('site-input');
+function checkEmargementReady() {
+  document.getElementById('submit-btn').disabled = nameInput.value.trim().length < 2 || siteInput.value.trim().length < 2;
+}
+nameInput.addEventListener('input', checkEmargementReady);
+siteInput.addEventListener('input', checkEmargementReady);
+
+async function submitEmargement() {
+  const name = nameInput.value.trim();
+  const site = siteInput.value.trim();
+  if (name.length < 2 || site.length < 2) return;
+  const finalPct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
+  const record = {
+    code_etab: currentCode,
+    nom: name,
+    type_entite: 'Referent',
+    site: site,
+    date: new Date().toISOString(),
+    score: `${finalScore}/${finalAnswered}`,
+    pct: finalPct,
+    valide: finalPct >= 80 ? 'OUI' : 'NON'
+  };
+  const payload = {
+    action: 'create',
+    sheet: 'REFERENTS_FORMATION',
+    row: record
+  };
+  let sent = false;
+  try {
+    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+    const result = await res.json();
+    sent = result.status === 'success' || result.success === true;
+  } catch (e) {
+    console.warn('Envoi Google Sheet échoué, fallback localStorage:', e);
+  }
+  const saved = JSON.parse(localStorage.getItem('referents_formation') || '[]');
+  saved.push(record);
+  localStorage.setItem('referents_formation', JSON.stringify(saved));
+  document.getElementById('emargement-form').style.display = 'none';
+  document.getElementById('saved-msg').textContent = sent
+    ? '✅ Ta formation a été enregistrée dans le registre. Merci !'
+    : '✅ Formation enregistrée localement (envoi sheet en attente de config).';
+  document.getElementById('saved-msg').style.display = 'block';
+}
+</script>
+</body>
+</html>
