@@ -263,8 +263,8 @@ async function verifyCode() {
 }
 
 function totalSteps() {
-  if (inFinal) return MODULES.length + CASES.length + FINAL_QUIZ.length;
-  return MODULES.length + CASES.length;
+  // Toujours inclure le quiz final (7 modules + 6 cas + 10 questions)
+  return MODULES.length + CASES.length + FINAL_QUIZ.length;
 }
 
 function renderScenario() {
