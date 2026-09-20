@@ -3,17 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formation RGPD UNAPEI92 — Socle + Parcours par entité (v3)</title>
+<title>Formation RGPD UNAPEI92 — Socle + Parcours par entité (v5)</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 900; font-display: swap; src: url('fonts/nunito-latin-900-normal.woff2') format('woff2'); }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #718096;
-    --primary: #6366f1; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
-    --red: #ef4444; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #4a5568;
+    --primary: #4f46e5; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #b91c1c; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
     --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
   }
-  html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
+  html, body { height: 100%; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
   .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
   .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
   .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -35,45 +39,48 @@
   .picker-groups { display: flex; flex-direction: column; gap: 20px; }
   .picker-group-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 10px; }
   .picker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-  .picker-btn { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all .15s; font-family: 'Nunito', sans-serif; }
+  .picker-btn { background: var(--card); border: 2px solid var(--border); border-radius: 14px; padding: 14px 10px; text-align: center; cursor: pointer; transition: all .15s; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .picker-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
   .picker-btn .ent { font-weight: 800; font-size: 15px; color: var(--ink); }
   .picker-btn .thm { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .scenario-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .scenario-back { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .scenario-back { background: none; border: none; color: var(--muted); font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; min-height: 44px; padding: 0 4px; text-align: left; }
   .scenario-back:hover { color: var(--primary); }
   .scenario-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
   .scenario-title { font-size: 22px; font-weight: 900; line-height: 1.25; margin-bottom: 4px; }
   .scenario-entity { font-size: 14px; color: var(--muted); font-weight: 700; }
   .part-badge { display: inline-block; background: var(--amber-soft); color: #92400e; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; }
   .reveal { margin-bottom: 12px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: var(--card); }
-  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; }
+  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .reveal-btn .icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
   .reveal-btn .label { font-weight: 800; font-size: 15px; color: var(--ink); flex: 1; }
   .reveal-btn .chev { color: var(--muted); transition: transform .2s; font-size: 14px; }
   .reveal.open .reveal-btn .chev { transform: rotate(180deg); }
   .reveal-body { display: none; padding: 0 18px 18px; }
   .reveal.open .reveal-body { display: block; animation: fadeIn .3s ease; }
-  .reveal-body p { font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .reveal-body p { font-size: 16px; line-height: 1.65; color: var(--ink); }
   .reveal-body ol { padding-left: 20px; }
-  .reveal-body li { font-size: 15px; line-height: 1.7; margin-bottom: 4px; }
+  .reveal-body li { font-size: 16px; line-height: 1.7; margin-bottom: 4px; }
   .b-situation .icon { background: var(--sky-soft); } .b-situation { border-color: #bae6fd; }
   .b-piege .icon { background: var(--red-soft); } .b-piege { border-color: #fecaca; }
   .b-reflexe .icon { background: var(--green-soft); } .b-reflexe { border-color: #a7f3d0; }
   .b-retenir .icon { background: var(--amber-soft); } .b-retenir { border-color: #fde68a; }
   .b-savoir .icon { background: var(--sky-soft); } .b-savoir { border-color: #bae6fd; }
+  .savoir-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .savoir-list li { position: relative; padding: 10px 12px 10px 38px; background: var(--sky-soft); border-radius: 12px; font-size: 16px; line-height: 1.6; color: var(--ink); }
+  .savoir-list li::before { content: '\25B8'; position: absolute; left: 14px; top: 10px; color: var(--sky); font-weight: 900; }
   .retenir-text { font-size: 16px; font-weight: 800; color: #92400e; font-style: italic; line-height: 1.5; }
   .quiz { margin-top: 16px; border-radius: 16px; border: 2px solid var(--primary); background: var(--primary-soft); padding: 18px; }
   .quiz-q { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
   .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: all .15s; color: var(--ink); }
+  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; transition: all .15s; color: var(--ink); }
   .quiz-opt:hover { border-color: var(--primary); }
   .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: #065f46; }
   .quiz-opt.wrong { background: var(--red-soft); border-color: var(--red); color: #991b1b; }
   .quiz-feedback { margin-top: 12px; font-size: 14px; font-weight: 700; color: #065f46; display: none; }
   .quiz.revealed .quiz-feedback { display: block; }
   .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
-  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all .15s; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; transition: all .15s; }
   .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
   .nav-next { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.3); }
   .nav-next:disabled { opacity: .4; cursor: not-allowed; }
@@ -84,11 +91,15 @@
   .done-score { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 24px; }
   .form { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; text-align: left; max-width: 420px; margin: 0 auto 20px; }
   .form label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
-  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; margin-bottom: 14px; }
   .form input:focus { outline: none; border-color: var(--primary); }
-  .form .btn { width: 100%; background: var(--green); color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .form .btn { width: 100%; background: #047857; color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .form .btn:disabled { opacity: .4; cursor: not-allowed; }
   .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
+  .fail { background: var(--red-soft); border: 2px solid var(--red); border-radius: 12px; padding: 14px; color: #991b1b; font-weight: 700; font-size: 15px; margin-bottom: 16px; display: none; }
+  .resume { background: var(--card); border: 2px solid var(--primary); border-radius: 16px; padding: 16px; margin: 0 auto 22px; max-width: 420px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .resume span { color: var(--muted); font-size: 15px; font-weight: 700; }
+  .link-btn { background: none; border: none; color: var(--muted); font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 44px; padding: 0 12px; }
   @media (max-width: 480px) { .welcome h1 { font-size: 26px; } .scenario-title { font-size: 19px; } .picker-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
@@ -109,8 +120,9 @@
       <div class="welcome-badge">🛡️ Formation RGPD UNAPEI92</div>
       <h1>Comprendre et appliquer le RGPD</h1>
       <p>Ton parcours en 2 parties : d'abord le <b>socle commun</b> (les fondamentaux que tout le monde doit savoir), puis des <b>situations adaptées à ton métier</b>, y compris des cas où la pression humaine met à l'épreuve le bon réflexe. Ton nom et tes scores seront enregistrés comme preuve de formation.</p>
-      <button class="welcome-cta" onclick="showPicker()">Commencer →</button>
-      <div style="margin-top:20px;font-size:13px;color:var(--muted)">6 modules socle + scénarios métier · ~10 min · émargement automatique</div>
+      <div id="resume-box" style="display:none"></div>
+      <button class="welcome-cta" onclick="startFlow()">Commencer →</button>
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">10 modules socle + scénarios métier · ~15 min · émargement automatique</div>
     </div>
   </div>
 
@@ -143,7 +155,7 @@
   <!-- SCENARIO -->
   <div class="screen" id="screen-scenario">
     <div class="scenario-head">
-      <button class="scenario-back" onclick="showPicker()">← Toutes les entités</button>
+      <button class="scenario-back" onclick="pauseAndExit()">← Pause · ta progression est gardée</button>
     </div>
     <div class="part-badge" id="part-badge"></div>
     <div class="scenario-badge" id="scenario-badge"></div>
@@ -160,10 +172,12 @@
   <!-- DONE / EMARGEMENT -->
   <div class="screen" id="screen-done">
     <div class="done">
-      <div class="done-icon">🎉</div>
-      <h2>Parcours terminé !</h2>
+      <div class="done-icon" id="done-icon">🎉</div>
+      <h2 id="done-title">Parcours terminé !</h2>
       <p id="done-entity"></p>
       <div class="done-score" id="done-score"></div>
+      <div class="fail" id="fail-msg"></div>
+      <button class="welcome-cta" id="retry-btn" style="display:none;margin-bottom:16px" onclick="retryMissed()">Reprendre les questions ratées</button>
       <div class="saved" id="saved-msg">✅ Ton émargement a été enregistré. Merci !</div>
       <div class="form" id="emargement-form">
         <label>Ton nom complet</label>
@@ -172,7 +186,7 @@
         <input type="text" id="site-input" placeholder="Ex : IME Les Lilas, ESAT Meudon, Siège..." autocomplete="organization">
         <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer mon émargement</button>
       </div>
-      <button class="welcome-cta" onclick="showPicker()">Choisir une autre entité</button>
+      <button class="link-btn" onclick="showPicker()">Faire un autre parcours</button>
     </div>
   </div>
 
@@ -180,15 +194,19 @@
 
 <script>
 // ============================================================
-// SOCLE COMMUN — 6 modules
+// SOCLE COMMUN — 10 modules
 // ============================================================
 const SOCLE = [
-  { titre:'Qu\'est-ce qu\'une donnée personnelle ?', savoir:'Une donnée personnelle est toute information qui permet d\'identifier une personne : nom, prénom, photo, adresse, téléphone, email, mais aussi un numéro de dossier, une plaque, une voix. Dans ton métier : le nom d\'un usager, sa photo, son dossier, son planning — tout ça, c\'est une donnée personnelle.', retenir:'Une donnée personnelle = toute info qui identifie une personne. Nom, photo, dossier, planning : tout est protégé.', quiz:{q:'Parmi ces éléments, lequel est une donnée personnelle ?', options:['Le nom d\'un usager','La couleur du mur du bureau','L\'heure de la pause'], correct:0} },
-  { titre:'Les données sensibles (Art. 9)', savoir:'Certaines données sont particulièrement protégées : la santé, le handicap, l\'origine, la religion, les opinions. Dans ton métier, le handicap et la santé des usagers sont des données sensibles. Elles ne peuvent être traitées que dans des cas très précis (prise en charge, obligation légale) et avec des garanties renforcées.', retenir:'La santé et le handicap sont des données sensibles. Protection renforcée, toujours.', quiz:{q:'Quelle donnée est considérée comme sensible ?', options:['Le prénom d\'un usager','Le handicap d\'un usager','Le numéro de téléphone du bureau'], correct:1} },
-  { titre:'Les 5 réflexes RGPD', savoir:'5 réflexes à avoir au quotidien : 1) Respecter les droits des personnes (accès, effacement) ; 2) Obtenir le consentement et respecter la finalité ; 3) Respecter les durées de conservation ; 4) Sécuriser les accès (poste verrouillé, mots de passe) ; 5) Encadrer les sous-traitants et prestataires.', retenir:'5 réflexes : droits, consentement, conservation, sécurité, sous-traitants.', quiz:{q:'Quel est un bon réflexe RGPD au quotidien ?', options:['Laisser son poste ouvert','Verrouiller son poste quand on s\'absente','Partager son mot de passe avec un collègue'], correct:1} },
-  { titre:'Que faire en cas d\'incident ?', savoir:'Un incident = une fuite, une perte, un accès non autorisé à des données. Exemples : un dossier perdu, un email envoyé à la mauvaise personne, un poste laissé ouvert. Il faut : 1) ne pas paniquer ni cacher ; 2) signaler immédiatement au référent RGPD ; 3) noter ce qui s\'est passé. La CNIL doit être prévenue sous 72h si le risque est élevé.', retenir:'Un incident se signale immédiatement au référent. On ne cache jamais.', quiz:{q:'Vous perdez un dossier contenant des données. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD','Je le cache pour éviter les ennuis'], correct:1} },
-  { titre:'Qui contacter ?', savoir:'Chaque établissement a un référent RGPD (et un backup). Le référent est ton premier interlocuteur pour toute question ou incident. Au-dessus, il y a le DPO (délégué à la protection des données) qui pilote la conformité. En cas de doute, on contacte le référent — jamais on ne décide seul.', retenir:'En cas de doute, on contacte le référent RGPD. Jamais on ne décide seul.', quiz:{q:'Vous avez un doute sur une demande de données. Qui contactez-vous ?', options:['Personne, je décide seul','Le référent RGPD de mon établissement','Un collègue au hasard'], correct:1} },
-  { titre:'Le papier et le numérique', savoir:'Le RGPD s\'applique aussi au papier : un carnet, un dossier, une liste laissés en clair sont des fuites. Règles : ranger sous clé, ne noter que le nécessaire, détruire les documents obsolètes (déchiqueteuse), ne pas emporter chez soi. Le numérique : poste verrouillé, mots de passe forts, pas de données sensibles par email classique ou WhatsApp.', retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Où rangez-vous un carnet avec des infos sur les usagers ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} }
+  { titre:'Qu\'est-ce qu\'une donnée personnelle ?', savoir:['Toute information qui identifie une personne : nom, photo, adresse, téléphone, email.','Aussi : numéro de dossier, plaque, voix, planning.','Dans ton métier : nom, photo, dossier et planning d’un usager = données personnelles.'], retenir:'Une donnée personnelle = toute info qui identifie une personne. Nom, photo, dossier, planning : tout est protégé.', quiz:{q:'Parmi ces éléments, lequel est une donnée personnelle ?', options:['Le nom d\'un usager','La couleur du mur du bureau','L\'heure de la pause'], correct:0} },
+  { titre:'Les données sensibles (Art. 9)', savoir:['Santé, handicap, origine, religion, opinions : protection renforcée.','Traitement possible uniquement dans des cas précis (prise en charge, obligation légale).','Avec des garanties renforcées : accès limité, support sécurisé.'], retenir:'La santé et le handicap sont des données sensibles. Protection renforcée, toujours.', quiz:{q:'Quelle donnée est considérée comme sensible ?', options:['Le prénom d\'un usager','Le handicap d\'un usager','Le numéro de téléphone du bureau'], correct:1} },
+  { titre:'Les 5 réflexes RGPD', savoir:['1) Respecter les droits des personnes (accès, effacement).','2) Avoir une base légale et respecter la finalité.','3) Respecter les durées de conservation.','4) Sécuriser les accès (poste verrouillé, mots de passe).','5) Encadrer les sous-traitants et prestataires.'], retenir:'5 réflexes : droits, consentement, conservation, sécurité, sous-traitants.', quiz:{q:'Quel est un bon réflexe RGPD au quotidien ?', options:['Laisser son poste ouvert','Verrouiller son poste quand on s\'absente','Partager son mot de passe avec un collègue'], correct:1} },
+  { titre:'Que faire en cas d\'incident ?', savoir:['Un incident = fuite, perte ou accès non autorisé (dossier perdu, email au mauvais destinataire, poste ouvert).','1) Ne pas paniquer, ne jamais cacher.','2) Signaler immédiatement au référent RGPD.','3) Noter ce qui s’est passé (qui, quand, quoi).','Si le risque est élevé, la CNIL doit être prévenue sous 72h.'], retenir:'Un incident se signale immédiatement au référent. On ne cache jamais.', quiz:{q:'Vous perdez un dossier contenant des données. Que faites-vous ?', options:['Rien, ça arrive','Je signale immédiatement au référent RGPD','Je le cache pour éviter les ennuis'], correct:1} },
+  { titre:'Qui contacter ?', savoir:['Ton premier interlocuteur : le référent RGPD de ton établissement (et son backup).','Au-dessus : le DPO, qui pilote la conformité.','En cas de doute, on contacte le référent — jamais on ne décide seul.'], retenir:'En cas de doute, on contacte le référent RGPD. Jamais on ne décide seul.', quiz:{q:'Vous avez un doute sur une demande de données. Qui contactez-vous ?', options:['Personne, je décide seul','Le référent RGPD de mon établissement','Un collègue au hasard'], correct:1} },
+  { titre:'Le papier et le numérique', savoir:['Le RGPD s’applique aussi au papier : carnet, dossier ou liste laissés en clair = fuite.','Papier : ranger sous clé, noter le minimum, détruire l’obsolète, ne rien emporter chez soi.','Numérique : poste verrouillé, mots de passe forts.','Jamais de données sensibles par email classique ou WhatsApp.'], retenir:'Le papier aussi est protégé. On range, on minimise, on détruit.', quiz:{q:'Où rangez-vous un carnet avec des infos sur les usagers ?', options:['Sur la table, c\'est pratique','Dans un tiroir fermé à clé','Dans ma poche, je le garde'], correct:1} },
+  { titre:'Les 6 bases légales — a-t-on le droit de traiter ? (Art. 6)', savoir:['1) Consentement — 2) Contrat ou prise en charge — 3) Obligation légale.','4) Intérêt vital (urgence) — 5) Mission d’intérêt public — 6) Intérêt légitime.','Soin = prise en charge + obligation légale ; photos et activités facultatives = consentement écrit.','Pas de base légale = pas de traitement.','Tu ne sais pas quelle base s’applique ? C’est normal : demande au référent RGPD ou au DPO avant d’agir.'], retenir:'Pas de base l\u00e9gale = pas de traitement. Le soin repose sur la prise en charge, les photos sur le consentement \u00e9crit. En cas de doute, on demande au r\u00e9f\u00e9rent ou au DPO.', quiz:{q:'L\u2019\u00e9tablissement veut filmer les ateliers en permanence pour surveiller les travailleurs. Que dites-vous ?', options:['C\u2019est l\u2019int\u00e9r\u00eat l\u00e9gitime, \u00e7a justifie tout','C\u2019est disproportionn\u00e9 : sans base valable et sans validation du DPO, on ne le fait pas','Le consentement oral du moniteur suffit'], correct:1} },
+  { titre:'Les 6 droits des personnes (Art. 12 \u00e0 22)', savoir:['6 droits : information, accès (30 jours), rectification, effacement, limitation, opposition et portabilité.','Une demande peut être orale, par email ou par courrier : toute forme compte.','Réflexe : accueillir, noter, transmettre au référent sous 48h.','On ne décide jamais seul.'], retenir:'Toute demande d\u2019une personne sur ses donn\u00e9es = un droit. On accueille, on transmet au r\u00e9f\u00e9rent sous 48h, on r\u00e9pond sous 30 jours.', quiz:{q:'Une usag\u00e8re dit \u00e0 l\u2019accueil : \u00ab je veux voir tout ce que vous avez sur moi \u00bb. Que faites-vous ?', options:['Je lui montre tout de suite sur mon \u00e9cran','J\u2019accueille la demande, je la note et je la transmets au r\u00e9f\u00e9rent RGPD','Je refuse, seul un courrier recommand\u00e9 compte'], correct:1} },
+  { titre:'Registre, sous-traitants, AIPD : les outils qui prouvent (Art. 28, 30, 35)', savoir:['1) Le registre : la liste des traitements, tenue avec le DPO.','2) Les sous-traitants : contrat écrit obligatoire (logiciels, vidéosurveillance, paie).','3) L’AIPD : étude d’impact AVANT tout projet risqué.','Nouveau projet ou prestataire = on prévient le référent AVANT.'], retenir:'Nouveau logiciel, nouveau prestataire, projet avec des donn\u00e9es = on pr\u00e9vient le r\u00e9f\u00e9rent AVANT. C\u2019est comme \u00e7a qu\u2019on prouve qu\u2019on est conforme.', quiz:{q:'Votre \u00e9tablissement veut adopter un nouveau logiciel de dossiers usagers. Premier r\u00e9flexe ?', options:['On l\u2019installe vite, on verra apr\u00e8s','On pr\u00e9vient le r\u00e9f\u00e9rent et le DPO avant : contrat sous-traitant, registre, et AIPD si c\u2019est risqu\u00e9','On fait signer un papier aux usagers et on installe'], correct:1} },
+  { titre:'S\u00e9curit\u00e9, transferts hors UE, sanctions (Art. 32, 44, 83)', savoir:['Mots de passe forts, poste verrouillé, habilitations (chacun voit ce dont il a besoin).','Données sensibles chiffrées, sauvegardes, accès tracés.','Outils hors Europe interdits sans validation du DPO.','Sanction CNIL : jusqu’à 20 M€ ou 4 % du CA, plus la perte de confiance.'], retenir:'S\u00e9curit\u00e9 = technique + rigueur. Pas d\u2019outil hors Europe sans validation du DPO. Un manquement peut co\u00fbter des millions et la confiance.', quiz:{q:'Un coll\u00e8gue propose une IA am\u00e9ricaine gratuite pour r\u00e9sumer les dossiers des usagers. Que faites-vous ?', options:['On teste avec des vrais dossiers, c\u2019est gratuit et rapide','On ne transf\u00e8re rien : on demande d\u2019abord au r\u00e9f\u00e9rent et au DPO (transfert hors UE + sous-traitance)','On enl\u00e8ve les noms de t\u00eate et on envoie, \u00e7a suffit'], correct:1} }
 ];
 
 // ============================================================
@@ -393,6 +411,11 @@ let current = 0;
 let score = 0;
 let answered = 0;
 let inSocle = true;
+let answersMap = {};   // étape -> { chosen, ok }  (source de vérité du score)
+let retryMode = false, retryQueue = [], retryTotal = 0;
+let linkParams = null;
+let currentEtab = '';
+const PASS = 80;
 
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -433,8 +456,8 @@ codeInput.addEventListener('input', () => {
 });
 
 // Vérifie le code établissement via le script Apps Script (action=login)
-async function verifyCode() {
-  const code = codeInput.value.trim();
+async function verifyCode(codeOverride, fromLink) {
+  const code = (codeOverride || codeInput.value).trim();
   if (code.length < 2) return;
   const btn = document.getElementById('code-btn');
   btn.disabled = true;
@@ -452,10 +475,13 @@ async function verifyCode() {
         document.getElementById('code-error').style.display = 'block';
         btn.disabled = false;
         btn.textContent = 'Vérifier et commencer →';
+        if (fromLink) show('screen-code');
         return;
       }
       currentCode = code;
       current = 0; score = 0; answered = 0; inSocle = true;
+      currentEtab = (result.etablissement || '').trim();
+      answersMap = {}; retryMode = false; retryQueue = []; retryTotal = 0; saveProgress();
       document.getElementById('progress-wrap').style.display = 'block';
       renderScenario();
       show('screen-scenario');
@@ -469,6 +495,7 @@ async function verifyCode() {
   }
   btn.disabled = false;
   btn.textContent = 'Vérifier et commencer →';
+  if (fromLink && !document.getElementById('screen-scenario').classList.contains('active')) show('screen-code');
 }
 
 function totalSteps() { return SOCLE.length + ENTITIES[currentEntity].scenarios.length; }
@@ -489,13 +516,14 @@ function renderScenario() {
   document.getElementById('progress-count').textContent = pct + '%';
 
   let html = '';
+  const savoirHtml = Array.isArray(item.savoir) ? `<ul class="savoir-list">${item.savoir.map(s => `<li>${s}</li>`).join('')}</ul>` : `<p>${item.savoir}</p>`;
   if (isSocle) {
     html = `
-      <div class="reveal b-savoir" id="r-savoir">
+      <div class="reveal open b-savoir" id="r-savoir">
         <button class="reveal-btn" onclick="toggleReveal('r-savoir')"><span class="icon">📘</span><span class="label">À savoir</span><span class="chev">▼</span></button>
-        <div class="reveal-body"><p>${item.savoir}</p></div>
+        <div class="reveal-body">${savoirHtml}</div>
       </div>
-      <div class="reveal b-retenir" id="r-retenir">
+      <div class="reveal open b-retenir" id="r-retenir">
         <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
       </div>
@@ -508,19 +536,19 @@ function renderScenario() {
       </div>`;
   } else {
     html = `
-      <div class="reveal b-situation" id="r-sit">
+      <div class="reveal open b-situation" id="r-sit">
         <button class="reveal-btn" onclick="toggleReveal('r-sit')"><span class="icon">📋</span><span class="label">La situation</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p>${item.situation}</p></div>
       </div>
-      <div class="reveal b-piege" id="r-piege">
+      <div class="reveal open b-piege" id="r-piege">
         <button class="reveal-btn" onclick="toggleReveal('r-piege')"><span class="icon">⚠️</span><span class="label">Le piège à éviter</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p>${item.piege}</p></div>
       </div>
-      <div class="reveal b-reflexe" id="r-reflexe">
+      <div class="reveal open b-reflexe" id="r-reflexe">
         <button class="reveal-btn" onclick="toggleReveal('r-reflexe')"><span class="icon">✅</span><span class="label">Le bon réflexe</span><span class="chev">▼</span></button>
         <div class="reveal-body"><ol>${item.reflexe.map(r => `<li>${r}</li>`).join('')}</ol></div>
       </div>
-      <div class="reveal b-retenir" id="r-retenir">
+      <div class="reveal open b-retenir" id="r-retenir">
         <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
       </div>
@@ -533,50 +561,133 @@ function renderScenario() {
       </div>`;
   }
   document.getElementById('scenario-content').innerHTML = html;
-
-  document.getElementById('nav-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+  const prevA = answersMap[current];
+  if (prevA !== undefined) paintAnswer(current, prevA.chosen, item.quiz.correct);
+  document.getElementById('nav-prev').style.visibility = (current === 0 || retryMode) ? 'hidden' : 'visible';
   const nextBtn = document.getElementById('nav-next');
-  nextBtn.textContent = current === total - 1 ? 'Terminer 🎉' : 'Suivant →';
+  nextBtn.disabled = prevA === undefined;   // on ne passe pas sans avoir répondu
+  const last = retryMode ? retryQueue.length === 0 : current === total - 1;
+  nextBtn.textContent = last ? 'Terminer 🎉' : 'Suivant →';
+  if (retryMode) {
+    const k = retryTotal - retryQueue.length;
+    document.getElementById('scenario-badge').textContent = 'Reprise ' + k + ' / ' + retryTotal;
+    document.getElementById('progress-label').textContent = 'Reprise ' + k + ' / ' + retryTotal;
+    const rp = Math.round(((k - 1) / retryTotal) * 100);
+    document.getElementById('progress-fill').style.width = rp + '%';
+    document.getElementById('progress-count').textContent = rp + '%';
+  }
 }
 
 function toggleReveal(id) { document.getElementById(id).classList.toggle('open'); }
 
-function answer(num, chosen, correct) {
+function paintAnswer(num, chosen, correct) {
   const quiz = document.getElementById('quiz-' + num);
-  if (quiz.classList.contains('revealed')) return;
+  if (!quiz) return;
   const opts = quiz.querySelectorAll('.quiz-opt');
   opts.forEach((o, i) => { if (i === correct) o.classList.add('correct'); else if (i === chosen) o.classList.add('wrong'); });
   quiz.classList.add('revealed');
   const fb = document.getElementById('fb-' + num);
-  if (chosen === correct) {
-    fb.textContent = '✅ Bonne réponse !';
-    fb.style.color = '#065f46';
-    score++;
-  } else {
-    fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + String.fromCharCode(65+correct) + '. ' + opts[correct].textContent;
-    fb.style.color = '#991b1b';
-  }
-  answered++;
+  if (chosen === correct) { fb.textContent = '✅ Bonne réponse !'; fb.style.color = '#065f46'; }
+  else { fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + opts[correct].textContent; fb.style.color = '#991b1b'; }
+}
+
+function answer(num, chosen, correct) {
+  if (answersMap[num] !== undefined) return;
+  answersMap[num] = { chosen: chosen, ok: chosen === correct };
+  paintAnswer(num, chosen, correct);
+  document.getElementById('nav-next').disabled = false;
+  saveProgress();
 }
 
 function nextScenario() {
+  if (retryMode) {
+    if (retryQueue.length) { current = retryQueue.shift(); inSocle = current < SOCLE.length; renderScenario(); saveProgress(); window.scrollTo({ top: 0 }); return; }
+    retryMode = false; finishCourse(); return;
+  }
   const total = totalSteps();
   if (current < total - 1) {
     current++;
     if (inSocle && current >= SOCLE.length) inSocle = false;
-    renderScenario();
-  } else {
-    document.getElementById('done-entity').textContent = `Entité : ${ENTITIES[currentEntity].label}`;
-    document.getElementById('done-score').textContent = `Score : ${score} / ${answered} bonnes réponses`;
-    document.getElementById('saved-msg').style.display = 'none';
-    document.getElementById('emargement-form').style.display = 'block';
-    document.getElementById('name-input').value = '';
-    document.getElementById('submit-btn').disabled = true;
-    show('screen-done');
-  }
+    renderScenario(); saveProgress(); window.scrollTo({ top: 0 });
+  } else { finishCourse(); }
 }
 
-function prevScenario() { if (current > 0) { current--; if (current < SOCLE.length) inSocle = true; renderScenario(); } }
+function prevScenario() { if (current > 0) { current--; if (current < SOCLE.length) inSocle = true; renderScenario(); saveProgress(); } }
+
+// ---------- v5 : score, seuil 80 %, reprise, lien direct ----------
+function tally() { const v = Object.values(answersMap); score = v.filter(a => a.ok).length; answered = v.length; return answered > 0 ? Math.round((score / answered) * 100) : 0; }
+
+function finishCourse() {
+  const pct = tally();
+  const total = totalSteps();
+  document.getElementById('progress-fill').style.width = '100%';
+  document.getElementById('progress-count').textContent = '100%';
+  document.getElementById('done-entity').textContent = 'Entité : ' + ENTITIES[currentEntity].label;
+  document.getElementById('done-score').textContent = 'Score : ' + score + ' / ' + answered + ' bonnes réponses (' + pct + '\u00a0%)';
+  document.getElementById('saved-msg').style.display = 'none';
+  document.getElementById('retry-btn').style.display = 'none';
+  document.getElementById('fail-msg').style.display = 'none';
+  if (pct >= PASS && answered === total) {
+    document.getElementById('done-icon').textContent = '🎉';
+    document.getElementById('done-title').textContent = 'Parcours validé !';
+    document.getElementById('emargement-form').style.display = 'block';
+    document.getElementById('name-input').value = '';
+    document.getElementById('site-input').value = currentEtab;
+    document.getElementById('submit-btn').disabled = true;
+  } else {
+    const need = Math.ceil(total * PASS / 100);
+    document.getElementById('done-icon').textContent = '📚';
+    document.getElementById('done-title').textContent = 'Presque !';
+    document.getElementById('fail-msg').textContent = 'Il faut au moins ' + PASS + '\u00a0% (' + need + ' bonnes réponses sur ' + total + ') pour valider. Reprends les ' + (total - score) + ' questions ratées : c’est rapide.';
+    document.getElementById('fail-msg').style.display = 'block';
+    document.getElementById('retry-btn').style.display = 'inline-flex';
+    document.getElementById('emargement-form').style.display = 'none';
+  }
+  show('screen-done');
+}
+
+function retryMissed() {
+  const total = totalSteps(); const missed = [];
+  for (let i = 0; i < total; i++) if (!answersMap[i] || !answersMap[i].ok) missed.push(i);
+  missed.forEach(i => { delete answersMap[i]; });
+  retryMode = true; retryQueue = missed; retryTotal = missed.length;
+  current = retryQueue.shift(); inSocle = current < SOCLE.length;
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario(); show('screen-scenario'); saveProgress();
+}
+
+const PROGRESS_KEY = 'unapei92-formation-parcours-v5';
+function saveProgress() { try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ v: 5, ts: Date.now(), entity: currentEntity, code: currentCode, etab: currentEtab, current: current, inSocle: inSocle, answersMap: answersMap, retryMode: retryMode, retryQueue: retryQueue, retryTotal: retryTotal })); } catch (e) {} }
+function loadProgress() { try { const s = JSON.parse(localStorage.getItem(PROGRESS_KEY) || 'null'); if (!s || s.v !== 5 || Date.now() - s.ts > 14 * 864e5 || !s.code) return null; return s; } catch (e) { return null; } }
+function clearProgress() { try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {} }
+function restartFresh() { clearProgress(); answersMap = {}; renderResumeBox(); }
+function pauseAndExit() { saveProgress(); document.getElementById('progress-wrap').style.display = 'none'; renderResumeBox(); show('screen-welcome'); }
+
+function renderResumeBox() {
+  const s = loadProgress(); const box = document.getElementById('resume-box');
+  if (!s || !ENTITIES[s.entity]) { box.style.display = 'none'; return; }
+  const total = SOCLE.length + ENTITIES[s.entity].scenarios.length;
+  box.innerHTML = '<div class="resume"><b>Tu as un parcours en cours</b><span>' + ENTITIES[s.entity].label + ' · étape ' + (s.current + 1) + ' / ' + total + '</span><button class="welcome-cta" onclick="resumeProgress()">Reprendre →</button><button class="link-btn" onclick="restartFresh()">Recommencer à zéro</button></div>';
+  box.style.display = 'block';
+}
+function resumeProgress() {
+  const s = loadProgress(); if (!s) return;
+  currentEntity = s.entity; currentCode = s.code; currentEtab = s.etab || ''; current = s.current; inSocle = s.inSocle;
+  answersMap = s.answersMap || {}; retryMode = !!s.retryMode; retryQueue = s.retryQueue || []; retryTotal = s.retryTotal || 0;
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario(); show('screen-scenario');
+}
+function startFlow() { if (linkParams) { currentEntity = linkParams.entity; verifyCode(linkParams.code, true); } else { showPicker(); } }
+function initLink() {
+  const q = new URLSearchParams(location.search);
+  const e = (q.get('entite') || '').trim().toLowerCase(); const c = (q.get('code') || '').trim();
+  if (!e || c.length < 2) return;
+  const key = Object.keys(ENTITIES).find(k => k.toLowerCase() === e || ENTITIES[k].label.toLowerCase() === e);
+  if (!key) return;
+  linkParams = { entity: key, code: c };
+  const cta = document.querySelector('#screen-welcome .welcome-cta');
+  if (cta) cta.insertAdjacentHTML('beforebegin', '<p style="margin:0 auto 18px;font-weight:800;color:var(--primary)">✅ Ton lien est prêt : ' + ENTITIES[key].label + '</p>');
+}
 
 const nameInput = document.getElementById('name-input');
 const siteInput = document.getElementById('site-input');
@@ -628,12 +739,15 @@ async function submitEmargement() {
   const saved = JSON.parse(localStorage.getItem('emargements') || '[]');
   saved.push(record);
   localStorage.setItem('emargements', JSON.stringify(saved));
+  clearProgress();
   document.getElementById('emargement-form').style.display = 'none';
   document.getElementById('saved-msg').textContent = sent
     ? '✅ Ton émargement a été enregistré dans le registre. Merci !'
     : '✅ Émargement enregistré localement (envoi sheet en attente de config).';
   document.getElementById('saved-msg').style.display = 'block';
 }
+renderResumeBox();
+initLink();
 </script>
 </body>
 </html>

@@ -5,15 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Formation Référents RGPD UNAPEI92 — Niveau 2</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+    @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 900; font-display: swap; src: url('fonts/nunito-latin-900-normal.woff2') format('woff2'); }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #718096;
-    --primary: #6366f1; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
-    --red: #ef4444; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #4a5568;
+    --primary: #4f46e5; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #b91c1c; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
     --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
   }
-  html, body { height: 100%; font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--ink); }
+  html, body { height: 100%; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
   .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
   .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
   .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
@@ -31,40 +35,43 @@
   .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,.3); }
   .welcome-cta:hover { transform: translateY(-2px); }
   .scenario-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .scenario-back { background: none; border: none; color: var(--muted); font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .scenario-back { background: none; border: none; color: var(--muted); font-size: 15px; font-weight: 700; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; min-height: 44px; padding: 0 4px; text-align: left; }
   .scenario-back:hover { color: var(--primary); }
   .scenario-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 6px 14px; border-radius: 20px; }
   .scenario-title { font-size: 22px; font-weight: 900; line-height: 1.25; margin-bottom: 4px; }
   .scenario-entity { font-size: 14px; color: var(--muted); font-weight: 700; }
   .part-badge { display: inline-block; background: var(--amber-soft); color: #92400e; font-weight: 800; font-size: 12px; padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; }
   .reveal { margin-bottom: 12px; border-radius: 16px; overflow: hidden; border: 2px solid var(--border); background: var(--card); }
-  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; }
+  .reveal-btn { width: 100%; display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: none; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .reveal-btn .icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
   .reveal-btn .label { font-weight: 800; font-size: 15px; color: var(--ink); flex: 1; }
   .reveal-btn .chev { color: var(--muted); transition: transform .2s; font-size: 14px; }
   .reveal.open .reveal-btn .chev { transform: rotate(180deg); }
   .reveal-body { display: none; padding: 0 18px 18px; }
   .reveal.open .reveal-body { display: block; animation: fadeIn .3s ease; }
-  .reveal-body p { font-size: 15px; line-height: 1.65; color: var(--ink); }
+  .reveal-body p { font-size: 16px; line-height: 1.65; color: var(--ink); }
   .reveal-body ol { padding-left: 20px; }
-  .reveal-body li { font-size: 15px; line-height: 1.7; margin-bottom: 4px; }
+  .reveal-body li { font-size: 16px; line-height: 1.7; margin-bottom: 4px; }
   .b-situation .icon { background: var(--sky-soft); } .b-situation { border-color: #bae6fd; }
   .b-piege .icon { background: var(--red-soft); } .b-piege { border-color: #fecaca; }
   .b-reflexe .icon { background: var(--green-soft); } .b-reflexe { border-color: #a7f3d0; }
   .b-retenir .icon { background: var(--amber-soft); } .b-retenir { border-color: #fde68a; }
   .b-savoir .icon { background: var(--sky-soft); } .b-savoir { border-color: #bae6fd; }
+  .savoir-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+  .savoir-list li { position: relative; padding: 10px 12px 10px 38px; background: var(--sky-soft); border-radius: 12px; font-size: 16px; line-height: 1.6; color: var(--ink); }
+  .savoir-list li::before { content: '\25B8'; position: absolute; left: 14px; top: 10px; color: var(--sky); font-weight: 900; }
   .retenir-text { font-size: 16px; font-weight: 800; color: #92400e; font-style: italic; line-height: 1.5; }
   .quiz { margin-top: 16px; border-radius: 16px; border: 2px solid var(--primary); background: var(--primary-soft); padding: 18px; }
   .quiz-q { font-weight: 800; font-size: 16px; margin-bottom: 14px; }
   .quiz-options { display: flex; flex-direction: column; gap: 8px; }
-  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; transition: all .15s; color: var(--ink); }
+  .quiz-opt { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 16px; font-weight: 600; cursor: pointer; text-align: left; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; transition: all .15s; color: var(--ink); }
   .quiz-opt:hover { border-color: var(--primary); }
   .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: #065f46; }
   .quiz-opt.wrong { background: var(--red-soft); border-color: var(--red); color: #991b1b; }
   .quiz-feedback { margin-top: 12px; font-size: 14px; font-weight: 700; color: #065f46; display: none; }
   .quiz.revealed .quiz-feedback { display: block; }
   .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
-  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', sans-serif; transition: all .15s; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 14px; cursor: pointer; border: none; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; transition: all .15s; }
   .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
   .nav-next { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.3); }
   .nav-next:disabled { opacity: .4; cursor: not-allowed; }
@@ -75,12 +82,15 @@
   .done-score { font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 24px; }
   .form { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 20px; text-align: left; max-width: 420px; margin: 0 auto 20px; }
   .form label { display: block; font-size: 13px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
-  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', sans-serif; margin-bottom: 14px; }
+  .form input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; margin-bottom: 14px; }
   .form input:focus { outline: none; border-color: var(--primary); }
-  .form .btn { width: 100%; background: var(--green); color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', sans-serif; }
+  .form .btn { width: 100%; background: #047857; color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .form .btn:disabled { opacity: .4; cursor: not-allowed; }
   .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
   .fail { background: var(--red-soft); border: 2px solid var(--red); border-radius: 12px; padding: 14px; color: #991b1b; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
+  .resume { background: var(--card); border: 2px solid var(--primary); border-radius: 16px; padding: 16px; margin: 0 auto 22px; max-width: 420px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .resume span { color: var(--muted); font-size: 15px; font-weight: 700; }
+  .link-btn { background: none; border: none; color: var(--muted); font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 44px; padding: 0 12px; }
   @media (max-width: 480px) { .welcome h1 { font-size: 26px; } .scenario-title { font-size: 19px; } }
 </style>
 </head>
@@ -100,9 +110,10 @@
     <div class="welcome">
       <div class="welcome-badge">🛡️ Formation Référents RGPD UNAPEI92</div>
       <h1>Devenir le référent RGPD<br>de ton établissement</h1>
-      <p>Formation niveau 2, plus poussée que la sensibilisation. Tu apprends ton rôle, les outils (registre, incidents, droits), puis tu passes des cas pratiques. Un quiz final valide ta formation (80% minimum).</p>
-      <button class="welcome-cta" onclick="showCode()">Commencer →</button>
-      <div style="margin-top:20px;font-size:13px;color:var(--muted)">7 modules + 6 cas pratiques + quiz final · ~30 min · 80% requis</div>
+      <p>Formation niveau 2, plus poussée que la sensibilisation. Tu apprends ton rôle — faire vivre les outils au quotidien (registre, incidents, droits, consentements) et demander au DPO face à un doute — puis tu passes des cas pratiques. Un quiz final valide ta formation (80% minimum).</p>
+      <div id="resume-box" style="display:none"></div>
+      <button class="welcome-cta" onclick="startFlow()">Commencer →</button>
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">9 modules + 6 cas pratiques + quiz final · ~35 min · 80% requis</div>
     </div>
   </div>
 
@@ -123,7 +134,7 @@
   <!-- SCENARIO -->
   <div class="screen" id="screen-scenario">
     <div class="scenario-head">
-      <button class="scenario-back" onclick="showCode()">← Recommencer</button>
+      <button class="scenario-back" onclick="pauseAndExit()">← Pause · ta progression est gardée</button>
     </div>
     <div class="part-badge" id="part-badge"></div>
     <div class="scenario-badge" id="scenario-badge"></div>
@@ -145,7 +156,7 @@
       <p id="done-entity"></p>
       <div class="done-score" id="done-score"></div>
       <div class="saved" id="saved-msg">✅ Ta formation a été enregistrée. Merci !</div>
-      <div class="fail" id="fail-msg">❌ Score insuffisant (moins de 80%). Tu peux refaire le quiz final pour valider ta formation.</div>
+      <div class="fail" id="fail-msg">❌ Score insuffisant (moins de 80%). Enregistre ta tentative ci-dessous, puis recommence le quiz final uniquement.</div>
       <div class="form" id="emargement-form">
         <label>Ton nom complet</label>
         <input type="text" id="name-input" placeholder="Prénom Nom" autocomplete="name">
@@ -153,6 +164,8 @@
         <input type="text" id="site-input" placeholder="Ex : IME Saint-Exupéry, ESAT Meudon..." autocomplete="organization">
         <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer ma formation</button>
       </div>
+      <button class="welcome-cta" id="retry-final-btn" style="display:none;margin-top:12px" onclick="retryFinal()">Recommencer le quiz final →</button>
+      <div style="height:12px"></div>
       <button class="welcome-cta" onclick="showCode()">Recommencer</button>
     </div>
   </div>
@@ -164,14 +177,15 @@
 // MODULES — Partie A (rôle) + Partie B (outils)
 // ============================================================
 const MODULES = [
-  { part:'A', titre:'Les 7 principes du RGPD (Art. 5)', savoir:'Le RGPD repose sur 7 principes : 1) Licéité, loyauté, transparence ; 2) Limitation des finalités (on collecte pour un but précis) ; 3) Minimisation (on ne collecte que le nécessaire) ; 4) Exactitude (les données sont à jour) ; 5) Limitation de la conservation (pas plus longtemps que nécessaire) ; 6) Intégrité et confidentialité (sécurité) ; 7) Responsabilité (on doit pouvoir prouver la conformité).', retenir:'7 principes : licéité, finalité, minimisation, exactitude, conservation, sécurité, responsabilité.', quiz:{q:'Quel principe impose de ne collecter que le nécessaire ?', options:['La minimisation','La transparence','La conservation'], correct:0} },
-  { part:'A', titre:'Les bases légales (Art. 6)', savoir:'Tout traitement de données doit avoir une base légale : consentement, contrat, obligation légale, intérêt vital, mission d\'intérêt public, ou intérêt légitime. Le référent doit savoir identifier la base légale d\'un traitement avant de l\'autoriser.', retenir:'Tout traitement a une base légale. On l\'identifie avant d\'autoriser.', quiz:{q:'Quelle est une base légale valable pour traiter des données ?', options:['Le consentement de la personne','La curiosité','L\'habitude'], correct:0} },
-  { part:'A', titre:'Les droits des personnes (Art. 15-22)', savoir:'Les personnes ont des droits : accès (Art. 15), rectification (Art. 16), effacement (Art. 17), limitation (Art. 18), portabilité (Art. 20), opposition (Art. 21). Le référent doit savoir les reconnaître et y répondre dans les délais (30 jours).', retenir:'Droits : accès, rectification, effacement, limitation, portabilité, opposition. 30 jours.', quiz:{q:'Quel droit permet à une personne de demander la suppression de ses données ?', options:['Le droit à l\'effacement','Le droit d\'accès','Le droit de portabilité'], correct:0} },
-  { part:'A', titre:'Ta mission et ton périmètre', savoir:'Le référent est le point d\'entrée de son établissement pour les données personnelles. Il répond aux questions simples (où ranger un document, comment verrouiller un poste, qui contacter). Il escalade au DPO les cas complexes : demande d\'accès, incident, doute sur un traitement, conflit. Il n\'est pas le DPO : il ne décide pas seul, il oriente.', retenir:'Simple = je réponds. Complexe = j\'escalade au DPO. Je ne décide pas seul.', quiz:{q:'Un collègue a un doute sur une demande d\'accès. Que fait le référent ?', options:['Il répond seul','Il escalade au DPO','Il ignore la demande'], correct:1} },
-  { part:'B', titre:'Tenir le registre', savoir:'Le registre des traitements liste toutes les données traitées par l\'établissement : finalité, base légale, durée de conservation, destinataires, mesures de sécurité. Le référent le met à jour régulièrement (nouveau traitement, changement). C\'est un outil de preuve pour la CNIL.', retenir:'Le registre se tient à jour. Nouveau traitement = nouvelle ligne.', quiz:{q:'Quand le référent met-il à jour le registre ?', options:['Jamais, c\'est le DPO','Dès qu\'un traitement change ou qu\'un nouveau apparaît','Une fois par an seulement'], correct:1} },
-  { part:'B', titre:'Gérer les incidents et la remontée', savoir:'Un incident = fuite, perte, accès non autorisé. Le référent doit : 1) détecter, 2) qualifier (gravité, nombre de personnes), 3) signaler immédiatement au DPO, 4) enregistrer dans le journal des incidents. Ne jamais cacher. La CNIL doit être prévenue sous 72h si le risque est élevé (décision du DPO).', retenir:'Incident = détecter, qualifier, signaler au DPO, enregistrer. On ne cache jamais.', quiz:{q:'Quelle est la première action du référent face à un incident ?', options:['Le signaler au DPO et l\'enregistrer dans le journal','Attendre la fin du mois','Le cacher'], correct:0} },
-  { part:'B', titre:'Répondre aux droits', savoir:'Les personnes ont des droits : accès (Art. 15), rectification, effacement (Art. 17), opposition (Art. 21). Le référent doit : 1) accuser réception, 2) vérifier l\'identité, 3) répondre sous 30 jours, 4) protéger les données des tiers. Ne jamais répondre de façon incomplète ou tardive.', retenir:'Droits = accuser réception, vérifier, répondre sous 30 jours, protéger les tiers.', quiz:{q:'Quel est le délai pour répondre à une demande d\'accès ?', options:['1 semaine','30 jours','1 an'], correct:1} },
-  { part:'B', titre:'Vérifier les consentements', savoir:'Pour les photos, publications, enquêtes : il faut un consentement écrit, libre, éclairé, spécifique. Le référent vérifie que le consentement existe avant toute publication. Pour les mineurs, l\'accord des parents est indispensable. Le consentement peut être retiré à tout moment.', retenir:'Consentement = écrit, libre, éclairé, spécifique. Mineurs = accord des parents.', quiz:{q:'Avant de publier une photo d\'un usager, que vérifie le référent ?', options:['Rien, c\'est de la communication','Le consentement écrit de la personne (ou des parents pour un mineur)','Que la photo est jolie'], correct:1} }
+  { part:'A', titre:'Ta mission : faire vivre les outils (et demander au DPO)', savoir:['Le référent fait vivre la conformité au quotidien : registre à jour, journal des incidents tenu, demandes de droits suivies, consentements vérifiés, équipes sensibilisées.','Tu réponds aux questions simples et tu agis sur les cas courants : ranger, verrouiller, orienter, enregistrer.','Tu n’es pas le DPO : face à un doute ou un cas complexe — demande d’accès sensible, incident grave, nouveau traitement — tu demandes au DPO avant de décider.','Règle d’or : j’agis sur le courant, je demande au DPO sur le doute. Je ne décide jamais seul sur un cas complexe.'], retenir:'Je fais vivre les outils au quotidien. Doute ou cas complexe = je demande au DPO.', quiz:{q:'Un collègue signale un incident dont tu ne sais pas évaluer la gravité. Que fais-tu ?', options:['Tu le qualifies seul pour aller vite','Tu l’enregistres et tu demandes au DPO de t’aider à le qualifier','Tu attends de voir comment ça évolue'], correct:1} },
+  { part:'A', titre:'Les 7 principes du RGPD (Art. 5)', savoir:['1) Licéité, loyauté, transparence — 2) Limitation des finalités : on collecte pour un but précis.','3) Minimisation : que le nécessaire — 4) Exactitude : des données à jour.','5) Limitation de la conservation — 6) Intégrité et confidentialité : la sécurité.','7) Responsabilité : on doit pouvoir prouver la conformité — c’est ton rôle, avec les outils.'], retenir:'7 principes : licéité, finalité, minimisation, exactitude, conservation, sécurité, responsabilité.', quiz:{q:'Quel principe impose de ne collecter que le nécessaire ?', options:['La minimisation','La transparence','La conservation'], correct:0} },
+  { part:'A', titre:'Les bases légales (Art. 6)', savoir:['Tout traitement a une base légale : consentement, contrat ou prise en charge, obligation légale, intérêt vital, mission d’intérêt public, intérêt légitime.','Cas simples, tu identifies seul : soin = prise en charge, photos = consentement écrit.','Cas flou ou inédit — nouvelle finalité, nouveau public, réutilisation de données : tu demandes au DPO avant d’autoriser.'], retenir:'Tout traitement a une base légale. Cas simple = j’identifie ; cas flou = je demande au DPO.', quiz:{q:'Un service veut réutiliser des données collectées pour un autre but. Que fais-tu ?', options:['Tu autorises, c’est le même établissement','Tu vérifies la compatibilité de finalité et tu demandes au DPO en cas de doute','Tu refuses toujours, sans discuter'], correct:1} },
+  { part:'A', titre:'Les droits des personnes (Art. 15 à 22)', savoir:['6 droits : accès (réponse sous 30 jours), rectification, effacement, limitation, portabilité, opposition.','Réflexe : accuser réception, vérifier l’identité, répondre sous 30 jours, protéger les données des tiers.','Effacement n’est pas automatique : tu analyses ce que la loi impose de conserver, avec le DPO.','Demande sensible ou conflit — tiers, secret professionnel, représentant légal : tu demandes au DPO.'], retenir:'Droits = accueil, vérification, 30 jours, protection des tiers. Doute = DPO.', quiz:{q:'Un usager demande l’effacement total de son dossier. Que fais-tu ?', options:['Tu supprimes tout immédiatement','Tu analyses ce qui peut être effacé vs conservé, avec le DPO, puis tu réponds sous 30 jours','Tu refuses, c’est impossible'], correct:1} },
+  { part:'B', titre:'Tenir le registre (Art. 30)', savoir:['Le registre liste les traitements : finalité, base légale, durées de conservation, destinataires, mesures de sécurité.','Le faire vivre = ajouter une ligne à chaque nouveau traitement, mettre à jour à chaque changement, revoir régulièrement avec le DPO.','C’est la preuve n°1 devant la CNIL.','Doute sur une qualification — base, durée, destinataire : tu demandes au DPO.'], retenir:'Le registre se tient à jour. Nouveau traitement = nouvelle ligne. Doute = DPO.', quiz:{q:'Quand le référent met-il à jour le registre ?', options:['Jamais, c’est le DPO','Dès qu’un traitement change ou qu’un nouveau apparaît','Une fois par an seulement'], correct:1} },
+  { part:'B', titre:'Gérer les incidents et le journal (Art. 33-34)', savoir:['Incident = fuite, perte, accès non autorisé. Le faire vivre = un journal des incidents tenu et à jour.','1) Détecter et sécuriser — 2) Qualifier (gravité, personnes touchées) — 3) Signaler au DPO immédiatement — 4) Enregistrer.','Ne jamais cacher, ne jamais minimiser.','Notification CNIL sous 72h si risque élevé : c’est le DPO qui décide — toi, tu lui transmets vite les faits.'], retenir:'Incident = détecter, qualifier, signaler au DPO, enregistrer. On ne cache jamais.', quiz:{q:'Quelle est la première action du référent face à un incident ?', options:['Le signaler au DPO et l’enregistrer dans le journal','Attendre la fin du mois','Le cacher pour éviter les ennuis'], correct:0} },
+  { part:'B', titre:'Vérifier les consentements (Art. 7)', savoir:['Photos, publications, enquêtes : consentement écrit, libre, éclairé, spécifique.','Mineurs = accord des parents. Retrait possible à tout moment.','Le faire vivre = vérifier le consentement AVANT chaque publication, tenir la liste des refus.','Doute — tutelle, représentation, personne protégée : tu demandes au DPO.'], retenir:'Consentement = écrit, libre, éclairé, spécifique. Mineurs = accord des parents.', quiz:{q:'Avant de publier une photo d’un usager, que vérifie le référent ?', options:['Rien, c’est de la communication','Le consentement écrit de la personne (ou des parents pour un mineur)','Que la photo est jolie'], correct:1} },
+  { part:'B', titre:'Conservation et archivage (Art. 5.1.e)', savoir:['On ne garde pas les données indéfiniment : chaque traitement a une durée — active puis archivage — puis destruction sécurisée.','Données de santé : règles strictes et délais légaux. Tu appliques les durées validées avec le DPO.','Le faire vivre = appliquer les durées, organiser la destruction (déchiqueteuse, effacement), ne rien stocker « au cas où ».','« On garde tout » n’est jamais une réponse : en cas de doute, tu demandes au DPO.'], retenir:'Chaque donnée a une durée. Fini = détruit. On ne stocke jamais « au cas où ».', quiz:{q:'Un service veut garder d’anciens dossiers « au cas où ». Que fais-tu ?', options:['Tu laisses faire, ça ne mange pas de pain','Tu appliques les durées validées et tu organises la destruction, avec le DPO en cas de doute','Tu les archives chez toi pour dépanner'], correct:1} },
+  { part:'B', titre:'Sous-traitants, AIPD, sécurité (Art. 28, 32, 35)', savoir:['Prestataire qui touche des données = contrat de sous-traitance (DPA) écrit obligatoire. Sans DPA signée, pas d’accès : tu détectes, le DPO contractualise.','Projet risqué — nouveau logiciel, vidéosurveillance large, biométrie : analyse d’impact (AIPD) AVANT de lancer. Tu pré-qualifies, le DPO pilote.','Sécurité au quotidien : habilitations et moindre droit, mots de passe, chiffrement, sauvegardes, traçabilité des accès.','Outils hors Europe (cloud, IA) : aucun transfert sans garanties validées par le DPO.','Sanctions CNIL jusqu’à 20 millions d’euros ou 4 % du chiffre d’affaires : ton rôle, c’est d’éviter d’en arriver là.'], retenir:'Pas de DPA = pas d’accès. Projet risqué = AIPD avant. Outil hors UE = DPO avant.', quiz:{q:'Un service veut adopter un outil cloud américain sans contrat. Ta première action ?', options:['Tu laisses tester avec des vraies données','Tu bloques l’accès aux données et tu saisis le DPO (DPA + transfert hors UE)','Tu fais signer un papier aux usagers'], correct:1} }
 ];
 
 // ============================================================
@@ -213,6 +227,9 @@ let inModules = true;
 let inFinal = false;
 let finalScore = 0;
 let finalAnswered = 0;
+let answersMap = {};   // étape -> { chosen, ok }
+let linkCode = null;
+let currentEtab = '';
 
 const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFyWK2gpIKtedKXaonVcUBaPggePAot6cqQZoHxbfQQe1b6cUyhzH1r3zx8TrIDQ5z4g/exec';
 
@@ -235,8 +252,8 @@ codeInput.addEventListener('input', () => {
   document.getElementById('code-error').style.display = 'none';
 });
 
-async function verifyCode() {
-  const code = codeInput.value.trim();
+async function verifyCode(codeOverride, fromLink) {
+  const code = (codeOverride || codeInput.value).trim();
   if (code.length < 2) return;
   const btn = document.getElementById('code-btn');
   btn.disabled = true;
@@ -248,6 +265,8 @@ async function verifyCode() {
       currentCode = code;
       current = 0; score = 0; answered = 0; inModules = true; inFinal = false;
       finalScore = 0; finalAnswered = 0;
+      currentEtab = (result.etablissement || '').trim();
+      answersMap = {}; saveProgress();
       document.getElementById('progress-wrap').style.display = 'block';
       renderScenario();
       show('screen-scenario');
@@ -261,10 +280,11 @@ async function verifyCode() {
   }
   btn.disabled = false;
   btn.textContent = 'Vérifier et commencer →';
+  if (fromLink && !document.getElementById('screen-scenario').classList.contains('active')) show('screen-code');
 }
 
 function totalSteps() {
-  // Toujours inclure le quiz final (7 modules + 6 cas + 10 questions)
+  // Toujours inclure le quiz final (9 modules + 6 cas + 10 questions)
   return MODULES.length + CASES.length + FINAL_QUIZ.length;
 }
 
@@ -292,6 +312,7 @@ function renderScenario() {
   document.getElementById('progress-count').textContent = pct + '%';
 
   let html = '';
+  const savoirHtml = Array.isArray(item.savoir) ? `<ul class="savoir-list">${item.savoir.map(s => `<li>${s}</li>`).join('')}</ul>` : `<p>${item.savoir}</p>`;
   if (inFinal) {
     html = `
       <div class="quiz" id="quiz-${current}">
@@ -303,11 +324,11 @@ function renderScenario() {
       </div>`;
   } else if (current < MODULES.length) {
     html = `
-      <div class="reveal b-savoir" id="r-savoir">
+      <div class="reveal open b-savoir" id="r-savoir">
         <button class="reveal-btn" onclick="toggleReveal('r-savoir')"><span class="icon">📘</span><span class="label">À savoir</span><span class="chev">▼</span></button>
-        <div class="reveal-body"><p>${item.savoir}</p></div>
+        <div class="reveal-body">${savoirHtml}</div>
       </div>
-      <div class="reveal b-retenir" id="r-retenir">
+      <div class="reveal open b-retenir" id="r-retenir">
         <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
       </div>
@@ -320,19 +341,19 @@ function renderScenario() {
       </div>`;
   } else {
     html = `
-      <div class="reveal b-situation" id="r-sit">
+      <div class="reveal open b-situation" id="r-sit">
         <button class="reveal-btn" onclick="toggleReveal('r-sit')"><span class="icon">📋</span><span class="label">La situation</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p>${item.situation}</p></div>
       </div>
-      <div class="reveal b-piege" id="r-piege">
+      <div class="reveal open b-piege" id="r-piege">
         <button class="reveal-btn" onclick="toggleReveal('r-piege')"><span class="icon">⚠️</span><span class="label">Le piège à éviter</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p>${item.piege}</p></div>
       </div>
-      <div class="reveal b-reflexe" id="r-reflexe">
+      <div class="reveal open b-reflexe" id="r-reflexe">
         <button class="reveal-btn" onclick="toggleReveal('r-reflexe')"><span class="icon">✅</span><span class="label">Le bon réflexe</span><span class="chev">▼</span></button>
         <div class="reveal-body"><ol>${item.reflexe.map(r => `<li>${r}</li>`).join('')}</ol></div>
       </div>
-      <div class="reveal b-retenir" id="r-retenir">
+      <div class="reveal open b-retenir" id="r-retenir">
         <button class="reveal-btn" onclick="toggleReveal('r-retenir')"><span class="icon">💡</span><span class="label">À retenir</span><span class="chev">▼</span></button>
         <div class="reveal-body"><p class="retenir-text">« ${item.retenir} »</p></div>
       </div>
@@ -345,30 +366,35 @@ function renderScenario() {
       </div>`;
   }
   document.getElementById('scenario-content').innerHTML = html;
-
+  const prevA = answersMap[current];
+  if (prevA !== undefined) paintAnswer(current, prevA.chosen, inFinal ? item.correct : item.quiz.correct);
   document.getElementById('nav-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
   const nextBtn = document.getElementById('nav-next');
+  nextBtn.disabled = prevA === undefined;   // on ne passe pas sans avoir répondu
   nextBtn.textContent = current === total - 1 ? 'Terminer 🎉' : 'Suivant →';
 }
 
 function toggleReveal(id) { document.getElementById(id).classList.toggle('open'); }
 
-function answer(num, chosen, correct) {
+function paintAnswer(num, chosen, correct) {
   const quiz = document.getElementById('quiz-' + num);
-  if (quiz.classList.contains('revealed')) return;
+  if (!quiz) return;
   const opts = quiz.querySelectorAll('.quiz-opt');
   opts.forEach((o, i) => { if (i === correct) o.classList.add('correct'); else if (i === chosen) o.classList.add('wrong'); });
   quiz.classList.add('revealed');
   const fb = document.getElementById('fb-' + num);
-  if (chosen === correct) {
-    fb.textContent = '✅ Bonne réponse !';
-    fb.style.color = '#065f46';
-    if (inFinal) finalScore++; else score++;
-  } else {
-    fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + String.fromCharCode(65+correct) + '. ' + opts[correct].textContent;
-    fb.style.color = '#991b1b';
-  }
+  if (chosen === correct) { fb.textContent = '✅ Bonne réponse !'; fb.style.color = '#065f46'; }
+  else { fb.textContent = '❌ Pas tout à fait. La bonne réponse est : ' + opts[correct].textContent; fb.style.color = '#991b1b'; }
+}
+
+function answer(num, chosen, correct) {
+  if (answersMap[num] !== undefined) return;
+  answersMap[num] = { chosen: chosen, ok: chosen === correct };
+  paintAnswer(num, chosen, correct);
+  if (chosen === correct) { if (inFinal) finalScore++; else score++; }
   if (inFinal) finalAnswered++; else answered++;
+  document.getElementById('nav-next').disabled = false;
+  saveProgress();
 }
 
 function nextScenario() {
@@ -376,8 +402,10 @@ function nextScenario() {
   if (current < total - 1) {
     current++;
     if (!inFinal && current >= MODULES.length + CASES.length) inFinal = true;
-    renderScenario();
+    renderScenario(); saveProgress(); window.scrollTo({ top: 0 });
   } else {
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-count').textContent = '100%';
     // Fin : calculer le score final (quiz final uniquement)
     const finalPct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
     document.getElementById('done-entity').textContent = 'Formation Référents RGPD';
@@ -390,18 +418,69 @@ function nextScenario() {
       document.getElementById('done-title').textContent = 'Formation validée !';
       document.getElementById('emargement-form').style.display = 'block';
       document.getElementById('name-input').value = '';
-      document.getElementById('site-input').value = '';
+      document.getElementById('site-input').value = currentEtab;
       document.getElementById('submit-btn').disabled = true;
+      document.getElementById('submit-btn').textContent = 'Enregistrer ma formation';
+      document.getElementById('retry-final-btn').style.display = 'none';
     } else {
       document.getElementById('done-icon').textContent = '📚';
       document.getElementById('done-title').textContent = 'Score insuffisant';
       document.getElementById('fail-msg').style.display = 'block';
+      document.getElementById('emargement-form').style.display = 'block';
+      document.getElementById('name-input').value = '';
+      document.getElementById('site-input').value = currentEtab;
+      document.getElementById('submit-btn').disabled = true;
+      document.getElementById('submit-btn').textContent = 'Enregistrer ma tentative (non validée)';
+      document.getElementById('retry-final-btn').style.display = 'none';
     }
     show('screen-done');
   }
 }
 
-function prevScenario() { if (current > 0) { current--; if (current < MODULES.length + CASES.length) inFinal = false; renderScenario(); } }
+function prevScenario() { if (current > 0) { current--; if (current < MODULES.length + CASES.length) inFinal = false; renderScenario(); saveProgress(); } }
+
+function retryFinal() {
+  current = MODULES.length + CASES.length;
+  inFinal = true; finalScore = 0; finalAnswered = 0;
+  for (let i = MODULES.length + CASES.length; i < totalSteps(); i++) delete answersMap[i];
+  saveProgress();
+  document.getElementById('retry-final-btn').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario();
+  show('screen-scenario');
+}
+
+
+const PROGRESS_KEY = 'unapei92-formation-referents-v5';
+function saveProgress() { try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ v: 5, ts: Date.now(), code: currentCode, etab: currentEtab, current: current, inFinal: inFinal, answersMap: answersMap })); } catch (e) {} }
+function loadProgress() { try { const s = JSON.parse(localStorage.getItem(PROGRESS_KEY) || 'null'); if (!s || s.v !== 5 || Date.now() - s.ts > 14 * 864e5 || !s.code) return null; return s; } catch (e) { return null; } }
+function clearProgress() { try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {} }
+function restartFresh() { clearProgress(); answersMap = {}; renderResumeBox(); }
+function pauseAndExit() { saveProgress(); document.getElementById('progress-wrap').style.display = 'none'; renderResumeBox(); show('screen-welcome'); }
+
+function renderResumeBox() {
+  const s = loadProgress(); const box = document.getElementById('resume-box');
+  if (!s) { box.style.display = 'none'; return; }
+  box.innerHTML = '<div class="resume"><b>Tu as une formation en cours</b><span>étape ' + (s.current + 1) + ' / ' + totalSteps() + '</span><button class="welcome-cta" onclick="resumeProgress()">Reprendre →</button><button class="link-btn" onclick="restartFresh()">Recommencer à zéro</button></div>';
+  box.style.display = 'block';
+}
+function resumeProgress() {
+  const s = loadProgress(); if (!s) return;
+  currentCode = s.code; currentEtab = s.etab || ''; current = s.current; inFinal = !!s.inFinal; answersMap = s.answersMap || {};
+  score = 0; answered = 0; finalScore = 0; finalAnswered = 0;
+  const nMC = MODULES.length + CASES.length;
+  Object.keys(answersMap).forEach(k => { const a = answersMap[k]; if (+k >= nMC) { finalAnswered++; if (a.ok) finalScore++; } else { answered++; if (a.ok) score++; } });
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario(); show('screen-scenario');
+}
+function startFlow() { if (linkCode) { verifyCode(linkCode, true); } else { showCode(); } }
+function initLink() {
+  const c = (new URLSearchParams(location.search).get('code') || '').trim();
+  if (c.length < 2) return;
+  linkCode = c;
+  const cta = document.querySelector('#screen-welcome .welcome-cta');
+  if (cta) cta.insertAdjacentHTML('beforebegin', '<p style="margin:0 auto 18px;font-weight:800;color:var(--primary)">✅ Ton lien est prêt</p>');
+}
 
 const nameInput = document.getElementById('name-input');
 const siteInput = document.getElementById('site-input');
@@ -442,12 +521,22 @@ async function submitEmargement() {
   const saved = JSON.parse(localStorage.getItem('referents_formation') || '[]');
   saved.push(record);
   localStorage.setItem('referents_formation', JSON.stringify(saved));
+  if (record.valide === 'OUI') clearProgress();
   document.getElementById('emargement-form').style.display = 'none';
-  document.getElementById('saved-msg').textContent = sent
-    ? '✅ Ta formation a été enregistrée dans le registre. Merci !'
-    : '✅ Formation enregistrée localement (envoi sheet en attente de config).';
+  if (record.valide === 'NON') {
+    document.getElementById('saved-msg').textContent = sent
+      ? '✅ Tentative enregistrée (non validée). Recommence le quiz final ci-dessous.'
+      : '✅ Tentative enregistrée localement (non validée). Recommence le quiz final ci-dessous.';
+    document.getElementById('retry-final-btn').style.display = 'inline-flex';
+  } else {
+    document.getElementById('saved-msg').textContent = sent
+      ? '✅ Ta formation a été enregistrée dans le registre. Merci !'
+      : '✅ Formation enregistrée localement (envoi sheet en attente de config).';
+  }
   document.getElementById('saved-msg').style.display = 'block';
 }
+renderResumeBox();
+initLink();
 </script>
 </body>
 </html>
