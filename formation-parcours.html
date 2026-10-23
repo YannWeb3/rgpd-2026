@@ -95,6 +95,8 @@
   .form input:focus { outline: none; border-color: var(--primary); }
   .form .btn { width: 100%; background: #047857; color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .form .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .form a.btn { display: block; text-align: center; text-decoration: none; }
+  .form-help { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
   .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
   .fail { background: var(--red-soft); border: 2px solid var(--red); border-radius: 12px; padding: 14px; color: #991b1b; font-weight: 700; font-size: 15px; margin-bottom: 16px; display: none; }
   .resume { background: var(--card); border: 2px solid var(--primary); border-radius: 16px; padding: 16px; margin: 0 auto 22px; max-width: 420px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
@@ -139,10 +141,10 @@
   <div class="screen" id="screen-code">
     <div class="picker">
       <h2>Code de ton établissement</h2>
-      <p class="picker-sub">Saisis le code fourni par ton référent RGPD (ex : 1001, 1002...). Il permet de tracer ton émargement sur le bon établissement.</p>
+      <p class="picker-sub">Saisis le code fourni par ton référent RGPD (ex : S-09 → tape 9). Il permet de tracer ton émargement sur le bon établissement.</p>
       <div class="form" style="max-width:420px;margin:0 auto">
         <label>Code établissement</label>
-        <input type="text" id="code-input" placeholder="Ex : 1001" autocomplete="off" inputmode="numeric">
+        <input type="text" id="code-input" placeholder="Ex : 9 (pour S-09)" autocomplete="off" inputmode="numeric">
         <div id="code-error" style="color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px;display:none"></div>
         <button class="btn" id="code-btn" onclick="verifyCode()" disabled>Vérifier et commencer →</button>
       </div>
@@ -178,13 +180,10 @@
       <div class="done-score" id="done-score"></div>
       <div class="fail" id="fail-msg"></div>
       <button class="welcome-cta" id="retry-btn" style="display:none;margin-bottom:16px" onclick="retryMissed()">Reprendre les questions ratées</button>
-      <div class="saved" id="saved-msg">✅ Ton émargement a été enregistré. Merci !</div>
+      <div class="saved" id="saved-msg">✅ Le formulaire d'émargement s'est ouvert dans un nouvel onglet. Tape ton nom, puis touche&nbsp;«&nbsp;Envoyer&nbsp;». Rien ne s'est ouvert ? Touche à nouveau le bouton.</div>
       <div class="form" id="emargement-form">
-        <label>Ton nom complet</label>
-        <input type="text" id="name-input" placeholder="Prénom Nom" autocomplete="name">
-        <label>Établissement / antenne précis</label>
-        <input type="text" id="site-input" placeholder="Ex : IME Les Lilas, ESAT Meudon, Siège..." autocomplete="organization">
-        <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer mon émargement</button>
+        <p class="form-help">Dernière étape : l'émargement. Le formulaire de l'Unapei 92 s'ouvre déjà rempli, il te reste à taper ton nom.</p>
+        <a class="btn" id="submit-btn" href="#" target="_blank" rel="noopener" onclick="markEmargement()">Enregistrer mon émargement</a>
       </div>
       <button class="link-btn" onclick="showPicker()">Faire un autre parcours</button>
     </div>
@@ -451,51 +450,108 @@ function openEntity(key) {
 
 const codeInput = document.getElementById('code-input');
 codeInput.addEventListener('input', () => {
-  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 2;
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 1;
   document.getElementById('code-error').style.display = 'none';
 });
 
-// Vérifie le code établissement via le script Apps Script (action=login)
-async function verifyCode(codeOverride, fromLink) {
-  const code = (codeOverride || codeInput.value).trim();
-  if (code.length < 2) return;
-  const btn = document.getElementById('code-btn');
-  btn.disabled = true;
-  btn.textContent = 'Vérification...';
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL + '?action=login&code=' + encodeURIComponent(code));
-    const result = await res.json();
-    if (result.success) {
-      // Vérifier que le type de l'établissement correspond au type d'entité choisi
-      const chosenType = ENTITIES[currentEntity].label;
-      const returnedType = (result.type || '').trim().toUpperCase();
-      const chosenTypeUp = chosenType.toUpperCase();
-      if (returnedType && returnedType !== chosenTypeUp) {
-        document.getElementById('code-error').textContent = 'Ce code correspond à un ' + result.type + ' (' + result.etablissement + '), pas à ' + chosenType + '. Vérifie ton code.';
-        document.getElementById('code-error').style.display = 'block';
-        btn.disabled = false;
-        btn.textContent = 'Vérifier et commencer →';
-        if (fromLink) show('screen-code');
-        return;
-      }
-      currentCode = code;
-      current = 0; score = 0; answered = 0; inSocle = true;
-      currentEtab = (result.etablissement || '').trim();
-      answersMap = {}; retryMode = false; retryQueue = []; retryTotal = 0; saveProgress();
-      document.getElementById('progress-wrap').style.display = 'block';
-      renderScenario();
-      show('screen-scenario');
-    } else {
-      document.getElementById('code-error').textContent = 'Code invalide ou inactif. Vérifie auprès de ton référent RGPD.';
-      document.getElementById('code-error').style.display = 'block';
-    }
-  } catch (e) {
-    document.getElementById('code-error').textContent = 'Erreur de connexion. Réessaie.';
-    document.getElementById('code-error').style.display = 'block';
+// Établissements et services : onglet Sites du registre V3 (23/10/2026), mêmes codes que le suivi de formation.
+// entite = parcours attendu pour ce code ; null = pas de parcours dédié, tous les parcours sont acceptés.
+const SITES = {
+  "S-01": { etab: "Siège — RH", entite: "RH" },
+  "S-02": { etab: "Siège — Paie", entite: "Paie" },
+  "S-03": { etab: "Siège — DAF", entite: "DAF" },
+  "S-04": { etab: "Siège — Communication", entite: "Communication" },
+  "S-05": { etab: "Siège — Mécénat & Donateurs", entite: "Donateurs" },
+  "S-06": { etab: "Siège — DSI", entite: "DSI" },
+  "S-07": { etab: "Siège — Qualité", entite: "Qualité" },
+  "S-08": { etab: "Siège — Direction générale", entite: "Direction" },
+  "S-09": { etab: "ESAT Cité Jardins", entite: "ESAT" },
+  "S-10": { etab: "ESAT Les Ateliers de Garlande", entite: "ESAT" },
+  "S-11": { etab: "ESAT Les Ateliers du Phare", entite: "ESAT" },
+  "S-12": { etab: "ESAT Meudon / Solipolis Meudon", entite: "ESAT" },
+  "S-13": { etab: "ESAT Yvonne Wendling", entite: "ESAT" },
+  "S-14": { etab: "Solipolis Insertion – ESAT Hors-les-murs", entite: "ESAT" },
+  "S-15": { etab: "Solipolis Vernouillet", entite: "ESAT" },
+  "S-16": { etab: "IME Balzac", entite: "IME" },
+  "S-17": { etab: "IME Bourg-la-Reine", entite: "IME" },
+  "S-18": { etab: "IME Espoir Châtillonnais", entite: "IME" },
+  "S-19": { etab: "IME Fernand Oury", entite: "IME" },
+  "S-20": { etab: "IME La Maillerie", entite: "IME" },
+  "S-21": { etab: "IME La Tissanderie", entite: "IME" },
+  "S-22": { etab: "IME Le Châtillonnais", entite: "IME" },
+  "S-23": { etab: "IME Le Fil de Soi", entite: "IME" },
+  "S-24": { etab: "IME Les Peupliers", entite: "IME" },
+  "S-25": { etab: "IME Neuilly-sur-Seine", entite: "IME" },
+  "S-26": { etab: "IME le Cèdre", entite: "IME" },
+  "S-27": { etab: "SESSAD Le Cèdre", entite: "SESSAD" },
+  "S-28": { etab: "SESSAD Le Cèdre Jeunesse", entite: "SESSAD" },
+  "S-29": { etab: "SESSAD Le Jardin des Papillons", entite: "SESSAD" },
+  "S-30": { etab: "SESSAD Trajectoires", entite: "SESSAD" },
+  "S-31": { etab: "CMPP Les Provinces Françaises", entite: "CMPP" },
+  "S-32": { etab: "EAM Bois Clair", entite: "EAM" },
+  "S-33": { etab: "EAM de Billancourt", entite: "EAM" },
+  "S-34": { etab: "EAM d’Estienne d’Orves", entite: "EAM" },
+  "S-35": { etab: "FAM La Pommeraie", entite: "EAM" },
+  "S-36": { etab: "CAJ Fontenay", entite: "EANM" },
+  "S-37": { etab: "CAJ Jean-Claude Richard", entite: "EANM" },
+  "S-38": { etab: "CAJ Madeleine Vinet", entite: "EANM" },
+  "S-39": { etab: "CAJ Montrouge (CAJ Dorme)", entite: "EANM" },
+  "S-40": { etab: "CAJ Sceaux", entite: "EANM" },
+  "S-41": { etab: "CAJ Vanves", entite: "EANM" },
+  "S-42": { etab: "CAJ de Neuilly", entite: "EANM" },
+  "S-43": { etab: "CAJ d’Asnières", entite: "EANM" },
+  "S-44": { etab: "EANM Bois Clair", entite: "EANM" },
+  "S-45": { etab: "EANM Domaine de Vitray", entite: "EANM" },
+  "S-46": { etab: "Foyer Eric", entite: "EANM" },
+  "S-47": { etab: "Foyer Le Phare", entite: "EANM" },
+  "S-48": { etab: "Foyer Le Point du Jour", entite: "EANM" },
+  "S-49": { etab: "Foyer Les Graviers", entite: "EANM" },
+  "S-50": { etab: "Foyer Michelle Darty", entite: "EANM" },
+  "S-51": { etab: "Foyer Résidence de l’Avenir", entite: "EANM" },
+  "S-52": { etab: "Foyer de vie Jeany", entite: "EANM" },
+  "S-53": { etab: "Foyer de vie retraite du Mesnil", entite: "EANM" },
+  "S-54": { etab: "Foyer d’hébergement du Mesnil", entite: "EANM" },
+  "S-55": { etab: "Service Appartements Perceval", entite: "EANM" },
+  "S-56": { etab: "SAVS Nanterre", entite: "SAVS" },
+  "S-57": { etab: "SAVS Sceaux", entite: "SAVS" },
+  "S-58": { etab: "SAVS du Mesnil", entite: "SAVS" },
+  "S-59": { etab: "SAMSAH", entite: "SAMSAH" },
+  "S-60": { etab: "EMMA-H", entite: null },
+  "S-61": { etab: "EAJE Le Jardin des Papillons", entite: null },
+  "S-62": { etab: "Club sport, loisirs et culture", entite: "Club Loisirs" },
+};
+
+// « 9 », « 09 », « S9 », « s-09 » → « S-09 »
+function normalizeCode(raw) {
+  const m = String(raw || '').trim().match(/^S?\s*-?\s*(\d{1,2})$/i);
+  return m ? 'S-' + m[1].padStart(2, '0') : '';
+}
+
+// Vérifie le code établissement dans la liste SITES (plus d'appel au script Google)
+function verifyCode(codeOverride, fromLink) {
+  const code = normalizeCode(codeOverride || codeInput.value);
+  const site = SITES[code];
+  const err = document.getElementById('code-error');
+  if (!site) {
+    err.textContent = 'Code inconnu. Vérifie auprès de ton référent RGPD.';
+    err.style.display = 'block';
+    if (fromLink) show('screen-code');
+    return;
   }
-  btn.disabled = false;
-  btn.textContent = 'Vérifier et commencer →';
-  if (fromLink && !document.getElementById('screen-scenario').classList.contains('active')) show('screen-code');
+  // Vérifier que le site correspond au parcours choisi
+  if (site.entite && site.entite !== currentEntity) {
+    err.textContent = 'Ce code correspond à « ' + site.etab + ' » (parcours ' + ENTITIES[site.entite].label + '), pas au parcours ' + ENTITIES[currentEntity].label + '. Vérifie ton code ou change d’entité.';
+    err.style.display = 'block';
+    if (fromLink) show('screen-code');
+    return;
+  }
+  currentCode = code;
+  current = 0; score = 0; answered = 0; inSocle = true;
+  currentEtab = site.etab;
+  answersMap = {}; retryMode = false; retryQueue = []; retryTotal = 0; saveProgress();
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario();
+  show('screen-scenario');
 }
 
 function totalSteps() { return SOCLE.length + ENTITIES[currentEntity].scenarios.length; }
@@ -631,9 +687,7 @@ function finishCourse() {
     document.getElementById('done-icon').textContent = '🎉';
     document.getElementById('done-title').textContent = 'Parcours validé !';
     document.getElementById('emargement-form').style.display = 'block';
-    document.getElementById('name-input').value = '';
-    document.getElementById('site-input').value = currentEtab;
-    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('submit-btn').href = emargementUrl(pct);
   } else {
     const need = Math.ceil(total * PASS / 100);
     document.getElementById('done-icon').textContent = '📚';
@@ -681,7 +735,7 @@ function startFlow() { if (linkParams) { currentEntity = linkParams.entity; veri
 function initLink() {
   const q = new URLSearchParams(location.search);
   const e = (q.get('entite') || '').trim().toLowerCase(); const c = (q.get('code') || '').trim();
-  if (!e || c.length < 2) return;
+  if (!e || !c) return;
   const key = Object.keys(ENTITIES).find(k => k.toLowerCase() === e || ENTITIES[k].label.toLowerCase() === e);
   if (!key) return;
   linkParams = { entity: key, code: c };
@@ -689,63 +743,26 @@ function initLink() {
   if (cta) cta.insertAdjacentHTML('beforebegin', '<p style="margin:0 auto 18px;font-weight:800;color:var(--primary)">✅ Ton lien est prêt : ' + ENTITIES[key].label + '</p>');
 }
 
-const nameInput = document.getElementById('name-input');
-const siteInput = document.getElementById('site-input');
-function checkEmargementReady() {
-  document.getElementById('submit-btn').disabled = nameInput.value.trim().length < 2 || siteInput.value.trim().length < 2;
+// Émargement : Microsoft Forms de l'Unapei 92 (tenant UNAPEI92), pré-rempli par le lien.
+// Le nom est tapé dans le formulaire : il ne passe jamais dans l'adresse.
+const EMARGEMENT_FORM_URL = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=LcAyZjdMg0KASCwDRRv1uw9KjH-aE45HmDG8kJuMxntUNkhYSFZSOVJGOE1KUllNWkJCWDI4NVRGSyQlQCN0PWcu';
+const EMARGEMENT_CHAMPS = {
+  code: 'rc42ed0bd4ea1462d8de99445035ce3a9',
+  type: 're8f366b438624eacab76223b1d756a67',
+  site: 'r704a990c5e194900a393766ff42d664c',
+  score: 'r38c54205284d41c1b0a3b7a7e801864c',
+  pct: 'rc224a9107ec1412097f20282532dc228'
+};
+function emargementUrl(pct) {
+  const valeurs = { code: currentCode, type: ENTITIES[currentEntity].label, site: currentEtab, score: score + '/' + answered, pct: String(pct) };
+  return EMARGEMENT_FORM_URL + Object.keys(EMARGEMENT_CHAMPS).map(k => '&' + EMARGEMENT_CHAMPS[k] + '=' + encodeURIComponent(valeurs[k] || '')).join('');
 }
-nameInput.addEventListener('input', checkEmargementReady);
-siteInput.addEventListener('input', checkEmargementReady);
-
-// URL du Google Apps Script (même que le questionnaire rgpd-2026)
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyn3tZOBZwNRkYVFaVlFwAONYdMNgUr4YKHHivoqb3ES7c9qzgVLKye58XGKu_Hl05H/exec';
-
-async function submitEmargement() {
-  const name = nameInput.value.trim();
-  const site = siteInput.value.trim();
-  if (name.length < 2 || site.length < 2) return;
-  const record = {
-    code_etab: currentCode,
-    nom: name,
-    type_entite: ENTITIES[currentEntity].label,
-    site: site,
-    date: new Date().toISOString(),
-    score: `${score}/${answered}`,
-    pct: answered > 0 ? Math.round((score/answered)*100) : 0
-  };
-  // 1. Envoi vers le Google Sheet (format du script Apps Script : action + sheet + row)
-  const payload = {
-    action: 'create',
-    sheet: 'EMARGEMENT',
-    row: {
-      code_etab: record.code_etab,
-      nom: record.nom,
-      type_entite: record.type_entite,
-      site: record.site,
-      date: record.date,
-      score: record.score,
-      pct: record.pct
-    }
-  };
-  let sent = false;
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    sent = result.status === 'success';
-  } catch (e) {
-    console.warn('Envoi Google Sheet échoué, fallback localStorage:', e);
-  }
-  // 2. Fallback localStorage (toujours, pour le test)
-  const saved = JSON.parse(localStorage.getItem('emargements') || '[]');
-  saved.push(record);
-  localStorage.setItem('emargements', JSON.stringify(saved));
+function markEmargement() {
   clearProgress();
-  document.getElementById('emargement-form').style.display = 'none';
-  document.getElementById('saved-msg').textContent = sent
-    ? '✅ Ton émargement a été enregistré dans le registre. Merci !'
-    : '✅ Émargement enregistré localement (envoi sheet en attente de config).';
   document.getElementById('saved-msg').style.display = 'block';
 }
+// Les anciennes versions gardaient les émargements (avec le nom) dans le téléphone : on les efface.
+try { localStorage.removeItem('emargements'); } catch (e) {}
 renderResumeBox();
 initLink();
 </script>
