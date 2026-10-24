@@ -86,6 +86,8 @@
   .form input:focus { outline: none; border-color: var(--primary); }
   .form .btn { width: 100%; background: #047857; color: #fff; font-weight: 800; padding: 14px; border: none; border-radius: 12px; font-size: 15px; cursor: pointer; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; }
   .form .btn:disabled { opacity: .4; cursor: not-allowed; }
+  .form a.btn { display: block; text-align: center; text-decoration: none; }
+  .form-help { font-size: 14px; color: var(--muted); margin-bottom: 14px; }
   .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
   .fail { background: var(--red-soft); border: 2px solid var(--red); border-radius: 12px; padding: 14px; color: #991b1b; font-weight: 700; font-size: 14px; margin-bottom: 16px; display: none; }
   .resume { background: var(--card); border: 2px solid var(--primary); border-radius: 16px; padding: 16px; margin: 0 auto 22px; max-width: 420px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
@@ -121,10 +123,10 @@
   <div class="screen" id="screen-code">
     <div class="picker">
       <h2>Code de ton établissement</h2>
-      <p class="picker-sub">Saisis le code fourni par ton référent ou le DPO. Il permet de tracer ta formation sur le bon établissement.</p>
+      <p class="picker-sub">Saisis le code fourni par le DPO (ex : S-09 → tape 9). Il permet de tracer ta formation sur le bon établissement.</p>
       <div class="form" style="max-width:420px;margin:0 auto">
         <label>Code établissement</label>
-        <input type="text" id="code-input" placeholder="Ex : 1004" autocomplete="off" inputmode="numeric">
+        <input type="text" id="code-input" placeholder="Ex : 9 (pour S-09)" autocomplete="off" inputmode="numeric">
         <div id="code-error" style="color:var(--red);font-size:13px;font-weight:700;margin-bottom:10px;display:none"></div>
         <button class="btn" id="code-btn" onclick="verifyCode()" disabled>Vérifier et commencer →</button>
       </div>
@@ -155,14 +157,11 @@
       <h2 id="done-title">Parcours terminé !</h2>
       <p id="done-entity"></p>
       <div class="done-score" id="done-score"></div>
-      <div class="saved" id="saved-msg">✅ Ta formation a été enregistrée. Merci !</div>
+      <div class="saved" id="saved-msg">✅ Le formulaire d'émargement s'est ouvert dans un nouvel onglet. Tape ton nom, puis touche&nbsp;«&nbsp;Envoyer&nbsp;». Rien ne s'est ouvert ? Touche à nouveau le bouton.</div>
       <div class="fail" id="fail-msg">❌ Score insuffisant (moins de 80%). Enregistre ta tentative ci-dessous, puis recommence le quiz final uniquement.</div>
       <div class="form" id="emargement-form">
-        <label>Ton nom complet</label>
-        <input type="text" id="name-input" placeholder="Prénom Nom" autocomplete="name">
-        <label>Établissement / antenne précis</label>
-        <input type="text" id="site-input" placeholder="Ex : IME Saint-Exupéry, ESAT Meudon..." autocomplete="organization">
-        <button class="btn" id="submit-btn" onclick="submitEmargement()" disabled>Enregistrer ma formation</button>
+        <p class="form-help">L'émargement se fait dans le formulaire de l'Unapei 92 : il s'ouvre déjà rempli, il te reste à taper ton nom.</p>
+        <a class="btn" id="submit-btn" href="#" target="_blank" rel="noopener" onclick="markEmargement()">Enregistrer ma formation</a>
       </div>
       <button class="welcome-cta" id="retry-final-btn" style="display:none;margin-top:12px" onclick="retryFinal()">Recommencer le quiz final →</button>
       <div style="height:12px"></div>
@@ -172,6 +171,7 @@
 
 </div>
 
+<script src="sites.js"></script>
 <script>
 // ============================================================
 // MODULES — Partie A (rôle) + Partie B (outils)
@@ -231,8 +231,6 @@ let answersMap = {};   // étape -> { chosen, ok }
 let linkCode = null;
 let currentEtab = '';
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxFyWK2gpIKtedKXaonVcUBaPggePAot6cqQZoHxbfQQe1b6cUyhzH1r3zx8TrIDQ5z4g/exec';
-
 function show(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -248,39 +246,28 @@ function showCode() {
 
 const codeInput = document.getElementById('code-input');
 codeInput.addEventListener('input', () => {
-  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 2;
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 1;
   document.getElementById('code-error').style.display = 'none';
 });
 
-async function verifyCode(codeOverride, fromLink) {
-  const code = (codeOverride || codeInput.value).trim();
-  if (code.length < 2) return;
-  const btn = document.getElementById('code-btn');
-  btn.disabled = true;
-  btn.textContent = 'Vérification...';
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL + '?action=login&code=' + encodeURIComponent(code));
-    const result = await res.json();
-    if (result.success) {
-      currentCode = code;
-      current = 0; score = 0; answered = 0; inModules = true; inFinal = false;
-      finalScore = 0; finalAnswered = 0;
-      currentEtab = (result.etablissement || '').trim();
-      answersMap = {}; saveProgress();
-      document.getElementById('progress-wrap').style.display = 'block';
-      renderScenario();
-      show('screen-scenario');
-    } else {
-      document.getElementById('code-error').textContent = 'Code invalide ou inactif. Vérifie auprès de ton référent ou du DPO.';
-      document.getElementById('code-error').style.display = 'block';
-    }
-  } catch (e) {
-    document.getElementById('code-error').textContent = 'Erreur de connexion. Réessaie.';
+// Vérifie le code établissement dans la liste SITES (sites.js, plus d'appel au script Google)
+function verifyCode(codeOverride, fromLink) {
+  const code = normalizeCode(codeOverride || codeInput.value);
+  const site = SITES[code];
+  if (!site) {
+    document.getElementById('code-error').textContent = 'Code inconnu. Vérifie auprès du DPO.';
     document.getElementById('code-error').style.display = 'block';
+    if (fromLink) show('screen-code');
+    return;
   }
-  btn.disabled = false;
-  btn.textContent = 'Vérifier et commencer →';
-  if (fromLink && !document.getElementById('screen-scenario').classList.contains('active')) show('screen-code');
+  currentCode = code;
+  current = 0; score = 0; answered = 0; inModules = true; inFinal = false;
+  finalScore = 0; finalAnswered = 0;
+  currentEtab = site.etab;
+  answersMap = {}; saveProgress();
+  document.getElementById('progress-wrap').style.display = 'block';
+  renderScenario();
+  show('screen-scenario');
 }
 
 function totalSteps() {
@@ -413,25 +400,21 @@ function nextScenario() {
     document.getElementById('saved-msg').style.display = 'none';
     document.getElementById('fail-msg').style.display = 'none';
     document.getElementById('emargement-form').style.display = 'none';
-    if (finalPct >= 80) {
+    const valide = finalPct >= 80;
+    document.getElementById('submit-btn').href = emargementUrl(finalPct, valide);
+    document.getElementById('emargement-form').style.display = 'block';
+    if (valide) {
       document.getElementById('done-icon').textContent = '🎉';
       document.getElementById('done-title').textContent = 'Formation validée !';
-      document.getElementById('emargement-form').style.display = 'block';
-      document.getElementById('name-input').value = '';
-      document.getElementById('site-input').value = currentEtab;
-      document.getElementById('submit-btn').disabled = true;
       document.getElementById('submit-btn').textContent = 'Enregistrer ma formation';
       document.getElementById('retry-final-btn').style.display = 'none';
     } else {
       document.getElementById('done-icon').textContent = '📚';
       document.getElementById('done-title').textContent = 'Score insuffisant';
       document.getElementById('fail-msg').style.display = 'block';
-      document.getElementById('emargement-form').style.display = 'block';
-      document.getElementById('name-input').value = '';
-      document.getElementById('site-input').value = currentEtab;
-      document.getElementById('submit-btn').disabled = true;
       document.getElementById('submit-btn').textContent = 'Enregistrer ma tentative (non validée)';
-      document.getElementById('retry-final-btn').style.display = 'none';
+      // La tentative s'enregistre dans le formulaire : le quiz final se recommence aussitôt
+      document.getElementById('retry-final-btn').style.display = 'inline-flex';
     }
     show('screen-done');
   }
@@ -476,65 +459,32 @@ function resumeProgress() {
 function startFlow() { if (linkCode) { verifyCode(linkCode, true); } else { showCode(); } }
 function initLink() {
   const c = (new URLSearchParams(location.search).get('code') || '').trim();
-  if (c.length < 2) return;
+  if (!c) return;
   linkCode = c;
   const cta = document.querySelector('#screen-welcome .welcome-cta');
   if (cta) cta.insertAdjacentHTML('beforebegin', '<p style="margin:0 auto 18px;font-weight:800;color:var(--primary)">✅ Ton lien est prêt</p>');
 }
 
-const nameInput = document.getElementById('name-input');
-const siteInput = document.getElementById('site-input');
-function checkEmargementReady() {
-  document.getElementById('submit-btn').disabled = nameInput.value.trim().length < 2 || siteInput.value.trim().length < 2;
+// Émargement : Microsoft Forms de l'Unapei 92 (tenant UNAPEI92), pré-rempli par le lien.
+// Le nom est tapé dans le formulaire : il ne passe jamais dans l'adresse.
+const EMARGEMENT_FORM_URL = 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=LcAyZjdMg0KASCwDRRv1uw9KjH-aE45HmDG8kJuMxntURDAxRTYxMVVRVUVSWlpVRjJDUzNOMTRESCQlQCN0PWcu';
+const EMARGEMENT_CHAMPS = {
+  code: 'r08ecbe1c18b945be9cda3e21626beed9',
+  site: 'r4b6bdf6561e84c73ba1de4de1ac286c3',
+  score: 'rd30124f8a8794c75bfc3c63f9df17cd0',
+  pct: 're853f277be754c7c8086e088d30cb513',
+  valide: 'r43b2b96258eb4d409d0a1f2e87d47f6c'
+};
+function emargementUrl(pct, valide) {
+  const valeurs = { code: currentCode, site: currentEtab, score: finalScore + '/' + finalAnswered, pct: String(pct), valide: valide ? 'OUI' : 'NON' };
+  return EMARGEMENT_FORM_URL + Object.keys(EMARGEMENT_CHAMPS).map(k => '&' + EMARGEMENT_CHAMPS[k] + '=' + encodeURIComponent(valeurs[k] || '')).join('');
 }
-nameInput.addEventListener('input', checkEmargementReady);
-siteInput.addEventListener('input', checkEmargementReady);
-
-async function submitEmargement() {
-  const name = nameInput.value.trim();
-  const site = siteInput.value.trim();
-  if (name.length < 2 || site.length < 2) return;
-  const finalPct = finalAnswered > 0 ? Math.round((finalScore / finalAnswered) * 100) : 0;
-  const record = {
-    code_etab: currentCode,
-    nom: name,
-    type_entite: 'Referent',
-    site: site,
-    date: new Date().toISOString(),
-    score: `${finalScore}/${finalAnswered}`,
-    pct: finalPct,
-    valide: finalPct >= 80 ? 'OUI' : 'NON'
-  };
-  const payload = {
-    action: 'create',
-    sheet: 'REFERENTS_FORMATION',
-    row: record
-  };
-  let sent = false;
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    sent = result.status === 'success' || result.success === true;
-  } catch (e) {
-    console.warn('Envoi Google Sheet échoué, fallback localStorage:', e);
-  }
-  const saved = JSON.parse(localStorage.getItem('referents_formation') || '[]');
-  saved.push(record);
-  localStorage.setItem('referents_formation', JSON.stringify(saved));
-  if (record.valide === 'OUI') clearProgress();
-  document.getElementById('emargement-form').style.display = 'none';
-  if (record.valide === 'NON') {
-    document.getElementById('saved-msg').textContent = sent
-      ? '✅ Tentative enregistrée (non validée). Recommence le quiz final ci-dessous.'
-      : '✅ Tentative enregistrée localement (non validée). Recommence le quiz final ci-dessous.';
-    document.getElementById('retry-final-btn').style.display = 'inline-flex';
-  } else {
-    document.getElementById('saved-msg').textContent = sent
-      ? '✅ Ta formation a été enregistrée dans le registre. Merci !'
-      : '✅ Formation enregistrée localement (envoi sheet en attente de config).';
-  }
+function markEmargement() {
+  if (document.getElementById('retry-final-btn').style.display === 'none') clearProgress();
   document.getElementById('saved-msg').style.display = 'block';
 }
+// Les anciennes versions gardaient les émargements (avec le nom) dans le téléphone : on les efface.
+try { localStorage.removeItem('referents_formation'); } catch (e) {}
 renderResumeBox();
 initLink();
 </script>
