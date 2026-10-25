@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registre RGPD UNAPEI92 — Signaler une activité</title>
+<style>
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 900; font-display: swap; src: url('fonts/nunito-latin-900-normal.woff2') format('woff2'); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #4a5568;
+    --primary: #4f46e5; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #b91c1c; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
+  }
+  html, body { height: 100%; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
+  button, input, textarea { font-family: inherit; }
+  .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
+  .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--primary); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), #8b5cf6); border-radius: 20px; transition: width .4s ease; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .welcome { text-align: center; padding: 36px 0; }
+  .welcome-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--primary-soft); color: var(--primary); font-weight: 800; font-size: 13px; padding: 8px 18px; border-radius: 30px; margin-bottom: 22px; }
+  .welcome h1 { font-size: 30px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .welcome p { color: var(--muted); font-size: 16px; max-width: 520px; margin: 0 auto 18px; line-height: 1.6; }
+  .etab { display: inline-block; background: var(--card); border: 2px solid var(--primary); color: var(--primary); font-weight: 900; font-size: 16px; padding: 8px 16px; border-radius: 14px; margin-bottom: 18px; }
+  .rassure { background: var(--green-soft); border: 2px solid #a7f3d0; border-radius: 14px; padding: 12px 14px; color: #065f46; font-weight: 700; font-size: 15px; max-width: 520px; margin: 0 auto 24px; text-align: left; }
+  .rassure li { margin: 4px 0 4px 18px; }
+  .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--primary); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,.3); text-decoration: none; }
+  .welcome-cta:hover { transform: translateY(-2px); }
+  .welcome-cta[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+  h2.q { font-size: 23px; font-weight: 900; line-height: 1.25; margin-bottom: 6px; }
+  .q-sub { color: var(--muted); font-size: 15px; margin-bottom: 18px; line-height: 1.55; }
+  h3.q2 { font-size: 18px; font-weight: 900; margin: 26px 0 6px; }
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice { display: flex; align-items: center; gap: 14px; width: 100%; background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 14px 16px; cursor: pointer; text-align: left; transition: all .15s; color: var(--ink); }
+  .choice:hover { border-color: var(--primary); }
+  .choice[aria-pressed="true"] { border-color: var(--primary); background: var(--primary-soft); }
+  .choice .ico { width: 42px; height: 42px; border-radius: 12px; background: var(--primary-soft); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+  .choice .txt b { display: block; font-size: 16px; font-weight: 800; }
+  .choice .txt span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--card); border: 2px solid var(--border); border-radius: 30px; padding: 10px 16px; font-size: 15px; font-weight: 700; cursor: pointer; color: var(--ink); min-height: 44px; transition: all .15s; }
+  .chip:hover { border-color: var(--primary); }
+  .chip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .chip.nsp[aria-pressed="true"] { background: var(--muted); border-color: var(--muted); }
+  .champ { margin-top: 12px; }
+  .champ label { display: block; font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .champ input, .champ textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--card); color: var(--ink); }
+  .champ textarea { min-height: 96px; resize: vertical; line-height: 1.5; }
+  .champ input:focus, .champ textarea:focus { outline: none; border-color: var(--primary); }
+  .compte { font-size: 12px; color: var(--muted); text-align: right; margin-top: 4px; }
+  .exemples { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .exemple { background: var(--amber-soft); border: 1px dashed var(--amber); color: #92400e; border-radius: 20px; padding: 6px 12px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .astuce { background: var(--sky-soft); border-left: 4px solid var(--sky); border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: 14px; color: #075985; margin-top: 16px; line-height: 1.5; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 12px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 15px; cursor: pointer; border: none; transition: all .15s; min-height: 46px; }
+  .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
+  .nav-next { background: var(--primary); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.3); margin-left: auto; }
+  .nav-next:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .recap { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 6px 16px; margin: 6px 0 20px; }
+  .recap div { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.45; }
+  .recap div:last-child { border-bottom: none; }
+  .recap b { display: block; font-size: 13px; color: var(--muted); font-weight: 800; }
+  .envoi { text-align: center; }
+  .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 15px; margin: 18px 0; display: none; text-align: left; }
+  .err { color: var(--red); font-size: 14px; font-weight: 700; margin-top: 8px; display: none; }
+  .link-btn { background: none; border: none; color: var(--muted); font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 44px; padding: 0 12px; }
+  .pied { text-align: center; color: var(--muted); font-size: 13px; margin-top: 30px; }
+  .pied a { color: var(--primary); }
+  @media (max-width: 480px) { .welcome h1 { font-size: 25px; } h2.q { font-size: 20px; } .choice { padding: 12px; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Étape 1</span>
+      <span class="progress-count" id="progress-count"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome-badge">🗂️ Registre RGPD UNAPEI92</div>
+      <h1>Signaler une activité au registre</h1>
+      <div id="etab-accueil"></div>
+      <p>Une nouvelle activité, un changement, ou une activité qui s'arrête : dites-le en 3 minutes. Le registre se tient à jour avec vous.</p>
+      <ul class="rassure">
+        <li>Pas de mauvaise réponse : « Je ne sais pas » est accepté partout.</li>
+        <li>La DPO complète ensuite la partie technique.</li>
+        <li>Décrivez des activités, <u>jamais</u> le nom d'une personne.</li>
+      </ul>
+      <button class="welcome-cta" type="button" onclick="commencer()">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- CODE ÉTABLISSEMENT (si pas de lien personnel) -->
+  <div class="screen" id="screen-code">
+    <h2 class="q">Code de votre établissement</h2>
+    <p class="q-sub">Il figure dans le lien reçu de la DPO (ex. : S-09 → tapez 9).</p>
+    <div class="champ">
+      <label for="code-input">Code établissement</label>
+      <input type="text" id="code-input" placeholder="Ex : 9 (pour S-09)" autocomplete="off" inputmode="numeric">
+      <div class="err" id="code-error"></div>
+    </div>
+    <div class="nav"><button class="nav-btn nav-next" type="button" id="code-btn" onclick="validerCode()" disabled>Continuer →</button></div>
+  </div>
+
+  <!-- ÉTAPES (contenu construit par le script) -->
+  <div class="screen" id="screen-step">
+    <div id="step-content"></div>
+    <div class="nav">
+      <button class="nav-btn nav-prev" type="button" onclick="precedent()">← Retour</button>
+      <button class="nav-btn nav-next" type="button" id="btn-next" onclick="suivant()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- RÉCAPITULATIF ET ENVOI -->
+  <div class="screen" id="screen-fin">
+    <h2 class="q">Vérifiez, puis envoyez</h2>
+    <p class="q-sub">Le formulaire de l'Unapei 92 va s'ouvrir dans un nouvel onglet, <b>déjà rempli</b> : il vous restera à taper votre nom, puis à cliquer sur « Envoyer ».</p>
+    <div class="recap" id="recap"></div>
+    <div class="champ">
+      <label for="remarque">Une remarque ? (facultatif)</label>
+      <textarea id="remarque" maxlength="250" placeholder="Ex. : on utilise aussi un classeur papier en cas de panne"></textarea>
+    </div>
+    <div class="envoi" style="margin-top:20px">
+      <a class="welcome-cta" id="btn-envoi" href="#" target="_blank" rel="noopener" onclick="marquerEnvoi()">Envoyer au registre →</a>
+      <div class="saved" id="saved-msg">✅ Le formulaire s'est ouvert dans un nouvel onglet. Tapez votre nom (dernière question), puis cliquez sur « Envoyer » : c'est terminé. Rien ne s'est ouvert ? Touchez à nouveau le bouton.</div>
+      <div><button class="link-btn" type="button" onclick="autreActivite()">Signaler une autre activité</button></div>
+      <div><button class="link-btn" type="button" onclick="precedent()">← Modifier mes réponses</button></div>
+    </div>
+  </div>
+
+  <p class="pied">Une question ? <a href="mailto:rgpd@unapei92.fr">rgpd@unapei92.fr</a></p>
+</div>
+
+<script src="sites.js"></script>
+<script>
+// Formulaire Microsoft Forms du tenant UNAPEI92 qui reçoit la déclaration (ouvert à tous, 14 questions de type Texte).
+// La page remplit les 13 premières par le lien ; le répondant tape son nom (14e) puis clique sur « Envoyer ».
+// Le nom ne passe jamais dans le lien.
+const CONFIG = {
+  url: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=LcAyZjdMg0KASCwDRRv1uw9KjH-aE45HmDG8kJuMxntUODJGU083NVFWRkJLMkJVRERKV0wwMVVWWiQlQCN0PWcu',
+  champs: {
+    etab: 'r596afbe1ff894a499b40946586eaea67', signal: 'rbd329fb42a794550b51bec40024da825',
+    activite: 'r9045bce5bf2e4d1e85f1a40843ee1dc5', nom: 'r193d8987f32a4eb9a0dcf9261cec0a53',
+    but: 'r20f818dcbd18447c8ba831def9d30f25', personnes: 'r4d26a19fe9634808b130cb1fa5a0723a',
+    infos: 'r4e4f29671f95418f87055e75c3478ec0', outils: 'rf460d37bbb6d44889109eb79a0ef9708',
+    destinataires: 'r71688e3332df4185a091f8a724fb647d', duree: 'r454d2256b19c4623854eed0321744d59',
+    protection: 'ra356fdbe4c754b70a23386c8892db40a', change: 'r2731a57aa3314e799fe9bd48692db077',
+    remarque: 'r7ce25e627c904ecdb241ba930c4a602e'
+  }
+};
+// Testé le 25/10 : Forms accepte un lien de 6 400 caractères et répond 404 à 10 000.
+const LIEN_MAX = 6000;
+
+// Activités déjà au registre (onglet Suivi de la V3, 25/10), regroupées par type d'établissement.
+const LIBELLES = {
+  'T-01': 'La comptabilité et les fournisseurs', 'T-02': 'Les comptes informatiques et la trace des accès',
+  'T-03': "Le dispositif d'alerte professionnelle", 'T-04': 'La facturation et les relations avec les financeurs',
+  'T-05': 'La formation des salariés', 'T-06': 'La paie', 'T-07': 'Les accidents du travail',
+  'T-08': 'Les mandats des représentants du personnel (CSE)', 'T-09': 'Les dossiers du personnel',
+  'T-10': 'La messagerie et les outils collaboratifs', 'T-11': 'Le recrutement (candidatures)',
+  'T-12': 'Le registre unique du personnel', 'T-13': 'Le signalement des événements indésirables graves',
+  'T-14': 'Les statistiques, études et enquêtes de satisfaction',
+  'T-15': "Les plannings de l'équipe (horaires, absences)",
+  'T-16': "Les échanges d'informations entre professionnels sur une personne accompagnée",
+  'T-17': 'Le dossier de chaque personne accompagnée', 'T-18': 'Le dossier de chaque enfant accompagné',
+  'T-19': 'Les photos et vidéos des personnes accompagnées',
+  'T-20': "L'envoi d'informations médicales ou scolaires (école, médecins)",
+  'T-21': 'Le suivi de la production de chaque travailleur', 'T-22': 'Le dossier médical (soins, traitements)',
+  'T-23': 'Les plannings de visites partagés', 'T-24': 'Les données génétiques',
+  'T-25': 'Le dossier de chaque enfant accueilli à la crèche', 'T-26': 'Les dossiers de soin et les tests psychologiques',
+  'T-27': 'Le fichier des adhérents du club', 'T-28': 'Les photos et vidéos des activités',
+  'T-29': "Les plannings des interventions à domicile ou à l'école",
+  'T-30': 'Le suivi des visites à domicile (téléphones, tablettes)', 'T-31': 'La vidéosurveillance et les données biométriques',
+  'T-32': "Les adhérents, les familles et les instances de l'association", 'T-33': 'La base de contacts et de prospects',
+  'T-34': 'La base des donateurs', 'T-35': 'Les cookies du site web', 'T-36': "Les photos et vidéos d'usagers pour les campagnes",
+  'T-37': 'Les photos et les témoignages', 'T-38': 'Les reçus fiscaux des donateurs'
+};
+const ACTIVITES = {
+  ESAT: ['T-15', 'T-16', 'T-17', 'T-21'], IME: ['T-15', 'T-16', 'T-18', 'T-20', 'T-24'],
+  EAM: ['T-15', 'T-16', 'T-22'], EANM: ['T-15', 'T-16', 'T-17', 'T-19', 'T-31'],
+  SAMSAH: ['T-15', 'T-16', 'T-17', 'T-30'], SAVS: ['T-15', 'T-16', 'T-17', 'T-23'],
+  SESSAD: ['T-15', 'T-16', 'T-18', 'T-29'], CMPP: ['T-15', 'T-16', 'T-18', 'T-26'],
+  'EMMA-H': ['T-15', 'T-16', 'T-17'], EAJE: ['T-15', 'T-16', 'T-25'], 'Club Loisirs': ['T-27', 'T-28'],
+  RH: ['T-03', 'T-05', 'T-07', 'T-08', 'T-09', 'T-11', 'T-12'], Paie: ['T-06'], DAF: ['T-01', 'T-04', 'T-38'],
+  Communication: ['T-33', 'T-35', 'T-37'], Donateurs: ['T-34', 'T-36'], DSI: ['T-02', 'T-10'],
+  Qualité: ['T-13', 'T-14'], Direction: ['T-32']
+};
+// Sites sans parcours de formation dédié : leur type vient de l'onglet Sites
+const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE' };
+const SERVICES = ['RH', 'Paie', 'DAF', 'Communication', 'Donateurs', 'DSI', 'Qualité', 'Direction'];
+
+const SIGNAUX = {
+  nouvelle: { ico: '🆕', titre: 'Une nouvelle activité', sous: 'On commence à noter ou à utiliser des informations sur des personnes', valeur: 'Une nouvelle activité' },
+  changement: { ico: '✏️', titre: 'Un changement', sous: 'Nouvel outil, nouvelles informations, autre destinataire…', valeur: 'Un changement sur une activité déjà connue' },
+  arret: { ico: '⛔', titre: 'Une activité qui s’arrête', sous: 'On ne s’en sert plus', valeur: 'Une activité qui s’arrête' }
+};
+const PARCOURS = { nouvelle: ['signal', 'nom', 'qui', 'outils', 'duree'], changement: ['signal', 'activite', 'change'], arret: ['signal', 'activite', 'arret'] };
+const NSP = 'Je ne sais pas';
+const OPTIONS = {
+  personnes: ['Personnes accompagnées', 'Familles ou représentants légaux', 'Salariés', 'Bénévoles ou stagiaires', 'Autres', NSP],
+  infos: ['Identité et coordonnées', 'Santé (soins, traitements, handicap)', 'Vie familiale ou sociale', 'Argent (RIB, revenus, aides)', 'Photos ou vidéos', 'Scolarité', 'Connexion ou localisation', 'Autre', NSP],
+  outils: ['AIRMES', 'Messagerie ou Teams', 'Papier', 'Tableau Excel', 'Un autre logiciel ou une appli', NSP],
+  destinataires: ['Personne d’autre', 'Le siège', 'Un médecin ou un soignant', 'L’école', 'La MDPH', 'Un financeur', 'Un prestataire', 'Autre', NSP],
+  duree: ['Moins d’un an', '1 à 5 ans', 'Plus de 5 ans', 'Tant que la personne est accompagnée', NSP],
+  protection: ['Armoire ou bureau fermé à clé', 'Mot de passe', 'Accès réservé à quelques personnes', 'Rien de particulier', NSP],
+  change: ['Un nouvel outil ou logiciel', 'D’autres informations notées', 'D’autres personnes concernées', 'Un nouveau destinataire', 'La durée de conservation', 'La façon de protéger', 'Autre']
+};
+const EXEMPLES_NOM = ['Cahier de transmissions', 'Tableau des repas', 'Fichier des familles', 'Planning des sorties', 'Liste des inscrits aux activités'];
+
+let etat = nouvelEtat();
+let site = null;     // { code, etab, type }
+let etapes = [];
+let pos = 0;
+
+function nouvelEtat() {
+  return { signal: '', activite: '', activiteAutre: '', nom: '', but: '', personnes: [], infos: [], outils: [], logiciel: '',
+           destinataires: [], destAutre: '', duree: '', protection: [], change: [], changeTexte: '', arretTexte: '' };
+}
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+
+// ---------- Établissement ----------
+function choisirSite(code) {
+  const c = normalizeCode(code);
+  if (!SITES[c]) return false;
+  site = { code: c, etab: SITES[c].etab, type: TYPE_SITE[c] || SITES[c].entite };
+  document.getElementById('etab-accueil').innerHTML = '<div class="etab">' + esc(site.etab) + ' · ' + c + '</div>';
+  return true;
+}
+function commencer() {
+  if (site) { demarrer(); } else { show('screen-code'); document.getElementById('code-input').focus(); }
+}
+const codeInput = document.getElementById('code-input');
+codeInput.addEventListener('input', () => {
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 1;
+  document.getElementById('code-error').style.display = 'none';
+});
+function validerCode() {
+  if (choisirSite(codeInput.value)) { demarrer(); return; }
+  const e = document.getElementById('code-error');
+  e.textContent = 'Code inconnu. Vérifiez le lien reçu, ou écrivez à rgpd@unapei92.fr.';
+  e.style.display = 'block';
+}
+
+// ---------- Parcours ----------
+function demarrer() {
+  etat = nouvelEtat();
+  etapes = PARCOURS.nouvelle.slice();
+  pos = 0;
+  document.getElementById('progress-wrap').style.display = 'block';
+  afficherEtape();
+}
+
+function progression() {
+  const total = etapes.length + 1;
+  const n = Math.min(pos + 1, total);
+  document.getElementById('progress-label').textContent = 'Étape ' + n + ' sur ' + total;
+  document.getElementById('progress-count').textContent = site ? site.etab : '';
+  document.getElementById('progress-fill').style.width = Math.round((n - 1) / total * 100) + '%';
+}
+
+function chips(cle, multiple) {
+  return '<div class="chips">' + OPTIONS[cle].map(o => {
+    const choisi = multiple ? etat[cle].includes(o) : etat[cle] === o;
+    return '<button type="button" class="chip' + (o === NSP ? ' nsp' : '') + '" aria-pressed="' + choisi + '" data-cle="' + cle + '" data-multi="' + (multiple ? 1 : 0) + '" data-val="' + esc(o) + '">' + esc(o) + '</button>';
+  }).join('') + '</div>';
+}
+function champ(id, label, cle, max, multi, placeholder) {
+  const balise = multi
+    ? '<textarea id="' + id + '" data-cle="' + cle + '" maxlength="' + max + '" placeholder="' + esc(placeholder || '') + '">' + esc(etat[cle]) + '</textarea>'
+    : '<input type="text" id="' + id + '" data-cle="' + cle + '" maxlength="' + max + '" placeholder="' + esc(placeholder || '') + '" value="' + esc(etat[cle]) + '">';
+  return '<div class="champ"><label for="' + id + '">' + label + '</label>' + balise + '<div class="compte" id="' + id + '-compte"></div></div>';
+}
+
+function listeActivites() {
+  const liste = (ACTIVITES[site.type] || []).map(t => ({ code: t, label: LIBELLES[t] }));
+  if (!SERVICES.includes(site.type)) liste.push({ code: 'T-01 à T-14', label: 'Une activité commune : paie, messagerie, recrutement…' });
+  liste.push({ code: 'AUTRE', label: 'Une autre activité' }, { code: 'NSP', label: NSP });
+  return liste;
+}
+
+// rafraichir = true : on redessine l'étape en cours sans remonter en haut de l'écran
+function afficherEtape(rafraichir) {
+  const etape = etapes[pos];
+  const zone = document.getElementById('step-content');
+  let h = '';
+  if (etape === 'signal') {
+    h = '<h2 class="q">Que voulez-vous signaler ?</h2><p class="q-sub">Une seule activité par envoi. Vous pourrez en signaler une autre ensuite.</p><div class="choices">'
+      + Object.entries(SIGNAUX).map(([k, s]) => '<button type="button" class="choice" aria-pressed="' + (etat.signal === k) + '" data-signal="' + k + '"><span class="ico">' + s.ico + '</span><span class="txt"><b>' + s.titre + '</b><span>' + s.sous + '</span></span></button>').join('')
+      + '</div>';
+  } else if (etape === 'activite') {
+    h = '<h2 class="q">De quelle activité s’agit-il ?</h2><p class="q-sub">Les activités déjà au registre pour votre type d’établissement.</p><div class="choices">'
+      + listeActivites().map(a => '<button type="button" class="choice" aria-pressed="' + (etat.activite === a.code) + '" data-activite="' + esc(a.code) + '"><span class="txt"><b>' + esc(a.label) + '</b></span></button>').join('')
+      + '</div>'
+      + (etat.activite === 'AUTRE' ? champ('activite-autre', 'Laquelle ?', 'activiteAutre', 80, false, 'Ex. : le cahier de liaison avec les familles') : '');
+  } else if (etape === 'nom') {
+    h = '<h2 class="q">Décrivez l’activité</h2><p class="q-sub">Avec vos mots, comme vous en parlez dans l’équipe.</p>'
+      + champ('nom', 'Un nom court', 'nom', 80, false, 'Ex. : cahier de transmissions')
+      + '<div class="exemples">' + EXEMPLES_NOM.map(e => '<button type="button" class="exemple" data-exemple="' + esc(e) + '">' + esc(e) + '</button>').join('') + '</div>'
+      + champ('but', 'À quoi sert-elle ?', 'but', 250, true, 'Ex. : organiser les repas en tenant compte du régime de chacun')
+      + '<div class="astuce">💡 Le « à quoi ça sert » est le plus important : c’est ce qui identifie une fiche du registre.</div>';
+  } else if (etape === 'qui') {
+    h = '<h2 class="q">Sur qui, et quelles informations ?</h2><p class="q-sub">Touchez tout ce qui correspond. Plusieurs réponses possibles.</p>'
+      + '<h3 class="q2">Sur qui sont ces informations ?</h3>' + chips('personnes', true)
+      + '<h3 class="q2">Quelles informations ?</h3>' + chips('infos', true);
+  } else if (etape === 'outils') {
+    h = '<h2 class="q">Avec quoi, et qui d’autre les reçoit ?</h2><p class="q-sub">Plusieurs réponses possibles.</p>'
+      + '<h3 class="q2">Avec quel outil ?</h3>' + chips('outils', true)
+      + (etat.outils.includes('Un autre logiciel ou une appli') ? champ('logiciel', 'Lequel ?', 'logiciel', 60, false, 'Ex. : le nom du logiciel') : '')
+      + '<h3 class="q2">Qui d’autre reçoit ces informations ?</h3>' + chips('destinataires', true)
+      + (etat.destinataires.includes('Autre') ? champ('dest-autre', 'Qui ?', 'destAutre', 80, false, 'Ex. : le transporteur') : '');
+  } else if (etape === 'duree') {
+    h = '<h2 class="q">Combien de temps, et comment protégées ?</h2><p class="q-sub">Dernière étape avant le récapitulatif.</p>'
+      + '<h3 class="q2">Combien de temps les garde-t-on ?</h3>' + chips('duree', false)
+      + '<h3 class="q2">Comment sont-elles protégées ?</h3>' + chips('protection', true);
+  } else if (etape === 'change') {
+    h = '<h2 class="q">Qu’est-ce qui change ?</h2><p class="q-sub">Plusieurs réponses possibles.</p>' + chips('change', true)
+      + champ('change-texte', 'En une phrase', 'changeTexte', 250, true, 'Ex. : depuis septembre, les plannings sont faits sur un nouveau logiciel');
+  } else if (etape === 'arret') {
+    h = '<h2 class="q">L’activité s’arrête</h2><p class="q-sub">Facultatif, mais utile à la DPO.</p>'
+      + champ('arret-texte', 'Depuis quand, et que deviennent les informations ?', 'arretTexte', 200, true, 'Ex. : arrêté en septembre, le classeur est rangé au siège');
+  }
+  zone.innerHTML = h;
+  brancher();
+  progression();
+  majSuivant();
+  if (!rafraichir) show('screen-step');
+}
+
+function brancher() {
+  const zone = document.getElementById('step-content');
+  zone.querySelectorAll('[data-signal]').forEach(b => b.addEventListener('click', () => {
+    etat.signal = b.dataset.signal;
+    etapes = PARCOURS[etat.signal].slice();
+    afficherEtape(true);
+  }));
+  zone.querySelectorAll('[data-activite]').forEach(b => b.addEventListener('click', () => {
+    etat.activite = b.dataset.activite;
+    afficherEtape(true);
+  }));
+  zone.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    const cle = b.dataset.cle, val = b.dataset.val;
+    if (b.dataset.multi === '1') {
+      let l = etat[cle];
+      if (val === NSP) l = l.includes(NSP) ? [] : [NSP];
+      else l = l.includes(val) ? l.filter(x => x !== val) : l.filter(x => x !== NSP).concat(val);
+      etat[cle] = l;
+    } else {
+      etat[cle] = etat[cle] === val ? '' : val;
+    }
+    afficherEtape(true);
+  }));
+  zone.querySelectorAll('[data-exemple]').forEach(b => b.addEventListener('click', () => {
+    etat.nom = b.dataset.exemple;
+    const i = document.getElementById('nom'); i.value = etat.nom; majCompte(i); majSuivant();
+  }));
+  zone.querySelectorAll('input[data-cle], textarea[data-cle]').forEach(i => {
+    majCompte(i);
+    i.addEventListener('input', () => { etat[i.dataset.cle] = i.value; majCompte(i); majSuivant(); });
+  });
+}
+function majCompte(i) {
+  const c = document.getElementById(i.id + '-compte');
+  if (c) c.textContent = i.value.length + ' / ' + i.maxLength;
+}
+
+function etapeValide() {
+  const etape = etapes[pos];
+  if (etape === 'signal') return !!etat.signal;
+  if (etape === 'activite') return !!etat.activite && (etat.activite !== 'AUTRE' || etat.activiteAutre.trim().length > 1);
+  if (etape === 'nom') return etat.nom.trim().length > 1 && etat.but.trim().length > 2;
+  return true;
+}
+function majSuivant() {
+  const b = document.getElementById('btn-next');
+  b.disabled = !etapeValide();
+  b.textContent = pos === etapes.length - 1 ? 'Voir le récapitulatif →' : 'Suivant →';
+}
+function suivant() {
+  if (!etapeValide()) return;
+  if (pos < etapes.length - 1) { pos++; afficherEtape(); } else { pos = etapes.length; afficherFin(); }
+}
+function precedent() {
+  if (pos === 0) { document.getElementById('progress-wrap').style.display = 'none'; show('screen-welcome'); return; }
+  pos--;
+  afficherEtape();
+}
+
+// ---------- Récapitulatif et lien ----------
+function liste(l, extra) {
+  const v = l.filter(x => x !== 'Autre' && x !== 'Un autre logiciel ou une appli');
+  if (extra) v.push(extra);
+  else if (l.includes('Autre')) v.push('Autre');
+  return v.join(' · ');
+}
+function activiteTexte() {
+  if (etat.activite === 'AUTRE') return 'Autre : ' + etat.activiteAutre.trim();
+  if (etat.activite === 'NSP') return NSP;
+  if (etat.activite === 'T-01 à T-14') return 'Une activité commune (T-01 à T-14)';
+  return etat.activite ? etat.activite + ' ' + LIBELLES[etat.activite] : '';
+}
+function reponses() {
+  const r = {
+    etab: site.code + ' — ' + site.etab,
+    signal: SIGNAUX[etat.signal].valeur,
+    activite: activiteTexte(),
+    nom: etat.nom.trim(), but: etat.but.trim(),
+    personnes: liste(etat.personnes), infos: liste(etat.infos),
+    outils: liste(etat.outils, etat.outils.includes('Un autre logiciel ou une appli') ? 'Autre logiciel : ' + (etat.logiciel.trim() || 'à préciser') : ''),
+    destinataires: liste(etat.destinataires, etat.destinataires.includes('Autre') ? 'Autre : ' + (etat.destAutre.trim() || 'à préciser') : ''),
+    duree: etat.duree, protection: liste(etat.protection),
+    change: etat.signal === 'changement' ? [liste(etat.change), etat.changeTexte.trim()].filter(Boolean).join(' — ')
+          : etat.signal === 'arret' ? 'Arrêt' + (etat.arretTexte.trim() ? ' — ' + etat.arretTexte.trim() : '') : '',
+    remarque: document.getElementById('remarque').value.trim()
+  };
+  if (etat.signal !== 'nouvelle') r.nom = r.nom || (etat.activite && LIBELLES[etat.activite]) || etat.activiteAutre.trim();
+  return r;
+}
+const LIGNES_RECAP = [['etab', 'Établissement'], ['signal', 'Vous signalez'], ['activite', 'Activité concernée'], ['nom', 'Nom de l’activité'],
+  ['but', 'À quoi elle sert'], ['personnes', 'Sur qui'], ['infos', 'Quelles informations'], ['outils', 'Outils'],
+  ['destinataires', 'Qui d’autre les reçoit'], ['duree', 'Durée de conservation'], ['protection', 'Protection'], ['change', 'Ce qui change']];
+
+function construireLien(r) {
+  if (!CONFIG.url) return '';
+  const ordre = Object.keys(CONFIG.champs);
+  let v = Object.assign({}, r);
+  // « — » pour une réponse vide : le Forms s'envoie même si ses questions sont obligatoires
+  const fabrique = () => CONFIG.url + ordre.map(k => '&' + CONFIG.champs[k] + '=' + encodeURIComponent(v[k] || '—')).join('');
+  let lien = fabrique();
+  // Sécurité : si le lien est trop long, on raccourcit les textes libres (les plus longs d'abord)
+  for (const k of ['remarque', 'change', 'but']) {
+    while (lien.length > LIEN_MAX && v[k] && v[k].length > 20) { v[k] = v[k].slice(0, Math.floor(v[k].length * 0.8)) + '…'; lien = fabrique(); }
+  }
+  return lien;
+}
+function afficherFin() {
+  progression();
+  document.getElementById('progress-fill').style.width = '100%';
+  const r = reponses();
+  document.getElementById('recap').innerHTML = LIGNES_RECAP.filter(([k]) => r[k]).map(([k, label]) => '<div><b>' + label + '</b>' + esc(r[k]) + '</div>').join('');
+  majLien();
+  document.getElementById('saved-msg').style.display = 'none';
+  show('screen-fin');
+}
+function majLien() {
+  const a = document.getElementById('btn-envoi');
+  const lien = construireLien(reponses());
+  if (lien) { a.href = lien; a.removeAttribute('aria-disabled'); a.textContent = 'Envoyer au registre →'; }
+  else { a.href = '#'; a.setAttribute('aria-disabled', 'true'); a.textContent = 'Formulaire en cours de mise en place'; }
+}
+document.getElementById('remarque').addEventListener('input', majLien);
+function marquerEnvoi() { document.getElementById('saved-msg').style.display = 'block'; }
+function autreActivite() { document.getElementById('remarque').value = ''; demarrer(); }
+
+// Lien personnel : ?code=S-09
+(function () {
+  const c = new URLSearchParams(location.search).get('code');
+  if (c) choisirSite(c);
+})();
+</script>
+</body>
+</html>
