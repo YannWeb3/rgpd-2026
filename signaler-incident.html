@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RGPD UNAPEI92 — Signaler un incident</title>
+<style>
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 900; font-display: swap; src: url('fonts/nunito-latin-900-normal.woff2') format('woff2'); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #4a5568;
+    --primary: #4f46e5; --primary-soft: #eef2ff; --green: #10b981; --green-soft: #ecfdf5;
+    --red: #b91c1c; --red-soft: #fef2f2; --amber: #f59e0b; --amber-soft: #fffbeb;
+    --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
+  }
+  html, body { height: 100%; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
+  button, input, textarea { font-family: inherit; }
+  .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
+  .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--red); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--red), #f97316); border-radius: 20px; transition: width .4s ease; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .welcome { text-align: center; padding: 32px 0; }
+  .welcome-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--red-soft); color: var(--red); font-weight: 800; font-size: 13px; padding: 8px 18px; border-radius: 30px; margin-bottom: 22px; }
+  .welcome h1 { font-size: 30px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .welcome p { color: var(--muted); font-size: 16px; max-width: 520px; margin: 0 auto 18px; line-height: 1.6; }
+  .etab { display: inline-block; background: var(--card); border: 2px solid var(--red); color: var(--red); font-weight: 900; font-size: 16px; padding: 8px 16px; border-radius: 14px; margin-bottom: 18px; }
+  .rassure { background: var(--amber-soft); border: 2px solid #fde68a; border-radius: 14px; padding: 12px 14px; color: #92400e; font-weight: 700; font-size: 15px; max-width: 520px; margin: 0 auto 24px; text-align: left; }
+  .rassure li { margin: 5px 0 5px 18px; }
+  .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--red); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(185,28,28,.25); text-decoration: none; }
+  .welcome-cta:hover { transform: translateY(-2px); }
+  .welcome-cta[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+  h2.q { font-size: 23px; font-weight: 900; line-height: 1.25; margin-bottom: 6px; }
+  .q-sub { color: var(--muted); font-size: 15px; margin-bottom: 18px; line-height: 1.55; }
+  h3.q2 { font-size: 18px; font-weight: 900; margin: 26px 0 6px; }
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice { display: flex; align-items: center; gap: 14px; width: 100%; background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 14px 16px; cursor: pointer; text-align: left; transition: all .15s; color: var(--ink); }
+  .choice:hover { border-color: var(--red); }
+  .choice[aria-pressed="true"] { border-color: var(--red); background: var(--red-soft); }
+  .choice .ico { width: 42px; height: 42px; border-radius: 12px; background: var(--red-soft); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+  .choice .txt b { display: block; font-size: 16px; font-weight: 800; }
+  .choice .txt span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--card); border: 2px solid var(--border); border-radius: 30px; padding: 10px 16px; font-size: 15px; font-weight: 700; cursor: pointer; color: var(--ink); min-height: 44px; transition: all .15s; }
+  .chip:hover { border-color: var(--red); }
+  .chip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+  .chip.nsp[aria-pressed="true"] { background: var(--muted); border-color: var(--muted); }
+  .champ { margin-top: 12px; }
+  .champ label { display: block; font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .champ input { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--card); color: var(--ink); }
+  .champ input:focus { outline: none; border-color: var(--red); }
+  .astuce { background: var(--sky-soft); border-left: 4px solid var(--sky); border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: 14px; color: #075985; margin-top: 16px; line-height: 1.5; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 12px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 15px; cursor: pointer; border: none; transition: all .15s; min-height: 46px; }
+  .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
+  .nav-next { background: var(--red); color: #fff; box-shadow: 0 6px 16px rgba(185,28,28,.25); margin-left: auto; }
+  .nav-next:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .recap { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 6px 16px; margin: 6px 0 16px; }
+  .recap div { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.45; }
+  .recap div:last-child { border-bottom: none; }
+  .recap b { display: block; font-size: 13px; color: var(--muted); font-weight: 800; }
+  .reste { background: var(--red-soft); border: 2px solid #fecaca; border-radius: 14px; padding: 12px 14px; color: #7f1d1d; font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+  .reste li { margin: 4px 0 4px 18px; }
+  .envoi { text-align: center; }
+  .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 15px; margin: 18px 0; display: none; text-align: left; }
+  .err { color: var(--red); font-size: 14px; font-weight: 700; margin-top: 8px; display: none; }
+  .link-btn { background: none; border: none; color: var(--muted); font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 44px; padding: 0 12px; }
+  .pied { text-align: center; color: var(--muted); font-size: 13px; margin-top: 30px; line-height: 1.6; }
+  .pied a { color: var(--red); }
+  @media (max-width: 480px) { .welcome h1 { font-size: 25px; } h2.q { font-size: 20px; } .choice { padding: 12px; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Étape 1</span>
+      <span class="progress-count" id="progress-count"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome-badge">🚨 Incident RGPD — UNAPEI92</div>
+      <h1>Signaler un incident</h1>
+      <div id="etab-accueil"></div>
+      <p>Un appareil perdu, un mail parti à la mauvaise personne, un piratage, des papiers à la vue de tous… <b>Signalez tout de suite, même si vous n'êtes pas sûr.</b> La DPO a 72 heures pour prévenir la CNIL.</p>
+      <ul class="rassure">
+        <li>Vous n'avez pas à décider si c'est grave : vous signalez, la DPO décide.</li>
+        <li>Si vous le pouvez, arrêtez la cause (rappeler le mail, bloquer l'accès)… sans effacer les preuves.</li>
+        <li>Prévenez aussi votre directeur.</li>
+      </ul>
+      <button class="welcome-cta" type="button" onclick="commencer()">Signaler →</button>
+    </div>
+  </div>
+
+  <!-- CODE ÉTABLISSEMENT (si pas de lien personnel) -->
+  <div class="screen" id="screen-code">
+    <h2 class="q">Code de votre établissement</h2>
+    <p class="q-sub">Il figure dans le lien reçu de la DPO (ex. : S-09 → tapez 9).</p>
+    <div class="champ">
+      <label for="code-input">Code établissement</label>
+      <input type="text" id="code-input" placeholder="Ex : 9 (pour S-09)" autocomplete="off" inputmode="numeric">
+      <div class="err" id="code-error"></div>
+    </div>
+    <div class="nav"><button class="nav-btn nav-next" type="button" id="code-btn" onclick="validerCode()" disabled>Continuer →</button></div>
+  </div>
+
+  <!-- ÉTAPES -->
+  <div class="screen" id="screen-step">
+    <div id="step-content"></div>
+    <div class="nav">
+      <button class="nav-btn nav-prev" type="button" onclick="precedent()">← Retour</button>
+      <button class="nav-btn nav-next" type="button" id="btn-next" onclick="suivant()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- RÉCAPITULATIF ET ENVOI -->
+  <div class="screen" id="screen-fin">
+    <h2 class="q">Vérifiez, puis envoyez l'alerte</h2>
+    <p class="q-sub">Le formulaire de l'Unapei 92 va s'ouvrir dans un nouvel onglet, <b>déjà rempli</b> avec ces réponses.</p>
+    <div class="recap" id="recap"></div>
+    <div class="reste"><b>Dans le formulaire, il vous restera :</b>
+      <ul>
+        <li>à raconter ce qui s'est passé en 2 ou 3 phrases, <u>sans nom de personne</u> ;</li>
+        <li>à taper votre nom et un téléphone ou un mail pour vous joindre ;</li>
+        <li>à cliquer sur « Envoyer ». La DPO reçoit l'alerte par mail aussitôt.</li>
+      </ul>
+    </div>
+    <div class="envoi">
+      <a class="welcome-cta" id="btn-envoi" href="#" target="_blank" rel="noopener" onclick="marquerEnvoi()">Envoyer l'alerte →</a>
+      <div class="saved" id="saved-msg">✅ Le formulaire s'est ouvert dans un nouvel onglet. Racontez ce qui s'est passé, tapez votre nom et un moyen de vous joindre, puis cliquez sur « Envoyer ». Rien ne s'est ouvert ? Touchez à nouveau le bouton.</div>
+      <div><button class="link-btn" type="button" onclick="precedent()">← Modifier mes réponses</button></div>
+    </div>
+  </div>
+
+  <p class="pied">Le formulaire ne s'ouvre pas ? Écrivez tout de suite à <a href="mailto:rgpd@unapei92.fr?subject=Incident%20RGPD">rgpd@unapei92.fr</a><br>et prévenez votre directeur.</p>
+</div>
+
+<script src="sites.js"></script>
+<script>
+// Formulaire Microsoft Forms du tenant UNAPEI92 qui reçoit l'alerte (ouvert à tous).
+// La page remplit les 10 premières questions par le lien ; le récit, le nom et le contact
+// sont tapés dans le formulaire : ils ne passent jamais dans l'adresse.
+// Le flow écrit la fiche dans l'onglet Incidents du registre et envoie un mail à rgpd@unapei92.fr.
+const CONFIG = {
+  url: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=LcAyZjdMg0KASCwDRRv1uw9KjH-aE45HmDG8kJuMxntUMlM3TDdQSDVGUFdXQVlHU1dGTFRaSjhTMiQlQCN0PWcu',
+  champs: {
+    etab: 'r099ac5c95842440ca4fef3f6ac10b47a', origine: 'rd56b2176f91b469cb085991b33903c34',
+    date: 'r7e858cd7b1bc42959a8bf9a4e68ed60c', infos: 'r12387ca5179648299bcbec969baa97fc',
+    personnes: 'rc67cc74dae82405d85c67986a7963be3', nombre: 'r2082ae375832424d9600794328858f70',
+    mesures: 'rb4d987e35e55461fadd3a7f61912e524', fonction: 'r7e638935cb124c168da57fab49430b6a',
+    cause: 'rc45b4bd8235f4452a72c88a8f1db2272', logiciel: 'r1be69fb7457a459ebfd353972825ccf5'
+  }
+};
+
+// Les valeurs envoyées sont celles des listes de l'onglet Incidents du registre V3 (feuille Listes)
+const ORIGINES = [
+  { ico: '💻', titre: 'Un appareil perdu ou volé', sous: 'Ordinateur, téléphone, tablette, clé USB', valeur: 'Équipement perdu ou volé' },
+  { ico: '📁', titre: 'Des papiers perdus, volés ou laissés à la vue', sous: 'Dossier, classeur, liste affichée…', valeur: 'Papier perdu, volé ou laissé accessible' },
+  { ico: '✉️', titre: 'Un mail ou un courrier envoyé à la mauvaise personne', sous: 'Mauvais destinataire, pièce jointe en trop…', valeur: 'Données envoyées au mauvais destinataire' },
+  { ico: '🎣', titre: 'Un piratage, un virus, un mail piégé', sous: 'Lien cliqué, mot de passe volé, fichiers bloqués…', valeur: 'Piratage, logiciel malveillant, hameçonnage' },
+  { ico: '🌐', titre: 'Une publication par erreur', sous: 'Site, réseaux sociaux, affichage public', valeur: 'Publication non volontaire' },
+  { ico: '🗣️', titre: 'Une information dite à la mauvaise personne', sous: 'Au téléphone, à l’accueil…', valeur: 'Divulgation verbale' },
+  { ico: '🗑️', titre: 'Des papiers jetés sans être détruits', sous: 'Poubelle, recyclage…', valeur: 'Mise au rebut de papier sans destruction' },
+  { ico: '👀', titre: 'Quelqu’un a vu ou pris des informations sans y avoir droit', sous: 'Accès à un dossier, à un logiciel, à un partage…', valeur: 'Autre — accès non autorisé' },
+  { ico: '🧩', titre: 'Des informations effacées, abîmées ou bloquées', sous: 'Fichier supprimé, dossier détruit, logiciel inaccessible…', valeur: 'Autre — données effacées, abîmées ou bloquées' },
+  { ico: '❓', titre: 'Autre chose', sous: 'Vous l’expliquerez dans le formulaire', valeur: 'Autre' }
+];
+const NSP = 'Je ne sais pas';
+const OPTIONS = {
+  infos: [['Identité et coordonnées', 'État civil et identité'], ['Santé (soins, traitements, handicap)', 'Données de santé'],
+          ['Vie familiale ou sociale', 'Vie personnelle et familiale'], ['Argent (RIB, revenus, aides)', 'Vie économique et financière (RIB, revenus)'],
+          ['Photos ou vidéos', 'Images (photos, vidéos)'], ['Scolarité', 'Données scolaires/éducatives'],
+          ['Dossier d’un salarié (carrière, paie, absences)', 'Données RH (carrière, paie, absences)'],
+          ['Connexion ou localisation', 'Données de connexion et localisation'], ['Autre', 'Autre'], [NSP, NSP]],
+  personnes: [['Personnes accompagnées'], ['Familles ou représentants légaux'], ['Salariés'], ['Bénévoles ou stagiaires'], ['Autres'], [NSP]],
+  nombre: [['1 personne'], ['2 à 10'], ['11 à 100'], ['Plus de 100'], [NSP]],
+  mesures: [['Rien encore'], ['J’ai prévenu mon directeur'], ['J’ai demandé de supprimer ou de renvoyer le mail'], ['J’ai changé un mot de passe'],
+            ['J’ai bloqué l’appareil ou l’accès'], ['J’ai mis les données à l’abri (sans rien effacer)'], ['J’ai gardé les preuves (mails, captures)'],
+            ['J’ai porté plainte (vol)'], ['Autre']],
+  // Valeurs de la liste « Cause » de l'onglet Incidents
+  cause: [['Une erreur de quelqu’un de chez nous', 'Acte interne accidentel'], ['Un acte volontaire de quelqu’un de chez nous', 'Acte interne malveillant'],
+          ['Quelqu’un d’extérieur, volontairement (vol, piratage)', 'Acte externe malveillant'], ['Quelqu’un d’extérieur, par erreur', 'Acte externe accidentel'],
+          [NSP, 'Inconnue']],
+  fonction: [['Directeur ou directrice'], ['Cadre administratif'], ['Membre de l’équipe'], ['Autre']]
+};
+const ETAPES = ['quoi', 'quand', 'donnees', 'fait'];
+
+let etat = nouvelEtat();
+let site = null;
+let pos = 0;
+
+function maintenant() {
+  const d = new Date(); d.setSeconds(0, 0);
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+}
+function nouvelEtat() { return { origine: '', date: maintenant(), infos: [], personnes: [], nombre: '', mesures: [], fonction: '', cause: '', logiciel: '' }; }
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+
+// ---------- Établissement ----------
+function choisirSite(code) {
+  const c = normalizeCode(code);
+  if (!SITES[c]) return false;
+  site = { code: c, etab: SITES[c].etab };
+  document.getElementById('etab-accueil').innerHTML = '<div class="etab">' + esc(site.etab) + ' · ' + c + '</div>';
+  return true;
+}
+function commencer() {
+  if (site) { demarrer(); } else { show('screen-code'); document.getElementById('code-input').focus(); }
+}
+const codeInput = document.getElementById('code-input');
+codeInput.addEventListener('input', () => {
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 1;
+  document.getElementById('code-error').style.display = 'none';
+});
+function validerCode() {
+  if (choisirSite(codeInput.value)) { demarrer(); return; }
+  const e = document.getElementById('code-error');
+  e.textContent = 'Code inconnu. Écrivez tout de suite à rgpd@unapei92.fr.';
+  e.style.display = 'block';
+}
+
+// ---------- Étapes ----------
+function demarrer() {
+  etat = nouvelEtat();
+  pos = 0;
+  document.getElementById('progress-wrap').style.display = 'block';
+  afficherEtape();
+}
+function progression() {
+  const total = ETAPES.length + 1, n = Math.min(pos + 1, total);
+  document.getElementById('progress-label').textContent = 'Étape ' + n + ' sur ' + total;
+  document.getElementById('progress-count').textContent = site ? site.etab : '';
+  document.getElementById('progress-fill').style.width = Math.round((n - 1) / total * 100) + '%';
+}
+function chips(cle, multiple) {
+  return '<div class="chips">' + OPTIONS[cle].map(([label, valeur]) => {
+    const v = valeur || label;
+    const choisi = multiple ? etat[cle].includes(v) : etat[cle] === v;
+    return '<button type="button" class="chip' + (v === NSP ? ' nsp' : '') + '" aria-pressed="' + choisi + '" data-cle="' + cle + '" data-multi="' + (multiple ? 1 : 0) + '" data-val="' + esc(v) + '">' + esc(label) + '</button>';
+  }).join('') + '</div>';
+}
+
+// rafraichir = true : on redessine l'étape en cours sans remonter en haut de l'écran
+function afficherEtape(rafraichir) {
+  const etape = ETAPES[pos];
+  let h = '';
+  if (etape === 'quoi') {
+    h = '<h2 class="q">Que s’est-il passé ?</h2><p class="q-sub">Touchez ce qui ressemble le plus. Vous raconterez les détails dans le formulaire.</p><div class="choices">'
+      + ORIGINES.map(o => '<button type="button" class="choice" aria-pressed="' + (etat.origine === o.valeur) + '" data-origine="' + esc(o.valeur) + '"><span class="ico">' + o.ico + '</span><span class="txt"><b>' + esc(o.titre) + '</b><span>' + esc(o.sous) + '</span></span></button>').join('')
+      + '</div>';
+  } else if (etape === 'quand') {
+    h = '<h2 class="q">Quand l’avez-vous découvert ?</h2><p class="q-sub">C’est ce moment qui lance le délai de 72 heures. Corrigez si ce n’est pas maintenant.</p>'
+      + '<div class="champ"><label for="date">Date et heure de la découverte</label><input type="datetime-local" id="date" value="' + esc(etat.date) + '" max="' + maintenant() + '"></div>'
+      + '<h3 class="q2">Vous êtes…</h3>' + chips('fonction', false);
+  } else if (etape === 'donnees') {
+    h = '<h2 class="q">Quelles informations sont touchées ?</h2><p class="q-sub">Plusieurs réponses possibles. « Je ne sais pas » est une bonne réponse.</p>'
+      + chips('infos', true)
+      + '<h3 class="q2">Sur qui ?</h3>' + chips('personnes', true)
+      + '<h3 class="q2">Combien de personnes, à peu près ?</h3>' + chips('nombre', false);
+  } else if (etape === 'fait') {
+    h = '<h2 class="q">Qu’avez-vous déjà fait ?</h2><p class="q-sub">Plusieurs réponses possibles.</p>' + chips('mesures', true)
+      + '<div class="astuce">💡 Gardez les preuves : le mail parti, une capture d’écran, le nom du logiciel. Ne supprimez rien vous-même.</div>'
+      + '<h3 class="q2">D’où ça vient, à votre avis ? (facultatif)</h3>' + chips('cause', false)
+      + '<div class="champ"><label for="logiciel">Logiciel ou outil concerné, si vous savez (facultatif)</label><input type="text" id="logiciel" maxlength="60" placeholder="Ex. : AIRMES, messagerie, clé USB" value="' + esc(etat.logiciel) + '"></div>';
+  }
+  document.getElementById('step-content').innerHTML = h;
+  brancher();
+  progression();
+  majSuivant();
+  if (!rafraichir) show('screen-step');
+}
+function brancher() {
+  const zone = document.getElementById('step-content');
+  zone.querySelectorAll('[data-origine]').forEach(b => b.addEventListener('click', () => { etat.origine = b.dataset.origine; afficherEtape(true); }));
+  zone.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    const cle = b.dataset.cle, val = b.dataset.val;
+    if (b.dataset.multi === '1') {
+      let l = etat[cle];
+      if (val === NSP || val === 'Rien encore') l = l.includes(val) ? [] : [val];
+      else l = l.includes(val) ? l.filter(x => x !== val) : l.filter(x => x !== NSP && x !== 'Rien encore').concat(val);
+      etat[cle] = l;
+    } else {
+      etat[cle] = etat[cle] === val ? '' : val;
+    }
+    afficherEtape(true);
+  }));
+  const d = document.getElementById('date');
+  if (d) d.addEventListener('input', () => { etat.date = d.value; majSuivant(); });
+  const l = document.getElementById('logiciel');
+  if (l) l.addEventListener('input', () => { etat.logiciel = l.value; });
+}
+function etapeValide() {
+  const etape = ETAPES[pos];
+  if (etape === 'quoi') return !!etat.origine;
+  if (etape === 'quand') return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(etat.date);
+  return true;
+}
+function majSuivant() {
+  const b = document.getElementById('btn-next');
+  b.disabled = !etapeValide();
+  b.textContent = pos === ETAPES.length - 1 ? 'Voir le récapitulatif →' : 'Suivant →';
+}
+function suivant() {
+  if (!etapeValide()) return;
+  if (pos < ETAPES.length - 1) { pos++; afficherEtape(); } else { pos = ETAPES.length; afficherFin(); }
+}
+function precedent() {
+  if (pos === 0) { document.getElementById('progress-wrap').style.display = 'none'; show('screen-welcome'); return; }
+  pos--;
+  afficherEtape();
+}
+
+// ---------- Récapitulatif et lien ----------
+function libelle(cle, valeur) {
+  const o = OPTIONS[cle].find(([l, v]) => (v || l) === valeur);
+  return o ? o[0] : valeur;
+}
+function reponses() {
+  return {
+    etab: site.etab,
+    origine: etat.origine,
+    date: etat.date.replace('T', ' '),
+    infos: etat.infos.join('; '),
+    personnes: etat.personnes.join('; '),
+    nombre: etat.nombre,
+    mesures: etat.mesures.join('; '),
+    fonction: etat.fonction,
+    cause: etat.cause,
+    logiciel: etat.logiciel.trim()
+  };
+}
+function afficherFin() {
+  progression();
+  document.getElementById('progress-fill').style.width = '100%';
+  const r = reponses();
+  const titreOrigine = (ORIGINES.find(o => o.valeur === r.origine) || {}).titre || r.origine;
+  const lignes = [['Établissement', r.etab], ['Ce qui s’est passé', titreOrigine], ['Découvert le', r.date.replace(/^(\d{4})-(\d{2})-(\d{2}) /, '$3/$2/$1 à ')],
+    ['Vous êtes', r.fonction], ['Informations touchées', etat.infos.map(v => libelle('infos', v)).join(' · ')],
+    ['Sur qui', etat.personnes.join(' · ')], ['Combien', r.nombre], ['Déjà fait', etat.mesures.join(' · ')],
+    ['D’où ça vient', r.cause ? libelle('cause', r.cause) : ''], ['Logiciel ou outil', r.logiciel]];
+  document.getElementById('recap').innerHTML = lignes.filter(([, v]) => v).map(([l, v]) => '<div><b>' + l + '</b>' + esc(v) + '</div>').join('');
+  const a = document.getElementById('btn-envoi');
+  if (CONFIG.url) {
+    // « — » pour une réponse vide : le Forms s'envoie même si ses questions sont obligatoires
+    a.href = CONFIG.url + Object.keys(CONFIG.champs).map(k => '&' + CONFIG.champs[k] + '=' + encodeURIComponent(r[k] || '—')).join('');
+    a.removeAttribute('aria-disabled'); a.textContent = 'Envoyer l’alerte →';
+  } else {
+    a.href = '#'; a.setAttribute('aria-disabled', 'true'); a.textContent = 'Formulaire en cours de mise en place';
+  }
+  document.getElementById('saved-msg').style.display = 'none';
+  show('screen-fin');
+}
+function marquerEnvoi() { document.getElementById('saved-msg').style.display = 'block'; }
+
+// Lien personnel : ?code=S-09
+(function () {
+  const c = new URLSearchParams(location.search).get('code');
+  if (c) choisirSite(c);
+})();
+</script>
+</body>
+</html>
