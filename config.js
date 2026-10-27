@@ -45,7 +45,6 @@ function mockFetch(action, code, method = 'GET', body = null) {
   return new Promise(resolve => {
     setTimeout(() => {
       if (action === 'login') {
-        if (code === '0000') return resolve({ success: true, role: 'admin', code });
         const ref = MOCK_DATA.referents.find(r => r.code === code && r.actif === 'OUI');
         if (ref) return resolve({ success: true, role: 'referent', code, etablissement: ref.etablissement, referent: ref.referent, email: ref.email });
         return resolve({ success: false, error: 'Code invalide ou compte inactif' });
