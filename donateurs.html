@@ -298,11 +298,6 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Nom et prénom du répondant <span class="question-id">ID-2</span></label>
-          <input type="text" name="id_2_nom_prenom_repondant" required>
-        </div>
-
-        <div class="question">
           <label class="question-label required">Fonction du répondant <span class="question-id">ID-3</span></label>
           <input type="text" name="id_3_fonction_repondant" required>
         </div>
@@ -580,7 +575,7 @@
             <label><input type="radio" name="q31_procedure_droits" value="oui" required> Oui</label>
             <label><input type="radio" name="q31_procedure_droits" value="non"> Non</label>
           </div>
-          <input type="text" name="q31_responsable" placeholder="Si oui, précisez qui est responsable..." style="margin-top: 10px;">
+          <input type="text" name="q31_responsable" placeholder="Si oui, précisez la fonction responsable (pas de nom)..." style="margin-top: 10px;">
         </div>
 
         <div class="question">
@@ -717,9 +712,9 @@
     </form>
   </div>
 
+  <script src="questionnaire-forms.js"></script>
   <script>
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
-const FORM_TYPE = 'Donateurs_RGPD';
+const QUESTIONNAIRE = 'Donateurs'; // envoi par Microsoft Forms : voir questionnaire-forms.js
 
 // Navigation sticky
 const navBlocks = document.querySelectorAll('.nav-block');
@@ -775,33 +770,10 @@ function collectResponses() {
 }
 
 // Soumission
-document.getElementById('formulaire').addEventListener('submit', async function(e) {
+document.getElementById('formulaire').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!this.checkValidity()) return;
-  const btn = document.getElementById('btn-submit');
-  const message = document.getElementById('message');
-  btn.disabled = true;
-  btn.textContent = 'Envoi en cours...';
-  const payload = { type: FORM_TYPE, responses: collectResponses() };
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.status === 'success') {
-      message.className = 'message success show';
-      message.textContent = 'Questionnaire envoyé avec succès ! Merci pour votre participation.';
-      this.reset();
-      const dateField = document.querySelector('[name*="date"]');
-      if (dateField && dateField.type === 'date') dateField.valueAsDate = new Date();
-    } else {
-      throw new Error(result.message);
-    }
-  } catch (err) {
-    message.className = 'message error show';
-    message.textContent = 'Erreur lors de l\'envoi : ' + err.message;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Envoyer le questionnaire';
-  }
+  ouvrirFormsQuestionnaire(QUESTIONNAIRE, collectResponses(), { etab: 'id_1_nom_association', fonction: 'id_3_fonction_repondant', date: 'id_4_date_remplissage' });
 });
 
 // Date par défaut

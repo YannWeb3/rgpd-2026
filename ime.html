@@ -487,16 +487,6 @@ select {
       <input type="text" id="adresse" name="adresse" placeholder="Rue, code postal, ville">
     </div>
 
-    <div class="question" id="q-directeur">
-      <div class="q-label"><span class="q-required">*</span>Nom et prénom du directeur</div>
-      <input type="text" id="directeur" name="directeur" required placeholder="Prénom NOM">
-    </div>
-
-    <div class="question" id="q-repondant">
-      <div class="q-label"><span class="q-required">*</span>Nom du répondant (si différent du directeur)</div>
-      <input type="text" id="repondant" name="repondant" required placeholder="Prénom NOM">
-    </div>
-
     <div class="question" id="q-fonction_repondant">
       <div class="q-label">Fonction du répondant</div>
       <div class="choices">
@@ -506,11 +496,6 @@ select {
         <div class="choice-item"><input type="radio" id="fr4" name="fonction_repondant" value="Secrétaire de direction"><label for="fr4">Secrétaire de direction</label></div>
         <div class="choice-item"><input type="radio" id="fr5" name="fonction_repondant" value="Autre"><label for="fr5">Autre</label></div>
       </div>
-    </div>
-
-    <div class="question" id="q-email_contact">
-      <div class="q-label">Email de contact</div>
-      <input type="email" id="email_contact" name="email_contact" placeholder="prenom.nom@unapei92.fr">
     </div>
 
     <div class="question" id="q-nb_usagers">
@@ -877,12 +862,12 @@ select {
 </form>
 </main>
 
+<script src="questionnaire-forms.js"></script>
 <script>
 // ════════════════════════════════════════
 // CONFIGURATION
 // ════════════════════════════════════════
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
-const FORM_TYPE  = "IME";
+const QUESTIONNAIRE = 'IME'; // envoi par Microsoft Forms : voir questionnaire-forms.js
 const TOTAL_BLOCS = 6;
 
 // ════════════════════════════════════════
@@ -1056,39 +1041,10 @@ function collectResponses() {
 // ════════════════════════════════════════
 // SOUMISSION
 // ════════════════════════════════════════
-document.getElementById('main-form').addEventListener('submit', async function(e) {
+document.getElementById('main-form').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!validateBloc(currentBloc)) return;
-
-  const btn = document.getElementById('btn-submit');
-  btn.textContent = 'Envoi en cours…';
-  btn.disabled = true;
-
-  const payload = {
-    type: FORM_TYPE,
-    timestamp: new Date().toISOString(),
-    responses: collectResponses()
-  };
-
-  try {
-    const response = await fetch(GOOGLE_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const result = await response.json();
-    if (result.status !== 'success') throw new Error(result.message || 'Erreur serveur');
-    // Masquer tous les blocs + nav
-    document.querySelectorAll('.bloc').forEach(b => b.classList.remove('active'));
-    document.querySelector('.blocs-nav').style.display = 'none';
-    document.getElementById('success-screen').style.display = 'block';
-    document.getElementById('progress-bar').style.width = '100%';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } catch(err) {
-    btn.textContent = 'Soumettre le questionnaire →';
-    btn.disabled = false;
-    alert('Erreur de sauvegarde. Contactez le DPO : vos réponses ont peut-être été sauvegardées. Ne pas renvoyer sans vérifier le Google Sheet.');
-  }
+  ouvrirFormsQuestionnaire(QUESTIONNAIRE, collectResponses(), { etab: 'nom_etablissement', fonction: 'fonction_repondant', date: '' });
 });
 
 // ════════════════════════════════════════

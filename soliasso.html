@@ -288,8 +288,8 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Personne répondant au questionnaire (Nom Prénom) <span class="question-id">Q0.2</span></label>
-          <input type="text" name="q0_2_nom_prenom_repondant" required>
+          <label class="question-label required">Fonction de la personne qui répond <span class="question-id">Q0.2</span></label>
+          <input type="text" name="q0_2_fonction_repondant" required placeholder="Ex : directeur, chef de service, cadre administratif">
         </div>
 
         <div class="question">
@@ -360,8 +360,8 @@
         </div>
 
         <div class="question">
-          <label class="question-label">Nom et fonction du référent RGPD local <span class="question-id">Q1.1.2</span></label>
-          <input type="text" name="q1_1_2_nom_fonction_referent">
+          <label class="question-label">Fonction du référent RGPD local (sans nom) <span class="question-id">Q1.1.2</span></label>
+          <input type="text" name="q1_1_2_fonction_referent">
         </div>
 
         <div class="question">
@@ -831,9 +831,9 @@
     </form>
   </div>
 
+  <script src="questionnaire-forms.js"></script>
   <script>
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
-const FORM_TYPE = 'Soliasso_RGPD';
+const QUESTIONNAIRE = 'Soliasso'; // envoi par Microsoft Forms : voir questionnaire-forms.js
 
 // Navigation sticky
 const navBlocks = document.querySelectorAll('.nav-block');
@@ -889,33 +889,10 @@ function collectResponses() {
 }
 
 // Soumission
-document.getElementById('formulaire').addEventListener('submit', async function(e) {
+document.getElementById('formulaire').addEventListener('submit', function(e) {
   e.preventDefault();
   if (!this.checkValidity()) return;
-  const btn = document.getElementById('btn-submit');
-  const message = document.getElementById('message');
-  btn.disabled = true;
-  btn.textContent = 'Envoi en cours...';
-  const payload = { type: FORM_TYPE, responses: collectResponses() };
-  try {
-    const res = await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-    const result = await res.json();
-    if (result.status === 'success') {
-      message.className = 'message success show';
-      message.textContent = 'Questionnaire envoyé avec succès ! Merci pour votre participation.';
-      this.reset();
-      const dateField = document.querySelector('[name*="date"]');
-      if (dateField && dateField.type === 'date') dateField.valueAsDate = new Date();
-    } else {
-      throw new Error(result.message);
-    }
-  } catch (err) {
-    message.className = 'message error show';
-    message.textContent = 'Erreur lors de l\'envoi : ' + err.message;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Envoyer le questionnaire';
-  }
+  ouvrirFormsQuestionnaire(QUESTIONNAIRE, collectResponses(), { etab: 'q0_1_nom_service', fonction: 'q0_2_fonction_repondant', date: 'q0_4_date_remplissage' });
 });
 
 // Date par défaut

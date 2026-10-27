@@ -297,11 +297,6 @@
         </div>
 
         <div class="question">
-          <label class="question-label required">Nom et prénom du répondant <span class="question-id">ID-2</span></label>
-          <input type="text" name="id_2_nom_prenom_repondant" required>
-        </div>
-
-        <div class="question">
           <label class="question-label required">Fonction du répondant <span class="question-id">ID-3</span></label>
           <input type="text" name="id_3_fonction_repondant" required>
         </div>
@@ -753,8 +748,9 @@
     </form>
   </div>
 
+  <script src="questionnaire-forms.js"></script>
   <script>
-     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOQcBujk7eqnVIKEaEjtphgJPB0xrlJQFiQm2b0kvo5bLDQa08CtYTQ9OxFkY0y-P9Jw/exec';
+     const QUESTIONNAIRE = 'Communication'; // envoi par Microsoft Forms : voir questionnaire-forms.js
 
     const navBlocks = document.querySelectorAll('.nav-block');
     const sections = document.querySelectorAll('.section');
@@ -794,7 +790,6 @@
       // Champs texte
       const textFields = [
         { id: 'id_1_nom_association', question: 'Nom de lassociation' },
-        { id: 'id_2_nom_prenom_repondant', question: 'Nom et prenom du repondant' },
         { id: 'id_3_fonction_repondant', question: 'Fonction du repondant' },
         { id: 'id_4_date_remplissage', question: 'Date de remplissage' },
         { id: 'id_5_nb_contacts', question: 'Nombre de contacts' },
@@ -867,31 +862,12 @@
         responses.push({ id: f.id, question: f.question, answer: vals });
       });
 
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ type: 'Communication_RGPD', responses: responses })
-        });
-
-        const result = await response.json();
-
-        if (result.status === 'success') {
-          message.className = 'message success show';
-          message.textContent = 'Questionnaire envoyé avec succès !';
-          this.reset();
-        } else {
-          throw new Error(result.message);
-        }
-      } catch (error) {
-        message.className = 'message error show';
-        message.textContent = 'Erreur lors de l\'envoi : ' + error.message;
-      } finally {
-        btn.disabled = false;
-        btn.textContent = 'Envoyer le questionnaire';
-      }
+      ouvrirFormsQuestionnaire(QUESTIONNAIRE, responses, { etab: 'id_1_nom_association', fonction: 'id_3_fonction_repondant', date: 'id_4_date_remplissage' });
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le questionnaire';
     });
 
-    document.getElementById('id_4_date_remplissage').valueAsDate = new Date();
+    document.querySelector('[name="id_4_date_remplissage"]').valueAsDate = new Date();
   </script>
 </body>
 </html>
