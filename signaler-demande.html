@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RGPD UNAPEI92 — Signaler une demande de droits</title>
+<style>
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+  @font-face { font-family: 'Nunito'; font-style: normal; font-weight: 900; font-display: swap; src: url('fonts/nunito-latin-900-normal.woff2') format('woff2'); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f6f7fb; --card: #fff; --ink: #2d3748; --muted: #4a5568;
+    --accent: #0e7490; --accent-soft: #ecfeff; --green: #10b981; --green-soft: #ecfdf5;
+    --amber-soft: #fffbeb; --sky: #0ea5e9; --sky-soft: #f0f9ff; --border: #e2e8f0;
+  }
+  html, body { height: 100%; font-family: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif; background: var(--bg); color: var(--ink); }
+  button, input, textarea { font-family: inherit; }
+  .app { max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; min-height: 100vh; }
+  .progress-wrap { position: sticky; top: 0; background: var(--bg); padding: 12px 0 8px; z-index: 20; }
+  .progress-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 13px; font-weight: 700; color: var(--muted); }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--accent); }
+  .progress-bar { height: 8px; background: var(--border); border-radius: 20px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #14b8a6); border-radius: 20px; transition: width .4s ease; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn .35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .welcome { text-align: center; padding: 32px 0; }
+  .welcome-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--accent-soft); color: var(--accent); font-weight: 800; font-size: 13px; padding: 8px 18px; border-radius: 30px; margin-bottom: 22px; }
+  .welcome h1 { font-size: 30px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; }
+  .welcome p { color: var(--muted); font-size: 16px; max-width: 520px; margin: 0 auto 18px; line-height: 1.6; }
+  .etab { display: inline-block; background: var(--card); border: 2px solid var(--accent); color: var(--accent); font-weight: 900; font-size: 16px; padding: 8px 16px; border-radius: 14px; margin-bottom: 18px; }
+  .rassure { background: var(--green-soft); border: 2px solid #a7f3d0; border-radius: 14px; padding: 12px 14px; color: #065f46; font-weight: 700; font-size: 15px; max-width: 520px; margin: 0 auto 24px; text-align: left; }
+  .rassure li { margin: 5px 0 5px 18px; }
+  .welcome-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #fff; font-weight: 800; font-size: 16px; padding: 14px 32px; border-radius: 40px; border: none; cursor: pointer; box-shadow: 0 8px 20px rgba(14,116,144,.25); text-decoration: none; }
+  .welcome-cta:hover { transform: translateY(-2px); }
+  .welcome-cta[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+  h2.q { font-size: 23px; font-weight: 900; line-height: 1.25; margin-bottom: 6px; }
+  .q-sub { color: var(--muted); font-size: 15px; margin-bottom: 18px; line-height: 1.55; }
+  h3.q2 { font-size: 18px; font-weight: 900; margin: 26px 0 6px; }
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice { display: flex; align-items: center; gap: 14px; width: 100%; background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 14px 16px; cursor: pointer; text-align: left; transition: all .15s; color: var(--ink); }
+  .choice:hover { border-color: var(--accent); }
+  .choice[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .choice .ico { width: 42px; height: 42px; border-radius: 12px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 21px; flex-shrink: 0; }
+  .choice .txt b { display: block; font-size: 16px; font-weight: 800; }
+  .choice .txt span { display: block; font-size: 14px; color: var(--muted); margin-top: 2px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { background: var(--card); border: 2px solid var(--border); border-radius: 30px; padding: 10px 16px; font-size: 15px; font-weight: 700; cursor: pointer; color: var(--ink); min-height: 44px; transition: all .15s; }
+  .chip:hover { border-color: var(--accent); }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .chip.nsp[aria-pressed="true"] { background: var(--muted); border-color: var(--muted); }
+  .champ { margin-top: 12px; }
+  .champ label { display: block; font-size: 14px; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+  .champ input, .champ textarea { width: 100%; padding: 12px 14px; border: 2px solid var(--border); border-radius: 12px; font-size: 16px; background: var(--card); color: var(--ink); }
+  .champ textarea { min-height: 90px; resize: vertical; }
+  .champ input:focus, .champ textarea:focus { outline: none; border-color: var(--accent); }
+  .compte { text-align: right; font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .astuce { background: var(--sky-soft); border-left: 4px solid var(--sky); border-radius: 0 12px 12px 0; padding: 10px 14px; font-size: 14px; color: #075985; margin-top: 16px; line-height: 1.5; }
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 26px; gap: 12px; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 30px; font-weight: 800; font-size: 15px; cursor: pointer; border: none; transition: all .15s; min-height: 46px; }
+  .nav-prev { background: var(--card); color: var(--muted); border: 2px solid var(--border); }
+  .nav-next { background: var(--accent); color: #fff; box-shadow: 0 6px 16px rgba(14,116,144,.25); margin-left: auto; }
+  .nav-next:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; }
+  .delai { background: var(--accent-soft); border: 2px solid var(--accent); border-radius: 16px; padding: 14px 16px; margin: 6px 0 16px; }
+  .delai b { display: block; font-size: 13px; color: var(--muted); font-weight: 800; }
+  .delai .date { font-size: 24px; font-weight: 900; color: var(--accent); }
+  .delai span { display: block; font-size: 14px; color: var(--muted); margin-top: 4px; }
+  .recap { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 6px 16px; margin: 6px 0 16px; }
+  .recap div { padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 15px; line-height: 1.45; }
+  .recap div:last-child { border-bottom: none; }
+  .recap b { display: block; font-size: 13px; color: var(--muted); font-weight: 800; }
+  .reste { background: var(--amber-soft); border: 2px solid #fde68a; border-radius: 14px; padding: 12px 14px; color: #92400e; font-size: 15px; font-weight: 700; margin-bottom: 18px; }
+  .reste li { margin: 4px 0 4px 18px; }
+  .reste a { color: #92400e; }
+  .envoi { text-align: center; }
+  .saved { background: var(--green-soft); border: 2px solid var(--green); border-radius: 12px; padding: 14px; color: #065f46; font-weight: 700; font-size: 15px; margin: 18px 0; display: none; text-align: left; }
+  .err { color: #b91c1c; font-size: 14px; font-weight: 700; margin-top: 8px; display: none; }
+  .link-btn { background: none; border: none; color: var(--muted); font-size: 15px; font-weight: 700; text-decoration: underline; cursor: pointer; min-height: 44px; padding: 0 12px; }
+  .pied { text-align: center; color: var(--muted); font-size: 13px; margin-top: 30px; line-height: 1.6; }
+  .pied a { color: var(--accent); }
+  @media (max-width: 480px) { .welcome h1 { font-size: 25px; } h2.q { font-size: 20px; } .choice { padding: 12px; } }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="progress-wrap" id="progress-wrap" style="display:none">
+    <div class="progress-top">
+      <span class="progress-label" id="progress-label">Étape 1</span>
+      <span class="progress-count" id="progress-count"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div class="screen active" id="screen-welcome">
+    <div class="welcome">
+      <div class="welcome-badge">📨 Demande de droits — UNAPEI92</div>
+      <h1>Signaler une demande de droits</h1>
+      <div id="etab-accueil"></div>
+      <p>Une personne demande à voir, corriger ou effacer ses informations, ou qu'on arrête de s'en servir ? <b>Signalez-le le jour même :</b> le délai pour lui répondre court dès la réception (1 mois, 8 jours pour un dossier médical).</p>
+      <ul class="rassure">
+        <li>Pas besoin de connaître le RGPD : choisissez la réponse la plus proche. « Je ne sais pas » est accepté partout.</li>
+        <li>Ne notez jamais le nom de la personne ici : il reste dans son courrier.</li>
+        <li>La DPO reçoit la demande aussitôt et revient vers vous pour la réponse.</li>
+      </ul>
+      <button class="welcome-cta" type="button" onclick="commencer()">Commencer →</button>
+    </div>
+  </div>
+
+  <!-- CODE ÉTABLISSEMENT (si pas de lien personnel) -->
+  <div class="screen" id="screen-code">
+    <h2 class="q">Code de votre établissement</h2>
+    <p class="q-sub">Il figure dans le lien reçu de la DPO (ex. : S-09 → tapez 9).</p>
+    <div class="champ">
+      <label for="code-input">Code établissement</label>
+      <input type="text" id="code-input" placeholder="Ex : 9 (pour S-09)" autocomplete="off" inputmode="numeric">
+      <div class="err" id="code-error"></div>
+    </div>
+    <div class="nav"><button class="nav-btn nav-next" type="button" id="code-btn" onclick="validerCode()" disabled>Continuer →</button></div>
+  </div>
+
+  <!-- ÉTAPES -->
+  <div class="screen" id="screen-step">
+    <div id="step-content"></div>
+    <div class="nav">
+      <button class="nav-btn nav-prev" type="button" onclick="precedent()">← Retour</button>
+      <button class="nav-btn nav-next" type="button" id="btn-next" onclick="suivant()">Suivant →</button>
+    </div>
+  </div>
+
+  <!-- RÉCAPITULATIF ET ENVOI -->
+  <div class="screen" id="screen-fin">
+    <h2 class="q">Vérifiez, puis envoyez</h2>
+    <p class="q-sub">Le formulaire de l'Unapei 92 va s'ouvrir dans un nouvel onglet, <b>déjà rempli</b> avec ces réponses.</p>
+    <div class="delai" id="delai"></div>
+    <div class="recap" id="recap"></div>
+    <div class="reste"><b>Il vous restera :</b>
+      <ul>
+        <li>dans le formulaire, à taper votre nom, puis à cliquer sur « Envoyer » ;</li>
+        <li>à envoyer le courrier ou le mail de la personne à <a id="mail-courrier" href="mailto:rgpd@unapei92.fr">rgpd@unapei92.fr</a> (photo ou transfert).</li>
+      </ul>
+    </div>
+    <div class="envoi">
+      <a class="welcome-cta" id="btn-envoi" href="#" target="_blank" rel="noopener" onclick="marquerEnvoi()">Envoyer la demande →</a>
+      <div class="saved" id="saved-msg">✅ Le formulaire s'est ouvert dans un nouvel onglet. Tapez votre nom, puis cliquez sur « Envoyer ». Pensez ensuite à transmettre le courrier de la personne à rgpd@unapei92.fr. Rien ne s'est ouvert ? Appuyez à nouveau sur le bouton.</div>
+      <div><button class="link-btn" type="button" onclick="autreDemande()">Signaler une autre demande</button></div>
+      <div><button class="link-btn" type="button" onclick="precedent()">← Modifier mes réponses</button></div>
+    </div>
+  </div>
+
+  <p class="pied">Une question ? <a href="mailto:rgpd@unapei92.fr">rgpd@unapei92.fr</a></p>
+</div>
+
+<script src="sites.js"></script>
+<script>
+// Formulaire Microsoft Forms du tenant UNAPEI92 qui reçoit la demande (ouvert à tous, 11 questions Texte).
+// La page remplit les 10 premières par le lien ; le répondant tape son nom (11e) puis clique sur « Envoyer ».
+// Ni le nom du répondant ni celui du demandeur ne passent dans le lien.
+// Le flow « Demandes RGPD — Réception » écrit la ligne dans l'onglet Demandes du registre V3 et envoie un mail à rgpd@unapei92.fr.
+// Forms de groupe « Demandes de droits — réception » (Registre RGPD), branché le 28/10 (doc 15 du registre).
+const CONFIG = {
+  url: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=LcAyZjdMg0KASCwDRRv1uw9KjH-aE45HmDG8kJuMxntUMTRGWU5QU1VPR1FOV0gzTlpKRE0xVU5WTCQlQCN0PWcu',
+  champs: {
+    etab: 're3357265ae554b8aa53900385a0ceb1c', reception: 're728e6679d2643bba624b0f0d7a7231c',
+    canal: 'r0a8f970bdae5441388d8fd332872ef3a', demandeur: 'rd4aa133c8cbb4e9daae2b39dc900a03f',
+    identite: 'r5eb6766014094eb0abb0daa0e9d22ffa', droit: 'rc038669af734495ba6098649a9553839',
+    sante: 'r7162e2f4ff8744819029cc030f408790', activite: 'r470492eb44534645860321307831b714',
+    remarque: 'rbe7532ed5cea45a7b2829c12e528e165', limite: 'r4cc3a437506d40ed9bd50c8cb2482b58'
+  }
+};
+
+// Les valeurs envoyées sont celles des listes de l'onglet Demandes du registre V3 (feuille Listes) :
+// les formules « Date limite » et « Type d'établissement » en dépendent.
+const NSP = 'Je ne sais pas';
+const OPTIONS = {
+  canal: [['Courrier'], ['Mail', 'Courriel'], ['À l’accueil, de vive voix', 'Oral / guichet'], ['Téléphone'], ['Formulaire du site', 'Formulaire']],
+  identite: [['Oui, aucun doute', 'Vérifiée — aucun doute'], ['Un doute : j’ai demandé une pièce d’identité', 'Vérifiée — pièce demandée (doute)'],
+             ['Pas besoin : la personne est connue', 'Non nécessaire'], [NSP, '']],
+  // « Je ne sais pas » compte 8 jours, par prudence (choix du 28/10)
+  sante: [['Oui', 'Oui — délai 8 jours'], ['Non', 'Non — délai 1 mois'], [NSP, 'Oui — délai 8 jours']]
+};
+const DEMANDEURS = [
+  { ico: '🙋', titre: 'La personne elle-même', sous: 'Une personne accompagnée, un salarié, un candidat…', valeur: 'Personne concernée' },
+  { ico: '👪', titre: 'Un parent, pour son enfant mineur', sous: '', valeur: 'Parent (mineur)' },
+  { ico: '🧑‍⚖️', titre: 'Un tuteur ou un curateur', sous: 'Pour une personne protégée', valeur: 'Tuteur / curateur' },
+  { ico: '💼', titre: 'Un avocat ou un mandataire', sous: 'Au nom de la personne', valeur: 'Mandataire (avocat…)' },
+  { ico: '❓', titre: 'Quelqu’un d’autre', sous: 'Vous pourrez le préciser en remarque', valeur: 'Autre' }
+];
+const DROITS = [
+  { ico: '👀', titre: 'Voir ses informations, ou en recevoir une copie', sous: 'Son dossier, ce que l’on sait sur elle', valeur: 'Accès (art. 15)' },
+  { ico: '✏️', titre: 'Corriger une information fausse', sous: 'Adresse, date, erreur dans un dossier…', valeur: 'Rectification (art. 16)' },
+  { ico: '🗑️', titre: 'Effacer ses informations', sous: '', valeur: 'Effacement (art. 17)' },
+  { ico: '✋', titre: 'Qu’on arrête de s’en servir', sous: 'Plus de photos, plus de courriers…', valeur: 'Opposition (art. 21)' },
+  { ico: '⏸️', titre: 'Qu’on les mette de côté, le temps de vérifier', sous: 'Ni utilisées ni effacées en attendant', valeur: 'Limitation (art. 18)' },
+  { ico: '📤', titre: 'Les récupérer dans un fichier', sous: 'Pour les donner à un autre organisme', valeur: 'Portabilité (art. 20)' },
+  { ico: '↩️', titre: 'Retirer un accord donné', sous: 'Par exemple pour des photos', valeur: 'Consentement retiré (art. 7-3)' },
+  { ico: '❓', titre: NSP, sous: 'La DPO qualifiera la demande', valeur: 'À qualifier' }
+];
+
+// Activités déjà au registre, par type d'établissement : mêmes listes que declarer-activite.html (onglet Suivi de la V3, 25/10).
+const LIBELLES = {
+  'T-01': 'La comptabilité et les fournisseurs', 'T-02': 'Les comptes informatiques et la trace des accès',
+  'T-03': "Le dispositif d'alerte professionnelle", 'T-04': 'La facturation et les relations avec les financeurs',
+  'T-05': 'La formation des salariés', 'T-06': 'La paie', 'T-07': 'Les accidents du travail',
+  'T-08': 'Les mandats des représentants du personnel (CSE)', 'T-09': 'Les dossiers du personnel',
+  'T-10': 'La messagerie et les outils collaboratifs', 'T-11': 'Le recrutement (candidatures)',
+  'T-12': 'Le registre unique du personnel', 'T-13': 'Le signalement des événements indésirables graves',
+  'T-14': 'Les statistiques, études et enquêtes de satisfaction',
+  'T-15': "Les plannings de l'équipe (horaires, absences)",
+  'T-16': "Les échanges d'informations entre professionnels sur une personne accompagnée",
+  'T-17': 'Le dossier de chaque personne accompagnée', 'T-18': 'Le dossier de chaque enfant accompagné',
+  'T-19': 'Les photos et vidéos des personnes accompagnées',
+  'T-20': "L'envoi d'informations médicales ou scolaires (école, médecins)",
+  'T-21': 'Le suivi de la production de chaque travailleur', 'T-22': 'Le dossier médical (soins, traitements)',
+  'T-23': 'Les plannings de visites partagés', 'T-24': 'Les données génétiques',
+  'T-25': 'Le dossier de chaque enfant accueilli à la crèche', 'T-26': 'Les dossiers de soin et les tests psychologiques',
+  'T-27': 'Le fichier des adhérents du club', 'T-28': 'Les photos et vidéos des activités',
+  'T-29': "Les plannings des interventions à domicile ou à l'école",
+  'T-30': 'Le suivi des visites à domicile (téléphones, tablettes)', 'T-31': 'La vidéosurveillance et les données biométriques',
+  'T-32': "Les adhérents, les familles et les instances de l'association", 'T-33': 'La base de contacts et de prospects',
+  'T-34': 'La base des donateurs', 'T-35': 'Les cookies du site web', 'T-36': "Les photos et vidéos d'usagers pour les campagnes",
+  'T-37': 'Les photos et les témoignages', 'T-38': 'Les reçus fiscaux des donateurs'
+};
+const ACTIVITES = {
+  ESAT: ['T-15', 'T-16', 'T-17', 'T-21'], IME: ['T-15', 'T-16', 'T-18', 'T-20', 'T-24'],
+  EAM: ['T-15', 'T-16', 'T-22'], EANM: ['T-15', 'T-16', 'T-17', 'T-19', 'T-31'],
+  SAMSAH: ['T-15', 'T-16', 'T-17', 'T-30'], SAVS: ['T-15', 'T-16', 'T-17', 'T-23'],
+  SESSAD: ['T-15', 'T-16', 'T-18', 'T-29'], CMPP: ['T-15', 'T-16', 'T-18', 'T-26'],
+  'EMMA-H': ['T-15', 'T-16', 'T-17'], EAJE: ['T-15', 'T-16', 'T-25'], 'Club Loisirs': ['T-27', 'T-28'],
+  RH: ['T-03', 'T-05', 'T-07', 'T-08', 'T-09', 'T-11', 'T-12'], Paie: ['T-06'], DAF: ['T-01', 'T-04', 'T-38'],
+  Communication: ['T-33', 'T-35', 'T-37'], Donateurs: ['T-34', 'T-36'], DSI: ['T-02', 'T-10'],
+  Qualité: ['T-13', 'T-14'], Direction: ['T-32']
+};
+const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE' };
+// Les demandes de salariés ou de candidats visent souvent ces activités du siège
+const COMMUNES = ['T-09', 'T-06', 'T-11'];
+const ETAPES = ['quand', 'qui', 'quoi', 'activite'];
+
+let etat = nouvelEtat();
+let site = null;
+let pos = 0;
+
+function aujourdhui() {
+  const d = new Date();
+  return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+}
+function nouvelEtat() { return { reception: aujourdhui(), canal: '', demandeur: '', identite: '', droit: '', sante: '', activite: '', remarque: '' }; }
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+
+// ---------- Établissement ----------
+function choisirSite(code) {
+  const c = normalizeCode(code);
+  if (!SITES[c]) return false;
+  site = { code: c, etab: SITES[c].etab, type: TYPE_SITE[c] || SITES[c].entite };
+  document.getElementById('etab-accueil').innerHTML = '<div class="etab">' + esc(site.etab) + ' · ' + c + '</div>';
+  return true;
+}
+function commencer() {
+  if (site) { demarrer(); } else { show('screen-code'); document.getElementById('code-input').focus(); }
+}
+const codeInput = document.getElementById('code-input');
+codeInput.addEventListener('input', () => {
+  document.getElementById('code-btn').disabled = codeInput.value.trim().length < 1;
+  document.getElementById('code-error').style.display = 'none';
+});
+function validerCode() {
+  if (choisirSite(codeInput.value)) { demarrer(); return; }
+  const e = document.getElementById('code-error');
+  e.textContent = 'Code inconnu. Vérifiez le lien reçu, ou écrivez à rgpd@unapei92.fr.';
+  e.style.display = 'block';
+}
+
+// ---------- Étapes ----------
+function demarrer() {
+  etat = nouvelEtat();
+  pos = 0;
+  document.getElementById('progress-wrap').style.display = 'block';
+  afficherEtape();
+}
+function progression() {
+  const total = ETAPES.length + 1, n = Math.min(pos + 1, total);
+  document.getElementById('progress-label').textContent = 'Étape ' + n + ' sur ' + total;
+  document.getElementById('progress-count').textContent = site ? site.etab : '';
+  document.getElementById('progress-fill').style.width = Math.round((n - 1) / total * 100) + '%';
+}
+function chips(cle) {
+  return '<div class="chips">' + OPTIONS[cle].map(([label, valeur], i) => {
+    const v = valeur === undefined ? label : valeur;
+    const choisi = etat[cle + 'Label'] === label;
+    return '<button type="button" class="chip' + (label === NSP ? ' nsp' : '') + '" aria-pressed="' + choisi + '" data-cle="' + cle + '" data-label="' + esc(label) + '" data-val="' + esc(v) + '">' + esc(label) + '</button>';
+  }).join('') + '</div>';
+}
+function cartes(liste, cle) {
+  return '<div class="choices">' + liste.map(o => '<button type="button" class="choice" aria-pressed="' + (etat[cle] === o.valeur) + '" data-' + cle + '="' + esc(o.valeur) + '"><span class="ico">' + o.ico + '</span><span class="txt"><b>' + esc(o.titre) + '</b>' + (o.sous ? '<span>' + esc(o.sous) + '</span>' : '') + '</span></button>').join('') + '</div>';
+}
+function listeActivites() {
+  const l = (ACTIVITES[site.type] || []).map(t => ({ code: t, label: LIBELLES[t] }));
+  COMMUNES.forEach(t => { if (!l.some(a => a.code === t)) l.push({ code: t, label: LIBELLES[t] + ' (siège)' }); });
+  l.push({ code: 'AUTRE', label: 'Une autre activité' }, { code: 'NSP', label: NSP });
+  return l;
+}
+
+// rafraichir = true : on redessine l'étape en cours sans remonter en haut de l'écran
+function afficherEtape(rafraichir) {
+  const etape = ETAPES[pos];
+  let h = '';
+  if (etape === 'quand') {
+    h = '<h2 class="q">Quand l’avez-vous reçue ?</h2><p class="q-sub">Le délai court depuis ce jour-là, même si le courrier a été ouvert plus tard. Corrigez si ce n’est pas aujourd’hui.</p>'
+      + '<div class="champ"><label for="reception">Date de réception</label><input type="date" id="reception" value="' + esc(etat.reception) + '" max="' + aujourdhui() + '"></div>'
+      + '<h3 class="q2">Comment est-elle arrivée ?</h3>' + chips('canal');
+  } else if (etape === 'qui') {
+    h = '<h2 class="q">Qui fait la demande ?</h2><p class="q-sub">Sa qualité seulement : jamais son nom.</p>' + cartes(DEMANDEURS, 'demandeur')
+      + '<h3 class="q2">Êtes-vous sûr que c’est bien cette personne ?</h3>' + chips('identite')
+      + '<div class="astuce">💡 Une pièce d’identité ne se demande qu’en cas de doute raisonnable, pas par principe.</div>';
+  } else if (etape === 'quoi') {
+    h = '<h2 class="q">Que demande-t-elle ?</h2><p class="q-sub">Choisissez la réponse la plus proche de ce que dit la personne.</p>' + cartes(DROITS, 'droit')
+      + '<h3 class="q2">Veut-elle voir des informations médicales ?</h3><p class="q-sub">Dossier de soins, dossier médical… Le délai passe alors à 8 jours.</p>' + chips('sante');
+  } else if (etape === 'activite') {
+    h = '<h2 class="q">Quelle activité est concernée ?</h2><p class="q-sub">Facultatif. Les activités déjà au registre pour votre type d’établissement.</p><div class="choices">'
+      + listeActivites().map(a => '<button type="button" class="choice" aria-pressed="' + (etat.activite === a.code) + '" data-activite="' + esc(a.code) + '"><span class="txt"><b>' + esc(a.label) + '</b></span></button>').join('')
+      + '</div>'
+      + '<div class="champ"><label for="remarque">Une remarque ? (facultatif)</label><textarea id="remarque" maxlength="250" placeholder="Ex. : demande reçue par mail au secrétariat, la personne attend une copie papier">' + esc(etat.remarque) + '</textarea><div class="compte" id="remarque-compte"></div></div>'
+      + '<div class="astuce">💡 Jamais de nom ni de détail médical ici : ils restent dans le courrier de la personne.</div>';
+  }
+  document.getElementById('step-content').innerHTML = h;
+  brancher();
+  progression();
+  majSuivant();
+  if (!rafraichir) show('screen-step');
+}
+function brancher() {
+  const zone = document.getElementById('step-content');
+  zone.querySelectorAll('[data-demandeur]').forEach(b => b.addEventListener('click', () => { etat.demandeur = b.dataset.demandeur; afficherEtape(true); }));
+  zone.querySelectorAll('[data-droit]').forEach(b => b.addEventListener('click', () => { etat.droit = b.dataset.droit; afficherEtape(true); }));
+  zone.querySelectorAll('[data-activite]').forEach(b => b.addEventListener('click', () => { etat.activite = etat.activite === b.dataset.activite ? '' : b.dataset.activite; afficherEtape(true); }));
+  zone.querySelectorAll('.chip').forEach(b => b.addEventListener('click', () => {
+    const cle = b.dataset.cle, deja = etat[cle + 'Label'] === b.dataset.label;
+    etat[cle + 'Label'] = deja ? '' : b.dataset.label;
+    etat[cle] = deja ? '' : b.dataset.val;
+    afficherEtape(true);
+  }));
+  const d = document.getElementById('reception');
+  if (d) d.addEventListener('input', () => { etat.reception = d.value; majSuivant(); });
+  const r = document.getElementById('remarque');
+  if (r) {
+    const compte = () => { document.getElementById('remarque-compte').textContent = r.value.length + ' / 250'; };
+    compte();
+    r.addEventListener('input', () => { etat.remarque = r.value; compte(); });
+  }
+}
+function etapeValide() {
+  const etape = ETAPES[pos];
+  if (etape === 'quand') return /^\d{4}-\d{2}-\d{2}$/.test(etat.reception) && etat.reception <= aujourdhui();
+  if (etape === 'qui') return !!etat.demandeur;
+  if (etape === 'quoi') return !!etat.droit && !!etat.santeLabel;
+  return true;
+}
+function majSuivant() {
+  const b = document.getElementById('btn-next');
+  b.disabled = !etapeValide();
+  b.textContent = pos === ETAPES.length - 1 ? 'Voir le récapitulatif →' : 'Suivant →';
+}
+function suivant() {
+  if (!etapeValide()) return;
+  if (pos < ETAPES.length - 1) { pos++; afficherEtape(); } else { pos = ETAPES.length; afficherFin(); }
+}
+function precedent() {
+  if (pos === 0) { document.getElementById('progress-wrap').style.display = 'none'; show('screen-welcome'); return; }
+  pos--;
+  afficherEtape();
+}
+function autreDemande() { demarrer(); }
+
+// ---------- Date limite (même règle que la colonne « Date limite » de l'onglet Demandes) ----------
+// 8 jours si « Oui — délai 8 jours », sinon 1 mois calendaire (comme EDATE : le 31/01 donne le 28 ou 29/02).
+function dateLimite(iso, sante) {
+  const [a, m, j] = iso.split('-').map(Number);
+  if (sante === 'Oui — délai 8 jours') return new Date(Date.UTC(a, m - 1, j + 8));
+  const dernier = new Date(Date.UTC(a, m + 1, 0)).getUTCDate();
+  return new Date(Date.UTC(a, m, Math.min(j, dernier)));
+}
+const jjmmaaaa = (d) => String(d.getUTCDate()).padStart(2, '0') + '/' + String(d.getUTCMonth() + 1).padStart(2, '0') + '/' + d.getUTCFullYear();
+
+// ---------- Récapitulatif et lien ----------
+function activiteValeur() { return /^T-\d{2}$/.test(etat.activite) ? etat.activite : ''; }
+function reponses() {
+  return {
+    etab: site.etab,
+    reception: etat.reception,
+    canal: etat.canal,
+    demandeur: etat.demandeur,
+    identite: etat.identite,
+    droit: etat.droit,
+    sante: etat.sante,
+    activite: activiteValeur(),
+    remarque: [etat.activite === 'AUTRE' ? 'Autre activité' : '', etat.remarque.trim()].filter(Boolean).join(' — '),
+    limite: jjmmaaaa(dateLimite(etat.reception, etat.sante))
+  };
+}
+function afficherFin() {
+  progression();
+  document.getElementById('progress-fill').style.width = '100%';
+  const r = reponses();
+  const huit = r.sante === 'Oui — délai 8 jours';
+  document.getElementById('delai').innerHTML = '<b>Date limite pour répondre</b><div class="date">' + r.limite + '</div><span>'
+    + (huit ? '8 jours après la réception (informations médicales' + (etat.santeLabel === NSP ? ', par prudence' : '') + ')' : '1 mois après la réception')
+    + '. La DPO peut prolonger de 2 mois une demande complexe, en prévenant la personne avant cette date.</span>';
+  const titre = (l, v) => (l.find(o => o.valeur === v) || {}).titre || v;
+  const lignes = [['Établissement', r.etab], ['Reçue le', r.reception.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1')], ['Arrivée par', etat.canalLabel],
+    ['Qui la fait', titre(DEMANDEURS, r.demandeur)], ['Identité', etat.identiteLabel], ['Ce qu’elle demande', titre(DROITS, r.droit)],
+    ['Informations médicales', etat.santeLabel], ['Activité concernée', r.activite ? r.activite + ' ' + LIBELLES[r.activite] : (etat.activite === 'AUTRE' ? 'Une autre activité' : '')],
+    ['Remarque', etat.remarque.trim()]];
+  document.getElementById('recap').innerHTML = lignes.filter(([, v]) => v).map(([l, v]) => '<div><b>' + l + '</b>' + esc(v) + '</div>').join('');
+  // Le mail pour joindre le courrier : seulement l'établissement et la date dans l'objet, rien sur la personne
+  document.getElementById('mail-courrier').href = 'mailto:rgpd@unapei92.fr?subject=' + encodeURIComponent('Demande de droits — ' + r.etab + ' — reçue le ' + r.reception.replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$3/$2/$1'));
+  const a = document.getElementById('btn-envoi');
+  if (CONFIG.url) {
+    // « — » pour une réponse vide : le Forms s'envoie même si ses questions sont obligatoires
+    a.href = CONFIG.url + Object.keys(CONFIG.champs).map(k => '&' + CONFIG.champs[k] + '=' + encodeURIComponent(r[k] || '—')).join('');
+    a.removeAttribute('aria-disabled'); a.textContent = 'Envoyer la demande →';
+  } else {
+    a.href = '#'; a.setAttribute('aria-disabled', 'true'); a.textContent = 'Formulaire en cours de mise en place';
+  }
+  document.getElementById('saved-msg').style.display = 'none';
+  show('screen-fin');
+}
+function marquerEnvoi() { document.getElementById('saved-msg').style.display = 'block'; }
+
+// Lien personnel : ?code=S-09
+(function () {
+  const c = new URLSearchParams(location.search).get('code');
+  if (c) choisirSite(c);
+})();
+</script>
+</body>
+</html>

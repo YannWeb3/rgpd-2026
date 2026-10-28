@@ -141,7 +141,7 @@
     </div>
     <div class="envoi">
       <a class="welcome-cta" id="btn-envoi" href="#" target="_blank" rel="noopener" onclick="marquerEnvoi()">Envoyer l'alerte →</a>
-      <div class="saved" id="saved-msg">✅ Le formulaire s'est ouvert dans un nouvel onglet. Racontez ce qui s'est passé, tapez votre nom et un moyen de vous joindre, puis cliquez sur « Envoyer ». Rien ne s'est ouvert ? Touchez à nouveau le bouton.</div>
+      <div class="saved" id="saved-msg">✅ Le formulaire s'est ouvert dans un nouvel onglet. Racontez ce qui s'est passé, tapez votre nom et un moyen de vous joindre, puis cliquez sur « Envoyer ». Rien ne s'est ouvert ? Appuyez à nouveau sur le bouton.</div>
       <div><button class="link-btn" type="button" onclick="precedent()">← Modifier mes réponses</button></div>
     </div>
   </div>
@@ -265,7 +265,7 @@ function afficherEtape(rafraichir) {
   const etape = ETAPES[pos];
   let h = '';
   if (etape === 'quoi') {
-    h = '<h2 class="q">Que s’est-il passé ?</h2><p class="q-sub">Touchez ce qui ressemble le plus. Vous raconterez les détails dans le formulaire.</p><div class="choices">'
+    h = '<h2 class="q">Que s’est-il passé ?</h2><p class="q-sub">Choisissez la réponse la plus proche. Vous raconterez les détails dans le formulaire.</p><div class="choices">'
       + ORIGINES.map(o => '<button type="button" class="choice" aria-pressed="' + (etat.origine === o.valeur) + '" data-origine="' + esc(o.valeur) + '"><span class="ico">' + o.ico + '</span><span class="txt"><b>' + esc(o.titre) + '</b><span>' + esc(o.sous) + '</span></span></button>').join('')
       + '</div>';
   } else if (etape === 'quand') {
