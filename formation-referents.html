@@ -229,6 +229,25 @@ let inModules = true;
 let inFinal = false;
 let finalScore = 0;
 let finalAnswered = 0;
+// Retour de la RH (28/10) : la bonne réponse était presque toujours la 2e, on pouvait répondre sans lire.
+// L'ordre des réponses est mélangé une fois pour toutes, à partir du texte de la question : il reste le même
+// d'une visite à l'autre (la reprise sur 14 jours retrouve les mêmes positions).
+function melangerReponses(q) {
+  let h = 2166136261;
+  for (const c of q.q) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
+  const ordre = q.options.map((_, i) => i);
+  for (let i = ordre.length - 1; i > 0; i--) {
+    h = (Math.imul(h, 1103515245) + 12345) >>> 0;
+    const j = (h >>> 16) % (i + 1);
+    [ordre[i], ordre[j]] = [ordre[j], ordre[i]];
+  }
+  q.correct = ordre.indexOf(q.correct);
+  q.options = ordre.map(i => q.options[i]);
+}
+MODULES.forEach(m => melangerReponses(m.quiz));
+CASES.forEach(c => melangerReponses(c.quiz));
+FINAL_QUIZ.forEach(melangerReponses);
+
 let answersMap = {};   // étape -> { chosen, ok }
 let linkCode = null;
 let currentEtab = '';
