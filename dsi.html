@@ -272,6 +272,8 @@
       <a href="#chiffrement" class="nav-block">Chiffrement</a>
       <a href="#reseau" class="nav-block">Réseau</a>
       <a href="#mises-a-jour" class="nav-block">Mises à jour</a>
+      <a href="#mobilite-usages" class="nav-block">Mobilité &amp; usages</a>
+      <a href="#echanges-locaux" class="nav-block">Échanges &amp; locaux</a>
       <a href="#sensibilisation-dpo" class="nav-block">Sensibilisation &amp; DPO</a>
       <a href="#sous-traitants" class="nav-block">Sous-traitants IT</a>
       <a href="#incidents" class="nav-block">Incidents cyber</a>
@@ -290,26 +292,16 @@
         <h2 class="section-title">Identification</h2>
 
         <div class="question">
-          <label class="question-label required">Nom de l'association <span class="question-id">Q0.1</span></label>
-           <input type="text" name="q0_1_nom_association" required>
+          <label class="question-label required">Service <span class="question-id">Q0.1</span></label>
+           <input type="text" name="q0_1_nom_association" value="Siège — DSI" required>
            <input type="hidden" id="nom_etablissement" name="nom_etablissement">
         </div>
 
         <div class="question">
           <label class="question-label required">Fonction de la personne qui répond <span class="question-id">Q0.2</span></label>
-          <input type="text" name="q0_2_fonction_repondant" required placeholder="Ex : directeur, chef de service, cadre administratif">
+          <input type="text" name="q0_2_fonction_repondant" required placeholder="Ex : DSI, responsable informatique, administrateur système, prestataire d'infogérance">
         </div>
 
-        <div class="question">
-          <label class="question-label required">Fonction du répondant <span class="question-id">Q0.3</span></label>
-          <div class="radio-group">
-            <label><input type="radio" name="q0_3_fonction" value="responsable_informatique" required> Responsable informatique</label>
-            <label><input type="radio" name="q0_3_fonction" value="dsi"> DSI</label>
-            <label><input type="radio" name="q0_3_fonction" value="administrateur_systeme"> Administrateur système</label>
-            <label><input type="radio" name="q0_3_fonction" value="prestataire_infogerance"> Prestataire infogérance externe</label>
-            <label><input type="radio" name="q0_3_fonction" value="autre"> Autre</label>
-          </div>
-        </div>
 
         <div class="question">
           <label class="question-label required">Date de remplissage <span class="question-id">Q0.4</span></label>
@@ -572,6 +564,15 @@
             <label><input type="radio" name="q3_3_4_retention" value="na"> N/A</label>
           </div>
         </div>
+              <div class="question">
+          <label class="question-label required">Une copie des sauvegardes est-elle hors ligne ou non modifiable (à l&#x27;abri d&#x27;un rançongiciel), et chiffrée ? <span class="question-id">Q3.3.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_3_5_sauvegarde_protegee" value="hors_ligne_chiffree" required> Oui, hors ligne ou non modifiable, et chiffrée</label>
+            <label><input type="radio" name="q3_3_5_sauvegarde_protegee" value="hors_ligne"> Hors ligne ou non modifiable, mais non chiffrée</label>
+            <label><input type="radio" name="q3_3_5_sauvegarde_protegee" value="non"> Non, toutes les copies sont accessibles depuis le réseau</label>
+            <label><input type="radio" name="q3_3_5_sauvegarde_protegee" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 3-Antivirus -->
@@ -615,6 +616,15 @@
             <label><input type="radio" name="q3_4_4_ids" value="non"> Non</label>
           </div>
         </div>
+              <div class="question">
+          <label class="question-label required">Avant une prise en main à distance d&#x27;un poste, l&#x27;accord de l&#x27;utilisateur est-il demandé ? <span class="question-id">Q3.4.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_4_5_accord_intervention" value="toujours" required> Toujours</label>
+            <label><input type="radio" name="q3_4_5_accord_intervention" value="parfois"> Parfois</label>
+            <label><input type="radio" name="q3_4_5_accord_intervention" value="non"> Non</label>
+            <label><input type="radio" name="q3_4_5_accord_intervention" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 3-Mots de passe -->
@@ -648,6 +658,43 @@
             <label><input type="radio" name="q3_5_3_stockage_mdp" value="hachage_simple"> Oui hachage simple (MD5 SHA1)</label>
             <label><input type="radio" name="q3_5_3_stockage_mdp" value="clair"> Stockage en clair ou chiffrement réversible</label>
             <label><input type="radio" name="q3_5_3_stockage_mdp" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+              <div class="question">
+          <label class="question-label required">Chaque personne a-t-elle son propre identifiant, sans compte partagé entre collègues (par exemple un poste « équipe ») ? <span class="question-id">Q3.5.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_4_identifiant_unique" value="oui" required> Oui, chacun a le sien</label>
+            <label><input type="radio" name="q3_5_4_identifiant_unique" value="quelques"> Quelques comptes partagés</label>
+            <label><input type="radio" name="q3_5_4_identifiant_unique" value="beaucoup"> Beaucoup de comptes partagés</label>
+            <label><input type="radio" name="q3_5_4_identifiant_unique" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">La double authentification (code sur le téléphone) est-elle activée pour Microsoft 365 et les logiciels accessibles depuis Internet ? <span class="question-id">Q3.5.5</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_5_double_authentification" value="tous" required> Oui, pour tous les comptes</label>
+            <label><input type="radio" name="q3_5_5_double_authentification" value="admins"> Pour les administrateurs seulement</label>
+            <label><input type="radio" name="q3_5_5_double_authentification" value="non"> Non</label>
+            <label><input type="radio" name="q3_5_5_double_authentification" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le mot de passe donné à l&#x27;arrivée doit-il être changé à la première connexion ? <span class="question-id">Q3.5.6</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_6_mdp_initial" value="oui" required> Oui, c&#x27;est imposé</label>
+            <label><input type="radio" name="q3_5_6_mdp_initial" value="non"> Non</label>
+            <label><input type="radio" name="q3_5_6_mdp_initial" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les administrateurs ont-ils un compte dédié, distinct de leur compte de tous les jours ? <span class="question-id">Q3.5.7</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_5_7_comptes_admin" value="oui" required> Oui</label>
+            <label><input type="radio" name="q3_5_7_comptes_admin" value="non"> Non</label>
+            <label><input type="radio" name="q3_5_7_comptes_admin" value="nsp"> Je ne sais pas</label>
           </div>
         </div>
       </section>
@@ -738,6 +785,15 @@
             <label><input type="radio" name="q3_7_6_revue_droits_acces" value="inconnu"> Inconnu</label>
           </div>
         </div>
+              <div class="question">
+          <label class="question-label required">Les journaux de connexion sont-ils protégés et regardés régulièrement pour repérer un incident ? <span class="question-id">Q3.7.7</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_7_7_journaux_analyses" value="regulierement" required> Oui, régulièrement</label>
+            <label><input type="radio" name="q3_7_7_journaux_analyses" value="apres_probleme"> Seulement après un problème</label>
+            <label><input type="radio" name="q3_7_7_journaux_analyses" value="non"> Non</label>
+            <label><input type="radio" name="q3_7_7_journaux_analyses" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 3-Chiffrement -->
@@ -759,6 +815,15 @@
             <label><input type="radio" name="q3_8_2_chiffrement_nomade" value="systematique" required> Oui chiffrement systématique imposé (BitLocker FileVault VeraCrypt)</label>
             <label><input type="radio" name="q3_8_2_chiffrement_nomade" value="recommande"> Recommandé mais non imposé</label>
             <label><input type="radio" name="q3_8_2_chiffrement_nomade" value="non"> Non pas de chiffrement</label>
+          </div>
+        </div>
+              <div class="question">
+          <label class="question-label required">Où sont conservées les clés de récupération du chiffrement (par exemple les clés BitLocker) ? <span class="question-id">Q3.8.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_8_3_cles_chiffrement" value="coffre" required> Dans un coffre ou une console d&#x27;administration protégée</label>
+            <label><input type="radio" name="q3_8_3_cles_chiffrement" value="ailleurs"> Ailleurs (fichier, papier, messagerie…)</label>
+            <label><input type="radio" name="q3_8_3_cles_chiffrement" value="pas_chiffrement"> Pas de chiffrement</label>
+            <label><input type="radio" name="q3_8_3_cles_chiffrement" value="nsp"> Je ne sais pas</label>
           </div>
         </div>
       </section>
@@ -819,6 +884,89 @@
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="occasionnelles"> MAJ occasionnelles</label>
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="obsoletes"> Versions obsolètes (&gt;2 ans)</label>
             <label><input type="radio" name="q3_10_2_patch_logiciels" value="inconnu"> Inconnu</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 3-Mobilité et usages (ajouté le 04/11, guide sécurité CNIL 2024, fiches 7, 23 et 24) -->
+      <section class="section" id="mobilite-usages">
+        <h2 class="section-title">Mobilité &amp; usages</h2>
+
+        <div class="question">
+          <label class="question-label required">Les téléphones professionnels sont-ils protégés par un code et effaçables à distance en cas de perte ? <span class="question-id">Q3.11.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_11_1_telephones_pro" value="tous" required> Oui, tous</label>
+            <label><input type="radio" name="q3_11_1_telephones_pro" value="partie"> Une partie</label>
+            <label><input type="radio" name="q3_11_1_telephones_pro" value="non"> Non</label>
+            <label><input type="radio" name="q3_11_1_telephones_pro" value="pas_de_telephones"> Pas de téléphones professionnels</label>
+            <label><input type="radio" name="q3_11_1_telephones_pro" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des salariés utilisent-ils leur téléphone personnel pour des informations sur les usagers (photos, messages, notes) ? <span class="question-id">Q3.11.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_11_2_telephones_perso" value="interdit" required> Non, c&#x27;est interdit</label>
+            <label><input type="radio" name="q3_11_2_telephones_perso" value="regles"> Toléré, avec des règles écrites</label>
+            <label><input type="radio" name="q3_11_2_telephones_perso" value="sans_regle"> Oui, sans règle</label>
+            <label><input type="radio" name="q3_11_2_telephones_perso" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des messageries grand public (WhatsApp, Messenger…) servent-elles à échanger sur des usagers ? <span class="question-id">Q3.11.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_11_3_messageries_grand_public" value="interdites" required> Non, elles sont interdites</label>
+            <label><input type="radio" name="q3_11_3_messageries_grand_public" value="parfois"> Parfois</label>
+            <label><input type="radio" name="q3_11_3_messageries_grand_public" value="couramment"> Couramment</label>
+            <label><input type="radio" name="q3_11_3_messageries_grand_public" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Des outils d&#x27;intelligence artificielle (ChatGPT, Copilot…) sont-ils utilisés, et une règle écrite interdit-elle d&#x27;y mettre des données d&#x27;usagers ou de salariés ? <span class="question-id">Q3.11.4</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_11_4_intelligence_artificielle" value="pas_usage" required> Pas d&#x27;usage</label>
+            <label><input type="radio" name="q3_11_4_intelligence_artificielle" value="encadre"> Usage encadré par une règle écrite</label>
+            <label><input type="radio" name="q3_11_4_intelligence_artificielle" value="sans_regle"> Usage sans règle</label>
+            <label><input type="radio" name="q3_11_4_intelligence_artificielle" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloc 3-Échanges, locaux et site web (ajouté le 04/11, guide sécurité CNIL 2024, fiches 10, 12 et 13) -->
+      <section class="section" id="echanges-locaux">
+        <h2 class="section-title">Échanges, locaux &amp; site web</h2>
+
+        <div class="question">
+          <label class="question-label">Comment les données de santé sont-elles envoyées à l&#x27;extérieur (MDPH, médecins, écoles) ? <span class="question-id">Q3.12.1</span></label>
+          <p class="question-help" style="font-size:.85rem;color:#6b7280;margin:4px 0 8px">Plusieurs réponses possibles.</p>
+          <div class="checkbox-group">
+            <label><input type="checkbox" name="q3_12_1_envoi_donnees_sante" value="mssante"> Messagerie sécurisée de santé (MSSanté)</label>
+            <label><input type="checkbox" name="q3_12_1_envoi_donnees_sante" value="piece_jointe_chiffree"> Mail avec pièce jointe chiffrée</label>
+            <label><input type="checkbox" name="q3_12_1_envoi_donnees_sante" value="mail_simple"> Mail simple</label>
+            <label><input type="checkbox" name="q3_12_1_envoi_donnees_sante" value="courrier"> Courrier</label>
+            <label><input type="checkbox" name="q3_12_1_envoi_donnees_sante" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les serveurs et équipements réseau sont-ils dans un local fermé à clé, à accès réservé ? <span class="question-id">Q3.12.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_12_2_local_technique" value="oui" required> Oui</label>
+            <label><input type="radio" name="q3_12_2_local_technique" value="non"> Non</label>
+            <label><input type="radio" name="q3_12_2_local_technique" value="externalise"> Tout est hébergé à l&#x27;extérieur</label>
+            <label><input type="radio" name="q3_12_2_local_technique" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Le site internet et ses formulaires (contact, dons) sont-ils en HTTPS, et qui les gère ? <span class="question-id">Q3.12.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q3_12_3_site_web" value="https_dsi" required> En HTTPS, géré par la DSI</label>
+            <label><input type="radio" name="q3_12_3_site_web" value="https_prestataire"> En HTTPS, géré par un prestataire</label>
+            <label><input type="radio" name="q3_12_3_site_web" value="pas_https"> Pas en HTTPS</label>
+            <label><input type="radio" name="q3_12_3_site_web" value="nsp"> Je ne sais pas</label>
           </div>
         </div>
       </section>
@@ -907,6 +1055,25 @@
             <label><input type="radio" name="q4_3_1_implication_aipd" value="na"> N/A (aucune AIPD réalisée à ce jour)</label>
           </div>
         </div>
+              <div class="question">
+          <label class="question-label required">La DSI sait-elle extraire toutes les données d&#x27;une personne pour répondre à une demande d&#x27;accès en moins d&#x27;un mois ? <span class="question-id">Q4.4.1</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_4_1_extraction_acces" value="tous" required> Oui, pour tous les logiciels</label>
+            <label><input type="radio" name="q4_4_1_extraction_acces" value="partie"> Pour une partie des logiciels</label>
+            <label><input type="radio" name="q4_4_1_extraction_acces" value="non"> Non</label>
+            <label><input type="radio" name="q4_4_1_extraction_acces" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Les logiciels permettent-ils d&#x27;effacer ou d&#x27;archiver les données à la fin de leur durée de conservation ? <span class="question-id">Q4.4.2</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q4_4_2_effacement_duree" value="fait" required> Oui, et c&#x27;est fait</label>
+            <label><input type="radio" name="q4_4_2_effacement_duree" value="possible"> C&#x27;est possible, mais pas fait</label>
+            <label><input type="radio" name="q4_4_2_effacement_duree" value="non"> Non</label>
+            <label><input type="radio" name="q4_4_2_effacement_duree" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 5 : Sous-traitants IT -->
@@ -979,6 +1146,15 @@
             <label><input type="radio" name="q5_4_2_garanties_transfert" value="jamais"> Non jamais vérifié</label>
           </div>
         </div>
+              <div class="question">
+          <label class="question-label required">En fin de contrat, les prestataires rendent-ils puis détruisent-ils les données, avec une preuve ? <span class="question-id">Q5.2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q5_2_3_fin_contrat" value="verifie" required> Oui, c&#x27;est prévu au contrat et vérifié</label>
+            <label><input type="radio" name="q5_2_3_fin_contrat" value="prevu"> Prévu au contrat, mais pas vérifié</label>
+            <label><input type="radio" name="q5_2_3_fin_contrat" value="non"> Non</label>
+            <label><input type="radio" name="q5_2_3_fin_contrat" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
       </section>
 
       <!-- Bloc 6 : Incidents cyber -->
@@ -1039,6 +1215,16 @@
         </div>
 
         <div class="question">
+          <label class="question-label required">Le plan de reprise est-il testé par un exercice au moins une fois par an ? <span class="question-id">Q6.2.3</span></label>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_2_3_exercice_pra" value="oui" required> Oui</label>
+            <label><input type="radio" name="q6_2_3_exercice_pra" value="non"> Non</label>
+            <label><input type="radio" name="q6_2_3_exercice_pra" value="pas_de_plan"> Pas de plan de reprise</label>
+            <label><input type="radio" name="q6_2_3_exercice_pra" value="nsp"> Je ne sais pas</label>
+          </div>
+        </div>
+
+        <div class="question">
           <label class="question-label required">Une procédure de gestion des incidents cyber existe-t-elle ? <span class="question-id">Q6.3.1</span></label>
           <div class="radio-group">
             <label><input type="radio" name="q6_3_1_procedure" value="ecrite" required> Oui procédure écrite connue équipe IT</label>
@@ -1053,6 +1239,17 @@
             <label><input type="radio" name="q6_3_2_reaction" value="formee" required> Oui formation et procédure claire (isolation déconnexion réseau alerte)</label>
             <label><input type="radio" name="q6_3_2_reaction" value="partiellement"> Partiellement formée</label>
             <label><input type="radio" name="q6_3_2_reaction" value="non"> Non aucune formation</label>
+          </div>
+        </div>
+
+        <div class="question">
+          <label class="question-label required">Si la DSI découvre un incident touchant des données personnelles, prévient-elle tout de suite la DPO ? <span class="question-id">Q6.3.3</span></label>
+          <p class="question-help" style="font-size:.85rem;color:#6b7280;margin:4px 0 8px">La CNIL doit être prévenue sous 72 heures après la découverte (RGPD, art. 33).</p>
+          <div class="radio-group">
+            <label><input type="radio" name="q6_3_3_alerte_dpo" value="procedure" required> Oui, c&#x27;est écrit dans une procédure</label>
+            <label><input type="radio" name="q6_3_3_alerte_dpo" value="sans_procedure"> Oui, mais rien n&#x27;est écrit</label>
+            <label><input type="radio" name="q6_3_3_alerte_dpo" value="non"> Non</label>
+            <label><input type="radio" name="q6_3_3_alerte_dpo" value="nsp"> Je ne sais pas</label>
           </div>
         </div>
       </section>
