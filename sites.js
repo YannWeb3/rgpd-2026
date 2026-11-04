@@ -25,7 +25,7 @@ const SITES = {
   "S-19": { etab: "IME Fernand Oury", entite: "IME" },
   "S-20": { etab: "IME La Maillerie", entite: "IME" },
   "S-21": { etab: "IME La Tissanderie", entite: "IME" },
-  "S-22": { etab: "IME l’Espoir Châtillonnais", entite: "IME" },
+  // S-22 retiré le 04/11 : c'était l'IME Espoir Châtillonnais, déjà S-18 (doublon). Code jamais réutilisé.
   "S-23": { etab: "IME Le Fil de Soi", entite: "IME" },
   "S-24": { etab: "IME Les Peupliers", entite: "IME" },
   "S-25": { etab: "IME Neuilly-sur-Seine", entite: "IME" },
