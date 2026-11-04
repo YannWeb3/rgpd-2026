@@ -206,7 +206,7 @@ const ACTIVITES = {
   Qualité: ['T-13', 'T-14'], Direction: ['T-32']
 };
 // Sites sans parcours de formation dédié : leur type vient de l'onglet Sites
-const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE' };
+const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE', 'S-53': ['EANM', 'SAVS'] };   // S-53 : foyers + SAVS du Mesnil (04/11)
 const SERVICES = ['RH', 'Paie', 'DAF', 'Communication', 'Donateurs', 'DSI', 'Qualité', 'Direction'];
 
 const SIGNAUX = {
@@ -299,8 +299,8 @@ function champ(id, label, cle, max, multi, placeholder) {
 }
 
 function listeActivites() {
-  const liste = (ACTIVITES[site.type] || []).map(t => ({ code: t, label: LIBELLES[t] }));
-  if (!SERVICES.includes(site.type)) liste.push({ code: 'T-01 à T-14', label: 'Une activité commune : paie, messagerie, recrutement…' });
+  const liste = [...new Set([].concat(site.type).flatMap(t => ACTIVITES[t] || []))].map(t => ({ code: t, label: LIBELLES[t] }));
+  if (![].concat(site.type).some(t => SERVICES.includes(t))) liste.push({ code: 'T-01 à T-14', label: 'Une activité commune : paie, messagerie, recrutement…' });
   liste.push({ code: 'AUTRE', label: 'Une autre activité' }, { code: 'NSP', label: NSP });
   return liste;
 }

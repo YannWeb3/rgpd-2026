@@ -236,7 +236,7 @@ const ACTIVITES = {
   Communication: ['T-33', 'T-35', 'T-37'], Donateurs: ['T-34', 'T-36'], DSI: ['T-02', 'T-10'],
   Qualité: ['T-13', 'T-14'], Direction: ['T-32']
 };
-const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE' };
+const TYPE_SITE = { 'S-60': 'EMMA-H', 'S-61': 'EAJE', 'S-53': ['EANM', 'SAVS'] };   // S-53 : foyers + SAVS du Mesnil (04/11)
 // Les demandes de salariés ou de candidats visent souvent ces activités du siège
 const COMMUNES = ['T-09', 'T-06', 'T-11'];
 const ETAPES = ['quand', 'qui', 'quoi', 'activite'];
@@ -305,7 +305,7 @@ function cartes(liste, cle) {
   return '<div class="choices">' + liste.map(o => '<button type="button" class="choice" aria-pressed="' + (etat[cle] === o.valeur) + '" data-' + cle + '="' + esc(o.valeur) + '"><span class="ico">' + o.ico + '</span><span class="txt"><b>' + esc(o.titre) + '</b>' + (o.sous ? '<span>' + esc(o.sous) + '</span>' : '') + '</span></button>').join('') + '</div>';
 }
 function listeActivites() {
-  const l = (ACTIVITES[site.type] || []).map(t => ({ code: t, label: LIBELLES[t] }));
+  const l = [...new Set([].concat(site.type).flatMap(t => ACTIVITES[t] || []))].map(t => ({ code: t, label: LIBELLES[t] }));
   COMMUNES.forEach(t => { if (!l.some(a => a.code === t)) l.push({ code: t, label: LIBELLES[t] + ' (siège)' }); });
   l.push({ code: 'AUTRE', label: 'Une autre activité' }, { code: 'NSP', label: NSP });
   return l;
